@@ -14,7 +14,7 @@ import re
 #import xgboost as xgb
 
 # import the "crash" data
-datafile = "../data/txdot_2010_2017.csv"
+datafile = "my_map_grid.csv"
 
 # get clean data
 (data,featdef) = preprocess_data(datafile)

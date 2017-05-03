@@ -18,7 +18,7 @@ if(__name__ == '__main__'):
 
 # ensure all data is machine-readable
 def clean_data(datafile, source='txdot', verbose=0):
-    data = pd.read_csv(datafile,header=7)
+    data = pd.read_csv(datafile,header=10)
     # feature definitions and properties
     featdef = get_feature_defs()
     if(verbose):
