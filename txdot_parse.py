@@ -75,7 +75,7 @@ def preprocess_data(datafile, source='txdot', verbose=0):
     # if(showplt): 
     #   plt.show()
     data['crash_time_30m'] = data.crash_datetime.apply(time_round30min)
-    featdef = add_feature(featdef, 'crash_time_30m', {'type':'int','regtype':'categorical','origin':'crash_datetime'})
+    featdef = add_feature(featdef, 'crash_time_30m', {'type':'24h','regtype':'categorical','origin':'crash_datetime'})
     # </crash_time>
     return(data,featdef)
 
