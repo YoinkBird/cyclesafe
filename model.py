@@ -50,15 +50,14 @@ if(show_data_piv):
 
 
 if(0):
+    # list of vars which become dummie'd
+    dummies_needed_list = list(featdef[featdef.dummies == 1].index)
 
-# list of vars which become dummie'd
-dummies_needed_list = list(featdef[featdef.dummies == 1].index)
-
-# dummies
-# http://stackoverflow.com/a/36285489 - use of columns
-data_dummies = pd.get_dummies(data, columns=dummies_needed_list)
-# no longer need to convert headers, already done in process_data_punctuation
-pp.pprint(list(data_dummies))
+    # dummies
+    # http://stackoverflow.com/a/36285489 - use of columns
+    data_dummies = pd.get_dummies(data, columns=dummies_needed_list)
+    # no longer need to convert headers, already done in process_data_punctuation
+    pp.pprint(list(data_dummies))
 
 # dummies - new method
 (data_dummies,featdef) = featdef_get_dummies(data,featdef)
@@ -70,19 +69,75 @@ invalfeats = len(list(featdef[(featdef.type != 'int') & (featdef.dummies != True
 alldummies = data_dummies.shape[1]
 print("valid+string %d / %d total" % (validpreds+validtargs+invalfeats, alldummies))
 # any non-dummy & integer type
-data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].info()
+if(0):
+    print(data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].info())
 
-# pure integer data
-df_int_nonan = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].dropna()
+# mainly integer data
+data_int_list = list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)
+df_int = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)]
+df_int_nonan = df_int.dropna()
 
 # pca stub
 # pca = decomposition.PCA(svd_solver='full')
 # pca.fit(pd.get_dummies(data[dummies_needed_list])).transform(pd.get_dummies(data[dummies_needed_list]))
 
-
-
-
 print("-I-: train-test split")
+
+# DOC: How to interpret decision trees' graph results and find most informative features?
+# src: http://stackoverflow.com/a/34872454
+print("-I-: most important features:")
+def print_model_feats_important(model):
+    for i in np.argsort(model.feature_importances_)[::-1]:
+      if model.feature_importances_[i] == 0:
+        continue
+      print("%f : %s" % (model.feature_importances_[i],predictors[i]))
+if(1):
+    # TODO : create a df of featdef with these attributes
+    predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False)].index)
+    responsecls = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype == 'bin_cat')].index)
+
+    if(1):
+        print("predictors:")
+        print(predictors)
+        print("responsecls:")
+        print(responsecls)
+    testsize = 0.3
+    # data_nonan = data[ predictors + responsecls ].dropna()
+    data_nonan = df_int_nonan
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(data_nonan[predictors],data_nonan[responsecls], test_size=testsize)
+
+    from sklearn import tree
+    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    #clf.fit(X_train,y_train)
+    clf.fit(data_nonan[predictors],data_nonan[responsecls])
+
+    # prediction and scoring
+    print("-I-: cross_val_score on train (itself)")
+    print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel()))
+    # TODO: how to use multioutput-multioutput?
+    # vvv multiclass-multioutput is not supported vvv
+    # print(model_selection.cross_val_score(clf, X_train, y_train))
+    y_pred = clf.predict_proba(X_test)
+    print("-I-: cross_val_score against test")
+    print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
+
+    # print important features
+    print_model_feats_important(clf)
+
+    # plot important features
+    for i in np.argsort(clf.feature_importances_)[::-1]:
+      feat = predictors[i]
+      feat = predictors[i].replace('bin_','')
+      pltkind = 'pie'
+      if(featdef.ix[feat].origin):
+          feat_orig = featdef.ix[predictors[i]].origin
+          data_dummies[feat].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
+      else:
+          data_dummies[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
+      plt.show()
+
+    print(aaa)
+
 
 # predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
 # responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
