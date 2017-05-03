@@ -26,7 +26,7 @@ def get_feature_defs():
     'crash_possible_injury_count'              : {'target':1, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0,  },
     'crash_severity'                           : {'target':1, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0,  },
     'crash_year'                               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0,  },
-    'crash_time'                               : {'target':0, 'type' : 'HH:mm',  'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0,  },
+    'crash_time'                               : {'target':0, 'type' : '24h',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0,  },
     'light_condition'                          : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0,  },
     'day_of_week'                              : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0,  },
     'latitude'                                 : {'target':0, 'type' : 'gps',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':1,  },
