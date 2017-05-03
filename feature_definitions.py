@@ -83,7 +83,15 @@ def add_feature(df, featname, featdict):
             if('pairplot' not in featdict):
                 featdict['pairplot'] = True
     # done
-    return df.append(pd.DataFrame({featname: featdict}).T)
+    return df.append(pd.DataFrame({featname: featdict}).T, verify_integrity=True)
+    ## Don't handle exception, need to make sure caller understands how to call
+    # try:
+    #     return df.append(pd.DataFrame({featname: featdict}).T, verify_integrity=True)
+    # except ValueError as err:
+    #     print("ValueError: {0}:".format(err))
+    # finally:
+    #     return df
+
 
 def add_attribute_bool(df, attname, attvalue=False):
     if(attname not in df):
@@ -92,6 +100,27 @@ def add_attribute_bool(df, attname, attvalue=False):
         # ser = pd.Series(index=featdef.index).fillna(attvalue, downcast='infer')
         df[attname] = ser
     return df
+
+# replacement for pd.get_dummies, tracks the origin of the dummy var
+# expand dummies, register in featdict
+def featdef_get_dummies(df, featdef):
+    # list of vars which become dummie'd
+    dummies_needed_list = list(featdef[featdef.dummies == 1].index)
+    # var - feature to be encoded
+    for var in dummies_needed_list:
+        dummies = pd.get_dummies(df[var], prefix=var)
+        print(var); print(dummies.info())
+        featattr = dict(featdef.ix[var])
+        featattr['type'] = 'int'
+        featattr['dummies'] = False
+        featattr['origin'] = var
+        featattr['regtype'] = 'onehot'
+        for feat in list(dummies.columns):
+            featdef = add_feature(featdef, feat, featattr)
+        # add the feature to dataframe
+        df = pd.get_dummies(df, columns=[var])
+    # new dataframe with all the encodings
+    return(df,featdef)
 
 # usage
 # featdef = add_feature(featdef, 'bin_intersection_related', {'type':'int','regtype':'bin_cat'})
@@ -107,3 +136,26 @@ if(__name__ == '__main__'):
     # http://stackoverflow.com/a/24517695
     featdef.set_value('crash_time', 'pairplot', True)
     featdef.set_value('bin_crash_time', 'origin', 'crash_time')
+    # example of 'origin' working
+    print("-I-: sample usage of the 'origin' attribute")
+    print('list(featdef[featdef.origin != False].index)')
+    print(featdef[featdef.origin != False].index)
+
+    print("-I-: test duplicates:")
+    ### featdef.append(pd.DataFrame({'crash_time2': featattr}).T, verify_integrity=True)
+    ## featdef.append(pd.DataFrame({'crash_time': 
+    ##     {'type' : 'HH:mm',  'dummies':0, 'regtype' : 'categorical'},
+    ##     }).T, verify_integrity=True)
+    try:
+        featdef = add_feature(featdef, 'bin_intersection_related', {'type':'int','regtype':'bin_cat'})
+    except ValueError as err:
+        print("caught ValueError: {0}:".format(err))
+    finally:
+        print("")
+    # make sure it fails
+    print("-I-: self-test will intentionally fail now")
+    featdef = add_feature(featdef, 'bin_intersection_related', {'type':'int','regtype':'bin_cat'})
+    # somehow test featdef_get_dummies
+    print("-I-: end of self-test")
+
+# DOC: exceptions - https://docs.python.org/3/tutorial/errors.html
