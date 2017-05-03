@@ -57,21 +57,8 @@ pp.pprint(list(data_dummies))
 # pca = decomposition.PCA(svd_solver='full')
 # pca.fit(pd.get_dummies(data[dummies_needed_list])).transform(pd.get_dummies(data[dummies_needed_list]))
 
-'''
-pandas tricks
-filtering
-http://stackoverflow.com/a/11872393
-# select data with average_daily_traffic_amount but intersecting_street_name null
-# => busy roads without an intersection
-data[~data['average_daily_traffic_amount'].isnull() & data['intersecting_street_name'].isnull()]
 
-# select intersection_related == 'Non Intersection' and intersecting_street_name null
-# => verify whether intersecting_street_name==null indicates that there is no intersection
-# => then only display the columns pertaining to street names
-data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_street_name'].isnull()][['street_name','intersecting_street_name','intersection_related']]
 
-data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_street_name'].isnull()][colgrps['intersection']]
-'''
 
 print("-I-: train-test split")
 
@@ -153,6 +140,22 @@ print("-I-: End of File")
 
 
 # miscellaneous
+'''
+pandas tricks
+filtering
+http://stackoverflow.com/a/11872393
+# select data with average_daily_traffic_amount but intersecting_street_name null
+# => busy roads without an intersection
+data[~data['average_daily_traffic_amount'].isnull() & data['intersecting_street_name'].isnull()]
+
+# select intersection_related == 'Non Intersection' and intersecting_street_name null
+# => verify whether intersecting_street_name==null indicates that there is no intersection
+# => then only display the columns pertaining to street names
+data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_street_name'].isnull()][['street_name','intersecting_street_name','intersection_related']]
+
+data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_street_name'].isnull()][colgrps['intersection']]
+'''
+
 '''
 # look into dictvectorizer dv.get_feature_names http://stackoverflow.com/a/34194521
 '''
