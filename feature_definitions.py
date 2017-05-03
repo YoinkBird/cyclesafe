@@ -8,7 +8,7 @@ register attrributes here which need to be defaulted to False
 this is almost any new attribute
 '''
 def get_list_of_attributes():
-    attlist = ['target','jsmap']
+    attlist = ['target','dummies','jsmap']
     return attlist
 def get_feature_defs():
     # data.dropna().info()
@@ -49,8 +49,6 @@ def get_feature_defs():
     featdef = pd.DataFrame.from_dict(feature_definitions).transpose()
     # hand-entry is '0','1' for simplicity
     # dataframe is 'False,'True' for easier selection
-    featdef['dummies'].replace(0,False, inplace=True)
-    featdef['dummies'].replace(1,True, inplace=True)
     featdef.pairplot.replace(0,False, inplace=True)
     featdef.pairplot.replace(1,True, inplace=True)
     for attr in get_list_of_attributes():
@@ -65,8 +63,6 @@ def get_feature_defs():
 # add_feature(featdef, 'bin_crash_severity', {'type':'int','dummies':0,'regtype':'bin_cat'})
 def add_feature(df, featname, featdict):
     # defaults to "useless" features - string which can't be dummied and is not continuous
-    if('dummies' not in featdict):
-        featdict['dummies'] = False
     if('type' not in featdict):
         featdict['type'] = 'str'
     if('regtype' not in featdict):
