@@ -99,13 +99,16 @@ def add_attribute_bool(df, attname, attvalue=False):
 
 # replacement for pd.get_dummies, tracks the origin of the dummy var
 # expand dummies, register in featdict
-def featdef_get_dummies(df, featdef):
+def featdef_get_dummies(df, featdef, verbose=0):
     # list of vars which become dummie'd
     dummies_needed_list = list(featdef[featdef.dummies == 1].index)
     # var - feature to be encoded
     for var in dummies_needed_list:
         dummies = pd.get_dummies(df[var], prefix=var)
-        print(var); print(dummies.info())
+        if(verbose):
+            print("#########################")
+            print(var); print(dummies.info())
+            print("#########################")
         featattr = dict(featdef.ix[var])
         featattr['type'] = 'int'
         featattr['dummies'] = False
