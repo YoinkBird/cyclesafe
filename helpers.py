@@ -108,6 +108,14 @@ def get_ax_time(**kwargs):
     return ax_time
 
 
+# DOC: How to interpret decision trees' graph results and find most informative features?
+# src: http://stackoverflow.com/a/34872454
+print("-I-: most important features:")
+def print_model_feats_important(model, predictors):
+    for i in np.argsort(model.feature_importances_)[::-1]:
+      if model.feature_importances_[i] == 0:
+        continue
+      print("%f : %s" % (model.feature_importances_[i],predictors[i]))
 
 if(__name__ == '__main__'):
     test_timeconversion = 1
