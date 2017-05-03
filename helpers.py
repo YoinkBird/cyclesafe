@@ -80,6 +80,34 @@ def time_round30min(pd_ts_time):
         time2 = int(time_str)
     return time2
 
+def get_ax_time(**kwargs):
+    interval = '24h'
+    title = ''
+    xlabel = ''
+    ylabel = ''
+    if('title' in kwargs):
+        title = kwargs['title']
+    if('xlabel' in kwargs):
+        xlabel = kwargs['xlabel']
+    if('ylabel' in kwargs):
+        ylabel = kwargs['ylabel']
+    if('interval' in kwargs):
+        interval = kwargs['interval']
+    #######################################
+    ax_time = plt.subplot(111)
+    timelbl = []
+    if(interval == '24h'):
+        time_hrs = range(0,2400,200)
+        for i in time_hrs:
+            timelbl.append("%02d:%02d" % (i//100,i%100))
+    ax_time.set_xticks(time_hrs)
+    ax_time.set_xticklabels(timelbl, rotation=45, rotation_mode="anchor",ha="right")
+    ax_time.set_title(title)
+    ax_time.set_xlabel(xlabel)
+    ax_time.set_ylabel(ylabel)
+    return ax_time
+
+
 
 if(__name__ == '__main__'):
     test_timeconversion = 1

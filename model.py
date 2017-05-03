@@ -121,16 +121,12 @@ for i in np.argsort(clf.feature_importances_)[::-1]:
   plt.show()
 
 print("time of day:")
-timelbl = sorted(data.crash_time_30m.unique())
-ax_time = plt.subplot(111)
-#ax_time.set_xticks(range(0,24))
-time_hrs = range(0,2400,200)
-timelbl = []
-for i in time_hrs:
-    timelbl.append("%02d:%02d" % (i//100,i%100))
-ax_time.set_xticks(time_hrs)
-ax_time.set_xticklabels(timelbl, rotation=45, rotation_mode="anchor",ha="right")
-ax_time.set_title("crash time rounded to 30 min")
+ax_time = get_ax_time(
+        interval = '24h',
+        title = 'Frequency of Bike Crashes For Time of Day (2010-2017)',
+        xlabel = 'Time of Day (24 hr)',
+        ylabel = 'count',
+        )
 data.crash_time.hist(bins=48,ax=ax_time)
 plt.show()
 # data.crash_time_30m.value_counts(sort=False).plot(kind='pie');plt.show()
