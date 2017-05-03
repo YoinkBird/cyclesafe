@@ -16,7 +16,7 @@ def get_feature_defs():
     # note: 'street' is same as 'str' but doesn't get lowercased. use 'name' for string which needs to be untouched
     # jsmap : this var can be used to generate the javascript map
     feature_definitions = {
-    'crash_id'                                 : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':1,  },
+    'crash_id'                                 : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : False         , 'pairplot':0, 'jsmap':1,  },
     'average_daily_traffic_amount'             : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0,  },
     'average_daily_traffic_year'               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0,  },
     'crash_death_count'                        : {'target':1, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0,  },
