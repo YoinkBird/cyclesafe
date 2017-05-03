@@ -125,18 +125,24 @@ if(1):
     print_model_feats_important(clf)
 
     # plot important features
+    alreadyseen = {}
     for i in np.argsort(clf.feature_importances_)[::-1]:
       feat = predictors[i]
-      feat = predictors[i].replace('bin_','')
+      #feat = predictors[i].replace('bin_','')
       pltkind = 'pie'
+      print("%s" % ( feat))
       if(featdef.ix[feat].origin):
           feat_orig = featdef.ix[predictors[i]].origin
-          data_dummies[feat].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
+          #print("testing %s - %s" % ( feat_orig, feat))
+          if(not feat_orig in alreadyseen):
+              alreadyseen[feat_orig] = 1
+              data[feat_orig].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
+          #else:
+              #print("%d for %s - skipping %s" % (alreadyseen[feat_orig], feat_orig, feat))
       else:
-          data_dummies[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
+          data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
       plt.show()
 
-    print(aaa)
 
 
 # predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
