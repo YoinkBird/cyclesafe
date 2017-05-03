@@ -175,6 +175,26 @@ def print_model_feats_important(model, predictors):
       print("%f : %s" % (ser.ix[predictors[i]],predictors[i]))
     return ser
 
+def print_imp_feats_piecharts(data,featdef, model,predictors):
+    # plot important features
+    alreadyseen = {}
+    for i in np.argsort(model.feature_importances_)[::-1]:
+      feat = predictors[i]
+      #feat = predictors[i].replace('bin_','')
+      pltkind = 'pie'
+      print("%s" % ( feat))
+      if(featdef.ix[feat].origin):
+          feat_orig = featdef.ix[predictors[i]].origin
+          #print("testing %s - %s" % ( feat_orig, feat))
+          if(not feat_orig in alreadyseen):
+              alreadyseen[feat_orig] = 1
+              data[feat_orig].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
+          #else:
+              #print("%d for %s - skipping %s" % (alreadyseen[feat_orig], feat_orig, feat))
+      else:
+          data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
+      plt.show()
+
 if(__name__ == '__main__'):
     test_timeconversion = 1
     # testing - visual inspection

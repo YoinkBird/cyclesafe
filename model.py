@@ -116,34 +116,10 @@ if(1):
     # print important features
     print("-I-: most important features:")
     clf_imp_feats = print_model_feats_important(clf, predictors)
-    # pie chart - not useful here
-    # clf_imp_feats.value_counts().plot(kind='pie');plt.show()
-
-    # bar chart
-    ax = get_ax_bar(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
-    # horizontal bar chart
     ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
     plt.show()
 
-    # plot important features
-    alreadyseen = {}
-    for i in np.argsort(clf.feature_importances_)[::-1]:
-      feat = predictors[i]
-      #feat = predictors[i].replace('bin_','')
-      pltkind = 'pie'
-      print("%s" % ( feat))
-      if(featdef.ix[feat].origin):
-          feat_orig = featdef.ix[predictors[i]].origin
-          #print("testing %s - %s" % ( feat_orig, feat))
-          if(not feat_orig in alreadyseen):
-              alreadyseen[feat_orig] = 1
-              data[feat_orig].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
-          #else:
-              #print("%d for %s - skipping %s" % (alreadyseen[feat_orig], feat_orig, feat))
-      else:
-          data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
-      plt.show()
+    print_imp_feats_piecharts(data,featdef, clf,predictors)
 
 
 
