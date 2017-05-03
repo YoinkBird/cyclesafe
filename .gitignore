@@ -1,0 +1,10 @@
+# git
+*.sw?
+# https://github.com/ipython/ipynb/blob/master/.gitignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Notebook Checkpoints
+.ipynb_checkpoints/
