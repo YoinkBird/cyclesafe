@@ -23,26 +23,33 @@ datafile = "my_map_grid.csv"
 (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=1)
 
 
-print(data.head())
-print(data.info())
-if(1):
-  data.describe()
-  data.hist()
-  data.corr().plot() # TODO: seaborn
-  plt.show()
-else:
-  print("-I-: Skipping...")
+show_data_vis = 0
+show_data_piv = 0
+if(show_data_vis):
+    print("########################################")
+    print(data.head())
+    print(data.info())
+    if(1):
+      data.describe()
+      data.hist()
+      data.corr().plot() # TODO: seaborn
+      plt.show()
+      # inspect features with high covariance
+      pairplot_bin_var_list = list(featdef[featdef['pairplot']].index)
+      if(0):
+          sns.pairplot(data, vars=pairplot_var_list)
+          plt.show()
+    else:
+      print("-I-: Skipping...")
+    print("########################################")
 
-# alternative visualisation
-datapt = data.pivot_table(values=['crash_death_count','crash_incapacitating_injury_count','crash_non-incapacitating_injury_count'], index=['speed_limit','crash_time'])
-print(datapt)
+if(show_data_piv):
+    # alternative visualisation
+    datapt = data.pivot_table(values=['crash_death_count','crash_incapacitating_injury_count','crash_non-incapacitating_injury_count'], index=['speed_limit','crash_time'])
+    print(datapt)
 
 
-# inspect features with high covariance
-pairplot_bin_var_list = list(featdef[featdef['pairplot']].index)
 if(0):
-    sns.pairplot(data, vars=pairplot_var_list)
-    plt.show()
 
 # list of vars which become dummie'd
 dummies_needed_list = list(featdef[featdef.dummies == 1].index)
