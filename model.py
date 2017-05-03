@@ -83,14 +83,6 @@ df_int_nonan = df_int.dropna()
 
 print("-I-: train-test split")
 
-# DOC: How to interpret decision trees' graph results and find most informative features?
-# src: http://stackoverflow.com/a/34872454
-print("-I-: most important features:")
-def print_model_feats_important(model):
-    for i in np.argsort(model.feature_importances_)[::-1]:
-      if model.feature_importances_[i] == 0:
-        continue
-      print("%f : %s" % (model.feature_importances_[i],predictors[i]))
 if(1):
     # TODO : create a df of featdef with these attributes
     predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False)].index)
@@ -122,7 +114,7 @@ if(1):
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
 
     # print important features
-    print_model_feats_important(clf)
+    print_model_feats_important(clf, predictors)
 
     # plot important features
     alreadyseen = {}
