@@ -114,7 +114,17 @@ if(1):
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
 
     # print important features
-    print_model_feats_important(clf, predictors)
+    print("-I-: most important features:")
+    clf_imp_feats = print_model_feats_important(clf, predictors)
+    # pie chart - not useful here
+    # clf_imp_feats.value_counts().plot(kind='pie');plt.show()
+
+    # bar chart
+    ax = get_ax_bar(clf_imp_feats, title="DecisionTree Important Features")
+    plt.show()
+    # horizontal bar chart
+    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
+    plt.show()
 
     # plot important features
     alreadyseen = {}

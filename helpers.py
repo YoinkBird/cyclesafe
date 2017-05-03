@@ -108,14 +108,72 @@ def get_ax_time(**kwargs):
     return ax_time
 
 
+# DOC: bar plot https://pythonspot.com/en/matplotlib-bar-chart/
+# special bar charts:
+# horiz 0 (default) : bar  chart with 45-degreee angled labels
+# horiz 1           : hbar chart with largest value on top
+# usage:
+# pie chart - not very useful
+# clf_imp_feats = print_model_feats_important(<model>, predictors)
+# clf_imp_feats.value_counts().plot(kind='pie');plt.show()
+# ax = get_ax_bar(clf_imp_feats, title="DecisionTree Important Features")
+# plt.show()
+# ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
+# plt.show()
+def get_ax_bar(pdser, **kwargs):
+    interval = '24h'
+    horiz = 0
+    title = ''
+    xlabel = ''
+    ylabel = ''
+    if('title' in kwargs):
+        title = kwargs['title']
+    if('horiz' in kwargs):
+        horiz = kwargs['horiz']
+    if('xlabel' in kwargs):
+        xlabel = kwargs['xlabel']
+    if('ylabel' in kwargs):
+        ylabel = kwargs['ylabel']
+    if('interval' in kwargs):
+        interval = kwargs['interval']
+    #######################################
+    ax_rot = plt.subplot(111)
+    label = []
+    if(horiz == 0):
+      ax_rot.set_xticks(range(0,len(pdser.index)))
+      ax_rot.set_xticklabels(pdser.index, rotation=45, rotation_mode="anchor", ha="right") ;
+      ax_rot.bar(np.arange(len(pdser.index)), pdser.values)
+      ax_rot.set_title(title)
+    elif(horiz == 1):
+      # reverse the labels, values to sort descending instead  of ascending
+      # sort can be np.flip(<list>, axis=0) or <list>[::-1] DOC: reverse any list/array http://stackoverflow.com/questions/15748001/reversed-array-in-numpy
+      ax_rot.set_yticks(range(0,len(pdser.index)));
+      ax_rot.set_yticklabels(pdser.index[::-1])
+      ax_rot.barh(np.flip(np.arange(len(pdser.index)), axis=0), pdser.values)
+      ax_rot.set_title(title)
+
+    ax_rot.set_xlabel(xlabel)
+    ax_rot.set_ylabel(ylabel)
+    return ax_rot
+
+# horizontal barchart
+def get_ax_barh(pdser, **kwargs):
+    kwargs['horiz'] = 1
+    return(get_ax_bar(pdser, **kwargs))
+ 
+
+
 # DOC: How to interpret decision trees' graph results and find most informative features?
 # src: http://stackoverflow.com/a/34872454
-print("-I-: most important features:")
 def print_model_feats_important(model, predictors):
+    ser = pd.Series()
     for i in np.argsort(model.feature_importances_)[::-1]:
       if model.feature_importances_[i] == 0:
         continue
-      print("%f : %s" % (model.feature_importances_[i],predictors[i]))
+      ser = ser.append(pd.Series([model.feature_importances_[i]], index=[predictors[i]]))
+      #print("%f : %s" % (model.feature_importances_[i],predictors[i]))
+      print("%f : %s" % (ser.ix[predictors[i]],predictors[i]))
+    return ser
 
 if(__name__ == '__main__'):
     test_timeconversion = 1
@@ -150,3 +208,6 @@ if(__name__ == '__main__'):
             if(int(testtimes2[i].replace(':','')) == rettime):
                 status = "PASS"
             print("%s: %6s: %s == %s ?" % (status, testtime , testtimes2[i] , rettime))
+    if(1):
+        print("-W-: NOT testing get_ax_time")
+        print("-W-: NOT testing print_model_feats_important")
