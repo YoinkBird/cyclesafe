@@ -53,6 +53,21 @@ data_dummies = pd.get_dummies(data, columns=dummies_needed_list)
 # no longer need to convert headers, already done in process_data_punctuation
 pp.pprint(list(data_dummies))
 
+# dummies - new method
+(data_dummies,featdef) = featdef_get_dummies(data,featdef)
+
+# verify
+validpreds = len(list(featdef[(featdef.type == 'int') & (featdef.target != True)].index))
+validtargs = len(list(featdef[(featdef.type == 'int') & (featdef.target == True)].index))
+invalfeats = len(list(featdef[(featdef.type != 'int') & (featdef.dummies != True)].index))
+alldummies = data_dummies.shape[1]
+print("valid+string %d / %d total" % (validpreds+validtargs+invalfeats, alldummies))
+# any non-dummy & integer type
+data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].info()
+
+# pure integer data
+df_int_nonan = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].dropna()
+
 # pca stub
 # pca = decomposition.PCA(svd_solver='full')
 # pca.fit(pd.get_dummies(data[dummies_needed_list])).transform(pd.get_dummies(data[dummies_needed_list]))
