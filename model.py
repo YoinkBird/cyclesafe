@@ -154,6 +154,7 @@ if(1):
     # TODO: move the validfeats higher up during the nonan phase
     # valid features - defined for regression (aka classification), are integers (because I'm really into that), and ain't supposed to be no dummy (entries meant to be encoded as dummies)
     # 'regtype ! = False' mainly for crash_id
+    # TODO - change crash_year to regtype == False
     validfeats = featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.dummies == False)]
     # define predictors and response
     predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False)].index)
@@ -460,6 +461,7 @@ if(1):
     print(" ################################################################################")
 
     # Next step: train-test split
+    # TODO: remove the binary categories from the data  set
     print("-I-: train-test split")
     testsize = 0.3
     # data_nonan = data[ predictors + responsecls ].dropna()
@@ -619,3 +621,12 @@ data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_s
 #   https://askubuntu.com/a/764572
 # conda install libcc
 # https://github.com/dmlc/xgboost/issues/1043
+
+# import importlib
+# import helpers
+# importlib.reload(helpers)
+
+# pvalues
+# from sklearn.feature_selection import SelectKBest,chi2,mutual_info_classif,f_classif
+# tmpfilter.fit(X_full,y_full)
+# tmpfilter.fit_transform(X_full,y_full)
