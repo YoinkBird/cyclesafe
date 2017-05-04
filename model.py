@@ -157,7 +157,7 @@ if(1):
     # TODO - change crash_year to regtype == False
     validfeats = featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.dummies == False)]
     # define predictors and response
-    predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False)].index)
+    predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat')].index)
     responsecls = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype == 'bin_cat')].index)
 
     if(1):
@@ -237,7 +237,7 @@ if(1):
         print("-I-: DecisionTree 2")
         # further prune valid features - mainly get rid of crash_id
         validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
-        predictors  = list(validfeats[(validfeats.target != True)].index)
+        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
         responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
     print("-I-: DecisionTree - feature selection")
     from sklearn.model_selection import StratifiedKFold,GroupKFold
@@ -326,7 +326,7 @@ if(1):
         print("-I-: DecisionTree 3")
         # further prune valid features - mainly get rid of crash_id
         validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
-        predictors  = list(validfeats[(validfeats.target != True)].index)
+        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
         responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
     print("-I-: DecisionTree - feature selection")
     from sklearn.model_selection import StratifiedKFold,GroupKFold
@@ -371,6 +371,11 @@ if(1):
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     print("-I-: result: the remaining factors are speed_limit and surface_condition. this makes intuitive sense. However, this result is subject to change on different runs, which is in line with the results seen while evaluating the CV strategy.")
     '''
+    # without bin_cat
+    ratio  score   non-nan total feature
+    0.7424 0.6294  1657  2232 speed_limit
+    1.0000 0.3706  2232  2232 surface_condition
+    # old, with bin_cat
     ratio  score   non-nan total  feature
     0.7424 0.6389  1657  2232 speed_limit
     1.0000 0.3611  2232  2232 surface_condition
@@ -394,10 +399,10 @@ if(1):
     else:
       print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
     if(1):
-        print("-I-: DecisionTree 3")
+        print("-I-: DecisionTree 4")
         # further prune valid features - mainly get rid of crash_id
         validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
-        predictors  = list(validfeats[(validfeats.target != True)].index)
+        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
         responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
     print("-I-: DecisionTree - feature selection")
     from sklearn.model_selection import StratifiedKFold,GroupKFold
@@ -442,6 +447,11 @@ if(1):
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     print("-I-: result: the remaining factors are varied, but seem to settle around two categories: binary categories, or their counterparts. this makes intuitive sense, and the dataset should be re-run without the binary categories. this was a mistake")
     '''
+    # without bin_cat
+    ratio  score   non-nan total  feature
+    1.0000 0.5124  2232  2232 day_of_week_monday
+    1.0000 0.4876  2232  2232 day_of_week_friday
+    # old, with bin_cat
     ratio  score   non-nan total  feature
     1.0000 0.4342  2232  2232 bin_manner_of_collision
     0.9996 0.4131  2231  2232 bin_intersection_related
@@ -461,7 +471,6 @@ if(1):
     print(" ################################################################################")
 
     # Next step: train-test split
-    # TODO: remove the binary categories from the data  set
     print("-I-: train-test split")
     testsize = 0.3
     # data_nonan = data[ predictors + responsecls ].dropna()
