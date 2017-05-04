@@ -139,6 +139,8 @@ def get_ax_bar(pdser, **kwargs):
     #######################################
     ax_rot = plt.subplot(111)
     label = []
+    for i,index_name in enumerate(pdser.index):
+        label.append("%s : %0.6f" % (index_name, pdser[i]))
     if(horiz == 0):
       ax_rot.set_xticks(range(0,len(pdser.index)))
       ax_rot.set_xticklabels(pdser.index, rotation=45, rotation_mode="anchor", ha="right") ;
@@ -149,6 +151,7 @@ def get_ax_bar(pdser, **kwargs):
       # sort can be np.flip(<list>, axis=0) or <list>[::-1] DOC: reverse any list/array http://stackoverflow.com/questions/15748001/reversed-array-in-numpy
       ax_rot.set_yticks(range(0,len(pdser.index)));
       ax_rot.set_yticklabels(pdser.index[::-1])
+      ax_rot.set_yticklabels(label[::-1])
       ax_rot.barh(np.flip(np.arange(len(pdser.index)), axis=0), pdser.values)
       ax_rot.set_title(title)
 
@@ -211,14 +214,15 @@ def plot_confusion_matrix(cm, classes,
 
 # DOC: How to interpret decision trees' graph results and find most informative features?
 # src: http://stackoverflow.com/a/34872454
-def print_model_feats_important(model, predictors):
+def print_model_feats_important(model, predictors, printout=1):
     ser = pd.Series()
     for i in np.argsort(model.feature_importances_)[::-1]:
       if model.feature_importances_[i] == 0:
         continue
       ser = ser.append(pd.Series([model.feature_importances_[i]], index=[predictors[i]]))
-      #print("%f : %s" % (model.feature_importances_[i],predictors[i]))
-      print("%f : %s" % (ser.ix[predictors[i]],predictors[i]))
+      if(printout):
+        #print("%f : %s" % (model.feature_importances_[i],predictors[i]))
+        print("%f : %s" % (ser.ix[predictors[i]],predictors[i]))
     return ser
 
 def print_imp_feats_piecharts(data,featdef, model,predictors):
