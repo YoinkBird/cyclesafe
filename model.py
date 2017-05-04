@@ -204,7 +204,7 @@ if(1):
     plt.show()
 
     print("-I-: examining most important features:")
-    print("ratio     score    non-nan  total  ratio")
+    print("ratio  score   non-nan total feature")
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
@@ -268,7 +268,7 @@ if(1):
     plt.show()
 
     print("-I-: examining most important features:")
-    print("ratio     score    non-nan  total  ratio")
+    print("ratio  score   non-nan total feature")
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
@@ -334,7 +334,7 @@ if(1):
     plt.show()
 
     print("-I-: examining most important features:")
-    print("ratio     score    non-nan  total  ratio")
+    print("ratio  score   non-nan total feature")
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
@@ -400,7 +400,7 @@ if(1):
     plt.show()
 
     print("-I-: examining most important features:")
-    print("ratio     score    non-nan  total  ratio")
+    print("ratio  score   non-nan total feature")
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
