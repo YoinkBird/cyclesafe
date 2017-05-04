@@ -22,6 +22,63 @@ datafile = "my_map_grid.csv"
 # add binary categories
 (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=1)
 
+def dectree_evaluate_cv_strategy(X_full, y_full):
+  # Recursive Feature Elimination CV
+  # http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_with_cross_validation.html#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py
+  from sklearn.model_selection import StratifiedKFold,GroupKFold
+  from sklearn.feature_selection import RFECV
+  from sklearn import tree
+  clf = tree.DecisionTreeClassifier() #max_depth = 5)
+
+  # ### Choosing the Cross Validation iterator
+  # #### GroupKFold Consideration
+  # http://scikit-learn.org/stable/modules/cross_validation.html#group-k-fold
+  # No need for GroupKFold:  "For example if the data is obtained from different subjects with several samples per-subject"
+  # => only one entry per accident
+  # cvFold = GroupKFold(3)
+
+  # settling on ...
+  cvFold = StratifiedKFold
+
+  # ### Choosing the scoring parameter
+  # The "accuracy" scoring is proportional to the number of correct classifications
+  # 'accuracy' leads to only one feature
+  rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='accuracy')
+  # proof:
+  scorer = 'accuracy'
+  print("-I-: test scores for arbitrary depth using %s" % scorer)
+  accuracy_scores = []
+  for i in range(0,10):
+    rfecv.fit(X_full,y_full.values.ravel())
+    accuracy_scores.append(rfecv.n_features_)
+    #print("Optimal number of features [depth:None][scoring:%s]: %d" % (scorer, rfecv.n_features_))
+  print("[depth:00][scoring:%s] avg score: %f , std: %f, med: %f" % (scorer, np.mean(accuracy_scores), np.std(accuracy_scores), np.median(accuracy_scores)))
+
+  # ### 'ROC AUC' more appropriate for classification
+  scorer = 'roc_auc'
+  print("-I-: test scores for different depths using %s" % scorer)
+  roc_auc_scores = []
+  for depth in range (1,51,5):
+    clf = tree.DecisionTreeClassifier(max_depth = depth)
+    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
+    # proof:
+    for i in range(0,10):
+      rfecv.fit(X_full,y_full.values.ravel())
+      roc_auc_scores.append(rfecv.n_features_)
+      #print("Optimal number of features [depth:%d][scoring:%s]: %d" % (depth,scorer, rfecv.n_features_))
+    print("[depth:%02d][scoring:%s] avg score: %f , std: %f, med: %f" % (depth, scorer, np.mean(roc_auc_scores), np.std(roc_auc_scores), np.median(roc_auc_scores)))
+
+  # "optimal"  number fluctuates wildly - 29,17,4, etc
+  scorer = 'roc_auc'
+  print("-I-: test scores for arbitrary depth using %s" % scorer)
+  rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
+  # proof:
+  roc_auc_scores = []
+  for i in range(0,10):
+    rfecv.fit(X_full,y_full.values.ravel())
+    roc_auc_scores.append(rfecv.n_features_)
+    #print("Optimal number of features [scoring:%s]: %d" % (scorer, rfecv.n_features_))
+  print("[depth:00][scoring:%s] avg score: %f , std: %f, med: %f" % (scorer, np.mean(roc_auc_scores), np.std(roc_auc_scores), np.median(roc_auc_scores)))
 
 show_data_vis = 0
 show_data_piv = 0
@@ -75,24 +132,84 @@ if(0):
 # mainly integer data
 data_int_list = list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)
 df_int = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)]
+# Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
 df_int_nonan = df_int.dropna()
+print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
+if(df_int_nonan.shape[1] == df_int.shape[1]):
+  print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+else:
+  print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
 
 # pca stub
 # pca = decomposition.PCA(svd_solver='full')
 # pca.fit(pd.get_dummies(data[dummies_needed_list])).transform(pd.get_dummies(data[dummies_needed_list]))
 
-print("-I-: train-test split")
 
+# strategy:
+# successively (eventually recursively?) get best predictors while increasing size of dataset
+# i.e. initially many features also have many NaN so the dataset is smaller
+# 
 if(1):
-    # TODO : create a df of featdef with these attributes
+    print("-I-: DecisionTree")
+    # TODO: move the validfeats higher up during the nonan phase
+    # valid features - defined for regression (aka classification), are integers (because I'm really into that), and ain't supposed to be no dummy (entries meant to be encoded as dummies)
+    validfeats = featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.dummies == False)]
+    # define predictors and response
     predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False)].index)
     responsecls = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype == 'bin_cat')].index)
 
     if(1):
+        print("##############")
         print("predictors:")
         print(predictors)
         print("responsecls:")
         print(responsecls)
+        print("##############")
+
+    print("-I-: DecisionTree - feature selection")
+    from sklearn.model_selection import StratifiedKFold,GroupKFold
+    from sklearn.feature_selection import RFECV
+    from sklearn import tree
+    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    # use full dataset for feature selection
+    X_full = df_int_nonan[predictors]
+    y_full = df_int_nonan[responsecls]
+
+    print("-I-: DecisionTree - feature selection")
+    if(0):
+      dectree_evaluate_cv_strategy(X_full, y_full)
+    else:
+      print("-I-: ... skipping")
+
+    print("-I-: previously chosen: StratifiedKFold with roc_auc_score")
+    # settling on ...
+    cvFold = StratifiedKFold
+    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
+    rfecv.fit(X_full,y_full.values.ravel())
+
+    # Plot number of features VS. cross-validation scores
+    plt.figure()
+    plt.xlabel("Number of features selected")
+    plt.ylabel("Cross validation score (nb of correct classifications)")
+    # TODO: plot the feature names at 45deg angle under the numbers
+    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+    plt.show()
+    print("Optimal number of features : %d" % rfecv.n_features_)
+
+    # print important features
+    print("-I-: most important features:")
+    clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
+    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
+    plt.show()
+
+    print("-I-: examining most important features:")
+    print("ratio     score    non-nan  total  ratio")
+    for i,feat in enumerate(clf_imp_feats.index):
+        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
+        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+    print(" ################################################################################")
+    print("-I-: result: average_daily_traffic_amount and average_daily_traffic_year are only a small portion of the dataset")
+    print("-I-: train-test split")
     testsize = 0.3
     # data_nonan = data[ predictors + responsecls ].dropna()
     data_nonan = df_int_nonan
@@ -131,6 +248,7 @@ if(1):
 
 
 
+print("-I-: train-test split")
 # predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
 # responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
 predictors = [
