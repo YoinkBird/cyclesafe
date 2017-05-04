@@ -209,6 +209,13 @@ if(1):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     print("-I-: result: average_daily_traffic_amount and average_daily_traffic_year are only a small portion of the dataset")
+    '''
+    ratio  score   non-nan total  feature
+    0.1470 0.3880   328  2232 average_daily_traffic_amount
+    1.0000 0.3227  2232  2232 crash_year
+    0.1326 0.1768   296  2232 average_daily_traffic_year
+    0.7424 0.1125  1657  2232 speed_limit
+    '''
     print(" ################################################################################")
     print("-I-: creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
     # mainly integer data
@@ -273,7 +280,30 @@ if(1):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     plt.bar(data_dummies.crash_year.value_counts().index,data_dummies.crash_year.value_counts().values) ; plt.show()
-    print("-I-: result: crash_year factors in very heavily and warrants further analysis")
+    print("-I-: result: crash_year factors in very heavily and warrants further analysis. however, this cuold also simply be due to the fact that a crash year is always associated with every accident record")
+    '''
+    ratio  score   non-nan total  feature
+    1.0000 0.2753  2232  2232 crash_year
+    0.7424 0.1454  1657  2232 speed_limit
+    1.0000 0.0460  2232  2232 day_of_week_thursday
+    1.0000 0.0416  2232  2232 day_of_week_sunday
+    1.0000 0.0401  2232  2232 light_condition_dark_not_lighted
+    1.0000 0.0387  2232  2232 intersection_related_non_intersection
+    0.9996 0.0384  2231  2232 bin_intersection_related
+    0.9937 0.0384  2218  2232 bin_light_condition
+    1.0000 0.0370  2232  2232 day_of_week_tuesday
+    1.0000 0.0369  2232  2232 bin_manner_of_collision
+    1.0000 0.0365  2232  2232 surface_condition
+    1.0000 0.0325  2232  2232 day_of_week_monday
+    1.0000 0.0320  2232  2232 intersection_related_driveway_access
+    1.0000 0.0301  2232  2232 day_of_week_friday
+    1.0000 0.0274  2232  2232 intersection_related_intersection
+    1.0000 0.0274  2232  2232 day_of_week_saturday
+    1.0000 0.0272  2232  2232 light_condition_dark_lighted
+    1.0000 0.0270  2232  2232 intersection_related_not_reported
+    1.0000 0.0196  2232  2232 day_of_week_wednesday
+    1.0000 0.0027  2232  2232 intersection_related_intersection_related
+    '''
     print(" ################################################################################")
     print("-I-: creating new dataset without crash_year")
     # mainly integer data
@@ -338,7 +368,12 @@ if(1):
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
-    print("-I-: result: the remaining factors are speed_limit and surface_condition. this makes intuitive sense")
+    print("-I-: result: the remaining factors are speed_limit and surface_condition. this makes intuitive sense. However, this result is subject to change on different runs, which is in line with the results seen while evaluating the CV strategy.")
+    '''
+    ratio  score   non-nan total  feature
+    0.7424 0.6389  1657  2232 speed_limit
+    1.0000 0.3611  2232  2232 surface_condition
+    '''
     print(" ################################################################################")
     print("-I-: creating new dataset without speed_limit and surface_condition")
     # mainly integer data
@@ -404,7 +439,24 @@ if(1):
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
-    print("-I-: result: the remaining factors are varied")
+    print("-I-: result: the remaining factors are varied, but seem to settle around two categories: binary categories, or their counterparts. this makes intuitive sense, and the dataset should be re-run without the binary categories. this was a mistake")
+    '''
+    ratio  score   non-nan total  feature
+    1.0000 0.4342  2232  2232 bin_manner_of_collision
+    0.9996 0.4131  2231  2232 bin_intersection_related
+    0.9937 0.1527  2218  2232 bin_light_condition
+    ratio  score   non-nan total  feature
+    1.0000 0.1739  2232  2232 day_of_week_tuesday
+    1.0000 0.1159  2232  2232 day_of_week_wednesday
+    1.0000 0.1103  2232  2232 day_of_week_monday
+    1.0000 0.1047  2232  2232 bin_manner_of_collision
+    1.0000 0.0923  2232  2232 day_of_week_friday
+    0.9937 0.0855  2218  2232 bin_light_condition
+    1.0000 0.0816  2232  2232 day_of_week_saturday
+    1.0000 0.0814  2232  2232 day_of_week_sunday
+    0.9996 0.0802  2231  2232 bin_intersection_related
+    1.0000 0.0741  2232  2232 day_of_week_thursday
+    '''
     print(" ################################################################################")
 
     # Next step: train-test split
