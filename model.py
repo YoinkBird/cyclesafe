@@ -121,6 +121,14 @@ if(1):
 
     print_imp_feats_piecharts(data,featdef, clf,predictors)
 
+    y_pred = clf.predict(X_test)
+    clf.fit(X_train,y_train)
+    from sklearn.metrics import confusion_matrix
+    cm = confusion_matrix(y_test,clf.predict(X_test))
+    plot_confusion_matrix(cm,classes=['fubar','aight'])
+    plt.show()
+
+
 
 
 # predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
@@ -149,6 +157,9 @@ print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel()))
 y_pred = clf.predict_proba(X_test)
 print("-I-: cross_val_score against test")
 print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
+cm = confusion_matrix(y_test,clf.predict(X_test))
+plot_confusion_matrix(cm,classes=['fubar','aight'])
+plt.show()
 
 # DOC: How to interpret decision trees' graph results and find most informative features?
 # src: http://stackoverflow.com/a/34872454
