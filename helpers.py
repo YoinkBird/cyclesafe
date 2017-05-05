@@ -262,6 +262,8 @@ def ipynb_header(ipynb_file='Final.ipynb'):
                 #print(cell['source'])
                 import re
                 cellysrc = cell['source']
+                if(re.match('.*TOC - Table of Contents', cellysrc[0] )):
+                  continue
                 if(re.match('^#',cell['source'][0])):
                     #print("ermahgerd: %s" % cell['source'][0])
                     anchor = cellysrc[0].replace("\n",'')
