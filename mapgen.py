@@ -64,7 +64,7 @@ def get_html_map_from_df(data, featdef):
     print("-I-: ...done")
   print("-I-: html gen")
   htmlpage = generate_map_html_page(js2darr + "\n" + jsFuncGps)
-  write_html_files(htmlpage)
+  write_html_files(htmlpage, filename='crashes.html')
   return htmlpage
 
 # insert js into html templates
@@ -309,8 +309,13 @@ if(__name__ == '__main__'):
   # Read data 
   # import the "crash" data
   datafile = "../data/txdot_2010_2017.csv"
+  datafile = "my_map_grid.csv"
 
   (data,featdef) = preprocess_data(datafile)
+
+  # add binary categories
+  (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=1)
+
   # consolidated function
   get_html_map_from_df(data,featdef)
   print("-I-: DEVELOPMENT - current effort")
