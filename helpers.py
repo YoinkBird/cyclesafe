@@ -245,8 +245,50 @@ def print_imp_feats_piecharts(data,featdef, model,predictors):
           data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
       plt.show()
 
+def ipynb_header(ipynb_file='Final.ipynb'):
+    verbose = 0
+    # print('<!-- http://sebastianraschka.com/Articles/2014_ipython_internal_links.html -->')
+    import json
+    with open(ipynb_file) as dataf:
+      jsond = json.load(dataf)
+    output = []
+    if(verbose):
+      print("# TOC - Table of Contents\n")
+    output.append("# TOC - Table of Contents\n")
+    output.append('<!-- generate with helpers.py -->')
+    for cell in jsond['cells']:
+        if(cell['cell_type'] == "markdown"):
+            if('source' in cell):
+                #print(cell['source'])
+                import re
+                cellysrc = cell['source']
+                if(re.match('^#',cell['source'][0])):
+                    #print("ermahgerd: %s" % cell['source'][0])
+                    anchor = cellysrc[0].replace("\n",'')
+                    lst = re.findall('^#+',anchor)[0].replace('#','* ')
+                    anchor = re.sub('^\s*#+\s*','',anchor)
+                    #print("became: %s" % anchor)
+                    # vvv output: 
+                    #print("<a id='%s'></a>" % (anchor.replace("\n",'').replace(" ",'-')))
+                    # link:
+                    #print("<a href='#%s'>%s</a><br/>" % ((anchor.replace(" ",'-'),anchor)))
+                    if(verbose):
+                      print("%s [%s](#%s)\n" % ((lst, anchor, anchor.replace(" ",'-'))))
+                    output.append("%s [%s](#%s)\n" % ((lst, anchor, anchor.replace(" ",'-'))))
+            else:
+                print(cell.keys())
+    print("\n".join(output))
+    markdown_dict = {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": "\n".join(output),
+        },
+    if(verbose):
+      print(json.dumps(markdown_dict))
+
 if(__name__ == '__main__'):
     test_timeconversion = 1
+    ipynb_generate_toc = 1
     # testing - visual inspection
     if(test_timeconversion):
         print("verify correct operation of time_base10")
@@ -278,6 +320,10 @@ if(__name__ == '__main__'):
             if(int(testtimes2[i].replace(':','')) == rettime):
                 status = "PASS"
             print("%s: %6s: %s == %s ?" % (status, testtime , testtimes2[i] , rettime))
+    if(ipynb_generate_toc):
+      print("######## START TOC markdown ############")
+      ipynb_header()
+      print("######## END   TOC markdown ############")
     if(1):
         print("-W-: NOT testing get_ax_time")
         print("-W-: NOT testing print_model_feats_important")
