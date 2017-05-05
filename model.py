@@ -618,6 +618,18 @@ data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_s
 # 
 # automatically discarding low-importance features
 # http://scikit-learn.org/stable/modules/feature_selection.html#feature-selection-using-selectfrommodel
+'''
+# http://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection
+from sklearn.feature_selection import SelectKBest,chi2,mutual_info_classif,f_classif
+# removes all but the k highest scoring features, i.e. output array corresponds to which features to keep
+SelectKBest(mutual_info_classif, k=2).fit_transform(X_full,y_full.values.ravel())
+'''
+# low variance
+'''
+http://scikit-learn.org/stable/modules/feature_selection.html#removing-features-with-low-variance
+VarianceThreshold().fit_transform(X_full)
+'''
+
 
 # Interpreting Decision Tree in context of feature importances
 # https://datascience.stackexchange.com/questions/16693/interpreting-decision-tree-in-context-of-feature-importances
@@ -639,3 +651,6 @@ data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_s
 # from sklearn.feature_selection import SelectKBest,chi2,mutual_info_classif,f_classif
 # tmpfilter.fit(X_full,y_full)
 # tmpfilter.fit_transform(X_full,y_full)
+
+# import ipynb
+# http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Importing%20Notebooks.ipynb
