@@ -28,7 +28,7 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
   from sklearn.model_selection import StratifiedKFold,GroupKFold
   from sklearn.feature_selection import RFECV
   from sklearn import tree
-  clf = tree.DecisionTreeClassifier() #max_depth = 5)
+  clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
 
   # ### Choosing the Cross Validation iterator
   # #### GroupKFold Consideration
@@ -59,7 +59,7 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
   print("-I-: test scores for different depths using %s" % scorer)
   roc_auc_scores = []
   for depth in range (1,51,5):
-    clf = tree.DecisionTreeClassifier(max_depth = depth)
+    clf = tree.DecisionTreeClassifier(random_state = 42, max_depth = depth)
     rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
     # proof:
     for i in range(0,10):
@@ -227,7 +227,7 @@ if(1):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
     from sklearn.feature_selection import RFECV
     from sklearn import tree
-    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
     # use full dataset for feature selection
     X_full = df_int_nonan[predictors]
     y_full = df_int_nonan[responsecls]
@@ -298,7 +298,7 @@ if(1):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
     from sklearn.feature_selection import RFECV
     from sklearn import tree
-    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
     # use full dataset for feature selection
     X_full = df_int_nonan[predictors]
     y_full = df_int_nonan[responsecls]
@@ -387,7 +387,7 @@ if(1):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
     from sklearn.feature_selection import RFECV
     from sklearn import tree
-    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
     # use full dataset for feature selection
     X_full = df_int_nonan[predictors]
     y_full = df_int_nonan[responsecls]
@@ -463,7 +463,7 @@ if(1):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
     from sklearn.feature_selection import RFECV
     from sklearn import tree
-    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
     # use full dataset for feature selection
     X_full = df_int_nonan[predictors]
     y_full = df_int_nonan[responsecls]
@@ -533,7 +533,7 @@ if(1):
     X_train, X_test, y_train, y_test = model_selection.train_test_split(data_nonan[predictors],data_nonan[responsecls], test_size=testsize)
 
     from sklearn import tree
-    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
     #clf.fit(X_train,y_train)
     clf.fit(data_nonan[predictors],data_nonan[responsecls])
 
@@ -583,7 +583,7 @@ data_nonan = data[ predictors + responsecls ].dropna()
 X_train, X_test, y_train, y_test = model_selection.train_test_split(data_nonan[predictors],data_nonan[responsecls], test_size=testsize)
 
 from sklearn import tree
-clf = tree.DecisionTreeClassifier() #max_depth = 5)
+clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
 clf.fit(X_train,y_train)
 
 # prediction and scoring
