@@ -80,6 +80,79 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
     #print("Optimal number of features [scoring:%s]: %d" % (scorer, rfecv.n_features_))
   print("[depth:00][scoring:%s] avg score: %f , std: %f, med: %f" % (scorer, np.mean(roc_auc_scores), np.std(roc_auc_scores), np.median(roc_auc_scores)))
 
+
+def run_cross_val(data_dummies,featdef,dropfeatures=[]):
+    print("-I-: creating new dataset without %s" % dropfeatures)
+    # mainly integer data
+    # TODO: evaluate whether to  move the validfeats higher up during the nonan phase
+    # TODO - change crash_year to regtype == False
+
+    # valid features - defined for regression (aka classification), are integers (because I'm really into that), and ain't supposed to be no dummy (entries meant to be encoded as dummies)
+    # 'regtype ! = False' mainly for crash_id
+    validfeats = featdef[(featdef.dummies == False) & (featdef.type == 'int')]
+    # validfeats = validfeats.drop(['average_daily_traffic_amount','average_daily_traffic_year'])# inplace copy - , inplace=True)
+    # validfeats = validfeats.drop(['crash_year'])# inplace copy - , inplace=True)
+    if(len(dropfeatures) >0):
+        validfeats = validfeats.drop(dropfeatures)
+    ## print("-I-: verify validfeats")
+    ## print(validfeats[validfeats.dummies])
+    data_int_list = list(validfeats.index)
+    df_int = data_dummies[list(validfeats.index)]
+    # Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
+    df_int_nonan = df_int.dropna()
+    print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
+    if(df_int_nonan.shape[1] == df_int.shape[1]):
+      print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+    else:
+      print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+    if(1):
+        print("-I-: DecisionTree")
+        # further prune valid features - mainly get rid of crash_id
+        validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
+        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
+        responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
+    print("-I-: DecisionTree - feature selection")
+    from sklearn.model_selection import StratifiedKFold,GroupKFold
+    from sklearn.feature_selection import RFECV
+    from sklearn import tree
+    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
+    # use full dataset for feature selection
+    X_full = df_int_nonan[predictors]
+    y_full = df_int_nonan[responsecls]
+
+    print("-I-: DecisionTree - evaluating CV strategy")
+    if(0):
+      dectree_evaluate_cv_strategy(X_full, y_full)
+    else:
+      print("-I-: ... skipping")
+
+    print("-I-: previously chosen CV: StratifiedKFold with roc_auc_score")
+    # settling on ...
+    cvFold = StratifiedKFold
+    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
+    rfecv.fit(X_full,y_full.values.ravel())
+
+    # Plot number of features VS. cross-validation scores
+    plt.figure()
+    plt.xlabel("Number of features selected")
+    plt.ylabel("Cross validation score (nb of correct classifications)")
+    # TODO: plot the feature names at 45deg angle under the numbers
+    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+    plt.show()
+    print("Optimal number of features : %d" % rfecv.n_features_)
+
+    # print important features
+    print("-I-: most important features:")
+    clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
+    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
+    plt.show()
+
+    print("-I-: examining most important features:")
+    print("ratio  score   non-nan total feature")
+    for i,feat in enumerate(clf_imp_feats.index):
+        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
+        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+
 # <def_generate_clf_scatter_plot>
 def generate_clf_scatter_plot(featdef, data_dummies):
     print("simple scatter plot")
@@ -205,65 +278,11 @@ else:
 # i.e. initially many features also have many NaN so the dataset is smaller
 # 
 if(1):
+    print(" ################################################################################")
     print("-I-: DecisionTree")
-    # TODO: move the validfeats higher up during the nonan phase
-    # valid features - defined for regression (aka classification), are integers (because I'm really into that), and ain't supposed to be no dummy (entries meant to be encoded as dummies)
-    # 'regtype ! = False' mainly for crash_id
-    # TODO - change crash_year to regtype == False
-    validfeats = featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.dummies == False)]
-    # define predictors and response
-    predictors  = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target != True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat')].index)
-    responsecls = list(featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype == 'bin_cat')].index)
-
-    if(1):
-        print("##############")
-        print("predictors:")
-        print(predictors)
-        print("responsecls:")
-        print(responsecls)
-        print("##############")
-
-    print("-I-: DecisionTree - feature selection")
-    from sklearn.model_selection import StratifiedKFold,GroupKFold
-    from sklearn.feature_selection import RFECV
-    from sklearn import tree
-    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
-    # use full dataset for feature selection
-    X_full = df_int_nonan[predictors]
-    y_full = df_int_nonan[responsecls]
-
-    print("-I-: DecisionTree - feature selection")
-    if(0):
-      dectree_evaluate_cv_strategy(X_full, y_full)
-    else:
-      print("-I-: ... skipping")
-
-    print("-I-: previously chosen: StratifiedKFold with roc_auc_score")
-    # settling on ...
-    cvFold = StratifiedKFold
-    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
-    rfecv.fit(X_full,y_full.values.ravel())
-
-    # Plot number of features VS. cross-validation scores
-    plt.figure()
-    plt.xlabel("Number of features selected")
-    plt.ylabel("Cross validation score (nb of correct classifications)")
-    # TODO: plot the feature names at 45deg angle under the numbers
-    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
-    plt.show()
-    print("Optimal number of features : %d" % rfecv.n_features_)
-
-    # print important features
-    print("-I-: most important features:")
-    clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
-    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
-
-    print("-I-: examining most important features:")
-    print("ratio  score   non-nan total feature")
-    for i,feat in enumerate(clf_imp_feats.index):
-        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
-        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+    print("-I-: First Run")
+    run_cross_val(data_dummies, featdef)
+    print(" --------------------------------------------------------------------------------")
     print("-I-: result: average_daily_traffic_amount and average_daily_traffic_year are only a small portion of the dataset")
     '''
     ratio  score   non-nan total  feature
@@ -273,70 +292,11 @@ if(1):
     0.7424 0.1125  1657  2232 speed_limit
     '''
     print(" ################################################################################")
-    print("-I-: creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
-    # mainly integer data
-    validfeats = featdef[(featdef.dummies == False) & (featdef.type == 'int')]
-    validfeats = validfeats.drop(['average_daily_traffic_amount','average_daily_traffic_year'])# inplace copy - , inplace=True)
-    ## print("-I-: verify validfeats")
-    ## print(validfeats[validfeats.dummies])
-    data_int_list = list(validfeats.index)
-    df_int = data_dummies[list(validfeats.index)]
-    # Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
-    df_int_nonan = df_int.dropna()
-    print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
-    if(df_int_nonan.shape[1] == df_int.shape[1]):
-      print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-    else:
-      print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-    if(1):
-        print("-I-: DecisionTree 2")
-        # further prune valid features - mainly get rid of crash_id
-        validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
-        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
-        responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
-    print("-I-: DecisionTree - feature selection")
-    from sklearn.model_selection import StratifiedKFold,GroupKFold
-    from sklearn.feature_selection import RFECV
-    from sklearn import tree
-    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
-    # use full dataset for feature selection
-    X_full = df_int_nonan[predictors]
-    y_full = df_int_nonan[responsecls]
-
-    print("-I-: DecisionTree - feature selection")
-    if(0):
-      dectree_evaluate_cv_strategy(X_full, y_full)
-    else:
-      print("-I-: ... skipping")
-
-    print("-I-: previously chosen: StratifiedKFold with roc_auc_score")
-    # settling on ...
-    cvFold = StratifiedKFold
-    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
-    rfecv.fit(X_full,y_full.values.ravel())
-
-    # Plot number of features VS. cross-validation scores
-    plt.figure()
-    plt.xlabel("Number of features selected")
-    plt.ylabel("Cross validation score (nb of correct classifications)")
-    # TODO: plot the feature names at 45deg angle under the numbers
-    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
-    plt.show()
-    print("Optimal number of features : %d" % rfecv.n_features_)
-
-    # print important features
-    print("-I-: most important features:")
-    clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
-    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
-
-    print("-I-: examining most important features:")
-    print("ratio  score   non-nan total feature")
-    for i,feat in enumerate(clf_imp_feats.index):
-        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
-        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
-    plt.bar(data_dummies.crash_year.value_counts().index,data_dummies.crash_year.value_counts().values) ; plt.show()
-    print("-I-: result: crash_year factors in very heavily and warrants further analysis. however, this cuold also simply be due to the fact that a crash year is always associated with every accident record")
+    print("-I-: Second Run") #creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
+    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year'])
+    #plt.bar(data_dummies.crash_year.value_counts().index,data_dummies.crash_year.value_counts().values) ; plt.show()
+    print(" --------------------------------------------------------------------------------")
+    print("-I-: result: crash_year factors in very heavily and warrants further analysis. however, this cuold also simply be due to the fact that a crash year is always associated with every accident record.")
     '''
     ratio  score   non-nan total  feature
     1.0000 0.2753  2232  2232 crash_year
@@ -361,69 +321,9 @@ if(1):
     1.0000 0.0027  2232  2232 intersection_related_intersection_related
     '''
     print(" ################################################################################")
-    print("-I-: creating new dataset without crash_year")
-    # mainly integer data
-    validfeats = featdef[(featdef.dummies == False) & (featdef.type == 'int')]
-    validfeats = validfeats.drop(['average_daily_traffic_amount','average_daily_traffic_year'])# inplace copy - , inplace=True)
-    validfeats = validfeats.drop(['crash_year'])# inplace copy - , inplace=True)
-    ## print("-I-: verify validfeats")
-    ## print(validfeats[validfeats.dummies])
-    data_int_list = list(validfeats.index)
-    df_int = data_dummies[list(validfeats.index)]
-    # Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
-    df_int_nonan = df_int.dropna()
-    print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
-    if(df_int_nonan.shape[1] == df_int.shape[1]):
-      print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-    else:
-      print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-    if(1):
-        print("-I-: DecisionTree 3")
-        # further prune valid features - mainly get rid of crash_id
-        validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
-        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
-        responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
-    print("-I-: DecisionTree - feature selection")
-    from sklearn.model_selection import StratifiedKFold,GroupKFold
-    from sklearn.feature_selection import RFECV
-    from sklearn import tree
-    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
-    # use full dataset for feature selection
-    X_full = df_int_nonan[predictors]
-    y_full = df_int_nonan[responsecls]
-
-    print("-I-: DecisionTree - feature selection")
-    if(0):
-      dectree_evaluate_cv_strategy(X_full, y_full)
-    else:
-      print("-I-: ... skipping")
-
-    print("-I-: previously chosen: StratifiedKFold with roc_auc_score")
-    # settling on ...
-    cvFold = StratifiedKFold
-    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
-    rfecv.fit(X_full,y_full.values.ravel())
-
-    # Plot number of features VS. cross-validation scores
-    plt.figure()
-    plt.xlabel("Number of features selected")
-    plt.ylabel("Cross validation score (nb of correct classifications)")
-    # TODO: plot the feature names at 45deg angle under the numbers
-    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
-    plt.show()
-    print("Optimal number of features : %d" % rfecv.n_features_)
-
-    # print important features
-    print("-I-: most important features:")
-    clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
-    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
-
-    print("-I-: examining most important features:")
-    print("ratio  score   non-nan total feature")
-    for i,feat in enumerate(clf_imp_feats.index):
-        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
-        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+    print("-I-: Third Run") #creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
+    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year'])
+    print(" --------------------------------------------------------------------------------")
     print("-I-: result: the remaining factors are speed_limit and surface_condition. this makes intuitive sense. However, this result is subject to change on different runs, which is in line with the results seen while evaluating the CV strategy.")
     '''
     # without bin_cat
@@ -436,70 +336,8 @@ if(1):
     1.0000 0.3611  2232  2232 surface_condition
     '''
     print(" ################################################################################")
-    print("-I-: creating new dataset without speed_limit and surface_condition")
-    # mainly integer data
-    validfeats = featdef[(featdef.dummies == False) & (featdef.type == 'int')]
-    validfeats = validfeats.drop(['average_daily_traffic_amount','average_daily_traffic_year'])# inplace copy - , inplace=True)
-    validfeats = validfeats.drop(['crash_year'])# inplace copy - , inplace=True)
-    validfeats = validfeats.drop(['speed_limit','surface_condition'])# inplace copy - , inplace=True)
-    ## print("-I-: verify validfeats")
-    ## print(validfeats[validfeats.dummies])
-    data_int_list = list(validfeats.index)
-    df_int = data_dummies[list(validfeats.index)]
-    # Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
-    df_int_nonan = df_int.dropna()
-    print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
-    if(df_int_nonan.shape[1] == df_int.shape[1]):
-      print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-    else:
-      print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-    if(1):
-        print("-I-: DecisionTree 4")
-        # further prune valid features - mainly get rid of crash_id
-        validfeats = validfeats[validfeats.regtype != False] # only invalid values are False
-        predictors  = list(validfeats[(validfeats.target != True) & (validfeats.regtype != 'bin_cat')].index)
-        responsecls = list(validfeats[(validfeats.target == True) & (validfeats.regtype == 'bin_cat')].index)
-    print("-I-: DecisionTree - feature selection")
-    from sklearn.model_selection import StratifiedKFold,GroupKFold
-    from sklearn.feature_selection import RFECV
-    from sklearn import tree
-    clf = tree.DecisionTreeClassifier(random_state = 42) #max_depth = 5)
-    # use full dataset for feature selection
-    X_full = df_int_nonan[predictors]
-    y_full = df_int_nonan[responsecls]
-
-    print("-I-: DecisionTree - feature selection")
-    if(0):
-      dectree_evaluate_cv_strategy(X_full, y_full)
-    else:
-      print("-I-: ... skipping")
-
-    print("-I-: previously chosen: StratifiedKFold with roc_auc_score")
-    # settling on ...
-    cvFold = StratifiedKFold
-    rfecv = RFECV(estimator=clf, step=1, cv=cvFold(2), scoring='roc_auc')
-    rfecv.fit(X_full,y_full.values.ravel())
-
-    # Plot number of features VS. cross-validation scores
-    plt.figure()
-    plt.xlabel("Number of features selected")
-    plt.ylabel("Cross validation score (nb of correct classifications)")
-    # TODO: plot the feature names at 45deg angle under the numbers
-    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
-    plt.show()
-    print("Optimal number of features : %d" % rfecv.n_features_)
-
-    # print important features
-    print("-I-: most important features:")
-    clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
-    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
-
-    print("-I-: examining most important features:")
-    print("ratio  score   non-nan total feature")
-    for i,feat in enumerate(clf_imp_feats.index):
-        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
-        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+    print("-I-: Fourth Run") # creating new dataset without speed_limit and surface_condition")
+    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
     print("-I-: result: the remaining factors are varied, but seem to settle around two categories: binary categories, or their counterparts. this makes intuitive sense, and the dataset should be re-run without the binary categories. this was a mistake")
     '''
     # without bin_cat
