@@ -21,7 +21,7 @@ def get_feature_defs():
     # post-fact - collision description
     'crash_id'                                 : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : False         , 'pairplot':0, 'jsmap':1, 'input':0, },
     'crash_year'                               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':0, },
-    'crash_time'                               : {'target':0, 'type' : '24h',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
+    'crash_time'                               : {'target':0, 'type' : '24h',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':1, 'input':0, },
     'intersection_related'                     : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'manner_of_collision'                      : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'object_struck'                            : {'target':0, 'type' : 'str',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
@@ -40,7 +40,7 @@ def get_feature_defs():
     'speed_limit'                              : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':1, },
     'latitude'                                 : {'target':0, 'type' : 'gps',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':1, 'input':1, },
     'longitude'                                : {'target':0, 'type' : 'gps',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':1, 'input':1, },
-    'road_base_type'                           : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':1, },
+    'road_base_type'                           : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, }, #tmp disable due to issues with dummies during quick bringup
     # a-priori - conditional
     'average_daily_traffic_amount'             : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':3, },
     'average_daily_traffic_year'               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':3, },
