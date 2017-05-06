@@ -15,13 +15,17 @@ def get_feature_defs():
     # note: crash_time is marked categorical because by default it is encoded as HH:mm and therefore not continuous
     # note: 'street' is same as 'str' but doesn't get lowercased. use 'name' for string which needs to be untouched
     # jsmap : this var can be used to generate the javascript map
-    # input : inputs required to make a prediction. 1: essential (intersections) 2: secondary (non-intersections) 3: optional (weather)
+    # input : inputs required to make a prediction. ROUGH DESCRIPTION, SUBJECT TO CHANGE! 1: essential (non-changing) 2: good-to-know (varies with time) 3: optional (hard to know)
     feature_definitions = {
     # post-fact
+    # post-fact - collision description
     'crash_id'                                 : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : False         , 'pairplot':0, 'jsmap':1, 'input':0, },
     'crash_year'                               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':0, },
     'crash_time'                               : {'target':0, 'type' : '24h',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
+    'intersection_related'                     : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'manner_of_collision'                      : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
+    'object_struck'                            : {'target':0, 'type' : 'str',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
+    # post-fact - injury
     'crash_severity'                           : {'target':1, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'medical_advisory_flag'                    : {'target':1, 'type' : 'str',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'crash_death_count'                        : {'target':1, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':0, },
@@ -29,19 +33,19 @@ def get_feature_defs():
     'crash_non-incapacitating_injury_count'    : {'target':1, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':0, },
     'crash_not_injured_count'                  : {'target':1, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':0, },
     'crash_possible_injury_count'              : {'target':1, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':0, },
-    'object_struck'                            : {'target':0, 'type' : 'str',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     # a-priori
-    'average_daily_traffic_amount'             : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':3, },
-    'average_daily_traffic_year'               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':3, },
-    'light_condition'                          : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':1, },
-    'day_of_week'                              : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':1, },
+    # a-priori - fixed
+    'street_name'                              : {'target':0, 'type' : 'street', 'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':3, },
+    'intersecting_street_name'                 : {'target':0, 'type' : 'street', 'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':3, },
+    'speed_limit'                              : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':1, },
     'latitude'                                 : {'target':0, 'type' : 'gps',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':1, 'input':1, },
     'longitude'                                : {'target':0, 'type' : 'gps',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':1, 'input':1, },
     'road_base_type'                           : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':1, },
-    'speed_limit'                              : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':1, },
-    'street_name'                              : {'target':0, 'type' : 'street', 'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':3, },
-    'intersecting_street_name'                 : {'target':0, 'type' : 'street', 'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':3, },
-    'intersection_related'                     : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
+    # a-priori - conditional
+    'average_daily_traffic_amount'             : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':3, },
+    'average_daily_traffic_year'               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':0, 'jsmap':0, 'input':3, },
+    'light_condition'                          : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':2, },
+    'day_of_week'                              : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':2, },
     'surface_condition'                        : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':3, },
     'weather_condition'                        : {'target':0, 'type' : 'str',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':3, },
     }
