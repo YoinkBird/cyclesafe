@@ -27,15 +27,17 @@ sns.set(style="white", color_codes=True)
 # ideas: crash_id: crash_id | severity | date | time
 def df_as_js2d_arr_str(df, limit_for_testing=-1):
   jsrows = "[\n"
+  #HACKS
   for rownum,row in df[:limit_for_testing].iterrows():
+  #for rownum,row in df[(df['crash_time'] > 1900) & (df['crash_time'] =< 500)].iterrows():
       #print(rownum)
       row_ind = df.index.get_loc(rownum)
       # TODO: remember that bin_crash_severity includes both incapacitating as well as killed
       imgurl = 'https://storage.googleapis.com/montco-stats/images/bike.png'
       if(row['bin_crash_severity']):
         imgurl = 'https://storage.googleapis.com/montco-stats/images/bikeKilled.png'
-      # 'title', lat, lon, zindex, imgurl
-      jsrows += "['%s', %s, %s, %d, '%s'],\n" % (row.crash_id, row.latitude,row.longitude, rownum, imgurl)
+      # 'title', lat, lon, zindex, imgurl, crash_time
+      jsrows += "['%s', %s, %s, %d, '%s', '%s'],\n" % (row.crash_id, row.latitude,row.longitude, rownum, imgurl, row.crash_time)
   jsrows += "];\n"
   return jsrows
 
@@ -54,8 +56,15 @@ def get_map_df(data, featdef):
   mapdf['title'] = pd.Series(index=featdef.index,dtype=str).replace(np.nan,False)
   return mapdf
 
-def get_html_map_from_df(data, featdef):
+def get_html_map_from_df(data, featdef, timerange=(0,0)):
   mapdf = get_map_df(data,featdef)
+  if(timerange != (0,0)):
+    # handle midnight rollover : 1900 < t [< 2359] | [0 <=] t <= 500
+    if(timerange[0] > timerange[1]):
+      mapdf = mapdf[(mapdf['crash_time'] > timerange[0]) | (mapdf['crash_time'] <= timerange[1])]
+    # normal times: 500 < t < t 1500
+    else:
+      mapdf = mapdf[(mapdf['crash_time'] > timerange[0]) & (mapdf['crash_time'] <= timerange[1])]
   js2darr = 'var crashes =' + df_as_js2d_arr_str(mapdf)
   jsFuncGps = 'function getPoints() { return ['
   jsFuncGps += df_get_gps_coord_js_code(mapdf)
@@ -64,7 +73,11 @@ def get_html_map_from_df(data, featdef):
     print("-I-: ...done")
   print("-I-: html gen")
   htmlpage = generate_map_html_page(js2darr + "\n" + jsFuncGps)
-  write_html_files(htmlpage, filename='crashes.html')
+  fname = "crashes.html"
+  if(timerange != (0,0)):
+    fname = "output/crashes_%d_%d.html" % timerange
+  write_html_files(htmlpage, filename=fname)
+  print("url = '%s'" % fname)
   return htmlpage
 
 # insert js into html templates
@@ -318,6 +331,9 @@ if(__name__ == '__main__'):
 
   # consolidated function
   get_html_map_from_df(data,featdef)
+  get_html_map_from_df(data,featdef,(1900,500))
+  get_html_map_from_df(data,featdef,(500,1530))
+  get_html_map_from_df(data,featdef,(1530,1900))
   print("-I-: DEVELOPMENT - current effort")
 
 
