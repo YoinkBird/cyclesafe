@@ -13,8 +13,16 @@ import pprint as pp
 import re
 #import xgboost as xgb
 
+import os,sys
 # import the "crash" data
+curdir=os.path.split(__file__)[0]
+datadir=curdir+ "/data"
 datafile = "my_map_grid.csv"
+datafile = os.path.join(datadir, datafile)
+if(0):
+  print(__file__)
+  pp.pprint(sys.path)
+
 
 # get clean data
 (data,featdef) = preprocess_data(datafile)

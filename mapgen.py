@@ -14,6 +14,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set(style="white", color_codes=True)
 
+import os,sys
+
 # src: https://www.kaggle.com/mchirico/d/nhtsa/2015-traffic-fatalities/bike-zoom-chicago-map/output
 #  src https://www.kaggle.com/mchirico/d/nhtsa/2015-traffic-fatalities/bike-zoom-chicago-map/code
 
@@ -321,8 +323,10 @@ if(__name__ == '__main__'):
     print("-I-: testing map generation")
   # Read data 
   # import the "crash" data
-  datafile = "../data/txdot_2010_2017.csv"
+  curdir=os.path.split(__file__)[0]
+  datadir=curdir+ "/data"
   datafile = "my_map_grid.csv"
+  datafile = os.path.join(datadir, datafile)
 
   (data,featdef) = preprocess_data(datafile)
 
