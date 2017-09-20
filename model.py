@@ -152,6 +152,7 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
     for i,feat in enumerate(clf_imp_feats.index):
         num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
         print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+    return (predictors,responsecls)
 
 # <def_generate_clf_scatter_plot>
 def generate_clf_scatter_plot(featdef, data_dummies):
@@ -281,7 +282,7 @@ if(1):
     print(" ################################################################################")
     print("-I-: DecisionTree")
     print("-I-: First Run")
-    run_cross_val(data_dummies, featdef)
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef)
     print(" --------------------------------------------------------------------------------")
     print("-I-: result: average_daily_traffic_amount and average_daily_traffic_year are only a small portion of the dataset")
     '''
@@ -293,7 +294,7 @@ if(1):
     '''
     print(" ################################################################################")
     print("-I-: Second Run") #creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
-    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year'])
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year'])
     #plt.bar(data_dummies.crash_year.value_counts().index,data_dummies.crash_year.value_counts().values) ; plt.show()
     print(" --------------------------------------------------------------------------------")
     print("-I-: result: crash_year factors in very heavily and warrants further analysis. however, this cuold also simply be due to the fact that a crash year is always associated with every accident record.")
@@ -322,7 +323,7 @@ if(1):
     '''
     print(" ################################################################################")
     print("-I-: Third Run") #creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
-    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year'])
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year'])
     print(" --------------------------------------------------------------------------------")
     print("-I-: result: the remaining factors are speed_limit and surface_condition. this makes intuitive sense. However, this result is subject to change on different runs, which is in line with the results seen while evaluating the CV strategy.")
     '''
@@ -337,7 +338,7 @@ if(1):
     '''
     print(" ################################################################################")
     print("-I-: Fourth Run") # creating new dataset without speed_limit and surface_condition")
-    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
     print("-I-: result: the remaining factors are varied, but seem to settle around two categories: binary categories, or their counterparts. this makes intuitive sense, and the dataset should be re-run without the binary categories. this was a mistake")
     '''
     # without bin_cat
