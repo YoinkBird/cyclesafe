@@ -11,10 +11,16 @@ import pandas as pd
 import pprint as pp
 import re
 #import xgboost as xgb
+import os,sys
 
 if(__name__ == '__main__'):
     # import the "crash" data
     datafile = "../data/txdot_2010_2017.csv"
+    # import the "crash" data
+    curdir=os.path.split(__file__)[0]
+    datadir=curdir+ "/data"
+    datafile = "my_map_grid.csv"
+    datafile = os.path.join(datadir, datafile)
 
 # ensure all data is machine-readable
 def clean_data(datafile, source='txdot', verbose=0):
