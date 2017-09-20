@@ -18,7 +18,7 @@ if(__name__ == '__main__'):
     datafile = "../data/txdot_2010_2017.csv"
     # import the "crash" data
     curdir=os.path.split(__file__)[0]
-    datadir=curdir+ "/data"
+    datadir=os.path.split(curdir)[0] + "/data"
     datafile = "my_map_grid.csv"
     datafile = os.path.join(datadir, datafile)
 

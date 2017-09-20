@@ -16,7 +16,7 @@ import re
 import os,sys
 # import the "crash" data
 curdir=os.path.split(__file__)[0]
-datadir=curdir+ "/data"
+datadir=os.path.split(curdir)[0] + "/data"
 datafile = "my_map_grid.csv"
 datafile = os.path.join(datadir, datafile)
 if(0):
