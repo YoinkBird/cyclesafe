@@ -80,6 +80,61 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
     #print("Optimal number of features [scoring:%s]: %d" % (scorer, rfecv.n_features_))
   print("[depth:00][scoring:%s] avg score: %f , std: %f, med: %f" % (scorer, np.mean(roc_auc_scores), np.std(roc_auc_scores), np.median(roc_auc_scores)))
 
+# <def_generate_clf_scatter_plot>
+def generate_clf_scatter_plot(featdef, data_dummies):
+    print("simple scatter plot")
+    validfeats = featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.dummies == False)]
+    # define predictors and response
+    predictors  = list(featdef[(featdef.regtype != False) & (featdef.target != True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat') & (featdef.type == 'int') & ((featdef.index != 'average_daily_traffic_amount') & (featdef.index != 'average_daily_traffic_year')) ].index)
+    responsecls = list(featdef[(featdef.regtype != False) & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat') & (featdef.type == 'int') & (featdef.origin == 'crash_severity')].index)
+    #hack, not needed now: responsecls = ['crash_severity']
+    if(1):
+        print("##############")
+        print("predictors:")
+        print(predictors)
+        print("responsecls:")
+        print(responsecls)
+        print("##############")
+
+    print("-I-: train-test split")
+    # def collapse_dummies(row):
+    #     for cat in y_full.columns:
+    #         if(row[cat] == 1):
+    #             return cat
+    testsize = 0.3
+    # data_nonan = data[ predictors + responsecls ].dropna()
+    data_nonan = df_int_nonan
+    # get dummies for this particular case
+    #(data_dummies,featdef) = featdef_get_dummies(
+    #        data[ predictors + responsecls ].dropna(),
+    #        featdef)
+    data_dummies_firstplot = data_dummies[ predictors + responsecls ].dropna()
+    #data_dummies_firstplot.drop(['average_daily_traffic_amount','average_daily_traffic_year'],axis=1,inplace=1)
+    X_full = data_dummies_firstplot[predictors]
+    y_full = data_dummies_firstplot[responsecls].idxmax(1)
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X_full,y_full, test_size=testsize)
+
+
+    print(X_full.columns)
+    print(y_full)
+
+
+    clf = tree.DecisionTreeClassifier() #max_depth = 5)
+    # use full dataset for feature selection
+
+    # raw
+    #clf.fit(X_full,y_full)
+    #cm = confusion_matrix(y_test,clf.predict(X_full))
+    #helpers.plot_confusion_matrix(cm,classes=clf.classes_)
+
+    # train/test
+    clf.fit(X_train,y_train)
+
+    cm = confusion_matrix(y_test,clf.predict(X_test))
+    plot_confusion_matrix(cm,classes=clf.classes_)
+    plt.show()
+# </def_generate_clf_scatter_plot>
+
 show_data_vis = 0
 show_data_piv = 0
 if(show_data_vis):
@@ -589,7 +644,7 @@ graph = pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png() , retina=True)
 print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
 print("-I-: End of File")
-
+generate_clf_scatter_plot(featdef, data_dummies)
 
 # miscellaneous
 '''
