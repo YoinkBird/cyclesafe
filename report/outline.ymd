@@ -1,6 +1,7 @@
 h1. Title
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
 
+Data Driven Approach towards Improving Road Safety for Cyclists
 h1. Abstract
 <!-- Succinct abstract of less than one page. -->
 
@@ -13,18 +14,28 @@ h1. Introduction
 h1. Background and results to date
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
+relevant work - misc traffic studies
+preliminary results - class project; outline goal and results; in the next section lead in to the remaining questions
 h1. Goal
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 
 h1. Methodology
 <!-- Explain the methods and techniques which will be used for your project depending on the subject: field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
+use available crash-data, augment with other data sources as necessary and as possible
+using python data mining libraries and html
 h1. Time Plan for Master’s Project Proposal and Master’s Thesis
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 
 h1. Discussion / Conclusion
 <!-- Explain what is striking/noteworthy about the results. Summarize the state of knowledge and understanding after the completion of your work. Discuss the results and interpretation in light of the validity and accuracy of the data, methods and theories as well as any connections to other people’s work. Explain where your research methodology could fail and what a negative result implies for your research question. -->
 
+read as "what is this going to change?"
+this work will improve understanding of what leads to avoidable crashes, which will enable cyclists to plan better routes and municipal traffic departments to address problem areas
+the main limitation will be the unavailability of complete cyclist numbers, e.g. it could be possible that all recorded crashes are outliers and most cyclists ride safely
+methodology could fail if:
+significant crash data is missing, i.e. crashes which go unreported
+models are incorrect
 h1. Acknowledgements
 <!-- Thank the people who have helped to successfully complete your project, like project partners, tutors, etc. -->
 
