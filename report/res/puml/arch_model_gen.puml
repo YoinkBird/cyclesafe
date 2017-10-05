@@ -1,0 +1,78 @@
+@startuml
+skinparam componentStyle uml2
+/'
+PURPOSE: architecture of generating scoring model
+'/
+/'
+    package
+    node
+    folder
+    frame
+    cloud
+    database
+'/
+
+' "feature data"
+cloud {
+  database txdot
+  'database trafficFlow
+}
+package ScoringServer {
+  frame dataSources
+  package ScoringApplication{
+    node preprocessor {
+      node featdef
+      database dataframe as dataset
+    }
+    () "featureSelection\n(query featdef)" as featureSelection
+    node crossValidation {
+      frame testData
+      frame trainData
+    }
+    node modelBuild as modelBuild {
+      node model
+      ' "fit" is sklearn-specific
+      () "train" as fit
+      ' during model creation, predict is for the x-val 'test'
+      ' during model usage,    predict is to get the prediction scores
+      () "test"  as predict
+    }
+    frame scores
+    database localStorage {
+      node scoringModel
+    }
+    model -> scoringModel : save to disk
+  }
+}
+
+
+txdot --> dataSources
+'trafficFlow --> dataSources
+dataSources --> preprocessor
+preprocessor --> dataset
+preprocessor --> featdef
+
+crossValidation --> testData
+crossValidation --> trainData
+crossValidation --> modelBuild : adjust\nparams
+crossValidation <-- scores : feedback
+
+
+
+dataset --> featureSelection
+featdef --> featureSelection
+'modelBuild <-L- featureSelection
+crossValidation <-L- featureSelection
+
+
+' train model
+' trainData --> modelBuild : train
+trainData --> fit
+fit --> model
+' predict
+predict <-- model
+testData --> predict
+predict --> scores
+
+
+@enduml

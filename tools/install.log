@@ -1,0 +1,15 @@
+# MarkDown 1.0.1
+unzip Markdown_1.0.1.zip
+mv Markdown_1.0.1 tools/markdown_1.0.1
+cd tools/markdown_1.0.1
+mv License.text license.text 
+mv Markdown\ Readme.text markdown_readme.text
+mv Markdown.pl markdown.pl
+
+# Grip
+pip install grip
+## prints out cmd-line, open in browser
+grip outline.md 
+
+# pandoc
+sudo apt-get install pandoc pandoc-citeproc
