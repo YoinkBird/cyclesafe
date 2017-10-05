@@ -351,6 +351,16 @@ sub _HashHTMLBlocks {
 			}egmx;
 
 
+        # vvv here is introduced the issue. Graps the next line vvv
+        #    '9b78bb0d5a57602cb02bef10a5088b00' => '<!-- comment -->
+        # text
+        # 
+        # 
+        # 736eaa94dd90b2a8742e742e1d7e3e6d
+        # 
+        # 
+        # 
+        # <!-- comment2 -->'
 	#
 	# Now match more liberally, simply from `\n<tag>` to `</tag>\n`
 	#
@@ -733,6 +743,13 @@ sub _DoHeaders {
 		"<h2>"  .  _RunSpanGamut($1)  .  "</h2>\n\n";
 	}egmx;
 
+
+        # yoinkbird-style headers:
+        # h1 Header 1
+        # h2 Header 2
+        # ...
+        # No limit, caveat emptor
+        $text =~ s{^(h)([\d])\.}{"#" x $2 . " "}egmx;
 
 	# atx-style headers:
 	#	# Header 1
