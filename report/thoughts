@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------------
+20171019
+note to self: mozarts greenhouse hot for some reason, even on a coool day. maybe it's heated. 
+note to self: laptop screenglare super distracting, reflections from all sides. blech.
+
+
+apt install xclip
+
+grip should check internet connection on startup
+
+can't use markdown.pl for github markdown, too strict (e.g. tables
+
+git: helpful tool for workflow. try something out? stage everthing, try whatever, and see the 'diff'. really good for verifying a find/replace
+
+laptop keyboard keeps missing my ':' after a 'ctrl+v', so typing ':s' only sends 's' keeps deleting instead of going into find-replace!
+
+markdown-custom: tweak s.t. paragraphs delineated by blank line - instad of by newline
+
+gvim broken, need to install the correct one - keeps crashing on new tabs. have fixed this before on another install
+--------------------------------------------------------------------------------
+20171017
+vs 11" : way easier on 15" screen, need to try out the 13"
+
+vim and indentation: just block-highlight and << or >> - so easy
+
+INSTALL REQUIRED
+apt install grip
+apt install kdiff3
+# BAAAAD vim-gtk3
+apt install vim-gtk
+# why: 
+#+ https://bugs.launchpad.net/ubuntu/+source/vim/+bug/1650666/comments/4
+#+ https://github.com/vim/vim/issues/851
+
+editor
+wtf is this nano crap? why can't I just force exit?
+
+markdown
+having inline comments is really useful, much better than in traditional document editors
+can "stub out" entire sections so they aren't rendered, or add comments and todos which won't be rendered
+in short, the document can look polished while the draft/notes/scratch hides within

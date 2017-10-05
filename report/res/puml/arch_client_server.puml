@@ -1,0 +1,66 @@
+@startuml
+/'
+    package
+    node
+    folder
+    frame
+    cloud
+    database
+'/
+
+actor User
+
+package "Client" {
+  [GUI] <-> [httpClient]
+}
+
+/'
+node "Other Groups" {
+  FTP - [Second Component]
+  [First Component] --> FTP
+} 
+'/
+
+'skinparam linetype ortho
+'skinparam linetype polyline
+
+cloud "Third-Party Map API" {
+  [AutoCompleteService]
+/'
+}
+
+cloud {
+'/
+  [Routing Service]
+}
+
+
+package "Scoring Server" {
+  ' database "FileSystem"
+  [Scoring Application]
+  [Json Server]
+}
+
+[User] --> [GUI] : route origin, destination
+[User] <-- [GUI] : display route(s) + scores
+[httpClient] --> [AutoCompleteService] : partial\nroute\norig, dest
+[httpClient] <-- [AutoCompleteService] : resolved\nroute\norig, dest
+[httpClient] --> [Routing Service] : route\norig, dest
+[httpClient] <-- [Routing Service] : route\ngeo-json
+
+[httpClient] --> [Json Server] : rest:\nroute geo-json
+[httpClient] <-- [Json Server] : rest:\ncore geo-json
+
+' scoring server
+/'
+[Json Server] --> [FileSystem] : route geo-json
+[Json Server] <-- [FileSystem] : score geo-json
+
+FileSystem --> [Scoring Application] : route geo-json
+FileSystem <-- [Scoring Application] : score geo-json
+'/
+[Json Server] --> [Scoring Application] : route geo-json
+[Json Server] <-- [Scoring Application] : score geo-json
+
+
+@enduml
