@@ -16,8 +16,32 @@ h1. Background and results to date
 
 relevant work - misc traffic studies
 preliminary results - class project; outline goal and results; in the next section lead in to the remaining questions
+
+This is an extension of a group project I started during the Spring semester.
+
+My goal is to help cyclists choose safer routes and to identify what makes streets dangerous.
+
+For example, we identified time-of-day as a factor so I created a basic visualization of where crashes happen for the main intervals.
+This could then allow cyclists to plan their route based on time of day.
+https://nbviewer.jupyter.org/github/YoinkBird/dataMiningFinal/blob/master/Final.ipynb#Maps-of-Crashes 
+(caveat: these maps lump together all crashes from 2010-2017 and thereby hide any potential trends)
+
 h1. Goal
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
+
+Data Driven Approach towards Improving Road Safety for Cyclists
+Purpose
+Analyse available data to understand how crashes with other vehicles occur.
+Goals:
+interpret what makes roads safe
+focus on "external" data features, e.g. weather, bike lane, speed limit
+possible break down by intersection and frequency of accidents
+interpret how cyclists can ride defensively
+focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
+classification into "avoidable" and "avoidable" crashes
+e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
+design tool to help find safe routes
+e.g. assign safety score to routes provided by other tools
 
 h1. Methodology
 <!-- Explain the methods and techniques which will be used for your project depending on the subject: field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
