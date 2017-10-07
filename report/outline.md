@@ -1,17 +1,17 @@
-h1. Title
+# Title
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
 
 Data Driven Approach towards Improving Road Safety for Cyclists
-h1. Abstract
+# Abstract
 <!-- Succinct abstract of less than one page. -->
 
-h1. Table of content
+# Table of content
 <!-- The table of content lists all chapters (headings/subheadings) including page number. -->
 
-h1. Introduction
+# Introduction
 <!-- Explain why this work is important giving a general introduction to the subject, list the basic knowledge needed and outline the purpose of the report. -->
 
-h1. Background and results to date
+# Background and results to date
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
 relevant work - misc traffic studies
@@ -27,36 +27,36 @@ This could then allow cyclists to plan their route based on time of day.
 https://nbviewer.jupyter.org/github/YoinkBird/dataMiningFinal/blob/master/Final.ipynb#Maps-of-Crashes 
 (caveat: these maps lump together all crashes from 2010-2017 and thereby hide any potential trends)
 
-h1. Goal
+# Goal
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 
 <hr />
 
-h1. Data Driven Approach towards Improving Road Safety for Cyclists
-h2. Purpose
+# Data Driven Approach towards Improving Road Safety for Cyclists
+## Purpose
 Analyse available data to understand how crashes with other vehicles occur.
-h2. Goals:
-h3. interpret what makes roads safe
+## Goals:
+### interpret what makes roads safe
 focus on "external" data features, e.g. weather, bike lane, speed limit
 possible break down by intersection and frequency of accidents
-h3. interpret how cyclists can ride defensively
+### interpret how cyclists can ride defensively
 focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
 classification into "avoidable" and "avoidable" crashes
 e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
-h3. design tool to help find safe routes
+### design tool to help find safe routes
 e.g. assign safety score to routes provided by other tools
 
 <hr />
 
-h1. Methodology
+# Methodology
 <!-- Explain the methods and techniques which will be used for your project depending on the subject: field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
 use available crash-data, augment with other data sources as necessary and as possible
 using python data mining libraries and html
-h1. Time Plan for Master’s Project Proposal and Master’s Thesis
+# Time Plan for Master’s Project Proposal and Master’s Thesis
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 
-h1. Discussion / Conclusion
+# Discussion / Conclusion
 <!-- Explain what is striking/noteworthy about the results. Summarize the state of knowledge and understanding after the completion of your work. Discuss the results and interpretation in light of the validity and accuracy of the data, methods and theories as well as any connections to other people’s work. Explain where your research methodology could fail and what a negative result implies for your research question. -->
 
 read as "what is this going to change?"
@@ -71,15 +71,15 @@ significant crash data is missing, i.e. crashes which go unreported
 
 models are incorrect
 
-h1. Acknowledgements
+# Acknowledgements
 <!-- Thank the people who have helped to successfully complete your project, like project partners, tutors, etc. -->
 Source For Outline: 
 https://www.ethz.ch/content/dam/ethz/special-interest/erdw/department/dokumente/studium/master/msc-project-proposal-guidelines.pdf 
 
-h1. Reference & Literature (Bibliography)
+# Reference & Literature (Bibliography)
 <!-- List papers and publication you have already cited in your proposal or which you have collected for further reading. The style of each reference follows that of international scientific journals. -->
 
-h1. Appendix
+# Appendix
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
 
 
