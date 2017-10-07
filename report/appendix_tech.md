@@ -1,0 +1,16 @@
+# text
+## markdown
+can be converted to latex with pandoc, but is much more intuitive to edit, read, etc
+### custom syntax
+easier to modify layout via headers as 'h1','h2',...'h_n' than '#' '##' '###'
+## viewer
+### markdown + chrome + autoreload
+generate html, open chrome, set to autoreload 
+must set up some way to generate html on write
+possible, but distracts from the core mission of writing the paper
+would need to either tell vim to run the markdown cmd on write,
+or write a small daemon to periodically run markdown.pl or to check filemod time
+### grip
+grip solves these issues, and ensures that the markdown is compatible with github
+
+
