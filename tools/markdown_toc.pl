@@ -99,18 +99,21 @@ if(0){
 my $found_flag=0;
 for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
   my $line = $text[$lineNo];
-  my $re = qr(<!--toc_mini-->);
-  if($line =~ m/$re/){
+  my $toc_ins   = '<!--toc_mini-->';
+  my $toc_noins = '<!--!toc_mini-->';
+  my $toc_start = '<!--<toc_mini>-->';
+  my $toc_end   = '<!--</toc_mini>-->';
+  my $re_insert = qr($toc_ins);
+  if($line =~ m/$re_insert/){
     my @mini_toc = &get_mini_toc($lineNo);
-    print('<!--!toc_mini-->' . "\n");
-    print('<!--<toc_mini>-->' . "\n");
-    # print("**Section Overview:**\n");
+    print($toc_noins . "\n");
+    print($toc_start . "\n");
     print(join("\n",@mini_toc) . "\n");
-    print('<!--</toc_mini>-->' . "\n");
+    print($toc_end   . "\n");
     next;
   }
-  my $re_start = qr(<!--<toc_mini>-->);
-  my $re_end = qr(<!--</toc_mini>-->);
+  my $re_start = qr($toc_start);
+  my $re_end = qr($toc_end);
   # clear existing
   # raise
   if($line =~ m/$re_start/){
@@ -118,11 +121,9 @@ for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
   # lower
   } elsif($line =~ m/$re_end/){
     my @mini_toc = &get_mini_toc($lineNo);
-    #print('<!--!toc_mini-->' . "\n");
-    print('<!--<toc_mini>-->' . "\n");
-    #print("**Section Overview:**\n");
+    print($toc_start . "\n");
     print(join("\n",@mini_toc) . "\n");
-    print('<!--</toc_mini>-->' . "\n");
+    print($toc_end   . "\n");
     $found_flag = 0;
     next;
   }
