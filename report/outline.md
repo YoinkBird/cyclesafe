@@ -21,6 +21,15 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 * * * interpret how cyclists can ride defensively
 * * * design tool to help find safe routes
 * Methodology
+* * Summary
+* * Model
+* * * Acquisition
+* * * Preprocessing
+* * * Analysis
+* * * Model
+* * * Prediction
+* * Application
+* * * Technology
 * Time Plan for Master’s Project Proposal and Master’s Thesis
 * Discussion / Conclusion
 * Acknowledgements
@@ -82,6 +91,17 @@ e.g. assign safety score to routes provided by other tools
 
 **Section Overview:**
 <!--!toc_mini-->
+<!--<toc_mini>-->
+* Summary
+* Model
+* * Acquisition
+* * Preprocessing
+* * Analysis
+* * Model
+* * Prediction
+* Application
+* * Technology
+<!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
