@@ -85,8 +85,31 @@ e.g. assign safety score to routes provided by other tools
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
-use available crash-data, augment with other data sources as necessary and as possible
-using python data mining libraries and html
+## Summary
+Phases:
+one: create simple model to enable the application
+two: create minimally useful application
+three: create better model
+
+reason: TODO
+
+## Model
+### Acquisition
+quicknote: use available crash-data, augment with other data sources as necessary and as possible
+primary source: TxDOT data
+### Preprocessing
+summary: use python, pandas to ensure data is useful
+### Analysis
+summary: use python, pandas, matplotlib to analyse data
+### Model
+quicknote: use python data mining libraries to generate the model
+start with simple DecisionTree, move to more efficient models later
+### Prediction
+
+## Application
+### Technology
+quicknote: browser-based application using python, html, javascript
+
 # Time Plan for Master’s Project Proposal and Master’s Thesis
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 
