@@ -1,3 +1,7 @@
+Formatting HALP:  
+https://help.github.com/articles/basic-writing-and-formatting-syntax/  
+https://daringfireball.net/projects/markdown/syntax  
+
 # Title
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
 
@@ -106,12 +110,40 @@ e.g. assign safety score to routes provided by other tools
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
 ## Summary
-Phases:
-one: create simple model to enable the application
-two: create minimally useful application
-three: create better model
 
-reason: TODO
+The final product consists of two parts, the user-facing application, or front-end, and the non-public data processing model, or back-end.  
+The core mission of this project is to improve safety for cyclists.  
+To this end, a balance between the front-end and back-end needs to struck such that the information is both readily available to the end user while also being accurate.  
+This balance is best exemplified by two scenarios: one in which the model is accurate but without a user-facing application, and one in which the application is easy to use but the model is inaccurate.  
+<example>
+<!-- analogy:
+#included: map-based route planning tools are easy to use, but doesn't have any safety prediction at all
+#included: the current model can predict the safety of a route, but the end-user would have fit the model to a collection of GPS coordinates representing their route.
+#pending, out of place here: The solution is to have a route planning tool which automatically generates a list of GPS coordinates for a route and uses these coordinates to predict the safety factor. The end-user need only plan their route as usual, and the tool does the rest.
+-->
+The first scenario would be a model which can accurately predict the safety of a route, but requires the end-user to fit the model to an independently generated collection of GPS coordinates representing their route.  
+The first scenario could be a model which can accurately predict the safety of a route, but requires the end-user to independently provide the exact data which the model depends upon. Among other things, this would involve generating a collection of GPS coordinates representing the desired route and the various environmental conditions which the model uses for its prediction.  
+The second scenario would be existing map-based route planning tools, which are easy to use but have no safety prediction whatsoever.  Although most of these tools offer alternative routes based on various factors, they do not include safety in their calculations.
+
+
+In scenario one, a model with high accuracy can easily predict the danger of a given route, but would require the end-user to have a detailed understanding of data mining, the language used to create the model, and how to translate their desired route into a format which the model can use to make a prediction.  
+
+In the second scenario, the application with a good UI makes it easy for the end-user to plan their route, but the inaccurate model will mislead the end-user about the actual safety of the route.  
+Both scenarios are unfavourable, but fortunately the nature of application design and creating an accurate model help prioritise which component to focus on first.  
+Data Mining is an open-ended problem: the model is trying to use existing data to make an accurate prediction about the future. As new data is made available, the accuracy of a given model is constantly changing, which requires the model to constantly change. E.g. new data sources may provide better input, which in turn requires the model to use different parameters or even a different algorithm.  
+On the other hand, the application layer is more of a finite problem: the application consumes and presents data in a pre-defined format. The goal of abstracting the model for easier use is accomplished once the interface between the end-user and the and data is created. Of course, the application will change over time to accomodate user feedback, but this is secondary to the primary purpose of allowing users to interact with the data.  
+In summary, while the accuracy of the data model can improve over time, the application has no impact on the accuracy of the model.  
+
+With this in mind, the primary focus is on creating a simple UI for interacting with the output from the model.  
+The model accuracy is the secondary focus, since it is expected to change over time.  
+
+To this end, the project is done in three phases.  
+
+Phases:  
+one: create simple model for the application to consume  
+two: create application with minimal functionality  
+three: improve model accuracy
+
 
 ## Model
 ### Acquisition
@@ -153,6 +185,10 @@ significant crash data is missing, i.e. crashes which go unreported
 
 models are incorrect
 
+# Future Work
+## Data Sources
+Use data from strava,mapmyride,etc to find the most common routes (among the users of these apps) and correlate with crash data
+
 # Acknowledgements
 <!-- Thank the people who have helped to successfully complete your project, like project partners, tutors, etc. -->
 Source For Outline: 
@@ -163,3 +199,44 @@ https://www.ethz.ch/content/dam/ethz/special-interest/erdw/department/dokumente/
 
 # Appendix
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
+
+
+<!--
+Markdown Reminders:
+
+# paragraphs
+https://daringfireball.net/projects/markdown/syntax#p
+
+## How to have normal text with '\n' turn into line-breaks instead of new paragraphs
+
+### Normal Line Breaks
+for line-breaks, either '<br/>' or '  '
+
+item one  \n
+item two  \n
+item three  \n
+
+### HTML pre-formatted tag
+renders as monospaced font, maybe the easiest way to do business
+Could, in theory, create a "yoinkbird" tag called "< ! - - < p > - - > " (spaces to avoid this being interpreted as a comment!)
+<pre>
+item one
+item two
+item three
+</pre>
+
+## Misc
+quote-mode, i.e. a '|' in front of each line:
+>item one
+item two
+item three
+
+## no es bueno - standard paragraph
+Using the '<p>' tag is idempotent, each line still gets rendered on one line due to missing '  ' or '<br/>'
+<p>
+Phases:
+item one
+item two
+item three
+</p>
+-->
