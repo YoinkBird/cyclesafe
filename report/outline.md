@@ -2,11 +2,32 @@
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
 
 Data Driven Approach towards Improving Road Safety for Cyclists
+
 # Abstract
 <!-- Succinct abstract of less than one page. -->
 
 # Table of content
 <!-- The table of content lists all chapters (headings/subheadings) including page number. -->
+
+<!--!toc_mini-->
+<!--<toc_mini>-->
+* Introduction
+* Background and results to date
+* Goal
+* Data Driven Approach towards Improving Road Safety for Cyclists
+* * Purpose
+* * Goals:
+* * * interpret what makes roads safe
+* * * interpret how cyclists can ride defensively
+* * * design tool to help find safe routes
+* Methodology
+* Time Plan for Master’s Project Proposal and Master’s Thesis
+* Discussion / Conclusion
+* Acknowledgements
+* Reference & Literature (Bibliography)
+* Appendix
+<!--</toc_mini>-->
+
 
 # Introduction
 <!-- Explain why this work is important giving a general introduction to the subject, list the basic knowledge needed and outline the purpose of the report. -->
@@ -33,6 +54,15 @@ https://nbviewer.jupyter.org/github/YoinkBird/dataMiningFinal/blob/master/Final.
 <hr />
 
 # Data Driven Approach towards Improving Road Safety for Cyclists
+**Section Overview:**
+<!--!toc_mini-->
+<!--<toc_mini>-->
+* Purpose
+* Goals:
+* * interpret what makes roads safe
+* * interpret how cyclists can ride defensively
+* * design tool to help find safe routes
+<!--</toc_mini>-->
 ## Purpose
 Analyse available data to understand how crashes with other vehicles occur.
 ## Goals:
@@ -50,6 +80,9 @@ e.g. assign safety score to routes provided by other tools
 
 # Methodology
 <!-- Explain the methods and techniques which will be used for your project depending on the subject: field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
+
+**Section Overview:**
+<!--!toc_mini-->
 
 use available crash-data, augment with other data sources as necessary and as possible
 using python data mining libraries and html
@@ -81,5 +114,3 @@ https://www.ethz.ch/content/dam/ethz/special-interest/erdw/department/dokumente/
 
 # Appendix
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
-
-

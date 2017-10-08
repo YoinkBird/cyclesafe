@@ -1,0 +1,139 @@
+#!/usr/bin/perl
+
+
+
+
+sub basename{
+  return((split('/',shift))[-1])
+}
+my $scriptName = basename($0);
+my $fileName = $ARGV[0];
+
+#### Process incoming text: ###########################
+my $text;
+{
+        local $/;               # Slurp the whole file
+        $text = <>;
+}
+
+# IDEA: mini TOC . get line-number for <!--toc_mini--> comments. build parse-tree/hash of line-num: headers '####'. insert bulletted-list of headers below line-number for <!--toc_mini-->
+#
+my %header_hash;
+#while (<>){
+@text = split("\n",$text);
+for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
+  my $line = $text[$lineNo];
+  if($line =~ m{
+      ^(\#{1,6})  # $1 = string of #'s
+      [ \t]*
+      (.+?)    # $2 = Header text
+      [ \t]*
+      \#*      # optional closing #'s (not counted)
+      $
+    }gmx){
+    #print($line . "\n");
+    my $infHref = {'text' => $2, 'level' => length($1)};
+    $header_hash{$lineNo} = $infHref;
+  }
+}
+
+sub get_mini_toc{
+# print(join("\n",sort({ $a <=> $b } keys(%header_hash))) . "\n");
+  my $startLine = shift; #2; #testing
+  my $startLevel = 0; #testing
+  my $started = 0; #testing
+  my $prevHighest=0;
+  my $prevLine=0;
+  my @ul_arr;
+  for my $ln (sort({ $a <=> $b } keys(%header_hash))){
+    printf("%s %s %s\n", 'ln','lvl','txt') if(0);
+    printf("%s %s %s\n",
+      $ln,
+      $header_hash{$ln}{'level'},
+      $header_hash{$ln}{'text'},
+    ) if(0);
+    if ($started > 1){
+      next;
+    }
+    my $cur_lev = $header_hash{$ln}{'level'};
+    next if($ln < $startLine); # ignore all previous
+    if($ln >= $startLine && $started == 0){
+      $startLevel = $header_hash{$ln}{'level'};
+      $started = 1;
+    }
+    # quit if already started building ul and current level receeds beyond initial level
+    if ($cur_lev < $startLevel){
+      if($started == 1){
+        $started++;
+      }
+      next;
+    }
+
+    if($cur_lev < $prevHighest){
+      print("new tree\n") if(0);
+    }
+    elsif($cur_lev == $prevHighest){
+      print("parallel tree\n") if(0);
+    }
+    $prevHighest = $cur_lev;
+    # print($ul_li . "\n";
+    my $ul_li = sprintf('* ' x ($cur_lev - $startLevel + 1) . $header_hash{$ln}{'text'});
+    push(@ul_arr, $ul_li);
+
+  }
+  return @ul_arr;
+}
+
+if(0){
+  my @mini_toc = &get_mini_toc(0); # testing
+  print(join("\n",@mini_toc) . "\n");
+  my @mini_toc = &get_mini_toc(3); # testing
+  print(join("\n",@mini_toc) . "\n");
+  my @mini_toc = &get_mini_toc(2); # testing
+  print(join("\n",@mini_toc) . "\n");
+  my @mini_toc = &get_mini_toc(8); # testing
+  print(join("\n",@mini_toc) . "\n");
+}
+
+# add new or update existing
+my $found_flag=0;
+for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
+  my $line = $text[$lineNo];
+  my $re = qr(<!--toc_mini-->);
+  if($line =~ m/$re/){
+    my @mini_toc = &get_mini_toc($lineNo);
+    print('<!--!toc_mini-->' . "\n");
+    print('<!--<toc_mini>-->' . "\n");
+    # print("**Section Overview:**\n");
+    print(join("\n",@mini_toc) . "\n");
+    print('<!--</toc_mini>-->' . "\n");
+    next;
+  }
+  my $re_start = qr(<!--<toc_mini>-->);
+  my $re_end = qr(<!--</toc_mini>-->);
+  # clear existing
+  # raise
+  if($line =~ m/$re_start/){
+    $found_flag = 1;
+  # lower
+  } elsif($line =~ m/$re_end/){
+    my @mini_toc = &get_mini_toc($lineNo);
+    #print('<!--!toc_mini-->' . "\n");
+    print('<!--<toc_mini>-->' . "\n");
+    #print("**Section Overview:**\n");
+    print(join("\n",@mini_toc) . "\n");
+    print('<!--</toc_mini>-->' . "\n");
+    $found_flag = 0;
+    next;
+  }
+  if($found_flag == 0){
+    print($line . "\n");
+  }
+}
+exit;
+
+__END__
+
+USAGE:
+
+echo outline.md | sh -cuv 'read file; perl ../tools/markdown_toc.pl $file > ${file}_out && mv ${file}_out $file' ; git diff
