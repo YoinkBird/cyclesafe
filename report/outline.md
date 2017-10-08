@@ -79,10 +79,11 @@ e.g. assign safety score to routes provided by other tools
 <hr />
 
 # Methodology
-<!-- Explain the methods and techniques which will be used for your project depending on the subject: field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
 **Section Overview:**
 <!--!toc_mini-->
+<!-- Explain the methods and techniques which will be used for your project depending on the subject:
+field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
 use available crash-data, augment with other data sources as necessary and as possible
 using python data mining libraries and html
@@ -90,7 +91,12 @@ using python data mining libraries and html
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 
 # Discussion / Conclusion
-<!-- Explain what is striking/noteworthy about the results. Summarize the state of knowledge and understanding after the completion of your work. Discuss the results and interpretation in light of the validity and accuracy of the data, methods and theories as well as any connections to other people’s work. Explain where your research methodology could fail and what a negative result implies for your research question. -->
+<!--
+* Explain what is striking/noteworthy about the results.
+* Summarize the state of knowledge and understanding after the completion of your work.
+* Discuss the results and interpretation in light of the validity and accuracy of the data, methods and theories as well as any connections to other people’s work.
+* Explain where your research methodology could fail and what a negative result implies for your research question.
+* -->
 
 read as "what is this going to change?"
 
