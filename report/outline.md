@@ -168,6 +168,208 @@ start with simple DecisionTree, move to more efficient models later
 ### Technology
 quicknote: browser-based application using python, html, javascript
 
+### Project Preparation Gantt Chart
+| status | | | | | | | | | |
+|-|-|-|-|-|-|-|-|-|-|
+| **prep** | clean project | | | | | | | | |
+| **prep** | | generate basic model |
+
+
+<!--
+Basically:
+# strip bullets
+'<,'>s/\* /  /g
+# leading '|'
+'<,'>s/  /| /g
+# trailing '|'
+'<,'>s/$/ |/g
+# somehow generate the header
+| |...|
+|-|...|
+
+-->
+
+### Project Execution Gantt Chart
+<!--
+* clean project
+  * generate basic model
+    * route: manual selection of pre-defined GPS coordinates
+        * route: manual selection of generic GPS coordinates
+          * data: fuzzy-match GPS coordinates
+            * route: automatic selection of generic GPS coordinates
+              * route: implement map as interface
+                * route: overlay score on map
+              * impute more mph limits
+      * total score
+      * partial score
+        * mix routes
+-->
+
+<!-- NOTE: only have to have leading '|' and one closing. Update the header to add a column -->
+| status | | | | | | | |
+|--------|-|-|-|-|-|-|-|
+| **critPath** | route: manual selection of pre-defined GPS coordinates |
+| **critPath** | | | route: manual selection of generic GPS coordinates |
+| **critPath** | | | | data: fuzzy-match GPS coordinates |
+| **critPath** | | | | | route: automatic selection of generic GPS coordinates |
+|              | | | | | | route: implement map as interface |
+|              | | | | | | | route: overlay score on map |
+|              | | | | | data: impute more mph limits |
+| **critPath** | | route: total score |
+|              | | | route: recommend best route |
+|              | | route: partial score |
+|              | | | route: mix routes |
+
+
+### Work-Packages:
+**DRAFT**  
+**Staging for explanations down below**
+'Work-Packages' and 'WP Deliverables' need to be combined, then fed into 'Roadmap' for details
+Work-Packages - outline each WP as a header, use the mini-toc to list them all
+WP-Deliverables - merge into 'Roadmap' or 'Work-Packages', TBD
+**/DRAFT**
+
+Note: Work packages (WP) need not necessarily be executed in the order of the gantt chart
+The current gantt chart reflects the desired order of implementation vs actual dependency.
+This needs to be re-worked to properly indicate both the actual inter-dependency and the desired execution timeline
+
+data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
+data: impute more mph limits [impute_mph_limit-noninter]  
+route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
+route: manual selection of generic GPS coordinates [GPS-manual-generic]  
+route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
+route: implement map as interface [UI-GPS-generic]  
+route: overlay score on map [UI-safety_score]  
+route: total score [safety_score-total]  
+route: recommend best route [UI-recommend-simple]  
+route: partial score [safety_score-partial]  
+route: mix routes [UI-recommend-complex]  
+
+### WP Deliverables:
+Simple ASCII diagrams for simplicity, see Roadmap for more detail
+
+WP Impact on Functionality of Project
+
+Notation: the WP-names should reflect the scope of the functionality
+E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safety_score-total and safety_score-partial
+
+WP: [data:  GPS-fuzzy-match]  
+[route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]
+
+WP: [data:  impute_mph_limit-noninter]  
+[route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]
+
+WP: [route: GPS-manual-predef]  
+[route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
+
+WP: [route: GPS-manual-generic]  
+[route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
+
+WP: [route: GPS-automatic-generic]  
+[route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
+
+WP: [route: UI-GPS-generic]  
+[route: GPS\*] <-> [gui: UI-GPS-generic]
+
+WP: [route: UI-GPS-safety_score]  
+[route: GPS\*] -> [gui: UI-GPS-generic] -> [gui: UI-GPS-safety_score]
+
+WP: [route: safety_score-total]  
+[route: GPS-\*]     -> [model: safety_score-total] -> [display total score]  
+
+WP: [route: UI-recommend-simple]  
+[route,several: GPS-\*]     -> [model: safety_score-total,several] -> [model: safety_score-total] -> [display best total score out of several (i.e. find safest route out of multiple routes)]  
+
+WP: [route: safety_score-partial]  
+[route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]
+
+WP: [route: UI-recommend-complex]  
+[route,several: GPS-\*]     -> [model: safety_score-partial,several] -> [model: safety_score-partial] -> [display best combined scores out of several (i.e. combine safest sections of multiple routes into one route)]   
+
+
+
+### Roadmap
+
+**Strategy**: Each stage should result in a usable product while successively improving usabilty
+
+**Terminology**:
+* csv-file (csv) : comma-separate values file, such as a spreadsheet, in which data is separated by commas
+* model : data-processing script written in python which reads makes a prediction from provided data
+* route-mapper: tool with a map-like interface which returns GPS coordinates for manually selected locations on the map
+* route-planner: tool with a map-like interface which returns GPS coordinates for an automatically plotted route between manually specified beginning and ending locations.
+
+The following steps make sure to gradually improve the usability by implementing one feature at a time
+
+#### Critical Path
+The result is a tool which can score a route generated by a third-party route-planner, but still requires the user to pass in this data.
+
+0. current state: no route creation, no scoring
+* route: none, only overlays crash information on a map
+* UI: edit python model
+* data: csv-file of raw crash data, model-fit-data generated from test-train split
+* backend: read-in raw data csv-file, process raw data, fit model on test-train split
+* features: importance of features auto-determined from cross-validation
+* implements: basic python model, shows feature importance, map generation, 
+
+| inputs | -> [model] -> | output |
+| ------ | ----- | ------ | 
+| raw crash data | process, test-train split, fit | score |
+| features  | x-val to determine important features | |
+
+
+1. manual route creation from pre-defined coordinates, manual scoring  
+* route: user manually creates route from list of known intersections
+* UI: user hand-edits csv-file of known intersections, fills in missing data, e.g. weather, street condition, lighting, etc
+* data: TBD
+* backend: fit model on csv-file
+* implements: model fitting on pre-formatted GPS coordinate data, vs. fitting on test-train data
+* interfaces: csv-file, python model
+
+<!-- | features: user-input |  | score | -->
+| inputs | -> [model] -> | output |
+| ------ | ----- | ------ | 
+| features: user provided | combine with GPS-coords |  |
+| route: pre-defined GPS coords | simple fit | score |
+
+
+2. manual route creation from arbitrary coordinates, manual scoring  
+* route: user manually creates route using a route mapping software. TODO: e.g.?  
+* UI: user draws route by hand on a map, manually exports the list of GPS coordinates, then feeds them to tool.  
+* backend:
+  * fuzzy-match conversion of GPS coordinate input to "model-data" (csv or dataframe)  
+fuzzy-match GPS coordinates:  
+crash data GPS coordinates will not be exactly same as route-mapper GPS-coordinates. Therefore, imprecisely (fuzzy) compare user-input GPS coords to crash-data GPS coords to find closest match. Initially only perform this fuzzy match on intersection coordinates, as single-location coordinates can be harder to place precisely.  
+  * fit model on "model-data"
+* implements: model fitting on arbitrary GPS coordinate data, vs selection of pre-defined GPS data
+  * interface to third-party route-mapper
+  * fuzzy-match GPS coordinates
+* interfaces: external route-mapper, csv-file, python model
+
+| inputs | -> [model] -> | output |
+| ------ | ----- | ------ | 
+| features: user provided | combine with GPS-coords |  |
+| route: manually generated arbitrary GPS coords | fuzzy-match against existing data | score |
+
+3. automatic route creation from arbitrary destinations, manual scoring  
+* route: user automatically creates route using conventional route planning software.
+* UI: third-party tool creates route from user preferences, user manually exports the list of GPS coordinates, then feeds them to tool.  
+* backend:
+  * fuzzy-match conversion of GPS coordinate input to "model-data" (csv or dataframe)  
+  * fit model on "model-data"
+* implements: auto-generation of route GPS coordinates, vs hand-generation
+  * interface to third-party route-planner
+* enables: future automatic interface between tool and route-planner, without user as go-between
+* interfaces: external route-planner, csv-file, python model
+
+| inputs | -> [model] -> | output |
+| ------ | ----- | ------ | 
+| features: user provided | combine with GPS-coords |  |
+| route: automatically generated arbitrary GPS coords | fuzzy-match against existing data | score |
+
+About GPS-coordinates for intersections vs non-intersections:
+TBD
+
+
 # Time Plan for Master’s Project Proposal and Master’s Thesis
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 
@@ -200,6 +402,13 @@ models are incorrect
 <hr />
 
 # Future Work <!-- very flexible, most of plan will be here -->
+## Crash Data
+
+Add data on bike-lane presence
+
+Examine before/after lane reduction: car+car |vv|^^| => |cv|<>|vc| bike+car '|cv|' + turn lane '|<>|'
+studies show...
+
 ## Data Sources
 
 Use data from strava,mapmyride,etc to find the most common routes (among the users of these apps) and correlate with crash data
