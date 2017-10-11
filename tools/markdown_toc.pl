@@ -21,8 +21,30 @@ my $text;
 my %header_hash;
 #while (<>){
 @text = split("\n",$text);
+my $commentBegin = 0;
+my $commentEnd   = 0;
 for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
   my $line = $text[$lineNo];
+  # skip comments. simple match, i.e. will any line with a comment anywhere on it
+  #+ however, markdown doesn't allow this either:
+  #+ This markdown ...
+  #+ |## Data Sources <!--
+  #+ |-->
+  #+ ... renders in browser as:
+  #+ |Data Sources <!--
+  #+ |
+  #+ |-->
+  if($line =~ m/<!--/){
+    $commentBegin = 1;
+  }
+  if($line =~ m/-->/){
+    $commentBegin = 0;
+    $commentEnd = 1;
+  }
+  # remove any comments, e.g. if comment on one line:  |# Future Work <!-- -->
+  $line =~ s/<!--.*//;
+  next if($commentBegin);
+  # match headers
   if($line =~ m{
       ^(\#{1,6})  # $1 = string of #'s
       [ \t]*
