@@ -17,13 +17,10 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 <!--<toc_mini>-->
 * Introduction
 * Background and results to date
-* Goal
-* Data Driven Approach towards Improving Road Safety for Cyclists
-* * Purpose
-* * Goals:
-* * * interpret what makes roads safe
-* * * interpret how cyclists can ride defensively
-* * * design tool to help find safe routes
+* Goals
+* * Interpret What Makes Roads Safe
+* * Interpret How Cyclists Can Ride Defensively
+* * Design Tool To Help Find Safe Routes
 * Methodology
 * * Summary
 * * Model
@@ -50,6 +47,9 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 # Background and results to date
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
+<hr />
+
+**PROPOSAL DRAFT**  
 relevant work - misc traffic studies
 
 preliminary results - class project; outline goal and results; in the next section lead in to the remaining questions
@@ -63,33 +63,37 @@ This could then allow cyclists to plan their route based on time of day.
 https://nbviewer.jupyter.org/github/YoinkBird/dataMiningFinal/blob/master/Final.ipynb#Maps-of-Crashes 
 (caveat: these maps lump together all crashes from 2010-2017 and thereby hide any potential trends)
 
-# Goal
+**/PROPOSAL DRAFT**  
+
+<hr />
+
+# Goals
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 
 <hr />
 
-# Data Driven Approach towards Improving Road Safety for Cyclists
-**Section Overview:**
+**PROPOSAL DRAFT**  
+
+Title: Data Driven Approach towards Improving Road Safety for Cyclists  
+Intro: Purpose: Analyse available data to understand how crashes with other vehicles occur.  
+**Section Overview:**  
 <!--!toc_mini-->
 <!--<toc_mini>-->
-* Purpose
-* Goals:
-* * interpret what makes roads safe
-* * interpret how cyclists can ride defensively
-* * design tool to help find safe routes
+* Interpret What Makes Roads Safe
+* Interpret How Cyclists Can Ride Defensively
+* Design Tool To Help Find Safe Routes
 <!--</toc_mini>-->
-## Purpose
-Analyse available data to understand how crashes with other vehicles occur.
-## Goals:
-### interpret what makes roads safe
+## Interpret What Makes Roads Safe
 focus on "external" data features, e.g. weather, bike lane, speed limit
 possible break down by intersection and frequency of accidents
-### interpret how cyclists can ride defensively
+## Interpret How Cyclists Can Ride Defensively
 focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
 classification into "avoidable" and "avoidable" crashes
 e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
-### design tool to help find safe routes
+## Design Tool To Help Find Safe Routes
 e.g. assign safety score to routes provided by other tools
+
+**/PROPOSAL DRAFT**  
 
 <hr />
 
@@ -173,7 +177,11 @@ quicknote: browser-based application using python, html, javascript
 * Summarize the state of knowledge and understanding after the completion of your work.
 * Discuss the results and interpretation in light of the validity and accuracy of the data, methods and theories as well as any connections to other people’s work.
 * Explain where your research methodology could fail and what a negative result implies for your research question.
-* -->
+-->
+
+<hr />
+
+**PROPOSAL DRAFT**  
 
 read as "what is this going to change?"
 
@@ -186,6 +194,10 @@ methodology could fail if:
 significant crash data is missing, i.e. crashes which go unreported
 
 models are incorrect
+
+**/PROPOSAL DRAFT**  
+
+<hr />
 
 # Future Work <!-- very flexible, most of plan will be here -->
 ## Data Sources
