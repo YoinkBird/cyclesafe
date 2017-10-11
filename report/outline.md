@@ -36,6 +36,8 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 * * * Technology
 * Time Plan for Master’s Project Proposal and Master’s Thesis
 * Discussion / Conclusion
+* Future Work
+* * Data Sources
 * Acknowledgements
 * Reference & Literature (Bibliography)
 * Appendix
@@ -185,8 +187,9 @@ significant crash data is missing, i.e. crashes which go unreported
 
 models are incorrect
 
-# Future Work
+# Future Work <!-- very flexible, most of plan will be here -->
 ## Data Sources
+
 Use data from strava,mapmyride,etc to find the most common routes (among the users of these apps) and correlate with crash data
 
 # Acknowledgements
