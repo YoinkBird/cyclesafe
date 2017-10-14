@@ -164,19 +164,52 @@ two: create application with minimal functionality
 three: improve model accuracy
 
 
+## CRISP-DM
+
+This project will follow the CRISP-DM data mining process [@crispDmWiki]:
+
+[@crispDmWiki]: https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining "CRISP DM"
+
+
+TODO: 'business understanding' could be renamed as 'problem understanding', or even 'problem statement'
+
+1. Business Understanding
+2. Data Understanding
+     [prev:Acquisition] 
+     [prev:Analysis;swapped with 'Preprocessing']
+3. Data Preparation
+     [prev:Preprocessing;swapped with 'Analysis']
+4. Modeling
+     [prev:Model]
+5. Evaluation
+     [prev:Prediction]
+6. Deployment
+     [prev:Application]
+
+
 ## Model
+## Business Understanding
+
+## Data Understanding
 ### Acquisition
 quicknote: use available crash-data, augment with other data sources as necessary and as possible
 primary source: TxDOT data
-### Preprocessing
-summary: use python, pandas to ensure data is useful
 ### Analysis
 summary: use python, pandas, matplotlib to analyse data
+
+## Data Preparation
+### Preprocessing
+summary: use python, pandas to ensure data is useful
+
+## Modeling
 ### Model
 quicknote: use python data mining libraries to generate the model
 start with simple DecisionTree, move to more efficient models later
+
+## Evaluation
 ### Prediction
 
+## Deployment
 ## Application
 ### Technology
 quicknote: browser-based application using python, html, javascript
