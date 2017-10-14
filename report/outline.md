@@ -31,9 +31,16 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 * * * Prediction
 * * Application
 * * * Technology
+* * * Project Preparation Gantt Chart
+* * * Project Execution Gantt Chart
+* * * Work-Packages:
+* * * WP Deliverables:
+* * * Roadmap
+* * * * Critical Path
 * Time Plan for Master’s Project Proposal and Master’s Thesis
 * Discussion / Conclusion
 * Future Work
+* * Crash Data
 * * Data Sources
 * Acknowledgements
 * Reference & Literature (Bibliography)
@@ -111,6 +118,12 @@ e.g. assign safety score to routes provided by other tools
 * * Prediction
 * Application
 * * Technology
+* * Project Preparation Gantt Chart
+* * Project Execution Gantt Chart
+* * Work-Packages:
+* * WP Deliverables:
+* * Roadmap
+* * * Critical Path
 <!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
