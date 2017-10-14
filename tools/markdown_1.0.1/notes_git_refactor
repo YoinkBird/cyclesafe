@@ -1,0 +1,39 @@
+splitting commit
+
+git rebase -i SHA1^^
+
+mark top two for edit
+
+now command-history (arrow up or ctlr+r) to get SHA1
+git checkout -p SHA1 <path>
+minimal: git checkout -p SHA1
+
+# can either edit patch or edit file
+
+particular case: remove all but the initial custom syntax
+g!/^.HH\|^.#/d
+also changed name
+
+
+# stage 
+
+# commit. --date=now to update the date
+git commit -c SHA1 --date=now
+
+# continue
+git rebase --continue
+
+## SHA2
+# edit message or file if needed
+particular case: have to make rename consistent
+git mv -f outline.md outline.ymd
+
+# change the commit (sha2)
+git commit --amend
+# verify with git show HEAD
+
+
+# continue /finalise
+git rebase --continue
+
+# note - due to rename, had to clean up a few future commits which had also done the rename
