@@ -644,6 +644,92 @@ print(" create an X_test_gps_coord of crash-data entries and then clf.predict(X_
 print("may have to remove 'manner of collision' and other after-the fact features. see 'post-fact' in feature_definitions.py")
 print("################################################################################")
 
+print("################################################################################")
+print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route ")
+print("################################################################################")
+# dump out file which contains values whch can be provided by user/tool/etc
+#+ user is expected to plan their route by selecting intersections and deleting the remaining columns
+#+ note - this is a WIP, just to illustrate the type of data needed, still needs to be claned up.
+#+ e.g. user won't remove columns based on 'crash_year', or know the 'manner_of_collision', but these values could be useful yet
+#+ e.g. user can enter the time they are going to travel, but doesn't remove cols based on 'crash_time'.
+#+ in that sense, some cols are for conveying info to user, some are for user to input info
+#+ won't change this format though, since this is just a bootstrapping procedure to get this code to correlate user input with existing data
+
+# hard-code:
+# step 1: dump valid, then read in, score, etc
+# step 2: edit dump, feed into 'step 1'
+
+# organisation: relative importance roughly from left->right in the resulting csv
+#+ route most important, on the left
+#+ weather, time, etc easy to provide, next left
+#+ remaining unsure data, all on the right
+# Note: order etc subject to change based on the model. Starting with the basic model for now, moving on from there
+# TODO: this is hard-coded based on deciding which options are not needed. find a way to use featdef to get these features. May need to compare the columns to the following output to determine the pattern. 
+# +TODO: -or- BETTER IDEA -  only dump the predictors, which is the better idea
+temp_user_csv_name="route_planner_options.csv"
+data[[
+    'latitude' ,
+    'longitude' ,
+    'intersecting_street_name' ,  # required
+    'street_name' ,               # required
+    #----
+    'crash_time' ,                # meant as 'time of travel' 
+    'light_condition' ,           # user should know this, but ultimately it can be looked up based on time?
+    'weather_condition' ,         # good to know
+    'surface_condition' ,         # not always known, but maybe?
+    'day_of_week' ,               # less relevant for immediate route planning
+    #----
+    'intersection_related' ,      # user won't know, but maybe model can
+    'manner_of_collision' ,       # leaving here to indicate that model may be able to predict what to watch out for 
+    'crash_datetime' ,            # enter exact time ... I think preproc can handle this conversion, actually
+    'crash_time_30m',             # probably irrelevant? maybe easier for planning purposes
+    'crash_year' ,                # irrelevant, may be needed later for granularity
+    ]].to_csv(temp_user_csv_name)
+# ^^^ IGNORING FOR NOW ^^^^ 
+#+ the human-readable model only has three predictors, start with that and get complex later
+
+########################################
+# prepare model
+########################################
+# current SIMPLE user input:
+#+ use the generate_human_readable_dectree model, which has only three features
+# get a copy of the complete model which was run on the entire dataset
+model_clf_simple = generate_human_readable_dectree(data, data_dummies, featdef)
+
+# user-required data will be based on model's features
+#+ TODO: the model features are copy-pasted from generate_human_readable_dectree, make this flexible!
+#+ +TODO otherwise we have to manually update hard-coded values, no fun. 
+predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
+responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
+
+########################################
+# interact with user
+########################################
+# generate the "user interface", a spreadsheet with all of the options
+# TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
+data[predictors].to_csv(temp_user_csv_name)
+
+                                # make user data useful
+
+# drop NA inputs, can't assume user data is correct!
+#+ for better code clarity, could do this in two steps with dropna(inplace=True)
+user_route_data = pd.read_csv(temp_user_csv_name).dropna()
+
+########################################
+# scoring the route, assume sanitised input
+########################################
+# extract relevant data for scoring
+X_test = user_route_data[predictors]
+
+## prediction and scoring
+#noNeedHere-onlyForModelGen# print("-I-: cross_val_score on train (itself)")
+#noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_train, y_train.values.ravel()))
+y_pred = model_clf_simple.predict_proba(X_test)
+#PROBABLY-noNeedHere-onlyForModelGen# print("-I-: cross_val_score against test")
+#PROBABLY-noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_test, y_test.values.ravel()))
+#PROBABLY-noNeedHere-onlyForModelGen# cm = confusion_matrix(y_test,model_clf_simple.predict(X_test))
+#PROBABLY-noNeedHere-onlyForModelGen# plot_confusion_matrix(cm,classes=['fubar','aight'])
+#PROBABLY-noNeedHere-onlyForModelGen# plt.show()
 
 # miscellaneous
 '''
