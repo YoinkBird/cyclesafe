@@ -163,12 +163,19 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
     return (predictors,responsecls)
 
 # <def_generate_clf_scatter_plot>
-def generate_clf_scatter_plot(featdef, data_dummies):
+def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
+    from sklearn import tree
+    from sklearn.metrics import confusion_matrix
     print("simple scatter plot")
     validfeats = featdef[(featdef.regtype != False) & (featdef.type == 'int') & (featdef.dummies == False)]
     # define predictors and response
+    # predictors:
+    # note: removing some features which have too many missing entries: 'average_daily_traffic_amount' and 'average_daily_traffic_year'
+    # TODO: hard-coding is bad - find a way to automatically remove features with too few values
+    print("-I-: manually excluding some features which have too many missing entries: 'average_daily_traffic_amount' and 'average_daily_traffic_year'")
     predictors  = list(featdef[(featdef.regtype != False) & (featdef.target != True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat') & (featdef.type == 'int') & ((featdef.index != 'average_daily_traffic_amount') & (featdef.index != 'average_daily_traffic_year')) ].index)
-    responsecls = list(featdef[(featdef.regtype != False) & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat') & (featdef.type == 'int') & (featdef.origin == 'crash_severity')].index)
+    # response class:
+    responsecls = list(featdef[(featdef.regtype != False) & (featdef.target == True) & (featdef.dummies == False) & (featdef.regtype != 'bin_cat') & (featdef.type == 'int') & (featdef.origin == target_feat)].index)
     #hack, not needed now: responsecls = ['crash_severity']
     if(1):
         print("##############")
@@ -184,8 +191,8 @@ def generate_clf_scatter_plot(featdef, data_dummies):
     #         if(row[cat] == 1):
     #             return cat
     testsize = 0.3
-    # data_nonan = data[ predictors + responsecls ].dropna()
-    data_nonan = df_int_nonan
+#    # data_nonan = data[ predictors + responsecls ].dropna()
+#    data_nonan = df_int_nonan
     # get dummies for this particular case
     #(data_dummies,featdef) = featdef_get_dummies(
     #        data[ predictors + responsecls ].dropna(),
@@ -255,6 +262,12 @@ if(0):
 
 # dummies - new method
 (data_dummies,featdef) = featdef_get_dummies(data,featdef)
+
+# basic analysis of target variable 'crash_severity'
+print("################################################################################")
+print("-I-: printing scatter plot for feature 'crash_severity'")
+generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
+print("################################################################################")
 
 # verify
 validpreds = len(list(featdef[(featdef.type == 'int') & (featdef.target != True)].index))
@@ -491,7 +504,6 @@ graph = pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png() , retina=True)
 print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
 print("-I-: End of File")
-generate_clf_scatter_plot(featdef, data_dummies)
 
 # miscellaneous
 '''
