@@ -270,6 +270,8 @@ generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
 print("################################################################################")
 
 # verify
+print("################################################################################")
+print("-I-:" + "data processing and verification")
 validpreds = len(list(featdef[(featdef.type == 'int') & (featdef.target != True)].index))
 validtargs = len(list(featdef[(featdef.type == 'int') & (featdef.target == True)].index))
 invalfeats = len(list(featdef[(featdef.type != 'int') & (featdef.dummies != True)].index))
@@ -289,6 +291,7 @@ if(df_int_nonan.shape[1] == df_int.shape[1]):
   print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
 else:
   print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+print("################################################################################")
 
 # pca stub
 # pca = decomposition.PCA(svd_solver='full')
@@ -300,6 +303,8 @@ else:
 # i.e. initially many features also have many NaN so the dataset is smaller
 # 
 if(1):
+    print("################################################################################")
+    print("-I-: " + "Determination of Strongest Features")
     print(" ################################################################################")
     print("-I-: DecisionTree")
     print("-I-: First Run")
@@ -383,7 +388,7 @@ if(1):
     0.9996 0.0802  2231  2232 bin_intersection_related
     1.0000 0.0741  2232  2232 day_of_week_thursday
     '''
-    print(" ################################################################################")
+    print("################################################################################")
 
     # Next step: train-test split
     print("-I-: train-test split")
@@ -422,9 +427,13 @@ if(1):
     plot_confusion_matrix(cm,classes=['fubar','aight'])
     plt.show()
 
+#/end of determining strong features
+print("################################################################################")
 
 
 
+print("################################################################################")
+print("-I-:" + "Simple DecisionTree for binary features")
 print("-I-: train-test split")
 # predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
 # responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
@@ -458,6 +467,7 @@ plt.show()
 
 # DOC: How to interpret decision trees' graph results and find most informative features?
 # src: http://stackoverflow.com/a/34872454
+print("################################################################################")
 print("-I-: most important features:")
 for i in np.argsort(clf.feature_importances_)[::-1]:
   print("%f : %s" % (clf.feature_importances_[i],predictors[i]))
@@ -474,6 +484,7 @@ for i in np.argsort(clf.feature_importances_)[::-1]:
       data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
   plt.show()
 
+print("--------------------------------------------------------------------------------")
 print("time of day:")
 ax_time = get_ax_time(
         interval = '24h',
@@ -487,6 +498,8 @@ plt.show()
 # /plotting important features
 
 # display tree criteria
+print("--------------------------------------------------------------------------------")
+print("-I-: decision tree tree of binary features")
 # src: http://scikit-learn.org/stable/modules/tree.html#classification
 from IPython.display import (Image,display)
 # pydot plus had to be installed as python -m pip
