@@ -16,6 +16,11 @@ import re
 
 import os,sys
 
+# global options
+options = {
+        'graphics' : 0, # 0 - disable, 1 - enable
+        }
+
 #<def_model_prepare>
 def model_prepare():
     ################################################################################
@@ -228,19 +233,21 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
     rfecv.fit(X_full,y_full.values.ravel())
 
     # Plot number of features VS. cross-validation scores
-    plt.figure()
-    plt.xlabel("Number of features selected")
-    plt.ylabel("Cross validation score (nb of correct classifications)")
-    # TODO: plot the feature names at 45deg angle under the numbers
-    plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
-    plt.show()
+    if (options['graphics'] == 1):
+        plt.figure()
+        plt.xlabel("Number of features selected")
+        plt.ylabel("Cross validation score (nb of correct classifications)")
+        # TODO: plot the feature names at 45deg angle under the numbers
+        plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+        plt.show()
     print("Optimal number of features : %d" % rfecv.n_features_)
 
     # print important features
     print("-I-: most important features:")
     clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
-    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
+    if (options['graphics'] == 1):
+        ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
+        plt.show()
 
     print("-I-: examining most important features:")
     print("ratio  score   non-nan total feature")
@@ -308,7 +315,8 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
 
     cm = confusion_matrix(y_test,clf.predict(X_test))
     plot_confusion_matrix(cm,classes=clf.classes_)
-    plt.show()
+    if (options['graphics'] == 1):
+        plt.show()
 # </def_generate_clf_scatter_plot>
 ################################################################################
 # /FUNCTIONS
@@ -443,8 +451,9 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     # plot important features
     print("-I-: most important features:")
     clf_imp_feats = print_model_feats_important(clf, predictors)
-    ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
-    plt.show()
+    if (options['graphics'] == 1):
+        ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
+        plt.show()
 
     # print strong categories+features
     strongest_cats = {}
@@ -477,14 +486,16 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     #+ the pie chart also confines the visualisation to a fixed area, thereby creating a simple overview.
     #+ a bar chart could also work, but the widths of the diagrams would vary with cardinality and 
     #+   somewhat hides the cumulation of the values with fewer entries as several small-ish bars
-    print_imp_feats_piecharts(data,featdef, clf,predictors)
+    if (options['graphics'] == 1):
+        print_imp_feats_piecharts(data,featdef, clf,predictors)
 
     print("-I-:" + "model accuracy:")
     y_pred = clf.predict(X_test)
     clf.fit(X_train,y_train)
     cm = confusion_matrix(y_test,clf.predict(X_test))
     plot_confusion_matrix(cm,classes=['fubar','aight'])
-    plt.show()
+    if (options['graphics'] == 1):
+        plt.show()
 #/end of determining strong features
 #</def_manual_analyse_strongest_predictors>
 
@@ -546,7 +557,8 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
     cm = confusion_matrix(y_test,clf.predict(X_test))
     plot_confusion_matrix(cm,classes=['fubar','aight'])
-    plt.show()
+    if (options['graphics'] == 1):
+        plt.show()
 
     # DOC: How to interpret decision trees' graph results and find most informative features?
     # src: http://stackoverflow.com/a/34872454
@@ -555,52 +567,53 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
     for i in np.argsort(clf.feature_importances_)[::-1]:
       print("%f : %s" % (clf.feature_importances_[i],predictors[i]))
 
-    # plotting important features
-    for i in np.argsort(clf.feature_importances_)[::-1]:
-      feat = predictors[i]
-      #feat = predictors[i].replace('bin_','')
-      pltkind = 'pie'
-      if(featdef.ix[feat].origin):
-          feat_orig = featdef.ix[predictors[i]].origin
-          data[feat_orig].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
-      else:
-          data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
-      plt.show()
+    if (options['graphics'] == 1):
+        # plotting important features
+        for i in np.argsort(clf.feature_importances_)[::-1]:
+          feat = predictors[i]
+          #feat = predictors[i].replace('bin_','')
+          pltkind = 'pie'
+          if(featdef.ix[feat].origin):
+              feat_orig = featdef.ix[predictors[i]].origin
+              data[feat_orig].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
+          else:
+              data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
+          plt.show()
 
-    print("--------------------------------------------------------------------------------")
-    print("time of day:")
-    ax_time = get_ax_time(
-            interval = '24h',
-            title = 'Frequency of Bike Crashes For Time of Day (2010-2017)',
-            xlabel = 'Time of Day (24 hr)',
-            ylabel = 'count',
-            )
-    data.crash_time.hist(bins=48,ax=ax_time)
-    plt.show()
-    # data.crash_time_30m.value_counts(sort=False).plot(kind='pie');plt.show()
-    # /plotting important features
+        print("--------------------------------------------------------------------------------")
+        print("time of day:")
+        ax_time = get_ax_time(
+                interval = '24h',
+                title = 'Frequency of Bike Crashes For Time of Day (2010-2017)',
+                xlabel = 'Time of Day (24 hr)',
+                ylabel = 'count',
+                )
+        data.crash_time.hist(bins=48,ax=ax_time)
+        plt.show()
+        # data.crash_time_30m.value_counts(sort=False).plot(kind='pie');plt.show()
+        # /plotting important features
 
-    # display tree criteria
-    print("--------------------------------------------------------------------------------")
-    print("-I-: decision tree tree of binary features")
-    # src: http://scikit-learn.org/stable/modules/tree.html#classification
-    from IPython.display import (Image,display)
-    # pydot plus had to be installed as python -m pip
-    # src : http://stackoverflow.com/a/42469100
-    import pydotplus
-    dot_data = tree.export_graphviz(clf, out_file=None,
-            feature_names=predictors,
-            class_names=['0']+responsecls, # seems to require at least two class names
-            rounded=True,
-            filled=True,
-            # proportion = True,  : bool, optional (default=False) When set to True, change the display of ‘values’ and/or ‘samples’ to be proportions and percentages respectively.
+        # display tree criteria
+        print("--------------------------------------------------------------------------------")
+        print("-I-: decision tree tree of binary features")
+        # src: http://scikit-learn.org/stable/modules/tree.html#classification
+        from IPython.display import (Image,display)
+        # pydot plus had to be installed as python -m pip
+        # src : http://stackoverflow.com/a/42469100
+        import pydotplus
+        dot_data = tree.export_graphviz(clf, out_file=None,
+                feature_names=predictors,
+                class_names=['0']+responsecls, # seems to require at least two class names
+                rounded=True,
+                filled=True,
+                # proportion = True,  : bool, optional (default=False) When set to True, change the display of ‘values’ and/or ‘samples’ to be proportions and percentages respectively.
 
-            )
-    graph = pydotplus.graph_from_dot_data(dot_data)
-    display(Image(graph.create_png() , retina=True))
-    # vvv resolved, thanks to src: https://stackoverflow.com/a/35210224 vvv
-    #print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
-    # /display tree criteria
+                )
+        graph = pydotplus.graph_from_dot_data(dot_data)
+        display(Image(graph.create_png() , retina=True))
+        # vvv resolved, thanks to src: https://stackoverflow.com/a/35210224 vvv
+        #print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
+        # /display tree criteria
 
     # return the model
     return clf
