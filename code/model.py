@@ -473,18 +473,24 @@ print("-I-:" + "Simple DecisionTree for binary features")
 #+ while this does reduce the effectiveness, so does adding even more features.
 #+ currently, this includes all available binary features.
 print("-I-: train-test split")
-# predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
-# responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
-predictors = [
-# 'crash_time',
-# 'crash_time_dec',
- 'bin_intersection_related',
- 'bin_light_condition',
- 'bin_manner_of_collision',
- ]
-responsecls = [
- 'bin_crash_severity'
- ]
+# vvv no longer needed, as far as I can tell. commenting out just in case I am overlooing something vvv
+## predictors = [
+## # 'crash_time',
+## # 'crash_time_dec',
+##  'bin_intersection_related',
+##  'bin_light_condition',
+##  'bin_manner_of_collision',
+##  ]
+## responsecls = [
+##  'bin_crash_severity'
+##  ]
+# now handled by 'featdef'
+print("automatic predictors + responsecls")
+predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
+responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
+pp.pprint(predictors)
+pp.pprint(responsecls)
+
 testsize = 0.3
 data_nonan = data[ predictors + responsecls ].dropna()
 X_train, X_test, y_train, y_test = model_selection.train_test_split(data_nonan[predictors],data_nonan[responsecls], test_size=testsize)
