@@ -15,7 +15,10 @@ import re
 #import xgboost as xgb
 
 import os,sys
-# import the "crash" data
+################################################################################
+# DATA : IMPORT , PROCESSING, FEATURE DEFINITION
+################################################################################
+# IMPORT the crash data
 curdir=os.path.split(__file__)[0]
 datadir=os.path.split(curdir)[0] + "/data"
 datafile = "my_map_grid.csv"
@@ -25,12 +28,90 @@ if(0):
   pp.pprint(sys.path)
 
 
-# get clean data
+# PROCESSING: get clean data
 (data,featdef) = preprocess_data(datafile)
 
-# add binary categories
+# FEATURE DEFINITION: add binary categories
 (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=1)
+################################################################################
+# /DATA : IMPORT , PROCESSING, FEATURE DEFINITION
+################################################################################
 
+################################################################################
+# DATA : EXPLORATION (chapter 3.5)
+################################################################################
+show_data_vis = 0
+show_data_piv = 0
+if(show_data_vis):
+    print("########################################")
+    print(data.head())
+    print(data.info())
+    if(1):
+      data.describe()
+      data.hist()
+      data.corr().plot() # TODO: seaborn
+      plt.show()
+      # inspect features with high covariance
+      pairplot_bin_var_list = list(featdef[featdef['pairplot']].index)
+      if(0):
+          sns.pairplot(data, vars=pairplot_var_list)
+          plt.show()
+    else:
+      print("-I-: Skipping...")
+    print("########################################")
+
+if(show_data_piv):
+    # alternative visualisation
+    datapt = data.pivot_table(values=['crash_death_count','crash_incapacitating_injury_count','crash_non-incapacitating_injury_count'], index=['speed_limit','crash_time'])
+    print(datapt)
+
+
+if(0):
+    # list of vars which become dummie'd
+    dummies_needed_list = list(featdef[featdef.dummies == 1].index)
+
+    # dummies
+    # http://stackoverflow.com/a/36285489 - use of columns
+    data_dummies = pd.get_dummies(data, columns=dummies_needed_list)
+    # no longer need to convert headers, already done in process_data_punctuation
+    pp.pprint(list(data_dummies))
+
+# dummies - new method
+(data_dummies,featdef) = featdef_get_dummies(data,featdef)
+
+# basic analysis of target variable 'crash_severity'
+print("################################################################################")
+print("-I-: printing scatter plot for feature 'crash_severity'")
+generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
+print("################################################################################")
+
+# verify
+print("################################################################################")
+print("-I-:" + "data processing and verification")
+validpreds = len(list(featdef[(featdef.type == 'int') & (featdef.target != True)].index))
+validtargs = len(list(featdef[(featdef.type == 'int') & (featdef.target == True)].index))
+invalfeats = len(list(featdef[(featdef.type != 'int') & (featdef.dummies != True)].index))
+alldummies = data_dummies.shape[1]
+print("valid+string %d / %d total" % (validpreds+validtargs+invalfeats, alldummies))
+# any non-dummy & integer type
+if(0):
+    print(data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].info())
+
+# mainly integer data
+data_int_list = list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)
+df_int = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)]
+# Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
+df_int_nonan = df_int.dropna()
+print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
+if(df_int_nonan.shape[1] == df_int.shape[1]):
+  print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+else:
+  print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+print("################################################################################")
+
+################################################################################
+# FUNCTIONS
+################################################################################
 def dectree_evaluate_cv_strategy(X_full, y_full):
   # Recursive Feature Elimination CV
   # http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_with_cross_validation.html#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py
@@ -224,81 +305,21 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
     plot_confusion_matrix(cm,classes=clf.classes_)
     plt.show()
 # </def_generate_clf_scatter_plot>
+################################################################################
+# /FUNCTIONS
+################################################################################
 
-show_data_vis = 0
-show_data_piv = 0
-if(show_data_vis):
-    print("########################################")
-    print(data.head())
-    print(data.info())
-    if(1):
-      data.describe()
-      data.hist()
-      data.corr().plot() # TODO: seaborn
-      plt.show()
-      # inspect features with high covariance
-      pairplot_bin_var_list = list(featdef[featdef['pairplot']].index)
-      if(0):
-          sns.pairplot(data, vars=pairplot_var_list)
-          plt.show()
-    else:
-      print("-I-: Skipping...")
-    print("########################################")
-
-if(show_data_piv):
-    # alternative visualisation
-    datapt = data.pivot_table(values=['crash_death_count','crash_incapacitating_injury_count','crash_non-incapacitating_injury_count'], index=['speed_limit','crash_time'])
-    print(datapt)
-
-
-if(0):
-    # list of vars which become dummie'd
-    dummies_needed_list = list(featdef[featdef.dummies == 1].index)
-
-    # dummies
-    # http://stackoverflow.com/a/36285489 - use of columns
-    data_dummies = pd.get_dummies(data, columns=dummies_needed_list)
-    # no longer need to convert headers, already done in process_data_punctuation
-    pp.pprint(list(data_dummies))
-
-# dummies - new method
-(data_dummies,featdef) = featdef_get_dummies(data,featdef)
-
-# basic analysis of target variable 'crash_severity'
-print("################################################################################")
-print("-I-: printing scatter plot for feature 'crash_severity'")
-generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
-print("################################################################################")
-
-# verify
-print("################################################################################")
-print("-I-:" + "data processing and verification")
-validpreds = len(list(featdef[(featdef.type == 'int') & (featdef.target != True)].index))
-validtargs = len(list(featdef[(featdef.type == 'int') & (featdef.target == True)].index))
-invalfeats = len(list(featdef[(featdef.type != 'int') & (featdef.dummies != True)].index))
-alldummies = data_dummies.shape[1]
-print("valid+string %d / %d total" % (validpreds+validtargs+invalfeats, alldummies))
-# any non-dummy & integer type
-if(0):
-    print(data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].info())
-
-# mainly integer data
-data_int_list = list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)
-df_int = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)]
-# Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
-df_int_nonan = df_int.dropna()
-print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
-if(df_int_nonan.shape[1] == df_int.shape[1]):
-  print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-else:
-  print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
-print("################################################################################")
-
+################################################################################
+# MODELS - various
+################################################################################
 # pca stub
 # pca = decomposition.PCA(svd_solver='full')
 # pca.fit(pd.get_dummies(data[dummies_needed_list])).transform(pd.get_dummies(data[dummies_needed_list]))
 
 
+################################################################################
+# MODEL+EVALUATION - identify strong features
+################################################################################
 # strategy:
 # successively (eventually recursively?) get best predictors while increasing size of dataset
 # i.e. initially many features also have many NaN so the dataset is smaller
@@ -463,9 +484,15 @@ else:
 
 #/end of determining strong features
 print("################################################################################")
+################################################################################
+# MODEL+EVALUATION - identify strong features
+################################################################################
 
 
 
+################################################################################
+# MODEL+EVALUATION - human readable
+################################################################################
 print("################################################################################")
 print("-I-:" + "Simple DecisionTree for binary features")
 # this model is for human-consumption by generating a human-readable decision tree
@@ -562,6 +589,9 @@ display(Image(graph.create_png() , retina=True))
 # vvv resolved, thanks to src: https://stackoverflow.com/a/35210224 vvv
 #print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
 # /display tree criteria
+################################################################################
+# /MODEL+EVALUATION - human readable
+################################################################################
 print("################################################################################")
 print("-I-: End of File")
 
