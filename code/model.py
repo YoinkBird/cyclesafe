@@ -4,6 +4,7 @@ from feature_definitions import *
 from txdot_parse import *
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import (metrics, model_selection, linear_model, preprocessing, ensemble, neighbors, decomposition)
+from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import seaborn as sns
@@ -302,9 +303,11 @@ print("#########################################################################
 # successively (eventually recursively?) get best predictors while increasing size of dataset
 # i.e. initially many features also have many NaN so the dataset is smaller
 # 
-if(1):
-    print("################################################################################")
-    print("-I-: " + "Determination of Strongest Features")
+print("################################################################################")
+print("-I-: " + "Determination of Strongest Features")
+if(0):
+    print("-I-: " + "skipping ...")
+else:
     print(" ################################################################################")
     print("-I-: DecisionTree")
     print("-I-: First Run")
@@ -454,7 +457,6 @@ if(1):
     print("-I-:" + "model accuracy:")
     y_pred = clf.predict(X_test)
     clf.fit(X_train,y_train)
-    from sklearn.metrics import confusion_matrix
     cm = confusion_matrix(y_test,clf.predict(X_test))
     plot_confusion_matrix(cm,classes=['fubar','aight'])
     plt.show()
