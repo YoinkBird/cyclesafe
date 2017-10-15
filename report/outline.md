@@ -23,13 +23,22 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 * * Design Tool To Help Find Safe Routes
 * Methodology
 * * Summary
-* * Model
-* * * Acquisition
-* * * Preprocessing
-* * * Analysis
-* * * Model
-* * * Prediction
-* * Application
+* * CRISP-DM
+* * Business Understanding
+* * * Problem Statement
+* * * Feasibility Assessment
+* * Data Understanding - Analysis
+* * * Analytics Base Table
+* * * Feature Implementation
+* * * Data Acquisition
+* * * Data Quality Report
+* * Data Preparation
+* * * Data Quality Issues
+* * * * Identified
+* * * * Fixed
+* * Modeling
+* * Evaluation
+* * Deployment
 * * * Technology
 * * * Project Preparation Gantt Chart
 * * * Project Execution Gantt Chart
@@ -110,13 +119,22 @@ e.g. assign safety score to routes provided by other tools
 <!--!toc_mini-->
 <!--<toc_mini>-->
 * Summary
-* Model
-* * Acquisition
-* * Preprocessing
-* * Analysis
-* * Model
-* * Prediction
-* Application
+* CRISP-DM
+* Business Understanding
+* * Problem Statement
+* * Feasibility Assessment
+* Data Understanding - Analysis
+* * Analytics Base Table
+* * Feature Implementation
+* * Data Acquisition
+* * Data Quality Report
+* Data Preparation
+* * Data Quality Issues
+* * * Identified
+* * * Fixed
+* Modeling
+* Evaluation
+* Deployment
 * * Technology
 * * Project Preparation Gantt Chart
 * * Project Execution Gantt Chart
