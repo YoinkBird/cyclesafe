@@ -171,46 +171,95 @@ This project will follow the CRISP-DM data mining process [@crispDmWiki]:
 [@crispDmWiki]: https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining "CRISP DM"
 
 
-TODO: 'business understanding' could be renamed as 'problem understanding', or even 'problem statement'
-
 1. Business Understanding
 2. Data Understanding
-     [prev:Acquisition] 
-     [prev:Analysis;swapped with 'Preprocessing']
 3. Data Preparation
-     [prev:Preprocessing;swapped with 'Analysis']
 4. Modeling
-     [prev:Model]
 5. Evaluation
-     [prev:Prediction]
 6. Deployment
-     [prev:Application]
 
 
-## Model
 ## Business Understanding
+ABOUT: 'business' not to be taken literally, just means the environment in which the problem exists
 
-## Data Understanding
-### Acquisition
+<!-- 2 Data to Insights to Decisions -->
+<!-- 2.1 Converting Business Problems into Analytics Solutions -->
+<!-- 2.2 Assessing Feasibility -->
+### Problem Statement
+### Feasibility Assessment
+
+## Data Understanding - Analysis
+summary: use python, pandas, matplotlib to analyse data
+<!--
+2.3 Analytics Base Table
+This work sits primarily in the Data Understanding phase
+2.4 Designing and Implementing Features
+2.4.5 Implementing Features
+-->
+### Analytics Base Table
+Choose prediction subject, one-row-per-subject
+determine domain concepts for features
+
+### Feature Implementation
+ABOUT: i.e. choose or create features for ABT
+proxy features
+Consider:
+data availability
+timing of data
+longevity of data
+
+Then: how are new features created? e.g. impute mph, create binary categories, etc
+
+availability:
+#### Data Acquisition
+TODO: this needs to be more along the lines of "which data sources readily exist" or "which were considered"
+the later section 'feature implementation' deals with availability, at which point the choice of data-source can be stated
 quicknote: use available crash-data, augment with other data sources as necessary and as possible
 primary source: TxDOT data
-### Analysis
-summary: use python, pandas, matplotlib to analyse data
+
+
+<!-- 3 Data Exploration -->
+<!-- 3.1 The Data Quality Report -->
+### Data Quality Report
+ABOUT: i.e. quality of selected features
+<!-- 3.2 Getting to Know the Data -->
+<!-- 3.2.1 The Normal Distribution -->
 
 ## Data Preparation
-### Preprocessing
 summary: use python, pandas to ensure data is useful
+<!-- counting "quality issues" as part of crisp-dm preparation" to keep 'quality found' and 'quality fixed' together; may need to change this mentality -->
+### Data Quality Issues
+<!-- 3.3 Identifying Data Quality Issues -->
+#### Identified
+<!-- 3.3.1 Missing Values -->
+<!-- 3.3.2 Irregular Cardinality -->
+<!-- 3.3.3 Outliers -->
+<!-- 3.4 Handling Data Quality Issues -->
+#### Fixed
+<!-- 3.4.1 Handling Missing Values -->
+<!-- 3.4.2 Handling Outliers -->
+<!--
+3.5 Advanced Data Exploration
+3.5.1 Visualizing Relationships Between Features
+3.5.2 Measuring Covariance and Correlation
+-->
+<!--
+3.6 Data Preparation
+3.6.1 Normalization
+3.6.2 Binning
+3.6.3 Sampling
+-->
 
 ## Modeling
-### Model
 quicknote: use python data mining libraries to generate the model
 start with simple DecisionTree, move to more efficient models later
 
 ## Evaluation
-### Prediction
+ABOUT: Prediction, cv, etc
 
 ## Deployment
-## Application
+ABOUT: the application of the 'analytics solution'
+aka Application
 ### Technology
 quicknote: browser-based application using python, html, javascript
 
