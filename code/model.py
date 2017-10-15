@@ -418,8 +418,15 @@ if(1):
     ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
     plt.show()
 
+    # print pie-charts for each important feature.
+    #+ why, you ask? pie chart shows the values as a direct ratio with each other.
+    #+ It also effectively highlights the total amount of values with fewer entries as it is simple to estimate them together as one 'slice'
+    #+ the pie chart also confines the visualisation to a fixed area, thereby creating a simple overview.
+    #+ a bar chart could also work, but the widths of the diagrams would vary with cardinality and 
+    #+   somewhat hides the cumulation of the values with fewer entries as several small-ish bars
     print_imp_feats_piecharts(data,featdef, clf,predictors)
 
+    print("-I-:" + "model accuracy:")
     y_pred = clf.predict(X_test)
     clf.fit(X_train,y_train)
     from sklearn.metrics import confusion_matrix
@@ -434,6 +441,10 @@ print("#########################################################################
 
 print("################################################################################")
 print("-I-:" + "Simple DecisionTree for binary features")
+# this model is for human-consumption by generating a human-readable decision tree
+#+ as such, it focuses only on binary choices to reduce the complexity
+#+ while this does reduce the effectiveness, so does adding even more features.
+#+ currently, this includes all available binary features.
 print("-I-: train-test split")
 # predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
 # responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
