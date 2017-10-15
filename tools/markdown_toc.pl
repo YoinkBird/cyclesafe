@@ -99,7 +99,10 @@ sub get_mini_toc{
     }
     $prevHighest = $cur_lev;
     # print($ul_li . "\n";
-    my $ul_li = sprintf('* ' x ($cur_lev - $startLevel + 1) . $header_hash{$ln}{'text'});
+    # vvv don't need leading '*' vvv
+    # my $ul_li = sprintf('* ' x ($cur_lev - $startLevel + 1) . $header_hash{$ln}{'text'});
+    # vvv indent by level-num spaces, then add '* ' vvv
+    my $ul_li = sprintf('  ' x ($cur_lev - $startLevel + 0) . '* ' . $header_hash{$ln}{'text'});
     push(@ul_arr, $ul_li);
 
   }
