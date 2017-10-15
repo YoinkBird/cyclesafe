@@ -327,15 +327,12 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
 ################################################################################
 # MODEL+EVALUATION - identify strong features
 ################################################################################
+#<def_manual_analyse_strongest_predictors>
 # strategy:
 # successively (eventually recursively?) get best predictors while increasing size of dataset
 # i.e. initially many features also have many NaN so the dataset is smaller
 # 
-print("################################################################################")
-print("-I-: " + "Determination of Strongest Features")
-if(1):
-    print("-I-: " + "skipping ...")
-else:
+def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef):
     print(" ################################################################################")
     print("-I-: DecisionTree")
     print("-I-: First Run")
@@ -488,13 +485,19 @@ else:
     cm = confusion_matrix(y_test,clf.predict(X_test))
     plot_confusion_matrix(cm,classes=['fubar','aight'])
     plt.show()
-
 #/end of determining strong features
-print("################################################################################")
+#</def_manual_analyse_strongest_predictors>
+
 ################################################################################
 # MODEL+EVALUATION - identify strong features
 ################################################################################
-
+print("################################################################################")
+print("-I-: " + "Determination of Strongest Features")
+if(0):
+    manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
+else:
+    print("-I-: " + "skipping ...")
+print("################################################################################")
 
 
 ################################################################################
