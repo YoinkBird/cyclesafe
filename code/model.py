@@ -412,11 +412,36 @@ if(1):
     print("-I-: cross_val_score against test")
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
 
-    # print important features
+    # plot important features
     print("-I-: most important features:")
     clf_imp_feats = print_model_feats_important(clf, predictors)
     ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
     plt.show()
+
+    # print strong categories+features
+    strongest_cats = {}
+    strongest_cats_list = []
+    print("-I-:" + "strongest categories, values")
+    # plotting important features
+    for i in np.argsort(clf.feature_importances_)[::-1]:
+      feat = predictors[i]
+      feat_orig = feat
+      if(featdef.ix[feat].origin):
+          feat_orig = featdef.ix[predictors[i]].origin
+      # store
+      if(feat_orig not in strongest_cats):
+          strongest_cats[feat_orig] = [feat]
+          strongest_cats_list.append(feat_orig)
+          #print("%s - strongest value: %s" % (feat_orig, feat))
+      if(feat_orig in strongest_cats):
+          strongest_cats[feat_orig].append(feat)
+          continue
+    print("")
+    print("-I-:" + "all categories, values")
+    for val in strongest_cats_list:
+        print(val)
+        pp.pprint(strongest_cats[val])
+    # /print strong categories+features
 
     # print pie-charts for each important feature.
     #+ why, you ask? pie chart shows the values as a direct ratio with each other.
