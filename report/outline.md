@@ -18,39 +18,39 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 * Introduction
 * Background and results to date
 * Goals
-* * Interpret What Makes Roads Safe
-* * Interpret How Cyclists Can Ride Defensively
-* * Design Tool To Help Find Safe Routes
+  * Interpret What Makes Roads Safe
+  * Interpret How Cyclists Can Ride Defensively
+  * Design Tool To Help Find Safe Routes
 * Methodology
-* * Summary
-* * CRISP-DM
-* * Business Understanding
-* * * Problem Statement
-* * * Feasibility Assessment
-* * Data Understanding - Analysis
-* * * Analytics Base Table
-* * * Feature Implementation
-* * * Data Acquisition
-* * * Data Quality Report
-* * Data Preparation
-* * * Data Quality Issues
-* * * * Identified
-* * * * Fixed
-* * Modeling
-* * Evaluation
-* * Deployment
-* * * Technology
-* * * Project Preparation Gantt Chart
-* * * Project Execution Gantt Chart
-* * * Work-Packages:
-* * * WP Deliverables:
-* * * Roadmap
-* * * * Critical Path
+  * Summary
+  * CRISP-DM
+  * Business Understanding
+    * Problem Statement
+    * Feasibility Assessment
+  * Data Understanding - Analysis
+    * Analytics Base Table
+    * Feature Implementation
+    * Data Acquisition
+    * Data Quality Report
+  * Data Preparation
+    * Data Quality Issues
+      * Identified
+      * Fixed
+  * Modeling
+  * Evaluation
+  * Deployment
+    * Technology
+    * Project Preparation Gantt Chart
+    * Project Execution Gantt Chart
+    * Work-Packages:
+    * WP Deliverables:
+    * Roadmap
+      * Critical Path
 * Time Plan for Master’s Project Proposal and Master’s Thesis
 * Discussion / Conclusion
 * Future Work
-* * Crash Data
-* * Data Sources
+  * Crash Data
+  * Data Sources
 * Acknowledgements
 * Reference & Literature (Bibliography)
 * Appendix
@@ -121,27 +121,27 @@ e.g. assign safety score to routes provided by other tools
 * Summary
 * CRISP-DM
 * Business Understanding
-* * Problem Statement
-* * Feasibility Assessment
+  * Problem Statement
+  * Feasibility Assessment
 * Data Understanding - Analysis
-* * Analytics Base Table
-* * Feature Implementation
-* * Data Acquisition
-* * Data Quality Report
+  * Analytics Base Table
+  * Feature Implementation
+  * Data Acquisition
+  * Data Quality Report
 * Data Preparation
-* * Data Quality Issues
-* * * Identified
-* * * Fixed
+  * Data Quality Issues
+    * Identified
+    * Fixed
 * Modeling
 * Evaluation
 * Deployment
-* * Technology
-* * Project Preparation Gantt Chart
-* * Project Execution Gantt Chart
-* * Work-Packages:
-* * WP Deliverables:
-* * Roadmap
-* * * Critical Path
+  * Technology
+  * Project Preparation Gantt Chart
+  * Project Execution Gantt Chart
+  * Work-Packages:
+  * WP Deliverables:
+  * Roadmap
+    * Critical Path
 <!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
