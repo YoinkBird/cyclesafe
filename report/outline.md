@@ -211,7 +211,7 @@ longevity of data
 Then: how are new features created? e.g. impute mph, create binary categories, etc
 
 availability:
-#### Data Acquisition
+### Data Acquisition
 TODO: this needs to be more along the lines of "which data sources readily exist" or "which were considered"
 the later section 'feature implementation' deals with availability, at which point the choice of data-source can be stated
 quicknote: use available crash-data, augment with other data sources as necessary and as possible
