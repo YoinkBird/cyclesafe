@@ -519,11 +519,11 @@ for i in np.argsort(clf.feature_importances_)[::-1]:
 # plotting important features
 for i in np.argsort(clf.feature_importances_)[::-1]:
   feat = predictors[i]
-  feat = predictors[i].replace('bin_','')
+  #feat = predictors[i].replace('bin_','')
   pltkind = 'pie'
   if(featdef.ix[feat].origin):
       feat_orig = featdef.ix[predictors[i]].origin
-      data[feat].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
+      data[feat_orig].value_counts().plot(kind=pltkind, title="%s - original values for %s" % (feat_orig, feat))
   else:
       data[feat].value_counts().plot(kind=pltkind, title="%s " % (feat))
   plt.show()
