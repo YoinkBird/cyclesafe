@@ -10,3 +10,6 @@ mv Markdown.pl markdown.pl
 pip install grip
 ## prints out cmd-line, open in browser
 grip outline.md 
+
+# pandoc
+sudo apt-get install pandoc pandoc-citeproc
