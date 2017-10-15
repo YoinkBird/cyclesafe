@@ -635,6 +635,15 @@ print("#########################################################################
 
 print("################################################################################")
 print("-I-: End of File")
+print("################################################################################")
+print("#                                      TODO                                     ")
+print("#                                      TODO                                     ")
+print("#                                      TODO                                     ")
+print("start here for the model fitting on pre-defined gps data                        ")
+print(" create an X_test_gps_coord of crash-data entries and then clf.predict(X_test_gps_coord)  ")
+print("may have to remove 'manner of collision' and other after-the fact features. see 'post-fact' in feature_definitions.py")
+print("################################################################################")
+
 
 # miscellaneous
 '''
