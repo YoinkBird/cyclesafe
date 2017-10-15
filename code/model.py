@@ -488,7 +488,7 @@ plt.show()
 
 # display tree criteria
 # src: http://scikit-learn.org/stable/modules/tree.html#classification
-from IPython.display import Image
+from IPython.display import (Image,display)
 # pydot plus had to be installed as python -m pip
 # src : http://stackoverflow.com/a/42469100
 import pydotplus
@@ -501,8 +501,11 @@ dot_data = tree.export_graphviz(clf, out_file=None,
 
         )
 graph = pydotplus.graph_from_dot_data(dot_data)
-Image(graph.create_png() , retina=True)
-print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
+display(Image(graph.create_png() , retina=True))
+# vvv resolved, thanks to src: https://stackoverflow.com/a/35210224 vvv
+#print("-I-: if img doesn't show, run \n Image(pydotplus.graph_from_dot_data(dot_data).create_png() , retina=True)")
+# /display tree criteria
+print("################################################################################")
 print("-I-: End of File")
 
 # miscellaneous
