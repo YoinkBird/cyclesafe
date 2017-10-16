@@ -623,7 +623,7 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
 # MODEL+EVALUATION - human readable
 ################################################################################
 print("################################################################################")
-print("-I-: " + "Determination of Strongest Features")
+print("-I-: " + "Human Readable Decision Tree")
 if(1):
     model = generate_human_readable_dectree(data, data_dummies, featdef)
 else:
