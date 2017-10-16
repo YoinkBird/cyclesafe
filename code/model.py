@@ -688,6 +688,8 @@ data[[
 # ^^^ IGNORING FOR NOW ^^^^ 
 #+ the human-readable model only has three predictors, start with that and get complex later
 
+# limited UI-CSV, with only ~3 cols
+temp_user_csv_name="route_planner_options_limited.csv"
 ########################################
 # prepare model
 ########################################
@@ -707,13 +709,16 @@ responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == T
 ########################################
 # generate the "user interface", a spreadsheet with all of the options
 # TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
-data[predictors].to_csv(temp_user_csv_name)
-
-                                # make user data useful
+# limit to 80 rows
+data[predictors][:80].to_csv(temp_user_csv_name)
 
 # drop NA inputs, can't assume user data is correct!
 #+ for better code clarity, could do this in two steps with dropna(inplace=True)
 user_route_data = pd.read_csv(temp_user_csv_name).dropna()
+
+# make user data useful
+# add binary categories - user not expected to know the breakdown, as definitions of bin_cat can change over time
+# (user_route_data,featdef) = preproc_add_bin_categories(user_route_data, featdef, verbose=1)
 
 ########################################
 # scoring the route, assume sanitised input
@@ -724,7 +729,13 @@ X_test = user_route_data[predictors]
 ## prediction and scoring
 #noNeedHere-onlyForModelGen# print("-I-: cross_val_score on train (itself)")
 #noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_train, y_train.values.ravel()))
+
+# 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
 y_pred = model_clf_simple.predict_proba(X_test)
+y_pred_predict = model_clf_simple.predict(X_test)
+print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
+print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
+# TODO: determine how to score using the prediction
 #PROBABLY-noNeedHere-onlyForModelGen# print("-I-: cross_val_score against test")
 #PROBABLY-noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_test, y_test.values.ravel()))
 #PROBABLY-noNeedHere-onlyForModelGen# cm = confusion_matrix(y_test,model_clf_simple.predict(X_test))
@@ -794,3 +805,13 @@ VarianceThreshold().fit_transform(X_full)
 
 # import ipynb
 # http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Importing%20Notebooks.ipynb
+
+
+# Using the predictions?
+#  vvv but then what? vvv
+#  http://blog.yhat.com/posts/predicting-customer-churn-with-sklearn.html
+#  # Make prediction
+#  churn_prob = clf.predict_proba(X)
+#  response['churn_prob'] = churn_prob[:,1]
+#  # Return response DataFrame
+#  return response
