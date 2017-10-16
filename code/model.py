@@ -699,6 +699,11 @@ print("#########################################################################
 print("################################################################################")
 print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route ")
 print("################################################################################")
+print("#                                      NEXT:                                     ")
+print("#                                      NEXT:                                     ")
+print("#                                      NEXT:                                     ")
+print("fuzzy gps match")
+print("refer to the outline for more details")
 # dump out file which contains values whch can be provided by user/tool/etc
 #+ user is expected to plan their route by selecting intersections and deleting the remaining columns
 #+ note - this is a WIP, just to illustrate the type of data needed, still needs to be claned up.
@@ -770,6 +775,9 @@ data[ clf_simple_predictors + my_likey ][:80].to_csv(temp_user_csv_name)
 user_route_data = pd.read_csv(temp_user_csv_name).dropna()
 
 # make user data useful
+# NOTE: phase1 - don't worry about this for this phase, this isn't the final input form
+#+ NEXT STEP:
+#+ focus on correlating intersections against the DB (fuzzy match of gps)
 # add binary categories - user not expected to know the breakdown, as definitions of bin_cat can change over time
 # (user_route_data,featdef) = preproc_add_bin_categories(user_route_data, featdef, verbose=1)
 
