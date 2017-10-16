@@ -19,10 +19,21 @@ import os,sys
 # global options
 options = {
         'graphics' : 0, # 0 - disable, 1 - enable
+        'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
         }
 
 #<def_model_prepare>
 def model_prepare():
+    # manual verification and verbose:
+    #+ increased default verbosity during model prep
+    #+ several steps are for manual verification, it must be printed in the normal "silent" case,
+    #+ but should have option to completely silence, e.g. by setting options['verbose'] = -1
+    verbose = options['verbose']
+
+    if( options['verbose'] >= 1):
+        print("################################################################################")
+        print("-I-: " + "Prepare Data for Model")
+        print("-I-: " + "running ...")
     ################################################################################
     # DATA : IMPORT , PROCESSING, FEATURE DEFINITION
     ################################################################################
@@ -40,7 +51,9 @@ def model_prepare():
     (data,featdef) = preprocess_data(datafile)
 
     # FEATURE DEFINITION: add binary categories
-    (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=1)
+    if( verbose >= 1 ):
+        print("-I-:" + " adding binary categories")
+    (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=verbose)
     ################################################################################
     # /DATA : IMPORT , PROCESSING, FEATURE DEFINITION
     ################################################################################
@@ -88,19 +101,22 @@ def model_prepare():
     (data_dummies,featdef) = featdef_get_dummies(data,featdef)
 
     # basic analysis of target variable 'crash_severity'
-    print("################################################################################")
-    print("-I-: printing scatter plot for feature 'crash_severity'")
-    generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
-    print("################################################################################")
+    if (options['graphics'] == 1):
+        print("################################################################################")
+        print("-I-: printing scatter plot for feature 'crash_severity'")
+        generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
+        print("################################################################################")
 
     # verify
-    print("################################################################################")
-    print("-I-:" + "data processing and verification")
+    if(verbose >= 0): # manual verification
+        print("################################################################################")
+        print("-I-:" + "data processing and verification")
     validpreds = len(list(featdef[(featdef.type == 'int') & (featdef.target != True)].index))
     validtargs = len(list(featdef[(featdef.type == 'int') & (featdef.target == True)].index))
     invalfeats = len(list(featdef[(featdef.type != 'int') & (featdef.dummies != True)].index))
     alldummies = data_dummies.shape[1]
-    print("valid+string %d / %d total" % (validpreds+validtargs+invalfeats, alldummies))
+    if(verbose >= 0): # manual verification
+        print("valid+string %d / %d total" % (validpreds+validtargs+invalfeats, alldummies))
     # any non-dummy & integer type
     if(0):
         print(data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)].info())
@@ -110,13 +126,19 @@ def model_prepare():
     df_int = data_dummies[list(featdef[(featdef.dummies == False) & (featdef.type == 'int')].index)]
     # Avoid: ValueError: Input contains NaN, infinity or a value too large for dtype('float64').
     df_int_nonan = df_int.dropna()
-    print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
+    if(verbose >= 0): # manual verification
+        print("NaN handling: Samples: NaN data %d / %d fullset => %d newset" % ( (df_int.shape[0] - df_int_nonan.shape[0]) , df_int.shape[0] , df_int_nonan.shape[0]))
     if(df_int_nonan.shape[1] == df_int.shape[1]):
-      print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+        if(verbose >= 0): # manual verification
+          print("NaN handling: no  feature reduction after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
     else:
+      # if(verbose >= 0): # manual verification, but never silence - this is very important information
       print("NaN handling: !!! FEATURE REDUCTION after dropna(): pre %d , post %d " % (df_int_nonan.shape[1] , df_int.shape[1]))
+    if( verbose >= 1):
+        print("################################################################################")
+        print("-I-:" + " END preparing data for model")
+        print("################################################################################")
     return(data, data_dummies, df_int_nonan, featdef)
-    print("################################################################################")
 #</def_model_prepare>
 
 ################################################################################
@@ -502,13 +524,18 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
 ################################################################################
 # MODEL+EVALUATION - identify strong features
 ################################################################################
-print("################################################################################")
-print("-I-: " + "Determination of Strongest Features")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Determination of Strongest Features")
 if(0):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
     manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
 else:
-    print("-I-: " + "skipping ...")
-print("################################################################################")
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
 
 
 ################################################################################
@@ -516,13 +543,15 @@ print("#########################################################################
 ################################################################################
 #<def_generate_human_readable_dectree>
 def generate_human_readable_dectree(data, data_dummies, featdef):
-    print("################################################################################")
-    print("-I-:" + "Simple DecisionTree for binary features")
+    verbose = options['verbose']
     # this model is for human-consumption by generating a human-readable decision tree
     #+ as such, it focuses only on binary choices to reduce the complexity
     #+ while this does reduce the effectiveness, so does adding even more features.
     #+ currently, this includes all available binary features.
-    print("-I-: train-test split")
+    if( verbose >= 1):
+        print("################################################################################")
+        print("-I-:" + "Simple DecisionTree for binary features")
+        print("-I-: train-test split")
     # vvv no longer needed, as far as I can tell. commenting out just in case I am overlooing something vvv
     ## predictors = [
     ## # 'crash_time',
@@ -535,11 +564,12 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
     ##  'bin_crash_severity'
     ##  ]
     # now handled by 'featdef'
-    print("automatic predictors + responsecls")
     predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
     responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
-    pp.pprint(predictors)
-    pp.pprint(responsecls)
+    if(verbose >= 1):
+        print("automatic predictors + responsecls")
+        pp.pprint(predictors)
+        pp.pprint(responsecls)
 
     testsize = 0.3
     data_nonan = data[ predictors + responsecls ].dropna()
@@ -550,22 +580,24 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
     clf.fit(X_train,y_train)
 
     # prediction and scoring
-    print("-I-: cross_val_score on train (itself)")
-    print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel()))
     y_pred = clf.predict_proba(X_test)
-    print("-I-: cross_val_score against test")
-    print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
-    cm = confusion_matrix(y_test,clf.predict(X_test))
-    plot_confusion_matrix(cm,classes=['fubar','aight'])
+    if(verbose >= 1):
+        print("-I-: cross_val_score on train (itself)")
+        print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel()))
+        print("-I-: cross_val_score against test")
+        print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
     if (options['graphics'] == 1):
+        cm = confusion_matrix(y_test,clf.predict(X_test))
+        plot_confusion_matrix(cm,classes=['fubar','aight'])
         plt.show()
 
     # DOC: How to interpret decision trees' graph results and find most informative features?
     # src: http://stackoverflow.com/a/34872454
-    print("################################################################################")
-    print("-I-: most important features:")
-    for i in np.argsort(clf.feature_importances_)[::-1]:
-      print("%f : %s" % (clf.feature_importances_[i],predictors[i]))
+    if(verbose >= 1):
+        print("################################################################################")
+        print("-I-: most important features:")
+        for i in np.argsort(clf.feature_importances_)[::-1]:
+          print("%f : %s" % (clf.feature_importances_[i],predictors[i]))
 
     if (options['graphics'] == 1):
         # plotting important features
@@ -622,19 +654,27 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
 ################################################################################
 # MODEL+EVALUATION - human readable
 ################################################################################
-print("################################################################################")
-print("-I-: " + "Human Readable Decision Tree")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Human Readable Decision Tree")
 if(1):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
     model = generate_human_readable_dectree(data, data_dummies, featdef)
 else:
-    print("-I-: " + "skipping ...")
-print("################################################################################")
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
 ################################################################################
 # /MODEL+EVALUATION - human readable
 ################################################################################
 
-print("################################################################################")
-print("-I-: End of File")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: End of File")
+    print("################################################################################")
+
 print("################################################################################")
 print("#                                      TODO                                     ")
 print("#                                      TODO                                     ")

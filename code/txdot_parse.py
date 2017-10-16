@@ -94,7 +94,7 @@ def preproc_add_bin_categories(data, featdef, verbose=0):
         # DOC: rename col http://stackoverflow.com/a/11346337
         data.rename(columns={'surface_condition':'surface_wet'})
         # print number of unique entries
-        if(verbose):
+        if(verbose > 0):
             for colname in data.columns:
                 print("% 4d : %s" % (len(data[colname].unique()), colname))
         # remove data which is has no importance
