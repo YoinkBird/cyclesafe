@@ -204,6 +204,7 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
 
 
 def run_cross_val(data_dummies,featdef,dropfeatures=[]):
+    verbose = options['verbose']
     print("-I-: creating new dataset without %s" % dropfeatures)
     # mainly integer data
     # TODO: evaluate whether to  move the validfeats higher up during the nonan phase
@@ -265,17 +266,19 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
     print("Optimal number of features : %d" % rfecv.n_features_)
 
     # print important features
-    print("-I-: most important features:")
+    if( verbose >= 1 ):
+        print("-I-: most important features:")
     clf_imp_feats = print_model_feats_important(rfecv.estimator_, predictors, 0)
     if (options['graphics'] == 1):
         ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
         plt.show()
 
-    print("-I-: examining most important features:")
-    print("ratio  score   non-nan total feature")
-    for i,feat in enumerate(clf_imp_feats.index):
-        num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
-        print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
+    if(verbose >= 1):
+        print("-I-: examining most important features:")
+        print("ratio  score   non-nan total feature")
+        for i,feat in enumerate(clf_imp_feats.index):
+            num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
+            print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     return (predictors,responsecls)
 
 # <def_generate_clf_scatter_plot>
@@ -363,6 +366,7 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
 # i.e. initially many features also have many NaN so the dataset is smaller
 # 
 def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef):
+    verbose = options['verbose']
     print(" ################################################################################")
     print("-I-: DecisionTree")
     print("-I-: First Run")
@@ -471,8 +475,9 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
 
     # plot important features
-    print("-I-: most important features:")
-    clf_imp_feats = print_model_feats_important(clf, predictors)
+    if( verbose >= 1 ):
+        print("-I-: most important features:")
+    clf_imp_feats = print_model_feats_important(clf, predictors, printout=verbose)
     if (options['graphics'] == 1):
         ax = get_ax_barh(clf_imp_feats, title="DecisionTree Important Features")
         plt.show()
@@ -480,26 +485,27 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     # print strong categories+features
     strongest_cats = {}
     strongest_cats_list = []
-    print("-I-:" + "strongest categories, values")
-    # plotting important features
-    for i in np.argsort(clf.feature_importances_)[::-1]:
-      feat = predictors[i]
-      feat_orig = feat
-      if(featdef.ix[feat].origin):
-          feat_orig = featdef.ix[predictors[i]].origin
-      # store
-      if(feat_orig not in strongest_cats):
-          strongest_cats[feat_orig] = [feat]
-          strongest_cats_list.append(feat_orig)
-          #print("%s - strongest value: %s" % (feat_orig, feat))
-      if(feat_orig in strongest_cats):
-          strongest_cats[feat_orig].append(feat)
-          continue
-    print("")
-    print("-I-:" + "all categories, values")
-    for val in strongest_cats_list:
-        print(val)
-        pp.pprint(strongest_cats[val])
+    if(verbose >= 1):
+        print("-I-:" + "strongest categories, values")
+        # plotting important features
+        for i in np.argsort(clf.feature_importances_)[::-1]:
+          feat = predictors[i]
+          feat_orig = feat
+          if(featdef.ix[feat].origin):
+              feat_orig = featdef.ix[predictors[i]].origin
+          # store
+          if(feat_orig not in strongest_cats):
+              strongest_cats[feat_orig] = [feat]
+              strongest_cats_list.append(feat_orig)
+              #print("%s - strongest value: %s" % (feat_orig, feat))
+          if(feat_orig in strongest_cats):
+              strongest_cats[feat_orig].append(feat)
+              continue
+        print("")
+        print("-I-:" + "all categories, values")
+        for val in strongest_cats_list:
+            print(val)
+            pp.pprint(strongest_cats[val])
     # /print strong categories+features
 
     # print pie-charts for each important feature.
@@ -514,9 +520,9 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     print("-I-:" + "model accuracy:")
     y_pred = clf.predict(X_test)
     clf.fit(X_train,y_train)
-    cm = confusion_matrix(y_test,clf.predict(X_test))
-    plot_confusion_matrix(cm,classes=['fubar','aight'])
     if (options['graphics'] == 1):
+        cm = confusion_matrix(y_test,clf.predict(X_test))
+        plot_confusion_matrix(cm,classes=['fubar','aight'])
         plt.show()
 #/end of determining strong features
 #</def_manual_analyse_strongest_predictors>

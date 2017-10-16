@@ -220,7 +220,7 @@ def print_model_feats_important(model, predictors, printout=1):
       if model.feature_importances_[i] == 0:
         continue
       ser = ser.append(pd.Series([model.feature_importances_[i]], index=[predictors[i]]))
-      if(printout):
+      if(printout > 0):
         #print("%f : %s" % (model.feature_importances_[i],predictors[i]))
         print("%f : %s" % (ser.ix[predictors[i]],predictors[i]))
     return ser
