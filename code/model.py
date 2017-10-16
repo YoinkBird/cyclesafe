@@ -22,6 +22,12 @@ options = {
         'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
         }
 
+# choose which model to run
+runmodels = {
+        'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
+        'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
+        }
+
 #<def_model_prepare>
 def model_prepare():
     # manual verification and verbose:
@@ -533,7 +539,7 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
 if( options['verbose'] >= 0):
     print("################################################################################")
     print("-I-: " + "Determination of Strongest Features")
-if(0):
+if( runmodels['manual_analyse_strongest_predictors'] ):
     if( options['verbose'] >= 0):
         print("-I-: " + "running ...")
     manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
@@ -663,7 +669,7 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
 if( options['verbose'] >= 0):
     print("################################################################################")
     print("-I-: " + "Human Readable Decision Tree")
-if(1):
+if( runmodels['generate_human_readable_dectree'] ):
     if( options['verbose'] >= 0):
         print("-I-: " + "running ...")
     model = generate_human_readable_dectree(data, data_dummies, featdef)
