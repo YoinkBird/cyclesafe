@@ -616,7 +616,7 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
         # /display tree criteria
 
     # return the model
-    return clf
+    return (clf, predictors, responsecls)
 #<def_generate_human_readable_dectree>
 
 ################################################################################
@@ -666,8 +666,8 @@ print("#########################################################################
 # Note: order etc subject to change based on the model. Starting with the basic model for now, moving on from there
 # TODO: this is hard-coded based on deciding which options are not needed. find a way to use featdef to get these features. May need to compare the columns to the following output to determine the pattern. 
 # +TODO: -or- BETTER IDEA -  only dump the predictors, which is the better idea
-temp_user_csv_name="route_planner_options.csv"
-data[[
+temp_user_csv_name="route_planner_options.csv" # full csv
+my_likey = [
     'latitude' ,
     'longitude' ,
     'intersecting_street_name' ,  # required
@@ -684,7 +684,8 @@ data[[
     'crash_datetime' ,            # enter exact time ... I think preproc can handle this conversion, actually
     'crash_time_30m',             # probably irrelevant? maybe easier for planning purposes
     'crash_year' ,                # irrelevant, may be needed later for granularity
-    ]].to_csv(temp_user_csv_name)
+    ]
+data[my_likey].to_csv(temp_user_csv_name)
 # ^^^ IGNORING FOR NOW ^^^^ 
 #+ the human-readable model only has three predictors, start with that and get complex later
 
@@ -696,13 +697,13 @@ temp_user_csv_name="route_planner_options_limited.csv"
 # current SIMPLE user input:
 #+ use the generate_human_readable_dectree model, which has only three features
 # get a copy of the complete model which was run on the entire dataset
-model_clf_simple = generate_human_readable_dectree(data, data_dummies, featdef)
+model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
 
 # user-required data will be based on model's features
 #+ TODO: the model features are copy-pasted from generate_human_readable_dectree, make this flexible!
 #+ +TODO otherwise we have to manually update hard-coded values, no fun. 
-predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
-responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
+#notNeeded-ReturnedFromModelGeneratorNow# clf_simple_predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
+#notNeeded-WontPredictOnResponseCLS# clf_simple_responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
 
 ########################################
 # interact with user
@@ -710,7 +711,7 @@ responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == T
 # generate the "user interface", a spreadsheet with all of the options
 # TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
 # limit to 80 rows
-data[predictors][:80].to_csv(temp_user_csv_name)
+data[ clf_simple_predictors + my_likey ][:80].to_csv(temp_user_csv_name)
 
 # drop NA inputs, can't assume user data is correct!
 #+ for better code clarity, could do this in two steps with dropna(inplace=True)
@@ -724,7 +725,7 @@ user_route_data = pd.read_csv(temp_user_csv_name).dropna()
 # scoring the route, assume sanitised input
 ########################################
 # extract relevant data for scoring
-X_test = user_route_data[predictors]
+X_test = user_route_data[clf_simple_predictors]
 
 ## prediction and scoring
 #noNeedHere-onlyForModelGen# print("-I-: cross_val_score on train (itself)")
