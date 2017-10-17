@@ -317,18 +317,20 @@ Basically:
       * partial score
         * mix routes
 -->
-
+Minimal Description of phases (makes it easier to manange the table)
+poc1: csv-ui, encode route using csv, model reads csv, gets gps coords, html+js display route on map
 <!-- NOTE: only have to have leading '|' and one closing. Update the header to add a column -->
 | status | | | | | | | |
 |--------|-|-|-|-|-|-|-|
-| **crit** | route: manual selection of pre-defined GPS coordinates |
+| **poc1** | route: manual selection of pre-defined GPS coordinates |
 | **crit** | | | route: manual selection of generic GPS coordinates |
 | **crit** | | | | data: fuzzy-match GPS coordinates |
 | **crit** | | | | | route: automatic selection of generic GPS coordinates |
-|          | | | | | | route: implement map as interface |
+| **poc1** | | | | | | route: implement map as output interface (non-interactive) |
+|          | | | | | | | route: implement map as input  interface (interactive) |
 |          | | | | | | | route: overlay score on map |
 |          | | | | | data: impute more mph limits |
-| **crit** | | route: total score |
+| **poc1** | | route: total score |
 |          | | | route: recommend best route |
 |          | | route: partial score |
 |          | | | route: mix routes |
