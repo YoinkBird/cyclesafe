@@ -1,0 +1,17 @@
+20171017
+vs 11" : way easier on 15" screen, need to try out the 13"
+
+vim and indentation: just block-highlight and << or >> - so easy
+
+INSTALL REQUIRED
+apt install grip
+apt install kdiff3
+apt install vim-gtk3
+
+editor
+wtf is this nano crap? why can't I just force exit?
+
+markdown
+having inline comments is really useful, much better than in traditional document editors
+can "stub out" entire sections so they aren't rendered, or add comments and todos which won't be rendered
+in short, the document can look polished while the draft/notes/scratch hides within
