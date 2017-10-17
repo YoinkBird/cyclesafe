@@ -321,17 +321,17 @@ Basically:
 <!-- NOTE: only have to have leading '|' and one closing. Update the header to add a column -->
 | status | | | | | | | |
 |--------|-|-|-|-|-|-|-|
-| **critPath** | route: manual selection of pre-defined GPS coordinates |
-| **critPath** | | | route: manual selection of generic GPS coordinates |
-| **critPath** | | | | data: fuzzy-match GPS coordinates |
-| **critPath** | | | | | route: automatic selection of generic GPS coordinates |
-|              | | | | | | route: implement map as interface |
-|              | | | | | | | route: overlay score on map |
-|              | | | | | data: impute more mph limits |
-| **critPath** | | route: total score |
-|              | | | route: recommend best route |
-|              | | route: partial score |
-|              | | | route: mix routes |
+| **crit** | route: manual selection of pre-defined GPS coordinates |
+| **crit** | | | route: manual selection of generic GPS coordinates |
+| **crit** | | | | data: fuzzy-match GPS coordinates |
+| **crit** | | | | | route: automatic selection of generic GPS coordinates |
+|          | | | | | | route: implement map as interface |
+|          | | | | | | | route: overlay score on map |
+|          | | | | | data: impute more mph limits |
+| **crit** | | route: total score |
+|          | | | route: recommend best route |
+|          | | route: partial score |
+|          | | | route: mix routes |
 
 
 ### Work-Packages:
