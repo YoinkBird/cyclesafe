@@ -436,6 +436,9 @@ WP: [route: UI-recommend-complex]
 
 **Terminology**:
 * csv-file (csv) : comma-separate values file, such as a spreadsheet, in which data is separated by commas
+* user interface (UI, interface) : method for user interaction with the tool. Can be graphical, command-line, text file, etc.
+* graphical user interface (GUI) : UI which relies on a visual (i.e. non-textual) interface
+* csv-UI : csv-file based interface. e.g. user manipulates a CSV  to interact with the tool, or tool manipulates a CSV to relay information to the user
 * model : data-processing script written in python which reads makes a prediction from provided data
 * route-mapper: tool with a map-like interface which returns GPS coordinates for manually selected locations on the map
 * route-planner: tool with a map-like interface which returns GPS coordinates for an automatically plotted route between manually specified beginning and ending locations.
