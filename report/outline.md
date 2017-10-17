@@ -2,6 +2,15 @@ Formatting HALP:
 https://help.github.com/articles/basic-writing-and-formatting-syntax/  
 https://daringfireball.net/projects/markdown/syntax  
 
+# DRAFT REVISIONS
+Document major changes to roadmap or implementation since last draft
+This is for transparency, so customer is aware of conceptual changes,  
+and for docmentation, the iterative nature of the project lifecycle is clear.  
+  
+<!-- look for the REV<n> keyword throughout the doc -->
+REV2 [20171017] roadmap: remove gps fuzzy match from CP
+REV1 [2017xxxx] roadmap: first pass
+
 # Title
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
 
@@ -304,33 +313,51 @@ Basically:
 
 ### Project Execution Gantt Chart
 <!--
+REV2 [20171017] roadmap: remove gps fuzzy match from CP
+* simplest proof-of-concept doesn't require real-world gps coords at all
+* scoring doesn't depend on gps coordinates
+REV1 [2017xxxx] roadmap: first pass
+-->
+<!--
+deprecating the use of this bullet-point chart, no use in maintaing this and the table
 * clean project
   * generate basic model
-    * route: manual selection of pre-defined GPS coordinates
-        * route: manual selection of generic GPS coordinates
-          * data: fuzzy-match GPS coordinates
-            * route: automatic selection of generic GPS coordinates
-              * route: implement map as interface
-                * route: overlay score on map
-              * impute more mph limits
-      * total score
-      * partial score
-        * mix routes
+    * generate more complex model
+      * etc
 -->
+
+<!-- careful - this is a slight duplication of the work-package descriptions -->
+
+Legend:
+This table describes the phases of the project, as well as abbreviations used within the table
+
+| phrase | description |
+|-|-|
+| c-p , CP , critPath | critical path i.e. core requirements for project or subproject (i.e. component of a project) |
+| poc | proof of concept, implementaiton of a CP . e.g. code implemented such that its state conforms with a critical path. |
+
+| phase | description | importance | 
+|-|-|-|
+| poc1 | each tech implemented (first proof-of-concept) <br/> model, simple csv-based user interface, non-interactive map display of route |  
+
+<!-- NOTE: only have to have leading '|' and one closing. Update the header to add a column -->
+Note: non-obvious dependencies marked with [DEP: <paraphrased description of dependency>]
+note: only a project-phase chart, not a gantt chart with work-packages
+
 Minimal Description of phases (makes it easier to manange the table)
 poc1: csv-ui, encode route using csv, model reads csv, gets gps coords, html+js display route on map
-<!-- NOTE: only have to have leading '|' and one closing. Update the header to add a column -->
+
 | status | | | | | | | |
 |--------|-|-|-|-|-|-|-|
 | **poc1** | route: manual selection of pre-defined GPS coordinates |
-| **crit** | | | route: manual selection of generic GPS coordinates |
-| **crit** | | | | data: fuzzy-match GPS coordinates |
-| **crit** | | | | | route: automatic selection of generic GPS coordinates |
-| **poc1** | | | | | | route: implement map as output interface (non-interactive) |
-|          | | | | | | | route: implement map as input  interface (interactive) |
-|          | | | | | | | route: overlay score on map |
-|          | | | | | data: impute more mph limits |
-| **poc1** | | route: total score |
+| **crit** | | route: manual selection of generic GPS coordinates |
+|          | | | data: fuzzy-match GPS coordinates |
+|          | | | | data: impute more mph limits |
+| **poc1** | | route: implement map as output interface (non-interactive) |
+|          | | | route: implement map as input  interface (interactive) [DEP:fuzzy-match][DEP:auto-select generic GPS] |
+| **crit** | | | | route: automatic selection of generic GPS coordinates |
+|          | | | route: overlay score on map |
+| **poc2** | | route: total score |
 |          | | | route: recommend best route |
 |          | | route: partial score |
 |          | | | route: mix routes |
