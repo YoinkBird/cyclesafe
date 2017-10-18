@@ -8,8 +8,8 @@ This is for transparency, so customer is aware of conceptual changes,
 and for docmentation, the iterative nature of the project lifecycle is clear.  
   
 <!-- look for the REV<n> keyword throughout the doc -->
-REV2 [20171017] roadmap: remove gps fuzzy match from CP
-REV1 [2017xxxx] roadmap: first pass
+REV2 [20171017] roadmap: remove gps fuzzy match from CP  
+REV1 [2017xxxx] roadmap: first pass  
 
 # Title
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
@@ -18,6 +18,52 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 
 # Abstract
 <!-- Succinct abstract of less than one page. -->
+<!-- details for abstract courtesy of https://www.honors.umass.edu/abstract-guidelines , review of abstract courtesy of http://www.sfedit.net/abstract.pdf -->
+
+<!--
+goal (purpose), what (methods), why, how (methods),
+-----
+purpose (goal, why)
+methods (what)
+results
+conclusion
+-->
+
+<!-- TODO - state hypothesis in first sentence - in this case, the goal? -->
+PURPOSE  
+This project aims to help bicycle commuters improve their safety in mixed traffic.  
+The resulting increase in safety while cycling will hopefully convince more commuters to use a bicycle.  
+If successful, this will reduce the number of severe injuries while also easing traffic congestion.  
+
+METHODOLOGY  
+A web-based map interface will help cyclists plan safer routes,  
+  and an analysis of the data used to plan the route will help cyclists ride more defensively.  
+This is accomplished using multiple approaches:  
+  The first approach seeks to analyse the potential for severe injury along a generic route.  
+A machine learning model will determine the probability of injury for a given route based on cumulative data from all known crashes.  
+This is a closed form solution, as it relies entirely on available data.  
+  The second approach uses historical crash data to recommend safer routes   
+Recommend a route without dangerous intersections, where the danger of an intersection is approximated from crash location data.  
+This is an approximation of a closed form solution, as there is insufficient data to determine precisely what leads to a crash.   
+<!-- Assign a score to intersections based on crash data (frequency of crashes in intersection, injury severity, etc).  -->
+Previous Work:  
+This project is based off of a previous project to identify the factors associated with severe injury.  
+Caveat:  
+This project does not directly focus on factors which cause a crash, as there is not enough data to allow for a closed solution.  
+
+RESULTS:  
+These are the results the project hopes to accomplish:  
+* top factors leading to severity injury  
+* challenges encountered  
+* accuracy of model  
+* success of the technology used  
+* which routes dangerous, and do they have feasible alternatives?  
+
+CONCLUSION:  
+The created application will help cyclists ride more defensively, but more effort needs to be made a city level.  
+Cycling safely will continue to be inconvenient as long as safe routes are a big detour.  
+Recommendation is to increase data collection in areas with most crashes to better analyse the factors leading into it.
+
 
 # Table of content
 <!-- The table of content lists all chapters (headings/subheadings) including page number. -->
@@ -69,6 +115,33 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 # Introduction
 <!-- Explain why this work is important giving a general introduction to the subject, list the basic knowledge needed and outline the purpose of the report. -->
 
+<!-- brainstorming draft
+* fundamental goal: improve safety for cyclists
+* current approaches seem to be based on conventional methods, e.g. apply various measures after a simple traffic study
+
+  two-pronged approach: determine factors associated with injury severity to improve safety given a crash, and use crash location data to recommend safer routes 
+
+* fundamental goal: improve safety for cyclists
+* current approaches seem to be based on conventional methods, e.g. apply various measures after a simple traffic study
+* idea: use data to enhance current approach in order to make more effective safety decisions
+* possibilities:
+  * determine which routes are dangerous
+  * determine factors which impact accident severity
+  * measure effectiveness of decisions taken by analysing data before/after a change (such as whether installing a bike lane helps, or converting a 4-lane to 2-lane+2-bike-lane has the desired effect)
+* narrow down: researching the ideas reveals two %todo%: those which an individual can %todo%, and those which require planning on a municipal level
+  * explain: data analysis is common factor for all ideas, big differentiation is time-to-implement once data is analysed. municipal-level decisions can take a long time - idea would have to be presented to %todo%, reviewed, budgeted before implementing. time for implementing decisions at the personal-level depends only on the individual. therefore, narrowing selection down to personal-level ideas, or in other words, solutions which empower individuals to make safer choices.
+* choose:
+  * determine dangerous routes - presently partially possible on TxDOT website, although not easiest to do. shows overlay of crashes.
+    * todo - limitations
+  * factors which impact accident severity - this would help inviduals know which factors to avoid or minimise, thus making their route safer
+  * => can combine both into one tool: find factors and use them to analyse route danger
+* challenge: data availability. analysing which factors lead to a crash is an open-ended problem. one: there is no way to measure whether a crash did not happen. two: there is not sufficient traffic data to establish a baseline for comparison. for example, if exact traffic data were known for one intersection, one could simply calculate the ratio of cyclists to motorised vehicles and state that the number of avoided crashes is the number of total cyclists minus the number of recorded crashes. This is assuming that the data strictly measures only vehicles on the road with a potential of a crash, as it would not matter if a cyclist were e.g. on a sidewalk. However, such precise data could not be found, and most likely does not exist.
+  * therefore: limit the question to data which is available. There is no precise data on the number of cyclists, but there is data on crashes which resulted in a police report. This data includes the severity of the crash. This leads to a useful question: given a crash, what factors influence the severity? While this doesn't tell the cyclist how to avoid a crash, it does tell them how they can increase their safety in the case of a crash.
+  !extra, don't use:
+  third approach, if making assumptions: through lens of defensive riding, can infer crash/no-crash outcomes from dataset. E.g. for each crash, add a category of 'avoidable' based on set of guidelines for defensive riding.
+  fourth approach: relative trends - data analysis to find correlations, e.g. what factors are overrepresented (more crashes at higher speeds, or less crashes when bikelanes, etc)
+  !/extra, don't use
+-->
 # Background and results to date
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
@@ -562,6 +635,10 @@ Use data from strava,mapmyride,etc to find the most common routes (among the use
 <!-- Thank the people who have helped to successfully complete your project, like project partners, tutors, etc. -->
 Source For Outline: 
 https://www.ethz.ch/content/dam/ethz/special-interest/erdw/department/dokumente/studium/master/msc-project-proposal-guidelines.pdf 
+
+Source For Abstract:  
+https://www.honors.umass.edu/abstract-guidelines  
+http://www.sfedit.net/abstract.pdf  
 
 # Reference & Literature (Bibliography)
 <!-- List papers and publication you have already cited in your proposal or which you have collected for further reading. The style of each reference follows that of international scientific journals. -->
