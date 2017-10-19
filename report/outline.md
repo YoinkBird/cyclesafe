@@ -495,28 +495,19 @@ poc1: csv-ui, encode route using csv, model reads csv, gets gps coords, html+js 
 ### Work-Packages:
 **DRAFT**  
 **Staging for explanations down below**
-'Work-Packages' and 'WP Deliverables' need to be combined, then fed into 'Roadmap' for details
-Work-Packages - outline each WP as a header, use the mini-toc to list them all
-WP-Deliverables - merge into 'Roadmap' or 'Work-Packages', TBD
+[x] WP-Deliverables - merge into 'Work-Packages' (not into Roadmap)
+[x] 'Work-Packages' and 'WP Deliverables' need to be combined. Action Taken: convert "WPs" into headers, move "WP Deliverables" under the headers
+[x] Work-Packages - outline each WP as a header, use the mini-toc to list them all
+[ ] reference WP names from 'Roadmap', move explanations up into WP description
 **/DRAFT**
 
 Note: Work packages (WP) need not necessarily be executed in the order of the gantt chart
 The current gantt chart reflects the desired order of implementation vs actual dependency.
 This needs to be re-worked to properly indicate both the actual inter-dependency and the desired execution timeline
 
-data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
-data: impute more mph limits [impute_mph_limit-noninter]  
-route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
-route: manual selection of generic GPS coordinates [GPS-manual-generic]  
-route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
-route: implement map as interface [UI-GPS-generic]  
-route: overlay score on map [UI-safety_score]  
-route: total score [safety_score-total]  
-route: recommend best route [UI-recommend-simple]  
-route: partial score [safety_score-partial]  
-route: mix routes [UI-recommend-complex]  
-
-### WP Deliverables:
+<!-- TODO: auto-list these, like a TOC. reason: have work-packages be a summary, then 'wp deliverables' the explanation, which re-uses the eact same titles. -->
+<!--<toc_mini>-->
+<!--</toc_mini>-->
 Simple ASCII diagrams for simplicity, see Roadmap for more detail
 
 WP Impact on Functionality of Project
@@ -524,36 +515,48 @@ WP Impact on Functionality of Project
 Notation: the WP-names should reflect the scope of the functionality
 E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safety_score-total and safety_score-partial
 
+
+### WP: data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
 WP: [data:  GPS-fuzzy-match]  
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]
 
+### WP: data: impute more mph limits [impute_mph_limit-noninter]  
 WP: [data:  impute_mph_limit-noninter]  
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]
 
+### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
 [route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
 
+### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
 WP: [route: GPS-manual-generic]  
 [route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
 
+### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
 WP: [route: GPS-automatic-generic]  
 [route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
 
+### WP: route: implement map as interface [UI-GPS-generic]  
 WP: [route: UI-GPS-generic]  
 [route: GPS\*] <-> [gui: UI-GPS-generic]
 
+### WP: route: overlay score on map [UI-safety_score]  
 WP: [route: UI-GPS-safety_score]  
 [route: GPS\*] -> [gui: UI-GPS-generic] -> [gui: UI-GPS-safety_score]
 
+### WP: route: total score [safety_score-total]  
 WP: [route: safety_score-total]  
 [route: GPS-\*]     -> [model: safety_score-total] -> [display total score]  
 
+### WP: route: recommend best route [UI-recommend-simple]  
 WP: [route: UI-recommend-simple]  
 [route,several: GPS-\*]     -> [model: safety_score-total,several] -> [model: safety_score-total] -> [display best total score out of several (i.e. find safest route out of multiple routes)]  
 
+### WP: route: partial score [safety_score-partial]  
 WP: [route: safety_score-partial]  
 [route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]
 
+### WP: route: mix routes [UI-recommend-complex]  
 WP: [route: UI-recommend-complex]  
 [route,several: GPS-\*]     -> [model: safety_score-partial,several] -> [model: safety_score-partial] -> [display best combined scores out of several (i.e. combine safest sections of multiple routes into one route)]   
 
