@@ -213,31 +213,41 @@ This project continues the work of the previous project and will combine the acc
 
 # Goals
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
+<!-- note: each goal should also be present in the abstract --> 
 
 <hr />
 
 **PROPOSAL DRAFT**  
+work-in-progress
 
-Title: Data Driven Approach towards Improving Road Safety for Cyclists  
-Intro: Purpose: Analyse available data to understand how crashes with other vehicles occur.  
 **Section Overview:**  
 <!--!toc_mini-->
 <!--<toc_mini>-->
-* Interpret What Makes Roads Safe
-* Interpret How Cyclists Can Ride Defensively
-* Design Tool To Help Find Safe Routes
 <!--</toc_mini>-->
+<!--
+fill in from abstract:
+seems the first two goals need to be re-synced with abstract.
+make one of them correspond to 'generic route anlysis'. "explanation of factors" is an open ended problem consider removing this and adding it later in the text
+make the other correspond to the 'historical crash data'
+-->
+<!--  TODO: uncomment once this is clear. right now it contradicts the abstract, since it was the original pitch, and needs to catch up to new reality
+< !- - abstract: purpose - ->
 ## Interpret What Makes Roads Safe
 focus on "external" data features, e.g. weather, bike lane, speed limit
 possible break down by intersection and frequency of accidents
-## Interpret How Cyclists Can Ride Defensively
-focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
-classification into "avoidable" and "avoidable" crashes
-e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
+< !- - abstract: purpose - ->
 ## Design Tool To Help Find Safe Routes
 e.g. assign safety score to routes provided by other tools
 
+< !- - abstract: purpose - not included right now- ->
+## Interpret How Cyclists Can Ride Defensively
+**stretch goal** - complicates the project by requiring data source update. adds no technical benefit, i.e. could be done at any time
+focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
+classification into "avoidable" and "avoidable" crashes
+e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
+
 **/PROPOSAL DRAFT**  
+-->
 
 <hr />
 
