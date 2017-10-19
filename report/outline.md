@@ -474,22 +474,45 @@ Note: non-obvious dependencies marked with [DEP: <paraphrased description of dep
 note: only a project-phase chart, not a gantt chart with work-packages
 
 Minimal Description of phases (makes it easier to manange the table)
+<!-- todo: keep this tied-in to the work-packages. see comments below for more ideas, this just a placeholder -->
 poc1: csv-ui, encode route using csv, model reads csv, gets gps coords, html+js display route on map
-
+<!-- TODO: add more descriptions of deliverables -->
+<!-- TODO: correlate this table with the WP names, already getting out of sync. 
+ideally, use the WP-name tags in the table, then have a script find-replace them.
+| **poc1** | [GPS-manual-predef] |
+should render:
+| **poc1** | route: manual selection of pre-defined GPS coordinates |
+while at it, maybe go back to bullet points:
+[status][phase]
+* [**poc1**][GPS-manual-predef]
+  * [**crit**][GPS-manual-generic]
+should render:
 | status | | | | | | | |
-|--------|-|-|-|-|-|-|-|
 | **poc1** | route: manual selection of pre-defined GPS coordinates |
 | **crit** | | route: manual selection of generic GPS coordinates |
-|          | | | data: fuzzy-match GPS coordinates |
-|          | | | | data: impute more mph limits |
-| **poc1** | | route: implement map as output interface (non-interactive) |
-|          | | | route: implement map as input  interface (interactive) [DEP:fuzzy-match][DEP:auto-select generic GPS] |
-| **crit** | | | | route: automatic selection of generic GPS coordinates |
-|          | | | route: overlay score on map |
-| **poc2** | | route: total score |
-|          | | | route: recommend best route |
-|          | | route: partial score |
-|          | | | route: mix routes |
+-->
+<!-- todo: add the tags to this table, probably as: [$tag]<br/>$description  -->
+<!-- TOOD: make the proj-planning terminology consistent and explain:
+keep in mind that this mixing WPs and deliverables, where deliverable contains WPs.
+agile:thisproject
+epic : critpath, deliverable
+story,task : WP
+
+-->
+| status | | | | | | | |
+|--------|-|-|-|-|-|-|-|
+| **poc1** | [GPS-manual-predef]<br/>route: manual selection of pre-defined GPS coordinates |
+| **crit** | | [GPS-manual-generic]<br/>route: manual selection of generic GPS coordinates |
+|          | | | [GPS-fuzzy-match]<br/>data: fuzzy-match GPS coordinates |
+|          | | | | [impute_mph_limit-noninter]<br/>data: impute more mph limits |
+| **poc1** | | [UI-nointer-GPS-generic]<br/>route: implement map as output interface (non-interactive) |
+|          | | | [UI-inter-GPS-generic]<br/>route: implement map as input  interface (interactive) [DEP:fuzzy-match][DEP:auto-select generic GPS] |
+| **crit** | | | | [GPS-automatic-generic]<br/>route: automatic selection of generic GPS coordinates |
+|          | | | [UI-map-safety_score-total]<br/>[UI-map-safety_score-partial]<br/>route: overlay score on map |
+| **poc2** | | [safety_score-total]<br/>route: total score |
+|          | | | [UI-recommend-simple]<br/>route: recommend best route |
+|          | | [safety_score-partial]<br/>route: partial score |
+|          | | | [UI-recommend-complex]<br/>route: mix routes |
 
 
 ### Work-Packages:
