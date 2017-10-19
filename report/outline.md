@@ -515,50 +515,105 @@ WP Impact on Functionality of Project
 Notation: the WP-names should reflect the scope of the functionality
 E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safety_score-total and safety_score-partial
 
+Each WP lists the a critical path (i.e. simplest functioning product ) it can be integrated into.
+
 
 ### WP: data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
 WP: [data:  GPS-fuzzy-match]  
+Dependency: TODO
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]
+**Description:**   
+crash data GPS coordinates will not be exactly same as route-mapper GPS-coordinates. Therefore, imprecisely (fuzzy) compare user-input GPS coords to crash-data GPS coords to find closest match. Initially only perform this fuzzy match on intersection coordinates, as single-location coordinates can be harder to place precisely.  
 
 ### WP: data: impute more mph limits [impute_mph_limit-noninter]  
 WP: [data:  impute_mph_limit-noninter]  
+Dependency: TODO
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]
+<!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, othewise this requires user to be self-aware and add the when they use the term. -->
+[@terminology]: segment - a part of a road
+[@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection
+**Description:**   
+Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.
+@originalProject already imputes speed limiits for intersections. TODO: <!-- this is definitely explained somewhere, just copy-paste it -->
 
 ### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
+Dependency: TODO
 [route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
+**Description:**   
+TODO: fill in from roadmap, critical path
 
 ### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
 WP: [route: GPS-manual-generic]  
+Dependency: TODO
 [route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
+**Description:**   
+TODO: fill in from roadmap, critical path
 
 ### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
 WP: [route: GPS-automatic-generic]  
+Dependency: TODO
 [route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
+**Description:**   
+TODO: fill in from roadmap, critical path
 
-### WP: route: implement map as interface [UI-GPS-generic]  
-WP: [route: UI-GPS-generic]  
-[route: GPS\*] <-> [gui: UI-GPS-generic]
+### WP: route: implement map as output interface [UI-nointer-GPS-generic]  
+WP: [route: UI-nointer-GPS-generic]  
+Dependency: TODO
+[route: GPS\*] --> [gui: UI-nointer-GPS-generic]
+**Description:**   
+html+js display route on map
+current state: html+js display GPS coordinates on map
 
-### WP: route: overlay score on map [UI-safety_score]  
-WP: [route: UI-GPS-safety_score]  
-[route: GPS\*] -> [gui: UI-GPS-generic] -> [gui: UI-GPS-safety_score]
+### WP: route: implement map as input interface [UI-inter-GPS-generic]  
+WP: [route: UI-inter-GPS-generic]  
+Dependency: [UI-nointer-GPS-generic]  
+[route: GPS\*] <-> [gui: UI-inter-GPS-generic]
+**Description:**   
+html+js let user plan route using map in addition to displaying route
+
+
+### WP: route: overlay score on map [UI-map-safety_score-partial]  
+WP: [route: UI-map-safety_score-partial]  
+Dependency: [UI-nointer-GPS-generic] + TODO  
+[route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-partial]
+**Description:**   
+Show the safety score for partial route on the map.
+
+### WP: route: overlay score on map [UI-map-safety_score-total]  
+WP: [route: UI-map-safety_score-total]  
+Dependency: [UI-nointer-GPS-generic] + TODO  
+[route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-total]
+**Description:**   
+Show the safety score for entire route on the map.
 
 ### WP: route: total score [safety_score-total]  
 WP: [route: safety_score-total]  
+Dependency: TODO
 [route: GPS-\*]     -> [model: safety_score-total] -> [display total score]  
+**Description:**   
+calculate safety score for entire route
 
 ### WP: route: recommend best route [UI-recommend-simple]  
 WP: [route: UI-recommend-simple]  
+Dependency: TODO
 [route,several: GPS-\*]     -> [model: safety_score-total,several] -> [model: safety_score-total] -> [display best total score out of several (i.e. find safest route out of multiple routes)]  
+**Description:**   
+retrieve multiple routes from third-party mapping service, calculate total score (safety_score-total) for each one, recommend the safest
 
 ### WP: route: partial score [safety_score-partial]  
 WP: [route: safety_score-partial]  
+Dependency: TODO
 [route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]
+**Description:**   
+calculate safety score for each route segment
 
 ### WP: route: mix routes [UI-recommend-complex]  
 WP: [route: UI-recommend-complex]  
+Dependency: TODO
 [route,several: GPS-\*]     -> [model: safety_score-partial,several] -> [model: safety_score-partial] -> [display best combined scores out of several (i.e. combine safest sections of multiple routes into one route)]   
+**Description:**   
+retrieve multiple routes from third-party mapping service, calculate segment scores (safety_score-partial) for each one, combine lowest scores to create a safest route (i.e. combine safest sections of multiple routes into one route)]
 
 
 
@@ -594,6 +649,7 @@ The result is a tool which can score a route generated by a third-party route-pl
 | features  | x-val to determine important features | |
 
 
+WP: [GPS-manual-predef]
 1. manual route creation from pre-defined coordinates, manual scoring  
 * route: user manually creates route from list of known intersections
 * UI: user hand-edits csv-file of known intersections, fills in missing data, e.g. weather, street condition, lighting, etc
@@ -608,7 +664,7 @@ The result is a tool which can score a route generated by a third-party route-pl
 | features: user provided | combine with GPS-coords |  |
 | route: pre-defined GPS coords | simple fit | score |
 
-
+WP: [GPS-manual-generic]  
 2. manual route creation from arbitrary coordinates, manual scoring  
 * route: user manually creates route using a route mapping software.
   * e.g: GPX standard and http://www.gpsvisualizer.com/draw/
@@ -617,8 +673,6 @@ The result is a tool which can score a route generated by a third-party route-pl
 * UI: user draws route by hand on a map, manually exports the list of GPS coordinates, then feeds them to tool.  
 * backend:
   * fuzzy-match conversion of GPS coordinate input to "model-data" (csv or dataframe)  
-fuzzy-match GPS coordinates:  
-crash data GPS coordinates will not be exactly same as route-mapper GPS-coordinates. Therefore, imprecisely (fuzzy) compare user-input GPS coords to crash-data GPS coords to find closest match. Initially only perform this fuzzy match on intersection coordinates, as single-location coordinates can be harder to place precisely.  
   * fit model on "model-data"
 * implements: model fitting on arbitrary GPS coordinate data, vs selection of pre-defined GPS data
   * interface to third-party route-mapper
@@ -630,6 +684,7 @@ crash data GPS coordinates will not be exactly same as route-mapper GPS-coordina
 | features: user provided | combine with GPS-coords |  |
 | route: manually generated arbitrary GPS coords | fuzzy-match against existing data | score |
 
+WP: [GPS-automatic-generic]  
 3. automatic route creation from arbitrary destinations, manual scoring  
 * route: user automatically creates route using conventional route planning software.
 * UI: third-party tool creates route from user preferences, user manually exports the list of GPS coordinates, then feeds them to tool.  
@@ -647,7 +702,7 @@ crash data GPS coordinates will not be exactly same as route-mapper GPS-coordina
 | route: automatically generated arbitrary GPS coords | fuzzy-match against existing data | score |
 
 About GPS-coordinates for intersections vs non-intersections:
-TBD
+TBD - TODO: combine with WP descriptions
 
 
 # Time Plan for Master’s Project Proposal and Master’s Thesis
