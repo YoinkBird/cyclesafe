@@ -71,11 +71,11 @@ Recommendation is to increase data collection in areas with most crashes to bett
 <!--!toc_mini-->
 <!--<toc_mini>-->
 * Introduction
-* Background and results to date
+* Background and Results to Date
+  * Relevant Work
+  * Previous Work
+  * Results to Date
 * Goals
-  * Interpret What Makes Roads Safe
-  * Interpret How Cyclists Can Ride Defensively
-  * Design Tool To Help Find Safe Routes
 * Methodology
   * Summary
   * CRISP-DM
