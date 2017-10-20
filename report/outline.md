@@ -3,7 +3,7 @@ https://help.github.com/articles/basic-writing-and-formatting-syntax/
 https://daringfireball.net/projects/markdown/syntax  
 
 # DRAFT REVISIONS
-Document major changes to roadmap or implementation since last draft
+Document major changes to roadmap or implementation since last draft  
 This is for transparency, so customer is aware of conceptual changes,  
 and for docmentation, the iterative nature of the project lifecycle is clear.  
   
@@ -37,7 +37,7 @@ If successful, this will reduce the number of severe injuries while also easing 
 
 METHODOLOGY  
 A web-based map interface will help cyclists plan safer routes,  
-  and an analysis of the data used to plan the route will help cyclists ride more defensively.  
+&nbsp;&nbsp; and an analysis of the data used to plan the route will help cyclists ride more defensively.  
 This is accomplished using multiple approaches:  
   The first approach seeks to analyse the potential for severe injury along a generic route.  
 A machine learning model will determine the probability of injury for a given route based on cumulative data from all known crashes.  
@@ -62,7 +62,7 @@ These are the results the project hopes to accomplish:
 CONCLUSION:  
 The created application will help cyclists ride more defensively, but more effort needs to be made a city level.  
 Cycling safely will continue to be inconvenient as long as safe routes are a big detour.  
-Recommendation is to increase data collection in areas with most crashes to better analyse the factors leading into it.
+Recommendation is to increase data collection in areas with most crashes to better analyse the factors leading into it.  
 
 
 # Table of content
@@ -353,25 +353,25 @@ This work sits primarily in the Data Understanding phase
 2.4.5 Implementing Features
 -->
 ### Analytics Base Table
-Choose prediction subject, one-row-per-subject
-determine domain concepts for features
+Choose prediction subject, one-row-per-subject  
+determine domain concepts for features  
 
 ### Feature Implementation
-ABOUT: i.e. choose or create features for ABT
-proxy features
-Consider:
-data availability
-timing of data
-longevity of data
+ABOUT: i.e. choose or create features for ABT  
+proxy features  
+Consider:  
+data availability  
+timing of data  
+longevity of data  
 
 Then: how are new features created? e.g. impute mph, create binary categories, etc
 
-availability:
-### Data Acquisition
-TODO: this needs to be more along the lines of "which data sources readily exist" or "which were considered"
-the later section 'feature implementation' deals with availability, at which point the choice of data-source can be stated
-quicknote: use available crash-data, augment with other data sources as necessary and as possible
-primary source: TxDOT data
+availability:  
+### Data Acquisition  
+TODO: this needs to be more along the lines of "which data sources readily exist" or "which were considered"  
+the later section 'feature implementation' deals with availability, at which point the choice of data-source can be stated  
+quicknote: use available crash-data, augment with other data sources as necessary and as possible  
+primary source: TxDOT data  
 
 
 <!-- 3 Data Exploration -->
@@ -470,12 +470,12 @@ This table describes the phases of the project, as well as abbreviations used wi
 | poc1 | each tech implemented (first proof-of-concept) <br/> model, simple csv-based user interface, non-interactive map display of route |  
 
 <!-- NOTE: only have to have leading '|' and one closing. Update the header to add a column -->
-Note: non-obvious dependencies marked with [DEP: <paraphrased description of dependency>]
-note: only a project-phase chart, not a gantt chart with work-packages
+Note: non-obvious dependencies marked with [DEP: <paraphrased description of dependency>]  
+note: only a project-phase chart, not a gantt chart with work-packages  
 
-Minimal Description of phases (makes it easier to manange the table)
+Minimal Description of phases (makes it easier to manange the table)  
 <!-- todo: keep this tied-in to the work-packages. see comments below for more ideas, this just a placeholder -->
-poc1: csv-ui, encode route using csv, model reads csv, gets gps coords, html+js display route on map
+poc1: csv-ui, encode route using csv, model reads csv, gets gps coords, html+js display route on map  
 <!-- TODO: add more descriptions of deliverables -->
 <!-- TODO: correlate this table with the WP names, already getting out of sync. 
 ideally, use the WP-name tags in the table, then have a script find-replace them.
@@ -492,21 +492,24 @@ should render:
 | **crit** | | route: manual selection of generic GPS coordinates |
 -->
 <!-- todo: add the tags to this table, probably as: [$tag]<br/>$description  -->
-<!-- TOOD: make the proj-planning terminology consistent and explain:
+<!-- TODO: make the proj-planning terminology consistent and explain:
 keep in mind that this mixing WPs and deliverables, where deliverable contains WPs.
 agile:thisproject
 epic : critpath, deliverable
 story,task : WP
 
 -->
-| status | | | | | | | |
-|--------|-|-|-|-|-|-|-|
+<!-- TODO: move 'dep' down into the dependencies, -->
+<!-- TODO: convert this into a deliverables chart, and have a separate one for WPs? or just put the critpaths at top and have the WPs below?-->
+<!-- leaving one extra col to be sure not cutting any off by mistake!-->
+| status | | | | | |
+|--------|-|-|-|-|-|
 | **poc1** | [GPS-manual-predef]<br/>route: manual selection of pre-defined GPS coordinates |
 | **crit** | | [GPS-manual-generic]<br/>route: manual selection of generic GPS coordinates |
 |          | | | [GPS-fuzzy-match]<br/>data: fuzzy-match GPS coordinates |
 |          | | | | [impute_mph_limit-noninter]<br/>data: impute more mph limits |
 | **poc1** | | [UI-nointer-GPS-generic]<br/>route: implement map as output interface (non-interactive) |
-|          | | | [UI-inter-GPS-generic]<br/>route: implement map as input  interface (interactive) [DEP:fuzzy-match][DEP:auto-select generic GPS] |
+|          | | | [UI-inter-GPS-generic]<br/>route: implement map as input  interface (interactive) <br/>[DEP:fuzzy-match]<br/>[DEP:auto-select generic GPS] |
 | **crit** | | | | [GPS-automatic-generic]<br/>route: automatic selection of generic GPS coordinates |
 |          | | | [UI-map-safety_score-total]<br/>[UI-map-safety_score-partial]<br/>route: overlay score on map |
 | **poc2** | | [safety_score-total]<br/>route: total score |
@@ -517,126 +520,126 @@ story,task : WP
 
 ### Work-Packages:
 **DRAFT**  
-**Staging for explanations down below**
-[x] WP-Deliverables - merge into 'Work-Packages' (not into Roadmap)
-[x] 'Work-Packages' and 'WP Deliverables' need to be combined. Action Taken: convert "WPs" into headers, move "WP Deliverables" under the headers
-[x] Work-Packages - outline each WP as a header, use the mini-toc to list them all
-[ ] reference WP names from 'Roadmap', move explanations up into WP description
+**Staging for explanations down below**  
+[x] WP-Deliverables - merge into 'Work-Packages' (not into Roadmap)  
+[x] 'Work-Packages' and 'WP Deliverables' need to be combined. Action Taken: convert "WPs" into headers, move "WP Deliverables" under the headers  
+[x] Work-Packages - outline each WP as a header, use the mini-toc to list them all  
+[ ] reference WP names from 'Roadmap', move explanations up into WP description  
 **/DRAFT**
 
-Note: Work packages (WP) need not necessarily be executed in the order of the gantt chart
-The current gantt chart reflects the desired order of implementation vs actual dependency.
-This needs to be re-worked to properly indicate both the actual inter-dependency and the desired execution timeline
+Note: Work packages (WP) need not necessarily be executed in the order of the gantt chart  
+The current gantt chart reflects the desired order of implementation vs actual dependency.  
+This needs to be re-worked to properly indicate both the actual inter-dependency and the desired execution timeline  
 
 <!-- TODO: auto-list these, like a TOC. reason: have work-packages be a summary, then 'wp deliverables' the explanation, which re-uses the eact same titles. -->
 <!--<toc_mini>-->
 <!--</toc_mini>-->
-Simple ASCII diagrams for simplicity, see Roadmap for more detail
+Simple ASCII diagrams for simplicity, see Roadmap for more detail  
 
-WP Impact on Functionality of Project
+WP Impact on Functionality of Project  
 
-Notation: the WP-names should reflect the scope of the functionality
-E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safety_score-total and safety_score-partial
+Notation: the WP-names should reflect the scope of the functionality  
+E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safety_score-total and safety_score-partial  
 
-Each WP lists the a critical path (i.e. simplest functioning product ) it can be integrated into.
+Each WP lists the a critical path (i.e. simplest functioning product ) it can be integrated into.  
 
 
 ### WP: data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
 WP: [data:  GPS-fuzzy-match]  
-Dependency: TODO
-[route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]
+Dependency: TODO  
+[route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]  
 **Description:**   
 crash data GPS coordinates will not be exactly same as route-mapper GPS-coordinates. Therefore, imprecisely (fuzzy) compare user-input GPS coords to crash-data GPS coords to find closest match. Initially only perform this fuzzy match on intersection coordinates, as single-location coordinates can be harder to place precisely.  
 
 ### WP: data: impute more mph limits [impute_mph_limit-noninter]  
 WP: [data:  impute_mph_limit-noninter]  
-Dependency: TODO
-[route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]
+Dependency: TODO  
+[route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]  
 <!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, othewise this requires user to be self-aware and add the when they use the term. -->
-[@terminology]: segment - a part of a road
-[@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection
+[@terminology]: segment - a part of a road  
+[@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection  
 **Description:**   
-Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.
+Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.  
 @originalProject already imputes speed limiits for intersections. TODO: <!-- this is definitely explained somewhere, just copy-paste it -->
 
 ### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
-Dependency: TODO
+Dependency: TODO  
 [route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
 **Description:**   
-TODO: fill in from roadmap, critical path
+TODO: fill in from roadmap, critical path  
 
 ### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
 WP: [route: GPS-manual-generic]  
-Dependency: TODO
+Dependency: TODO  
 [route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
 **Description:**   
-TODO: fill in from roadmap, critical path
+TODO: fill in from roadmap, critical path  
 
 ### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
 WP: [route: GPS-automatic-generic]  
-Dependency: TODO
+Dependency: TODO  
 [route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
 **Description:**   
-TODO: fill in from roadmap, critical path
+TODO: fill in from roadmap, critical path  
 
 ### WP: route: implement map as output interface [UI-nointer-GPS-generic]  
 WP: [route: UI-nointer-GPS-generic]  
-Dependency: TODO
-[route: GPS\*] --> [gui: UI-nointer-GPS-generic]
+Dependency: TODO  
+[route: GPS\*] --> [gui: UI-nointer-GPS-generic]  
 **Description:**   
-html+js display route on map
-current state: html+js display GPS coordinates on map
+html+js display route on map  
+current state: html+js display GPS coordinates on map  
 
 ### WP: route: implement map as input interface [UI-inter-GPS-generic]  
 WP: [route: UI-inter-GPS-generic]  
 Dependency: [UI-nointer-GPS-generic]  
-[route: GPS\*] <-> [gui: UI-inter-GPS-generic]
+[route: GPS\*] <-> [gui: UI-inter-GPS-generic]  
 **Description:**   
-html+js let user plan route using map in addition to displaying route
+html+js let user plan route using map in addition to displaying route  
 
 
 ### WP: route: overlay score on map [UI-map-safety_score-partial]  
 WP: [route: UI-map-safety_score-partial]  
 Dependency: [UI-nointer-GPS-generic] + TODO  
-[route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-partial]
+[route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-partial]  
 **Description:**   
 Show the safety score for partial route on the map.
 
 ### WP: route: overlay score on map [UI-map-safety_score-total]  
 WP: [route: UI-map-safety_score-total]  
 Dependency: [UI-nointer-GPS-generic] + TODO  
-[route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-total]
+[route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-total]  
 **Description:**   
-Show the safety score for entire route on the map.
+Show the safety score for entire route on the map.  
 
 ### WP: route: total score [safety_score-total]  
 WP: [route: safety_score-total]  
-Dependency: TODO
+Dependency: TODO  
 [route: GPS-\*]     -> [model: safety_score-total] -> [display total score]  
 **Description:**   
-calculate safety score for entire route
+calculate safety score for entire route  
 
 ### WP: route: recommend best route [UI-recommend-simple]  
 WP: [route: UI-recommend-simple]  
-Dependency: TODO
+Dependency: TODO  
 [route,several: GPS-\*]     -> [model: safety_score-total,several] -> [model: safety_score-total] -> [display best total score out of several (i.e. find safest route out of multiple routes)]  
 **Description:**   
-retrieve multiple routes from third-party mapping service, calculate total score (safety_score-total) for each one, recommend the safest
+retrieve multiple routes from third-party mapping service, calculate total score (safety_score-total) for each one, recommend the safest  
 
 ### WP: route: partial score [safety_score-partial]  
 WP: [route: safety_score-partial]  
-Dependency: TODO
-[route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]
+Dependency: TODO  
+[route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]  
 **Description:**   
 calculate safety score for each route segment
 
 ### WP: route: mix routes [UI-recommend-complex]  
 WP: [route: UI-recommend-complex]  
-Dependency: TODO
+Dependency: TODO  
 [route,several: GPS-\*]     -> [model: safety_score-partial,several] -> [model: safety_score-partial] -> [display best combined scores out of several (i.e. combine safest sections of multiple routes into one route)]   
 **Description:**   
-retrieve multiple routes from third-party mapping service, calculate segment scores (safety_score-partial) for each one, combine lowest scores to create a safest route (i.e. combine safest sections of multiple routes into one route)]
+retrieve multiple routes from third-party mapping service, calculate segment scores (safety_score-partial) for each one, combine lowest scores to create a safest route (i.e. combine safest sections of multiple routes into one route)]  
 
 
 
