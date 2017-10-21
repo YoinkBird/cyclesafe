@@ -231,20 +231,6 @@ make one of them correspond to 'generic route anlysis'. "explanation of factors"
 make the other correspond to the 'historical crash data'
 -->
 <!--  TODO: uncomment once this is clear. right now it contradicts the abstract, since it was the original pitch, and needs to catch up to new reality
-< !- - abstract: purpose - ->
-## Interpret What Makes Roads Safe
-focus on "external" data features, e.g. weather, bike lane, speed limit
-possible break down by intersection and frequency of accidents
-< !- - abstract: purpose - ->
-## Design Tool To Help Find Safe Routes
-e.g. assign safety score to routes provided by other tools
-
-< !- - abstract: purpose - not included right now- ->
-## Interpret How Cyclists Can Ride Defensively
-**stretch goal** - complicates the project by requiring data source update. adds no technical benefit, i.e. could be done at any time
-focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
-classification into "avoidable" and "avoidable" crashes
-e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
 
 **/PROPOSAL DRAFT**  
 -->
@@ -769,6 +755,20 @@ Add data on bike-lane presence
 
 Examine before/after lane reduction: car+car |vv|^^| => |cv|<>|vc| bike+car '|cv|' + turn lane '|<>|'
 studies show...
+
+
+
+Interpret How Cyclists Can Ride Defensively
+additional requirement: data source update, new model, but reuse application layer, re-analysis of data (i.e. start a new CRISP-DM lifecycle)
+concept:
+focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
+classification into "avoidable" and "avoidable" crashes
+e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
+
+
+interpret limited data more creatively  
+e.g. analyse frequency of crashes to determine which locations tend to have more reported crashes.  
+This could be loosely correlated with the probability of a crash, although it could also just mean that certain locations tend to be over-reported vs others. However, since there's not much data, this is also not a bad idea in a pragmatic sense. Can't avoid an unknown, but can avoid a known - work with the data which is available.
 
 ## Data Sources
 
