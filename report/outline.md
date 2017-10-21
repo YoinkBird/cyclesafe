@@ -146,6 +146,34 @@ Recommendation is to increase data collection in areas with most crashes to bett
   fourth approach: relative trends - data analysis to find correlations, e.g. what factors are overrepresented (more crashes at higher speeds, or less crashes when bikelanes, etc)
   !/extra, don't use
 -->
+
+## Structure of this Paper  
+
+This paper largely follows a traditional structure [@source], but wraps the data-mining-specific process 'CRISP-DM'  
+There is some overlap between the two formats, but each have a different focus.  
+
+The following descriptions explain the purpose of sections which seeminly overlap.
+
+| Section | Explanation |
+|-|-|
+| Abstract |  elevator pitch of entire paper |
+| Introduction |  provide context for this paper, introduce reader to concepts required, e.g. DM, CRISP-DM, etc |
+| Background and Results to Date |  context within which the research takes place (relevant other research) |
+| Goals |  elevator pitch for "main research questions", non-technical |
+| Methodology |  methods,techniques => this is where CRISP-DM comes in to play |
+| Time Plan | schedule for CRISP-DM phases | 
+| Discussion / Conclusion |  |
+
+| CRISP-DM Section | Explanation |
+|-|-|
+| 1. Business Understanding |  how to approach the problem, e.g. how to convert problem into Analytics solution, then assess feasibility of the solution (e.g is relevant data present) |
+| 2. Data Understanding |  builds on "assess feasibility". e.g. analyse data (ABT), decide which "compound features" to implement, select data sources) |
+| 3. Data Preparation |  process the data, make it useful for a machine-learning model |
+| 4. Modeling |  choose,develop the right ML model |
+| 5. Evaluation |  improve accuracy of ML model (cross validation, etc) |
+| 6. Deployment |  integrating the model into the "business environment", in this case, the application |
+
+
 # Background and Results to Date
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
@@ -757,6 +785,7 @@ TBD - TODO: combine with WP descriptions
 
 # Time Plan for Master’s Project Proposal and Master’s Thesis
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
+@STUB: track the completed work-packages from Roadmap
 
 # Discussion / Conclusion
 <!--
