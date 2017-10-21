@@ -20,6 +20,10 @@ Data Driven Approach towards Improving Road Safety for Cyclists
 <!-- Succinct abstract of less than one page. -->
 <!-- details for abstract courtesy of https://www.honors.umass.edu/abstract-guidelines , review of abstract courtesy of http://www.sfedit.net/abstract.pdf -->
 
+<!-- tag for automatically updating the abstract. future work! idea: write abstract, copy-paste to another section. as that other section evolves, the original line from abstract may change. with this tag, the change could be auto-synced to abstract  -->
+<!--<abstract_purpose>-->
+<!--<abstract_methodology>-->
+
 <!--
 goal (purpose), what (methods), why, how (methods),
 -----
@@ -197,7 +201,7 @@ yet another could be: '(A:0)->(B:1)->->(C:1)'
 
 <!-- TODO - analyse other project to create a proper summary of the results -->
 ## Results to Date  
-**STUB**  
+@STUB  
 For example, time-of-day was identified as a strong factor, so a visualisation was created to display where crashes happened during different time intervals [@originalProject].  
 This visualisation could then allow cyclists to consider the time of day when planning their route.  
 However, this is a raw visualisation as it does no further data processing to interpret the data.  
@@ -211,14 +215,11 @@ The previous project layed a good foundation, and in doing so opened up many pos
 
 This project continues the work of the previous project and will combine the accurate but non-interpretable model with the inaccurate but interpretable model into one tool which will both be accurate and interpretable. It will also make sure that this sentence gets changed to be less poindexter.  
 
+<hr />
+
 # Goals
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 <!-- note: each goal should also be present in the abstract --> 
-
-<hr />
-
-**PROPOSAL DRAFT**  
-work-in-progress
 
 **Section Overview:**  
 <!--!toc_mini-->
@@ -230,10 +231,44 @@ seems the first two goals need to be re-synced with abstract.
 make one of them correspond to 'generic route anlysis'. "explanation of factors" is an open ended problem consider removing this and adding it later in the text
 make the other correspond to the 'historical crash data'
 -->
-<!--  TODO: uncomment once this is clear. right now it contradicts the abstract, since it was the original pitch, and needs to catch up to new reality
 
-**/PROPOSAL DRAFT**  
+@STUB  
+Create tool to help cyclists plan relatively-safe routes.  
+In this context, relatively-safe is defined as "given a crash, will the cyclist be incapacitated or worse".  
+<!--
+(May want to redefine according to less severe injuries, e.g. "safe" as "able to ride away")  
 -->
+
+<!--
+Todo: terminology: use the phrase "severity", or something, in lieu of "safety". Keeps the mission clear, and is accurate without interruption. Later, introduce the safety score.  
+-->
+[@terminology]: relatively-safe - placeholder term. see relative-safety  
+[@terminology]: relative-safety - placeholder term. Assuming a cyclist is involved in a crash, how likely are they to be severely inured. ML: This is the target feature. @TODO: use featdef to list features and definitions  
+
+<!-- tags: studies
+Todo: should research whether accident severity correlates with responsibility. If studies show that light injury is usually cyclists fault, would be able to draw a line and cite the study.  
+-->
+
+This Involves:
+
+Model to find relationship between environmental factors and safety/severity  
+
+
+Interface to model which interprets the results in a manner which is meaningful to a human user.  
+I.e. something that lets cyclists conveniently factor in relative-safety when planning their route  
+
+Model depends on GIS-enabled crash data which lists locations of past crashes and environmental factors  
+This data interpreted in two ways:  
+Generic location-unaware analysis in order to calculate relative-safety of any generic route  
+i.e. user provides a route, but exact coordinates are not used in the analysis  
+Specific location-aware analysis in order to improve pertinance/relevance/argh of relative-safety score  
+i.e. user provides a route, and analysis factors in known coordinates
+
+Caveat: the model itself will be location unaware, whereas the interface to the model will enable the location-aware features.  
+Model is location unaware because it would essentially end up scoring the more popular roots with a higher safety-factor. location-aware modelling could be useful for identifying where more crashes happen, but in a practical route-planning scenario this would lead to cyclists having to take large detours.   
+
+ @TODO: refactor this sentence, is it a stream-of-thought:  In essence, the model is deliberately location unaware, with the caveat and assumption that end-users can't simply avoid parts of town. If location 'b' has more crashes, and the route is 'A'->'B'->'C', it isn't helpful to tell end-user that they have to avoid 'B' by routing through a potential 'D','E','F'. HOWEVER - it could be useful to inform users of this factor, but would require a different model. For now, the goal is to make safe transit more convenient; it is already known that one can ride on the sidewalk for the whole commute at 15mph to increase relative-safety , so adding in "avoid these entire areas" won't increase the convenience.  
+@TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
 
 <hr />
 
@@ -542,8 +577,11 @@ WP: [data:  impute_mph_limit-noninter]
 Dependency: TODO  
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]  
 <!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, othewise this requires user to be self-aware and add the when they use the term. -->
+
 [@terminology]: segment - a part of a road  
+
 [@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection  
+
 **Description:**   
 Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.  
 @originalProject already imputes speed limiits for intersections. TODO: <!-- this is definitely explained somewhere, just copy-paste it -->
