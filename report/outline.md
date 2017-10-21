@@ -391,9 +391,15 @@ ABOUT: 'business' not to be taken literally, just means the environment in which
 <!-- 2.1 Converting Business Problems into Analytics Solutions -->
 <!-- 2.2 Assessing Feasibility -->
 ### Problem Statement
+@STUB: round1: Use crash data to help reduce number of accidents  
+@STUB: round2: Use crash data to help reduce number of accidents with severe injury  
 ### Feasibility Assessment
+@STUB: round1: data on crashes-vs-non-crashes doesn't exist (no tracking of avoided accidents). loop back to problem statement fo round2 (as expected in the CRISP-DM lifecycle)  
+@STUB: round2: accident data not available txdot data on crashes is available.  there is enough data to train at least a basic model  
 
 ## Data Understanding - Analysis
+@STUB: Use the pandas python library to create the ABT, add functionality as needed.  
+@TODO: this can be added to report later in project  
 summary: use python, pandas, matplotlib to analyse data
 <!--
 2.3 Analytics Base Table
@@ -413,14 +419,16 @@ data availability
 timing of data  
 longevity of data  
 
-Then: how are new features created? e.g. impute mph, create binary categories, etc
+@STUB: Then: how are new features created? e.g. impute mph, create binary categories, etc  
 
 availability:  
 ### Data Acquisition  
 TODO: this needs to be more along the lines of "which data sources readily exist" or "which were considered"  
 the later section 'feature implementation' deals with availability, at which point the choice of data-source can be stated  
+@STUB:
 quicknote: use available crash-data, augment with other data sources as necessary and as possible  
 primary source: TxDOT data  
+ practical assessment: using txdot limited feature csv format is simpler than other more complicated formats, e.g. NIST or txdot csv with all features.  
 
 
 <!-- 3 Data Exploration -->
@@ -429,11 +437,18 @@ primary source: TxDOT data
 ABOUT: i.e. quality of selected features
 <!-- 3.2 Getting to Know the Data -->
 <!-- 3.2.1 The Normal Distribution -->
+@STUB: use pandas libs and custom functions to generate report. current implementation only a draft.
 
 ## Data Preparation
+@STUB: explain txdot_parse.py works to prepare data, create features, etc  
+@STUB: introduce featdef.py in it's role of feature creation, but make sure to mention it under modelling as well for its feature management capabilities  
+@STUB: 
 summary: use python, pandas to ensure data is useful
 <!-- counting "quality issues" as part of crisp-dm preparation" to keep 'quality found' and 'quality fixed' together; may need to change this mentality -->
 ### Data Quality Issues
+@STUB: add report of overall quality issues, e.g. before/after fixing  
+@STUB: find the references to dropna or features without enough values (e.g. average daily traffic amount)  
+Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat abc, fixed yes/no'  
 <!-- 3.3 Identifying Data Quality Issues -->
 #### Identified
 <!-- 3.3.1 Missing Values -->
@@ -456,16 +471,21 @@ summary: use python, pandas to ensure data is useful
 -->
 
 ## Modeling
+@STUB: describe the 'model.py' in its current implementation  
 quicknote: use python data mining libraries to generate the model
 start with simple DecisionTree, move to more efficient models later
 
 ## Evaluation
 ABOUT: Prediction, cv, etc
+@STUB: describe the x-val functions in model.py  
 
 ## Deployment
 ABOUT: the application of the 'analytics solution'
 aka Application
+@STUB: currently this is the mapgen.py  
+@STUB: introduce the final concept, but leave details to the defined work-packages to define how the overall solution will work together.  
 ### Technology
+@STUB: brief overview of the stack used, WPs describe the rest
 quicknote: browser-based application using python, html, javascript
 
 ### Project Preparation Gantt Chart
@@ -796,6 +816,8 @@ TBD - TODO: combine with WP descriptions
 -->
 
 <hr />
+
+@STUB: update from conclusion in "abstract" 
 
 **PROPOSAL DRAFT**  
 
