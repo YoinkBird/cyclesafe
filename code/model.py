@@ -697,12 +697,12 @@ print("may have to remove 'manner of collision' and other after-the fact feature
 print("################################################################################")
 
 print("################################################################################")
-print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route ")
+print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route <scoring_manual_user_route>")
 print("################################################################################")
 print("#                                      NEXT:                                     ")
 print("#                                      NEXT:                                     ")
 print("#                                      NEXT:                                     ")
-print("fuzzy gps match")
+print(" !! NOT YET !! fuzzy gps match")
 print("refer to the outline for more details")
 # dump out file which contains values whch can be provided by user/tool/etc
 #+ user is expected to plan their route by selecting intersections and deleting the remaining columns
@@ -802,6 +802,36 @@ print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe inj
 #PROBABLY-noNeedHere-onlyForModelGen# cm = confusion_matrix(y_test,model_clf_simple.predict(X_test))
 #PROBABLY-noNeedHere-onlyForModelGen# plot_confusion_matrix(cm,classes=['fubar','aight'])
 #PROBABLY-noNeedHere-onlyForModelGen# plt.show()
+print("################################################################################")
+print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </scoring_manual_user_route>")
+print("################################################################################")
+
+print("################################################################################")
+print("-I-: " + "WORK_IN_PROGRESS - <scoring_automatic_user_route> ")
+print("################################################################################")
+print("#                                      NEXT:                                     ")
+print("#                                      NEXT:                                     ")
+print("#                                      NEXT:                                     ")
+print("refer to the outline for more details")
+print('''
+Today's menu:
+Get geo-json route:
+* geo-json route planning: [JSFiddle+F12] - get sample of third-party routing json response
+* client-server mock-interface: [ model.py + tbd ] - mock function returns hard-coded geo-json
+  * this approximates a future http connection
+  * "import mock_webthing as webthing" ....
+Score route:
+* input to model: convert geo-json to format usable by model.predict
+* score : scores = model.predict(<newdata>)
+* client-server mock-interface: [ model.py + tbd ] - generate json with gps coords, score
+  * consumer: maybe modified mapgen to display the scores, not sure yet.
+
+Deliverable: 
+see literal pen-and-ink notebook (not ipynb)
+''')
+print("################################################################################")
+print("-I-: " + "END - WORK_IN_PROGRESS - </scoring_automatic_user_route> ")
+print("################################################################################")
 
 # miscellaneous
 '''
