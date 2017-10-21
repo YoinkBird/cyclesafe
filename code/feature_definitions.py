@@ -2,6 +2,9 @@ import pandas as pd
 
 #df.append(pd.DataFrame({'newthing':{'type':'str'}}).T
 
+# TODO:
+# add more simplified categories, perhaps "time" as a quaternary category, or binary group day_of_week by the most dangerous and least dangerous days
+
 
 '''
 register attrributes here which need to be defaulted to False
@@ -16,12 +19,14 @@ def get_feature_defs():
     # note: 'street' is same as 'str' but doesn't get lowercased. use 'name' for string which needs to be untouched
     # jsmap : this var can be used to generate the javascript map
     # input : inputs required to make a prediction. ROUGH DESCRIPTION, SUBJECT TO CHANGE! 1: essential (non-changing) 2: good-to-know (varies with time) 3: optional (hard to know)
+    # TODO: add attribute to differentiate a-priori and post-fact attribs
     feature_definitions = {
     # post-fact
     # post-fact - collision description
     'crash_id'                                 : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : False         , 'pairplot':0, 'jsmap':1, 'input':0, },
     'crash_year'                               : {'target':0, 'type' : 'int',    'dummies':0, 'origin':False,  'regtype' : 'continuous'  , 'pairplot':1, 'jsmap':0, 'input':0, },
     'crash_time'                               : {'target':0, 'type' : '24h',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':1, 'input':0, },
+    # TODO: extract intersection_related into an a-priori feature 'is_intersection' for future purposes; would not really help for model evaluation. 'intersection_related' indicates that at a particular GPS coord there is an intersection. if cyclist route contains those coordinates, can assume there is an intersection. Usage: route input would contain "gps coords" and not 'is_intersection', and the application/tool sets 'is_intersection' based on the GPS coords. Would need a threshold if the GPS coords not a good match.
     'intersection_related'                     : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'manner_of_collision'                      : {'target':0, 'type' : 'str',    'dummies':1, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
     'object_struck'                            : {'target':0, 'type' : 'str',    'dummies':0, 'origin':False,  'regtype' : 'categorical' , 'pairplot':0, 'jsmap':0, 'input':0, },
