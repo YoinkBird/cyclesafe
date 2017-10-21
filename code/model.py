@@ -352,6 +352,19 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
 ################################################################################
 # /FUNCTIONS
 ################################################################################
+################################################################################
+# FUNCTIONS_FOR_API
+################################################################################
+def mock_receive_request_json():
+    # not sure how args should look
+    return {"geocoded_waypoints":[{"geocoder_status":"OK","place_id":"ChIJt8-EJZu1RIYRqltuGDO-cPw","types":["establishment","point_of_interest"]},{"geocoder_status":"OK","place_id":"ChIJDWL-doK1RIYRKMU8yTmlBFI","types":["cafe","establishment","food","point_of_interest","restaurant"]}],"routes":[{"bounds":{"south":30.288230000000002,"west":-97.74139000000001,"north":30.291200000000003,"east":-97.73679000000001},"copyrights":"Map data ©2017 Google","legs":[{"distance":{"text":"0.5 mi","value":736},"duration":{"text":"10 mins","value":584},"end_address":"2606 Guadalupe St, Austin, TX 78705, USA","end_location":{"lat":30.2912016,"lng":-97.7412483},"start_address":"2501 Speedway, Austin, TX 78712, USA","start_location":{"lat":30.2882269,"lng":-97.73692160000002},"steps":[{"distance":{"text":"453 ft","value":138},"duration":{"text":"2 mins","value":101},"end_location":{"lat":30.2894657,"lng":-97.73679190000001},"polyline":{"points":"mtzwDvfpsQwAGqAGmAI"},"start_location":{"lat":30.2882269,"lng":-97.73692160000002},"travel_mode":"WALKING","encoded_lat_lngs":"mtzwDvfpsQwAGqAGmAI","path":[{"lat":30.288230000000002,"lng":-97.73692000000001},{"lat":30.288670000000003,"lng":-97.73688000000001},{"lat":30.289080000000002,"lng":-97.73684000000002},{"lat":30.28947,"lng":-97.73679000000001}],"lat_lngs":[{"lat":30.288230000000002,"lng":-97.73692000000001},{"lat":30.288670000000003,"lng":-97.73688000000001},{"lat":30.289080000000002,"lng":-97.73684000000002},{"lat":30.28947,"lng":-97.73679000000001}],"instructions":"Head <b>north</b> on <b>Speedway</b> toward <b>E Dean Keeton St</b>","maneuver":"","start_point":{"lat":30.2882269,"lng":-97.73692160000002},"end_point":{"lat":30.2894657,"lng":-97.73679190000001}},{"distance":{"text":"0.3 mi","value":443},"duration":{"text":"6 mins","value":360},"end_location":{"lat":30.28981659999999,"lng":-97.7413871},"maneuver":"turn-left","polyline":{"points":"e|zwD|epsQOlFAVKhDAZ?FAz@AJANExAEn@Cb@EbAATGbB"},"start_location":{"lat":30.2894657,"lng":-97.73679190000001},"travel_mode":"WALKING","encoded_lat_lngs":"e|zwD|epsQOlFAVKhDAZ?FAz@AJANExAEn@Cb@EbAATGbB","path":[{"lat":30.28947,"lng":-97.73679000000001},{"lat":30.289550000000002,"lng":-97.73798000000001},{"lat":30.28956,"lng":-97.7381},{"lat":30.289620000000003,"lng":-97.73895},{"lat":30.289630000000002,"lng":-97.73909},{"lat":30.289630000000002,"lng":-97.73913},{"lat":30.289640000000002,"lng":-97.73943000000001},{"lat":30.28965,"lng":-97.73949},{"lat":30.28966,"lng":-97.73957000000001},{"lat":30.289690000000004,"lng":-97.74002},{"lat":30.289720000000003,"lng":-97.74026},{"lat":30.289740000000002,"lng":-97.74044},{"lat":30.28977,"lng":-97.74078000000002},{"lat":30.289780000000004,"lng":-97.74089000000001},{"lat":30.289820000000002,"lng":-97.74139000000001}],"lat_lngs":[{"lat":30.28947,"lng":-97.73679000000001},{"lat":30.289550000000002,"lng":-97.73798000000001},{"lat":30.28956,"lng":-97.7381},{"lat":30.289620000000003,"lng":-97.73895},{"lat":30.289630000000002,"lng":-97.73909},{"lat":30.289630000000002,"lng":-97.73913},{"lat":30.289640000000002,"lng":-97.73943000000001},{"lat":30.28965,"lng":-97.73949},{"lat":30.28966,"lng":-97.73957000000001},{"lat":30.289690000000004,"lng":-97.74002},{"lat":30.289720000000003,"lng":-97.74026},{"lat":30.289740000000002,"lng":-97.74044},{"lat":30.28977,"lng":-97.74078000000002},{"lat":30.289780000000004,"lng":-97.74089000000001},{"lat":30.289820000000002,"lng":-97.74139000000001}],"instructions":"Turn <b>left</b> onto <b>E Dean Keeton St</b>","start_point":{"lat":30.2894657,"lng":-97.73679190000001},"end_point":{"lat":30.28981659999999,"lng":-97.7413871}},{"distance":{"text":"0.1 mi","value":155},"duration":{"text":"2 mins","value":123},"end_location":{"lat":30.2912016,"lng":-97.7412483},"maneuver":"turn-right","polyline":{"points":"k~zwDtbqsQgBKUAuAGi@CUA"},"start_location":{"lat":30.28981659999999,"lng":-97.7413871},"travel_mode":"WALKING","encoded_lat_lngs":"k~zwDtbqsQgBKUAuAGi@CUA","path":[{"lat":30.289820000000002,"lng":-97.74139000000001},{"lat":30.290340000000004,"lng":-97.74133},{"lat":30.290450000000003,"lng":-97.74132},{"lat":30.29088,"lng":-97.74128},{"lat":30.291090000000004,"lng":-97.74126000000001},{"lat":30.291200000000003,"lng":-97.74125000000001}],"lat_lngs":[{"lat":30.289820000000002,"lng":-97.74139000000001},{"lat":30.290340000000004,"lng":-97.74133},{"lat":30.290450000000003,"lng":-97.74132},{"lat":30.29088,"lng":-97.74128},{"lat":30.291090000000004,"lng":-97.74126000000001},{"lat":30.291200000000003,"lng":-97.74125000000001}],"instructions":"Turn <b>right</b> onto <b>Guadalupe St</b><div style=\"font-size:0.9em\">Destination will be on the left</div>","start_point":{"lat":30.28981659999999,"lng":-97.7413871},"end_point":{"lat":30.2912016,"lng":-97.7412483}}],"traffic_speed_entry":[],"via_waypoint":[],"via_waypoints":[]}],"overview_polyline":"mtzwDvfpsQiDOmAIOlFM`EAb@KpDQlDGbBgBKkBI_AE","summary":"E Dean Keeton St","warnings":["Walking directions are in beta.    Use caution – This route may be missing sidewalks or pedestrian paths."],"waypoint_order":[],"overview_path":[{"lat":30.288230000000002,"lng":-97.73692000000001},{"lat":30.289080000000002,"lng":-97.73684000000002},{"lat":30.28947,"lng":-97.73679000000001},{"lat":30.289550000000002,"lng":-97.73798000000001},{"lat":30.289620000000003,"lng":-97.73895},{"lat":30.289630000000002,"lng":-97.73913},{"lat":30.289690000000004,"lng":-97.74002},{"lat":30.289780000000004,"lng":-97.74089000000001},{"lat":30.289820000000002,"lng":-97.74139000000001},{"lat":30.290340000000004,"lng":-97.74133},{"lat":30.29088,"lng":-97.74128},{"lat":30.291200000000003,"lng":-97.74125000000001}]}],"status":"OK","request":{"origin":{"placeId":"ChIJt8-EJZu1RIYRqltuGDO-cPw"},"destination":{"placeId":"ChIJDWL-doK1RIYRKMU8yTmlBFI"},"travelMode":"WALKING"}}
+
+#def mock_return_response_json(route):
+
+    # not sure how args should look
+################################################################################
+# /FUNCTIONS_FOR_API
+################################################################################
 
 (data, data_dummies, df_int_nonan, featdef) = model_prepare()
 
@@ -697,7 +710,7 @@ print("may have to remove 'manner of collision' and other after-the fact feature
 print("################################################################################")
 
 print("################################################################################")
-print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route <scoring_manual_user_route>")
+print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route <score_manual_predef_route>")
 print("################################################################################")
 print("#                                      NEXT:                                     ")
 print("#                                      NEXT:                                     ")
@@ -803,11 +816,11 @@ print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe inj
 #PROBABLY-noNeedHere-onlyForModelGen# plot_confusion_matrix(cm,classes=['fubar','aight'])
 #PROBABLY-noNeedHere-onlyForModelGen# plt.show()
 print("################################################################################")
-print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </scoring_manual_user_route>")
+print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </score_manual_predef_route>")
 print("################################################################################")
 
 print("################################################################################")
-print("-I-: " + "WORK_IN_PROGRESS - <scoring_automatic_user_route> ")
+print("-I-: " + "WORK_IN_PROGRESS - <score_manual_generic_route> ")
 print("################################################################################")
 print("#                                      NEXT:                                     ")
 print("#                                      NEXT:                                     ")
@@ -816,24 +829,275 @@ print("refer to the outline for more details")
 print('''
 Today's menu:
 Get geo-json route:
-* geo-json route planning: [JSFiddle+F12] - get sample of third-party routing json response
-* client-server mock-interface: [ model.py + tbd ] - mock function returns hard-coded geo-json
-  * this approximates a future http connection
-  * "import mock_webthing as webthing" ....
-Score route:
-* input to model: convert geo-json to format usable by model.predict
-* score : scores = model.predict(<newdata>)
-* client-server mock-interface: [ model.py + tbd ] - generate json with gps coords, score
-  * consumer: maybe modified mapgen to display the scores, not sure yet.
+[x] * geo-json route planning: [JSFiddle+F12] - get sample of third-party routing json response
+[x] * client-server mock-interface: [ model.py + tbd ] - mock function returns hard-coded geo-json
+[ ]   * this approximates a future http connection
+[ ]   * "import mock_webthing as webthing" ....
+[ ] Score route:
+[x] * input to model: convert geo-json to format usable by model.predict
+[x]   * hack: re-use existing data for now, just overwrite the GPS
+[x] * score : scores = model.predict(<newdata>)
+15:00
+[x] * client-server mock-interface: [ model.py + tbd ] - generate json with gps coords, score
+[x]   * save coords to file
+[ ]   * consumer: maybe modified mapgen to display the scores, not sure yet.
 
 Deliverable: 
 see literal pen-and-ink notebook (not ipynb)
 ''')
+geodata = mock_receive_request_json()
+print("route data - overview_path")
+pp.pprint(
+        geodata['routes'][0]['overview_path']
+        )
+
+print("convert to model-consumable format")
+print('''
+ need to format GPS as
+        ''')
+print("required features:")
+pp.pprint(
+        X_test.head()
+        )
+print("total format:")
+pp.pprint(
+        user_route_data.columns
+        )
+pp.pprint(
+        user_route_data.head()
+        )
+print('''
+
+until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
+=> need to match the lengths
+''')
+# In [67]: pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path'])
+
+# In [84]: user_route_data[:pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path']).shape[0]].shape
+# Out[84]: (12, 18)
+print("munge - length-adjusted dataset [ auto_route_data ] ")
+# just the gps coords
+auto_route_gps = pd.DataFrame.from_dict(
+        mock_receive_request_json()['routes'][0]['overview_path']
+        )
+# copy-hack the existing dataset - TODO: mock this up much better, e.g. mock_random_envdata
+auto_route_data = user_route_data[:pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path']).shape[0]]
+pp.pprint(
+        auto_route_data.shape
+)
+print('''
+
+until timer 20min: 
+''')
+print("munge - insert gps coords")
+# vv not quite, indexes don't overlap vv
+# auto_route_data[auto_route_gps.columns] = auto_route_gps
+
+# essential: reset the index numbers. now they will match the auto_route_gps, because it has a fresh index anyway TODO: move up to original declaration. 
+auto_route_data.reset_index(inplace=True)
+
+# the wrong way (is the way which takes forever)
+#+ colname mismatch prevents: auto_route_data[auto_route_gps.columns] = auto_route_gps
+#+ or 
+#+  auto_route_data[auto_route_gps.columns].update(auto_route_gps)
+auto_route_data['latitude']  = auto_route_gps['lat']
+auto_route_data['longitude'] = auto_route_gps['lng']
+
+print("munge - ^^^ should verify that the GPS coords actually took ^^^")
+print('''
+
+until timer 20min: 
+''')
+print("munge - quickly - verify that auto_route_gps == auto_route_gps")
+# how to use?
+auto_route_data[['latitude','longitude']].values == auto_route_gps.values
+# as follows: 
+#+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
+pp.pprint(
+(auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all()
+)
+if( (auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all() != True ):
+    print("-E-: GPS update not work, exiting to avoid weird consequences")
+    print("-I-: umm, so this is awkward. can't just exit, so I'll just have an 'else' after this and try to remember do to nothing else.")
+    print("bye!")
+    print(" workaround: do something really nasty, like undefined beh, to get it to exit")
+    quit()
+
+print("# vvv copypasta vvv")
+# TODO: copy-pasted the minimal setup, still need to setup model etc
+########################################
+# scoring the route, assume sanitised input
+########################################
+# extract relevant data for scoring
+X_test = auto_route_data[clf_simple_predictors]
+
+# 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
+y_pred = model_clf_simple.predict_proba(X_test)
+y_pred_predict = model_clf_simple.predict(X_test)
+print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
+print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
+print("# ^^^ copypasta ^^^")
+
+print(" combine score with gps coordinates")
+auto_route_data['score'] = y_pred[:,1]
+#---------------------------------------- 
+# TODO: do it right
+'''
+In [12]: auto_route_data['score'] = y_pred[:,1]
+/home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  """Entry point for launching an IPython kernel.
+'''
+#---------------------------------------- 
+print('''
+
+15:00 - until timer 20min: 
+''')
+print(" generate json with gps coords, score ")
+# weird
+print("original:")
+pp.pprint(
+        mock_receive_request_json()['routes'][0]['overview_path']
+        )
+print("new:")
+pp.pprint(
+        auto_route_data[['score','latitude','longitude']].to_json()
+        )
+
+# closer, need to get rid of index and rename col
+'''
+original:
+[{'lat': 30.288230000000002, 'lng': -97.73692000000001},
+ {'lat': 30.289080000000002, 'lng': -97.73684000000002},
+ {'lat': 30.28947, 'lng': -97.73679000000001},
+
+In [27]: json.loads(auto_route_data[['score','latitude','longitude']].transpose().to_json())
+Out[27]: 
+{'0': {'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
+ '1': {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
+
+# has the index:
+In [28]: auto_route_data[['score','latitude','longitude']].transpose()
+Out[28]: 
+                  0          1          2          3          4          5   \
+score       0.870229   0.888579   0.870229   0.909357   0.888579   0.909357   
+latitude   30.288230  30.289080  30.289470  30.289550  30.289620  30.289630   
+longitude -97.736920 -97.736840 -97.736790 -97.737980 -97.738950 -97.739130
+
+# classic X-Y - 'transpose' was only in the way:
+# src: https://stackoverflow.com/questions/28590663/pandas-dataframe-to-json-without-index
+In [38]: json.loads(auto_route_data[['score','latitude','longitude']].to_json(orient='records'))
+Out[38]: 
+[{'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
+ {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
+'''
+import json
+pp.pprint( json.loads(
+    auto_route_data[['score','latitude','longitude']].to_json(orient='records')
+))
+
+print("# real quick: fix the names for lat,lng")
+'''
+src: https://stackoverflow.com/questions/11346283/renaming-columns-in-pandas?rq=1
+In [50]: auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
+/home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/pandas/core/frame.py:2834: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  **kwargs)
+'''
+auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
+import json
+pp.pprint( json.loads(
+    auto_route_data[['score','lat','lng']].to_json(orient='records')
+))
+
+print("--------------------------------------------------------------------------------")
+print(" final response: ")
+response_json = auto_route_data[['score','lat','lng']].to_json(orient='records')
+pp.pprint( json.loads(
+    response_json
+))
+print('''
+
+15:30 - until timer 20min: 
+''')
+
+# dump json to file for consumption by whatever else needs it
+def mock_return_response_json(route):
+    print("# save to file")
+    # tmp:
+    filepath="output/gps_scored_route.json"
+    print("mock-response sending to : " + filepath)
+    with open(filepath, 'w') as outfile:
+        json.dump(response_json, outfile)
+
+    # verify
+    loadedjson = str()
+    with open(filepath, 'r') as infile:
+       loadedjson = json.load(infile)
+
+    loadedroute = json.loads(loadedjson)
+
+    return_value = -1
+    # verify
+    if( response_json == loadedjson ):
+        print("json string resurrected successfully")
+        return_value = 1
+    # compare the dict if possible?
+    return return_value
+
+# cleanup
+print("mocking into function to mirror the other mock function. not sure if necessary, but it's quick?")
+if( mock_return_response_json( auto_route_data[['score','lat','lng']].to_json(orient='records') ) ):
+    print("json mock-response sent")
+print("internal data structure, with only response variables")
+pp.pprint(
+        auto_route_data[['score','lat','lng']]
+        )
+print("response data:")
+pp.pprint( json.loads(
+    response_json
+))
+print("request data:")
+pp.pprint(
+        geodata['routes'][0]['overview_path']
+        )
+
+################################################################################
+# TODO: fix this further up with ... whatever. it was a todo anyway.
+#+ however, the equality test passes
+'''
+ugh, now you tell me:
+    /home/yoinkbird/workspace/cycle_safe/code/model.py:896: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  auto_route_data['latitude']  = auto_route_gps['lat']
+/home/yoinkbird/workspace/cycle_safe/code/model.py:897: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  auto_route_data['longitude'] = auto_route_gps['lng']
+'''
+
 print("################################################################################")
-print("-I-: " + "END - WORK_IN_PROGRESS - </scoring_automatic_user_route> ")
+print("-I-: " + "END - WORK_IN_PROGRESS - </score_manual_generic_route> ")
 print("################################################################################")
 
+################################################################################
+#________________________________________________________________________________
+# FIN OVER FINITO STOP LOOKING FOR CODE
+#--------------------------------------------------------------------------------
+
 # miscellaneous
+# TECH TIPS
+## PANDAS
 '''
 pandas tricks
 filtering
@@ -850,9 +1114,35 @@ data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_s
 data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_street_name'].isnull()][colgrps['intersection']]
 '''
 
+## Jupyter QTConsole
+'''
+%run code/model.py
+shift+arr-up - as close to i-search-back as it gets
+esc - clear entire input area, equivalent to ctrl+u in bash,csh
+ctrl+l - issue on my machine, keeps causing cursor to get out of sync: 
+    $ jupyter qtconsole
+    QTextCursor::setPosition: Position '-1' out of range
+    QTextCursor::setPosition: Position '11' out of range
+    QTextCursor::setPosition: Position '-1' out of range                                                 
+    QTextCursor::setPosition: Position '12' out of range 
+    # sometimes even
+    Segmentation fault (core dumped)
+
+ctrl+. - restart kernel, clears out all of the vars that are set in the namespace. 
+    due to the ctrl+l issue, it's not always clear whether kernel has restarted, or whether restart has hung.
+    solution: just press 'esc'
+'''
+## MISC- ubuntu
+'''
+shift+prtscr - screenshot section
+'''
+
 '''
 # look into dictvectorizer dv.get_feature_names http://stackoverflow.com/a/34194521
 '''
+
+# DM INFO
+
 # DOC
 # feature importance and feature selection
 # e.g. reducing complexity of a tree model
