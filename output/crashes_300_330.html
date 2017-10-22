@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>bicycle accidents - severe and not severe</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      }
+      #map {
+      height: 100%;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #floating-panel {
+        background-color: #fff;
+        border: 1px solid #999;
+        left: 25%;
+        padding: 5px;
+        position: absolute;
+        top: 10px;
+        z-index: 5;
+      }
+    </style>
+  </head>
+  <!--
+  original source: https://www.kaggle.com/mchirico/d/nhtsa/2015-traffic-fatalities/bike-zoom-chicago-map/code
+  heatmap  source: https://www.kaggle.com/mchirico/d/nhtsa/2015-traffic-fatalities/google-heatmap-of-bike-fatalities/code
+  cluster  source: https://www.kaggle.com/mchirico/d/nhtsa/2015-traffic-fatalities/exploding-google-map-school-bus/code
+  -->
+
+<!-- data_source: load all at once within these script tags -->
+<script>var crashes =[
+['12112069', 30.25524478, -97.74505246, 1, 'https://storage.googleapis.com/montco-stats/images/bikeKilled.png', '310'],
+['11418675', 30.26899478, -97.74246246, 108, 'https://storage.googleapis.com/montco-stats/images/bikeKilled.png', '307'],
+];
+
+function getPoints() { return [new google.maps.LatLng(30.25524478, -97.74505246),
+new google.maps.LatLng(30.26899478, -97.74246246),
+];} </script>
+<!-- data_source: done-->
+
+  <body> 
+    <div id="floating-panel">
+      <button onclick="toggleMarkers()">Toggle Accident Markers</button>
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change gradient</button>
+      <button onclick="changeRadius()">Change radius</button>
+      <button onclick="changeOpacity()">Change opacity</button>
+    </div>
+
+      
+
+      <!--  DataCanary_s fix -->
+      <div id="map" class="main-container"></div>
+    <script>
+      // This example requires the Visualization library. Include the libraries=visualization
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
+
+      var map, heatmap;
+      function initMap() {
+          //center: {lat: 41.7720713, lng: -87.5867187}
+          map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: {lat: 30.2849, lng: -97.7341}
+
+            });
+
+          heatmap = new google.maps.visualization.HeatmapLayer({
+            data: getPoints(),
+            map: map
+          });
+          changeGradient();
+          setMarkers(map);
+          // Add traffic
+          trafficLayer = new google.maps.TrafficLayer();
+          trafficLayer.setMap(map);	
+
+          // Add bikeLayer
+          var bikeLayer = new google.maps.BicyclingLayer();
+          bikeLayer.setMap(map);
+
+          }
+      function toggleHeatmap() {
+        heatmap.setMap(heatmap.getMap() ? null : map);
+      }
+      function changeGradient() {
+        var gradient = [
+          'rgba(0, 255, 255, 0)',
+          'rgba(0, 255, 255, 1)',
+          'rgba(0, 191, 255, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
+        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+      }
+
+      function changeRadius() {
+        heatmap.set('radius', heatmap.get('radius') ? null : 20);
+      }
+
+      function changeOpacity() {
+        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+      }
+
+
+
+
+    var posMarkers = {}; // track the markers
+    function setMarkers(map) {
+        // Adds markers to the map.
+
+        // Marker sizes are expressed as a Size of X,Y where the origin of the image
+        // (0,0) is located in the top left of the image.
+
+        // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+          url: 'https://storage.googleapis.com/montco-stats/images/carCrash.png',
+
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(20, 32),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(0, 32)
+          };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+
+        function htmlEntities(str) {
+          // return String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+          return String(str).replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+          }
+
+        var shape = {
+          coords: [1, 1, 1, 20, 18, 20, 18, 1],
+          type: 'poly'
+          };
+
+        for (var i = 0; i < crashes.length; i++) {
+          var crash = crashes[i];
+          var marker = new google.maps.Marker({
+            position: {lat: crash[1], lng: crash[2]},
+            map: map,
+            icon: crash[4],
+            shape: shape,
+            draggable: true,
+            title: htmlEntities(crash[0]),
+            visible: false,
+            zIndex: crash[3]
+            });
+          posMarkers[i] = marker; // track the markers
+        }
+        // MarkerClusterer - https://googlemaps.github.io/js-marker-clusterer/docs/examples.html
+        // intentionally disabling the images (//imagePath: ..) for a cleaner look when combined with the gradients
+        //   found accidentally at http://stackoverflow.com/a/43684606
+        // <!-- # TODO: layers - http://stackoverflow.com/questions/25867804/markercluster-toggle-on-off -->
+        var markerCluster = new MarkerClusterer(map, posMarkers, {
+          //imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
+    }
+    // http://stackoverflow.com/a/11270368
+    function toggleMarkers(map) {
+      for (var index in crashes){
+        if(posMarkers[index].getVisible()){
+          posMarkers[index].setVisible(false);
+        }
+        else{
+          posMarkers[index].setVisible(true);
+        }
+      }
+    }
+
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+    <!--
+    key="AIzaSyALU94pLkit5lx_QU62wnzOsO6y1H_BWfI"
+    src="https://maps.googleapis.com/maps/api/js?key="+key+"&callback=initMap"></script>
+    -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALU94pLkit5lx_QU62wnzOsO6y1H_BWfI&libraries=visualization&callback=initMap"></script>
+
+  </body>
+</html>
+      
