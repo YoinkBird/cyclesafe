@@ -382,10 +382,16 @@ def retrieve_json_file(filename):
     # return native object
     return loadedjson
 
+# mock json request
 def mock_receive_request_json():
-    # not sure how args should look
-    # replace hard-code with a load from file
-    return retrieve_json_file("t/route_json/gps_generic_eerc_to_klane.json")
+    # NOTE: files may have to be symlinked first:
+    # ln -s ../server/res/gps_input_route.json output/
+    # tmp: - probably needs to be in a config
+    filename = "gps_input_route.json"
+    filepath=("%s/%s" % (resource_dir, filename))
+    # testing:
+    # filepath="t/route_json/gps_generic.json"
+    return retrieve_json_file(filepath)
 
 
 # dump json to file for consumption by whatever else needs it
@@ -835,8 +841,8 @@ model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human
 ########################################
 # generate the "user interface", a spreadsheet with all of the options
 # TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
-# limit to 80 rows
-data[ clf_simple_predictors + my_likey ][:80].to_csv(temp_user_csv_name)
+# unlimit from 80 rows
+data[ clf_simple_predictors + my_likey ][:].to_csv(temp_user_csv_name)
 
 # drop NA inputs, can't assume user data is correct!
 #+ for better code clarity, could do this in two steps with dropna(inplace=True)
@@ -932,14 +938,31 @@ until timer 20min: munge together dataset - insert generic gps as overwrite into
 # Out[84]: (12, 18)
 print("munge - length-adjusted dataset [ auto_route_data ] ")
 # just the gps coords
+# TODO: anticipate several routes
+# [x] TODOne: use 'steps' instead of 'overview_path' - no, overview path is fine. has even more data than steps
+# [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
 auto_route_gps = pd.DataFrame.from_dict(
-        mock_receive_request_json()['routes'][0]['overview_path']
+        geodata['routes'][0]['overview_path']
         )
 # copy-hack the existing dataset - TODO: mock this up much better, e.g. mock_random_envdata
-auto_route_data = user_route_data[:pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path']).shape[0]]
+auto_route_data = user_route_data[:auto_route_gps.shape[0]]
 pp.pprint(
         auto_route_data.shape
 )
+
+print("--------------------------------------------------------------------------------")
+print(" DATA VERIFICATION " )
+print("user_route_data shape:" + str(user_route_data[['latitude','longitude']].shape) )
+print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
+print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
+
+if ( ( auto_route_data[['latitude','longitude']].shape == auto_route_gps.shape ) != True):
+    print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
+    print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
+    print("-E-: shape mismatch")
+    quit()
+print("--------------------------------------------------------------------------------")
+
 print('''
 
 until timer 20min: 
@@ -963,10 +986,16 @@ print('''
 
 until timer 20min: 
 ''')
-print("munge - quickly - verify that auto_route_gps == auto_route_gps")
+print("munge - quickly - verify that auto_route_data == auto_route_gps")
 # how to use?
 auto_route_data[['latitude','longitude']].values == auto_route_gps.values
 # as follows: 
+print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
+print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
+if ( ( auto_route_data[['latitude','longitude']].shape == auto_route_gps.shape ) != True):
+    print("-E-: shape mismatch")
+    quit()
+
 #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
 pp.pprint(
 (auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all()
@@ -1014,8 +1043,9 @@ print('''
 print(" generate json with gps coords, score ")
 # weird
 print("original:")
+# [x] TODOne: refactor to use 'geodata'
 pp.pprint(
-        mock_receive_request_json()['routes'][0]['overview_path']
+        geodata['routes'][0]['overview_path']
         )
 print("new:")
 pp.pprint(
