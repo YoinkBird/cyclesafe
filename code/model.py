@@ -906,6 +906,7 @@ Get geo-json route:
 Deliverable: 
 see literal pen-and-ink notebook (not ipynb)
 ''')
+verbose_score_manual_generic_route = 0
 geodata = mock_receive_request_json()
 print("route data - overview_path")
 pp.pprint(
@@ -920,18 +921,19 @@ print("required features:")
 pp.pprint(
         X_test.head()
         )
-print("total format:")
-pp.pprint(
-        user_route_data.columns
-        )
-pp.pprint(
-        user_route_data.head()
-        )
-print('''
+if(verbose_score_manual_generic_route == 1):
+    print("total format:")
+    pp.pprint(
+            user_route_data.columns
+            )
+    pp.pprint(
+            user_route_data.head()
+            )
+    print('''
 
-until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
-=> need to match the lengths
-''')
+    until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
+    => need to match the lengths
+    ''')
 # In [67]: pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path'])
 
 # In [84]: user_route_data[:pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path']).shape[0]].shape
@@ -939,22 +941,20 @@ until timer 20min: munge together dataset - insert generic gps as overwrite into
 print("munge - length-adjusted dataset [ auto_route_data ] ")
 # just the gps coords
 # TODO: anticipate several routes
-# [x] TODOne: use 'steps' instead of 'overview_path' - no, overview path is fine. has even more data than steps
+# [ ] TODO: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
 # [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
 auto_route_gps = pd.DataFrame.from_dict(
         geodata['routes'][0]['overview_path']
         )
 # copy-hack the existing dataset - TODO: mock this up much better, e.g. mock_random_envdata
 auto_route_data = user_route_data[:auto_route_gps.shape[0]]
-pp.pprint(
-        auto_route_data.shape
-)
+print("auto_route_data total amount:" + str(auto_route_data.shape) )
 
 print("--------------------------------------------------------------------------------")
 print(" DATA VERIFICATION " )
-print("user_route_data shape:" + str(user_route_data[['latitude','longitude']].shape) )
-print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
-print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
+print("user_route_data['lat','lng'] shape:" + str(user_route_data[['latitude','longitude']].shape) )
+print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['latitude','longitude']].shape) )
+print("auto_route_gps ['lat','lng'] shape:" + str(auto_route_gps.shape) )
 
 if ( ( auto_route_data[['latitude','longitude']].shape == auto_route_gps.shape ) != True):
     print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
@@ -1042,15 +1042,17 @@ print('''
 ''')
 print(" generate json with gps coords, score ")
 # weird
-print("original:")
-# [x] TODOne: refactor to use 'geodata'
-pp.pprint(
-        geodata['routes'][0]['overview_path']
-        )
-print("new:")
-pp.pprint(
-        auto_route_data[['score','latitude','longitude']].to_json()
-        )
+if(verbose_score_manual_generic_route == 2):
+    print("original:")
+    # [x] TODOne: refactor to use 'geodata'
+    pp.pprint(
+            geodata['routes'][0]['overview_path']
+            )
+if(verbose_score_manual_generic_route == 3):
+    print("new:")
+    pp.pprint(
+            auto_route_data[['score','latitude','longitude']].to_json()
+            )
 
 # closer, need to get rid of index and rename col
 '''
@@ -1079,12 +1081,14 @@ Out[38]:
 [{'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
  {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
 '''
-import json
-pp.pprint( json.loads(
-    auto_route_data[['score','latitude','longitude']].to_json(orient='records')
-))
+if(verbose_score_manual_generic_route == 2):
+    import json
+    pp.pprint( json.loads(
+        auto_route_data[['score','latitude','longitude']].to_json(orient='records')
+    ))
 
-print("# real quick: fix the names for lat,lng")
+if(verbose_score_manual_generic_route == 1):
+    print("# real quick: fix the names for lat,lng")
 '''
 src: https://stackoverflow.com/questions/11346283/renaming-columns-in-pandas?rq=1
 In [50]: auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
@@ -1096,9 +1100,10 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 '''
 auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
 import json
-pp.pprint( json.loads(
-    auto_route_data[['score','lat','lng']].to_json(orient='records')
-))
+if(verbose_score_manual_generic_route == 1):
+    pp.pprint( json.loads(
+        auto_route_data[['score','lat','lng']].to_json(orient='records')
+    ))
 
 print("--------------------------------------------------------------------------------")
 print(" final response: ")
@@ -1119,14 +1124,15 @@ print("internal data structure, with only response variables")
 pp.pprint(
         auto_route_data[['score','lat','lng']]
         )
-print("response data:")
-pp.pprint( json.loads(
-    response_json
-))
-print("request data:")
-pp.pprint(
-        geodata['routes'][0]['overview_path']
-        )
+if(verbose_score_manual_generic_route == 2):
+    print("response data:")
+    pp.pprint( json.loads(
+        response_json
+    ))
+    print("request data:")
+    pp.pprint(
+            geodata['routes'][0]['overview_path']
+            )
 
 ################################################################################
 # TODO: fix this further up with ... whatever. it was a todo anyway.
