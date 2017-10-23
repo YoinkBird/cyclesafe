@@ -947,13 +947,37 @@ verbose_score_manual_generic_route = 0
 #+ use the generate_human_readable_dectree model, which has only three features
 # get a copy of the complete model which was run on the entire dataset
 
+# <PICKLE>
+# https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
+# path to pickle:
+import pickle
+path_human_read = "output/human_read_dectree.pkl"
+import os.path
+# model_clf_simple, clf_simple_predictors, clf_simple_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
 model_clf_simple, clf_simple_predictors, clf_simple_responsecls = ([],[],[])
-print("-I-: creating model")
-model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+# load if exists
+loadpickle=1
+if (loadpickle  and os.path.exists(path_human_read) and os.path.isfile(path_human_read) ):
+    print("-I-: retrieving model from pickle file")
+    with open ("output/human_read_dectree.pkl", 'rb') as fh:
+        model_clf_simple, clf_simple_predictors, clf_simple_responsecls = pickle.load(  fh )
+        # model_clf_simple = pickle.load(fh)
 
+else:
+    print("-I-: creating model")
+    model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+# dump
+with open ("output/human_read_dectree.pkl", 'wb') as fh:
+    # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
+    pickle.dump(
+            (model_clf_simple, clf_simple_predictors, clf_simple_responsecls)
+            , fh )
+
+# </PICKLE>
 ########################################
 # MOCK user environmental input
 ########################################
+# TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
 # fake user env data. mocking user input for everything in my_likey (other than lat,lon)
 #+ for better code clarity, could dropna this in two steps with dropna(inplace=True)
 user_route_data = data[ clf_simple_predictors + my_likey ][:].dropna()
