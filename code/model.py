@@ -862,8 +862,8 @@ model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human
 ########################################
 # generate the "user interface", a spreadsheet with all of the options
 # TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
-# unlimit from 80 rows
-data[ clf_simple_predictors + my_likey ][:].to_csv(temp_user_csv_name)
+# limit to 80 rows
+data[ clf_simple_predictors + my_likey ][:80].to_csv(temp_user_csv_name)
 
 # drop NA inputs, can't assume user data is correct!
 #+ for better code clarity, could do this in two steps with dropna(inplace=True)
@@ -901,6 +901,18 @@ print("#########################################################################
 print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </score_manual_predef_route>")
 print("################################################################################")
 
+################################################################################
+# clear env as best we can until this all gets refactored
+# delete by name
+del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, y_pred, y_pred_predict)
+# then loop and verify
+for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'y_pred' , 'y_pred_predict' ]:
+    print(var)
+    if var not in locals():
+      print("varcheck pass - succesfully removed " + var)
+    else:
+      print("varcheck fail - stil defined        " + var)
+
 print("################################################################################")
 print("-I-: " + "WORK_IN_PROGRESS - <score_manual_generic_route> ")
 print("################################################################################")
@@ -928,6 +940,25 @@ Deliverable:
 see literal pen-and-ink notebook (not ipynb)
 ''')
 verbose_score_manual_generic_route = 0
+########################################
+# prepare model
+########################################
+# current SIMPLE user input:
+#+ use the generate_human_readable_dectree model, which has only three features
+# get a copy of the complete model which was run on the entire dataset
+
+model_clf_simple, clf_simple_predictors, clf_simple_responsecls = ([],[],[])
+print("-I-: creating model")
+model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+
+########################################
+# MOCK user environmental input
+########################################
+# fake user env data. mocking user input for everything in my_likey (other than lat,lon)
+#+ for better code clarity, could dropna this in two steps with dropna(inplace=True)
+user_route_data = data[ clf_simple_predictors + my_likey ][:].dropna()
+
+
 geodata = mock_receive_request_json()
 print("route data - overview_path")
 pp.pprint(
