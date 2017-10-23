@@ -16,6 +16,9 @@ import re
 
 import os,sys
 
+# hard-coded globals
+resource_dir = "output"
+
 # global options
 options = {
         'graphics' : 0, # 0 - disable, 1 - enable
@@ -355,9 +358,61 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
 ################################################################################
 # FUNCTIONS_FOR_API
 ################################################################################
+# DUPLICATE from server.py
+# dump json to file for consumption by whatever else needs it
+def retrieve_json_file(filename):
+    import json
+    verbose = options['verbose']
+    # for saving:
+    #if ( verbose >= 1):
+    #    print("# save to file")
+
+    filepath = filename
+    if( verbose >= 1):
+        print("mock-response sending to : " + filepath)
+    # for saving:
+    # with open(filepath, 'w') as outfile:
+    #    json.dump(response_json, outfile)
+
+    # open file as json
+    loadedjson = str()
+    with open(filepath, 'r') as infile:
+       loadedjson = json.load(infile)
+
+    # return native object
+    return loadedjson
+
 def mock_receive_request_json():
     # not sure how args should look
-    return {"geocoded_waypoints":[{"geocoder_status":"OK","place_id":"ChIJt8-EJZu1RIYRqltuGDO-cPw","types":["establishment","point_of_interest"]},{"geocoder_status":"OK","place_id":"ChIJDWL-doK1RIYRKMU8yTmlBFI","types":["cafe","establishment","food","point_of_interest","restaurant"]}],"routes":[{"bounds":{"south":30.288230000000002,"west":-97.74139000000001,"north":30.291200000000003,"east":-97.73679000000001},"copyrights":"Map data ©2017 Google","legs":[{"distance":{"text":"0.5 mi","value":736},"duration":{"text":"10 mins","value":584},"end_address":"2606 Guadalupe St, Austin, TX 78705, USA","end_location":{"lat":30.2912016,"lng":-97.7412483},"start_address":"2501 Speedway, Austin, TX 78712, USA","start_location":{"lat":30.2882269,"lng":-97.73692160000002},"steps":[{"distance":{"text":"453 ft","value":138},"duration":{"text":"2 mins","value":101},"end_location":{"lat":30.2894657,"lng":-97.73679190000001},"polyline":{"points":"mtzwDvfpsQwAGqAGmAI"},"start_location":{"lat":30.2882269,"lng":-97.73692160000002},"travel_mode":"WALKING","encoded_lat_lngs":"mtzwDvfpsQwAGqAGmAI","path":[{"lat":30.288230000000002,"lng":-97.73692000000001},{"lat":30.288670000000003,"lng":-97.73688000000001},{"lat":30.289080000000002,"lng":-97.73684000000002},{"lat":30.28947,"lng":-97.73679000000001}],"lat_lngs":[{"lat":30.288230000000002,"lng":-97.73692000000001},{"lat":30.288670000000003,"lng":-97.73688000000001},{"lat":30.289080000000002,"lng":-97.73684000000002},{"lat":30.28947,"lng":-97.73679000000001}],"instructions":"Head <b>north</b> on <b>Speedway</b> toward <b>E Dean Keeton St</b>","maneuver":"","start_point":{"lat":30.2882269,"lng":-97.73692160000002},"end_point":{"lat":30.2894657,"lng":-97.73679190000001}},{"distance":{"text":"0.3 mi","value":443},"duration":{"text":"6 mins","value":360},"end_location":{"lat":30.28981659999999,"lng":-97.7413871},"maneuver":"turn-left","polyline":{"points":"e|zwD|epsQOlFAVKhDAZ?FAz@AJANExAEn@Cb@EbAATGbB"},"start_location":{"lat":30.2894657,"lng":-97.73679190000001},"travel_mode":"WALKING","encoded_lat_lngs":"e|zwD|epsQOlFAVKhDAZ?FAz@AJANExAEn@Cb@EbAATGbB","path":[{"lat":30.28947,"lng":-97.73679000000001},{"lat":30.289550000000002,"lng":-97.73798000000001},{"lat":30.28956,"lng":-97.7381},{"lat":30.289620000000003,"lng":-97.73895},{"lat":30.289630000000002,"lng":-97.73909},{"lat":30.289630000000002,"lng":-97.73913},{"lat":30.289640000000002,"lng":-97.73943000000001},{"lat":30.28965,"lng":-97.73949},{"lat":30.28966,"lng":-97.73957000000001},{"lat":30.289690000000004,"lng":-97.74002},{"lat":30.289720000000003,"lng":-97.74026},{"lat":30.289740000000002,"lng":-97.74044},{"lat":30.28977,"lng":-97.74078000000002},{"lat":30.289780000000004,"lng":-97.74089000000001},{"lat":30.289820000000002,"lng":-97.74139000000001}],"lat_lngs":[{"lat":30.28947,"lng":-97.73679000000001},{"lat":30.289550000000002,"lng":-97.73798000000001},{"lat":30.28956,"lng":-97.7381},{"lat":30.289620000000003,"lng":-97.73895},{"lat":30.289630000000002,"lng":-97.73909},{"lat":30.289630000000002,"lng":-97.73913},{"lat":30.289640000000002,"lng":-97.73943000000001},{"lat":30.28965,"lng":-97.73949},{"lat":30.28966,"lng":-97.73957000000001},{"lat":30.289690000000004,"lng":-97.74002},{"lat":30.289720000000003,"lng":-97.74026},{"lat":30.289740000000002,"lng":-97.74044},{"lat":30.28977,"lng":-97.74078000000002},{"lat":30.289780000000004,"lng":-97.74089000000001},{"lat":30.289820000000002,"lng":-97.74139000000001}],"instructions":"Turn <b>left</b> onto <b>E Dean Keeton St</b>","start_point":{"lat":30.2894657,"lng":-97.73679190000001},"end_point":{"lat":30.28981659999999,"lng":-97.7413871}},{"distance":{"text":"0.1 mi","value":155},"duration":{"text":"2 mins","value":123},"end_location":{"lat":30.2912016,"lng":-97.7412483},"maneuver":"turn-right","polyline":{"points":"k~zwDtbqsQgBKUAuAGi@CUA"},"start_location":{"lat":30.28981659999999,"lng":-97.7413871},"travel_mode":"WALKING","encoded_lat_lngs":"k~zwDtbqsQgBKUAuAGi@CUA","path":[{"lat":30.289820000000002,"lng":-97.74139000000001},{"lat":30.290340000000004,"lng":-97.74133},{"lat":30.290450000000003,"lng":-97.74132},{"lat":30.29088,"lng":-97.74128},{"lat":30.291090000000004,"lng":-97.74126000000001},{"lat":30.291200000000003,"lng":-97.74125000000001}],"lat_lngs":[{"lat":30.289820000000002,"lng":-97.74139000000001},{"lat":30.290340000000004,"lng":-97.74133},{"lat":30.290450000000003,"lng":-97.74132},{"lat":30.29088,"lng":-97.74128},{"lat":30.291090000000004,"lng":-97.74126000000001},{"lat":30.291200000000003,"lng":-97.74125000000001}],"instructions":"Turn <b>right</b> onto <b>Guadalupe St</b><div style=\"font-size:0.9em\">Destination will be on the left</div>","start_point":{"lat":30.28981659999999,"lng":-97.7413871},"end_point":{"lat":30.2912016,"lng":-97.7412483}}],"traffic_speed_entry":[],"via_waypoint":[],"via_waypoints":[]}],"overview_polyline":"mtzwDvfpsQiDOmAIOlFM`EAb@KpDQlDGbBgBKkBI_AE","summary":"E Dean Keeton St","warnings":["Walking directions are in beta.    Use caution – This route may be missing sidewalks or pedestrian paths."],"waypoint_order":[],"overview_path":[{"lat":30.288230000000002,"lng":-97.73692000000001},{"lat":30.289080000000002,"lng":-97.73684000000002},{"lat":30.28947,"lng":-97.73679000000001},{"lat":30.289550000000002,"lng":-97.73798000000001},{"lat":30.289620000000003,"lng":-97.73895},{"lat":30.289630000000002,"lng":-97.73913},{"lat":30.289690000000004,"lng":-97.74002},{"lat":30.289780000000004,"lng":-97.74089000000001},{"lat":30.289820000000002,"lng":-97.74139000000001},{"lat":30.290340000000004,"lng":-97.74133},{"lat":30.29088,"lng":-97.74128},{"lat":30.291200000000003,"lng":-97.74125000000001}]}],"status":"OK","request":{"origin":{"placeId":"ChIJt8-EJZu1RIYRqltuGDO-cPw"},"destination":{"placeId":"ChIJDWL-doK1RIYRKMU8yTmlBFI"},"travelMode":"WALKING"}}
+    # replace hard-code with a load from file
+    return retrieve_json_file("t/route_json/gps_generic_eerc_to_klane.json")
+
+
+# dump json to file for consumption by whatever else needs it
+# TODO: this ... was dumb. split into two subs, one to simply load, return json and one to validate
+def mock_return_response_json(route):
+    verbose = options['verbose']
+    print("# save to file")
+    # tmp:
+    filepath="output/gps_scored_route.json"
+    print("mock-response sending to : " + filepath)
+    with open(filepath, 'w') as outfile:
+        json.dump(response_json, outfile)
+
+    # verify
+    loadedjson = str()
+    with open(filepath, 'r') as infile:
+       loadedjson = json.load(infile)
+
+    loadedroute = json.loads(loadedjson)
+
+    return_value = -1
+    # verify
+    if( response_json == loadedjson ):
+        print("json string resurrected successfully")
+        return_value = 1
+    # compare the dict if possible?
+    return return_value
 
 #def mock_return_response_json(route):
 
@@ -1025,30 +1080,6 @@ print('''
 
 15:30 - until timer 20min: 
 ''')
-
-# dump json to file for consumption by whatever else needs it
-def mock_return_response_json(route):
-    print("# save to file")
-    # tmp:
-    filepath="output/gps_scored_route.json"
-    print("mock-response sending to : " + filepath)
-    with open(filepath, 'w') as outfile:
-        json.dump(response_json, outfile)
-
-    # verify
-    loadedjson = str()
-    with open(filepath, 'r') as infile:
-       loadedjson = json.load(infile)
-
-    loadedroute = json.loads(loadedjson)
-
-    return_value = -1
-    # verify
-    if( response_json == loadedjson ):
-        print("json string resurrected successfully")
-        return_value = 1
-    # compare the dict if possible?
-    return return_value
 
 # cleanup
 print("mocking into function to mirror the other mock function. not sure if necessary, but it's quick?")
