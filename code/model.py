@@ -403,7 +403,7 @@ def mock_return_response_json(route):
     filepath="output/gps_scored_route.json"
     print("mock-response sending to : " + filepath)
     with open(filepath, 'w') as outfile:
-        json.dump(response_json, outfile)
+        json.dump(route, outfile)
 
     # verify
     loadedjson = str()
@@ -1117,8 +1117,10 @@ print('''
 ''')
 
 # cleanup
+# [x] TODOne: try to just add the score to route data, see if gmaps accepts it. insert the score at: # steps[i]['score'] # -> won't try, current system works very well. however, may need to convert overview_path to steps simply because there are more 'overview_path' segments than there are 'steps'
+# see also, the format: marker.setPosition(myRoute.steps[i].start_location, which is a strange object thingy ['lat': ...,'lon': ...]);
 print("mocking into function to mirror the other mock function. not sure if necessary, but it's quick?")
-if( mock_return_response_json( auto_route_data[['score','lat','lng']].to_json(orient='records') ) ):
+if( mock_return_response_json( response_json ) ):
     print("json mock-response sent")
 print("internal data structure, with only response variables")
 pp.pprint(
