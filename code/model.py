@@ -367,6 +367,8 @@ def retrieve_json_file(filename):
     #if ( verbose >= 1):
     #    print("# save to file")
 
+    # TODO: convert his, want to force everything in one dir. tmp:
+    # filepath=("%s/%s" % (resource_dir, filename))
     filepath = filename
     if( verbose >= 1):
         print("mock-response sending to : " + filepath)
@@ -382,6 +384,25 @@ def retrieve_json_file(filename):
     # return native object
     return loadedjson
 
+# DUPLICATE from server.py
+# save json to file for consumption by whatever else needs it
+#+ in practice, not such a great idea, but for now it is what it is
+#+ ultimately, the server needs to call the model anyway.
+#+ will have to fix the encoding issues of converting to 2to3; not impossible, but super annoying
+def save_json_file(response_json, filename): # ="gps_output_route.json"):
+    import json
+    verbose = options['verbose']
+    if( verbose >= 1):
+        print("# save to file")
+    # tmp:
+    filepath=("%s/%s" % (resource_dir, filename))
+    # if ( quiet != 1):
+    #     print("mock-response sending to : " + filepath)
+    with open(filepath, 'w') as outfile:
+       json.dump(response_json, outfile)
+
+    return filename
+
 # mock json request
 def mock_receive_request_json():
     # NOTE: files may have to be symlinked first:
@@ -395,20 +416,20 @@ def mock_receive_request_json():
 
 
 # dump json to file for consumption by whatever else needs it
-# TODO: this ... was dumb. split into two subs, one to simply load, return json and one to validate
+# save, load, validate json
 def mock_return_response_json(route):
     verbose = options['verbose']
     print("# save to file")
     # tmp:
     filepath="output/gps_scored_route.json"
+    filepath="gps_scored_route.json"
     print("mock-response sending to : " + filepath)
-    with open(filepath, 'w') as outfile:
-        json.dump(route, outfile)
+    save_json_file(route, filepath)
 
     # verify
     loadedjson = str()
-    with open(filepath, 'r') as infile:
-       loadedjson = json.load(infile)
+    filepath="output/gps_scored_route.json"
+    loadedjson =  retrieve_json_file(filepath)
 
     loadedroute = json.loads(loadedjson)
 
