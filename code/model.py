@@ -988,11 +988,62 @@ with open ("path_saved_model.pkl", 'wb') as fh:
 ########################################
 # MOCK user environmental input
 ########################################
+
+
+########################################
+# USER ENVIRONMENT DATA
+# user_route_data feeds auto_route_data
+#
 # TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
 # fake user env data. mocking user input for everything in my_likey (other than lat,lon)
 #+ for better code clarity, could dropna this in two steps with dropna(inplace=True)
- user_route_data = data[ clf_score_predictors + my_likey ][:].dropna()
+# user_route_data = data[ clf_score_predictors + my_likey ][:].dropna()
 
+# TODO: convert to handle input data from client
+# - steps for model:
+# [x] step1: hard-code a client request with input data, populate user_route_data
+# [ ] step1a: create function to read client env-data from file
+# - steps for client:
+# [ ] step2: update client to send hard-coded data
+# [ ] step3: update client to send user-selected data
+# [ ] step3b: find out if requested data can be auto-procured
+
+# step1:
+# if using model from map_manual_analyse_strongest_predictors
+if( runmodels['map_manual_analyse_strongest_predictors'] ):
+    print("-E-: user_environment not configured for map_manual_analyse_strongest_predictors")
+    quit()
+user_environment = {
+#    'latitude' ,
+#    'longitude' ,
+#    'intersecting_street_name' ,  # required
+#    'street_name' ,               # required
+    #----
+    'crash_time' : '16:18' ,                # meant as 'time of travel' 
+    'light_condition' : 'daylight' ,           # user should know this, but ultimately it can be looked up based on time?
+    'weather_condition' : 'cloudy' ,         # good to know
+    'surface_condition' : 'dry' ,         # not always known, but maybe?
+    'day_of_week' : 'wednesday' ,               # less relevant for immediate route planning
+    #----
+#    'intersection_related' ,      # user won't know, but maybe model can find out from DB
+#    'manner_of_collision' ,       # leaving here to indicate that model may be able to predict what to watch out for 
+    'crash_datetime' : '2017-01-01 16:18:00' ,            # enter exact time ... I think preproc can handle this conversion, actually
+    'crash_time_30m' : 1630 ,             # probably irrelevant? maybe easier for planning purposes
+    'crash_year' : '2017' ,                # irrelevant, may be needed later for granularity
+    }
+
+# if using model from map_generate_human_readable_dectree
+user_environment = {
+        'bin_intersection_related' : '0', # 1 : intersection where cyclist should expect cars , 0 : all others
+        'bin_light_condition' : '1',      # 1 : daylight , 0 : all others
+        'bin_manner_of_collision' : '0',  # our distinction: 0 : motorist likely at fault , 1 : fault unclear
+        }
+# lat,lng will come from gmaps data, the rest from an additional submitted dataset
+user_route_data = data[ ['latitude','longitude'] + list(user_environment.keys()) ][:].dropna()
+#
+########################################
+
+# TODO : pass in the filename
 geodata = mock_receive_request_json()
 if(0): # not using using overview_path, too many datapoints
     print("route data - overview_path")
@@ -1030,6 +1081,7 @@ print("munge - length-adjusted dataset [ auto_route_data ] ")
 # TODO: anticipate several routes
 # [ ] TODO: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
 # [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
+
 # process google directions data
 '''
 A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
@@ -1064,8 +1116,39 @@ def get_gmap_direction_coords(geodata):
 auto_route_gps = pd.DataFrame.from_dict(
         get_gmap_direction_coords(geodata)
         )
-# copy-hack the existing dataset - TODO: mock this up much better, e.g. mock_random_envdata
+
+# copy-hack the existing dataset - [x] TODOne in auto_route_data2: mock this up much better, e.g. mock_random_envdata
 auto_route_data = user_route_data[:auto_route_gps.shape[0]]
+
+# get gps coordinates and the user data
+#+ [x] disable until model works -> works now
+# 20:21 progress
+# 22:47 progress
+if(1):
+    #+ this is the futrar datastructure to replace auto_route_data
+    auto_route_data2 = pd.DataFrame.from_dict(
+            get_gmap_direction_coords(geodata)
+            )
+
+    # need to impute the values to each row
+    # first, add user-data to the df:
+    auto_route_data2[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
+    # then set the user-data cols to the df
+    # either:
+    # auto_route_data2[list(user_environment.keys())] = 
+    #     auto_route_data2[list(user_environment.keys())].fillna(method='ffill')
+    # or:
+    auto_route_data2.update(
+            auto_route_data2[list(user_environment.keys())].fillna(method='ffill'))
+    print("mock auto_route_data from crash data")
+    print(auto_route_data.head())
+    print("mock auto_route_data pretending it's from client")
+    print(auto_route_data2.head())
+    print("overwriting mock auto_route_data with pretend-client-data, should make it easy to pass in from client now")
+    auto_route_data = auto_route_data2
+    # TODO: remove this gps_rename_pointless
+    auto_route_data.rename(columns={'lat':'latitude','lng':'longitude'}, inplace=True)
+
 print("auto_route_data total amount:" + str(auto_route_data.shape) )
 
 print("--------------------------------------------------------------------------------")
@@ -1216,6 +1299,7 @@ A value is trying to be set on a copy of a slice from a DataFrame
 See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
   **kwargs)
 '''
+# TODO: remove this gps_rename_pointless
 auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
 import json
 if(verbose_score_manual_generic_route == 1):
@@ -1383,3 +1467,13 @@ VarianceThreshold().fit_transform(X_full)
 #  response['churn_prob'] = churn_prob[:,1]
 #  # Return response DataFrame
 #  return response
+
+# worklog
+# 20:2x - enabling other model
+# 20:50 - fixed the bug from yesterday
+# 20:51 - verified pickle working still
+
+# IDEA - ensemble model of one with more data and one with less, e.g. one model has intersection info and one doesn't, can they be stacked?
+# 20:58 - done refactoring
+#jmisc stuff
+# 22:53 - done with adding hard-coded mock client data
