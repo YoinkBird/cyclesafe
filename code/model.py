@@ -29,6 +29,8 @@ options = {
 runmodels = {
         'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
         'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
+        'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
+        'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
         }
 
 #<def_model_prepare>
@@ -625,6 +627,8 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
         cm = confusion_matrix(y_test,clf.predict(X_test))
         plot_confusion_matrix(cm,classes=['fubar','aight'])
         plt.show()
+    # return the model
+    return (clf, predictors, responsecls)
 #/end of determining strong features
 #</def_manual_analyse_strongest_predictors>
 
@@ -951,26 +955,33 @@ verbose_score_manual_generic_route = 0
 # https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
 # path to pickle:
 import pickle
-path_human_read = "output/human_read_dectree.pkl"
+path_saved_model = str()
+if( runmodels['map_generate_human_readable_dectree'] ):
+    path_saved_model = "output/human_read_dectree.pkl"
+elif( runmodels['map_manual_analyse_strongest_predictors'] ):
+    path_saved_model = "output/human_read_dectree.pkl"
 import os.path
-# model_clf_simple, clf_simple_predictors, clf_simple_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
-model_clf_simple, clf_simple_predictors, clf_simple_responsecls = ([],[],[])
+# model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
+model_clf_score_route, clf_score_predictors, clf_score_responsecls = ([],[],[])
 # load if exists
 loadpickle=1
-if (loadpickle  and os.path.exists(path_human_read) and os.path.isfile(path_human_read) ):
+if (loadpickle  and os.path.exists(path_saved_model) and os.path.isfile(path_saved_model) ):
     print("-I-: retrieving model from pickle file")
-    with open ("output/human_read_dectree.pkl", 'rb') as fh:
-        model_clf_simple, clf_simple_predictors, clf_simple_responsecls = pickle.load(  fh )
-        # model_clf_simple = pickle.load(fh)
+    with open (path_saved_model, 'rb') as fh:
+        model_clf_score_route, clf_score_predictors, clf_score_responsecls = pickle.load(  fh )
+        # model_clf_score_route = pickle.load(fh)
 
 else:
     print("-I-: creating model")
-    model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+    if( runmodels['map_generate_human_readable_dectree'] ):
+        model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+    if( runmodels['map_manual_analyse_strongest_predictors'] ):
+        model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
 # dump
-with open ("output/human_read_dectree.pkl", 'wb') as fh:
+with open ("path_saved_model.pkl", 'wb') as fh:
     # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
     pickle.dump(
-            (model_clf_simple, clf_simple_predictors, clf_simple_responsecls)
+            (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
             , fh )
 
 # </PICKLE>
@@ -980,8 +991,7 @@ with open ("output/human_read_dectree.pkl", 'wb') as fh:
 # TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
 # fake user env data. mocking user input for everything in my_likey (other than lat,lon)
 #+ for better code clarity, could dropna this in two steps with dropna(inplace=True)
-user_route_data = data[ clf_simple_predictors + my_likey ][:].dropna()
-
+ user_route_data = data[ clf_score_predictors + my_likey ][:].dropna()
 
 geodata = mock_receive_request_json()
 print("route data - overview_path")
@@ -1089,11 +1099,11 @@ print("# vvv copypasta vvv")
 # scoring the route, assume sanitised input
 ########################################
 # extract relevant data for scoring
-X_test = auto_route_data[clf_simple_predictors]
+X_test = auto_route_data[clf_score_predictors]
 
 # 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
-y_pred = model_clf_simple.predict_proba(X_test)
-y_pred_predict = model_clf_simple.predict(X_test)
+y_pred = model_clf_score_route.predict_proba(X_test)
+y_pred_predict = model_clf_score_route.predict(X_test)
 print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
 print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
 print("# ^^^ copypasta ^^^")
