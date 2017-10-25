@@ -978,7 +978,7 @@ else:
     if( runmodels['map_manual_analyse_strongest_predictors'] ):
         model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
 # dump
-with open ("path_saved_model.pkl", 'wb') as fh:
+with open (path_saved_model, 'wb') as fh:
     # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
     pickle.dump(
             (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
