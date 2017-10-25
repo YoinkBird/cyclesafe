@@ -1092,32 +1092,32 @@ def get_gmap_direction_coords(geodata):
     return geodata['routes'][0]['overview_path']
 #</def_get_gmap_direction_coords>
 
+print("creating dataframe")
+print("munge - insert gps coords")
+# create dataframe for X_test
 # get gps coordinates and the user data
-#+ [x] disable until model works -> works now
-# 20:21 progress
-# 22:47 progress
-# 23:05 refactor1
-
-# feeds X_test
 auto_route_data = pd.DataFrame.from_dict(
         get_gmap_direction_coords(geodata)
         )
 
-# need to impute the values to each row
+print("munge - insert user-env data")
+# need to impute the user-env values to each row
 # first, add user-data to the df:
 auto_route_data[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
 # then set the user-data cols to the df
-# either:
-# auto_route_data[list(user_environment.keys())] = 
-#     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
-# or:
+#+ # avoid the following error:
+#+ A value is trying to be set on a copy of a slice from a DataFrame.
+#+ Try using .loc[row_indexer,col_indexer] = value instead
+#+ 
+#+ => actually - use temporary assignments instead
+#+ either:
+#+ auto_route_data[list(user_environment.keys())] = 
+#+     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
+#+ or:
 auto_route_data.update(
         auto_route_data[list(user_environment.keys())].fillna(method='ffill'))
+
 print(auto_route_data.head())
-print("overwriting mock auto_route_data with pretend-client-data, should make it easy to pass in from client now")
-auto_route_data = auto_route_data
-# TODO: remove this gps_rename_pointless
-# auto_route_data.rename(columns={'lat':'latitude','lng':'longitude'}, inplace=True)
 
 print("auto_route_data total amount:" + str(auto_route_data.shape) )
 
@@ -1126,24 +1126,11 @@ print(" DATA VERIFICATION " )
 print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['lat','lng']].shape) )
 print("--------------------------------------------------------------------------------")
 
-print('''
-
-until timer 20min: 
-''')
-print("munge - insert gps coords")
-# essential: reset the index numbers. now they will match the auto_route_gps, because it has a fresh index anyway TODO: move up to original declaration. 
-auto_route_data.reset_index(inplace=True)
-
-
-print("munge - ^^^ should verify that the GPS coords actually took ^^^")
-print('''
-
-until timer 20min: 
-''')
 #-# print("munge - quickly - verify that two np arrays have same values:")
 #-# #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
 #-# if( (auto_route_data[['latitude','longitude']].values == auto_route_dict.values).all() != True ):
 
+print("running the model")
 print("# vvv copypasta vvv")
 # TODO: copy-pasted the minimal setup, still need to setup model etc
 ########################################
@@ -1218,46 +1205,18 @@ Out[38]:
 [{'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
  {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
 '''
-if(verbose_score_manual_generic_route == 2):
-    import json
-    pp.pprint( json.loads(
-        auto_route_data[['score','latitude','longitude']].to_json(orient='records')
-    ))
 
-if(verbose_score_manual_generic_route == 1):
-    print("# real quick: fix the names for lat,lng")
-'''
-src: https://stackoverflow.com/questions/11346283/renaming-columns-in-pandas?rq=1
-In [50]: auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
-/home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/pandas/core/frame.py:2834: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-  **kwargs)
-'''
-# TODO: remove this gps_rename_pointless
-auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
-import json
-if(verbose_score_manual_generic_route == 1):
-    pp.pprint( json.loads(
-        auto_route_data[['score','lat','lng']].to_json(orient='records')
-    ))
 
 print("--------------------------------------------------------------------------------")
 print(" final response: ")
+import json
 response_json = auto_route_data[['score','lat','lng']].to_json(orient='records')
 pp.pprint( json.loads(
     response_json
 ))
-print('''
 
-15:30 - until timer 20min: 
-''')
-
-# cleanup
-# [x] TODOne: try to just add the score to route data, see if gmaps accepts it. insert the score at: # steps[i]['score'] # -> won't try, current system works very well. however, may need to convert overview_path to steps simply because there are more 'overview_path' segments than there are 'steps'
-# see also, the format: marker.setPosition(myRoute.steps[i].start_location, which is a strange object thingy ['lat': ...,'lon': ...]);
-print("mocking into function to mirror the other mock function. not sure if necessary, but it's quick?")
+# reply
+print("save json to file. is mock equivalent of submitting json as a response")
 if( mock_return_response_json( response_json ) ):
     print("json mock-response sent")
 print("internal data structure, with only response variables")
@@ -1274,24 +1233,6 @@ if(verbose_score_manual_generic_route == 2):
             geodata['routes'][0]['overview_path']
             )
 
-################################################################################
-# TODO: fix this further up with ... whatever. it was a todo anyway.
-#+ however, the equality test passes
-'''
-ugh, now you tell me:
-    /home/yoinkbird/workspace/cycle_safe/code/model.py:896: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-  auto_route_data['latitude']  = auto_route_gps['lat']
-/home/yoinkbird/workspace/cycle_safe/code/model.py:897: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-  auto_route_data['longitude'] = auto_route_gps['lng']
-'''
 
 print("################################################################################")
 print("-I-: " + "END - WORK_IN_PROGRESS - </score_manual_generic_route> ")
@@ -1368,6 +1309,17 @@ SelectKBest(mutual_info_classif, k=2).fit_transform(X_full,y_full.values.ravel()
 http://scikit-learn.org/stable/modules/feature_selection.html#removing-features-with-low-variance
 VarianceThreshold().fit_transform(X_full)
 '''
+# pandas rename column
+'''
+src: https://stackoverflow.com/questions/11346283/renaming-columns-in-pandas?rq=1
+In [50]: auto_route_data.rename(columns={'latitude':'lat','longitude':'lng'}, inplace=True)
+/home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/pandas/core/frame.py:2834: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  **kwargs)
+'''
+
 
 
 # Interpreting Decision Tree in context of feature importances
