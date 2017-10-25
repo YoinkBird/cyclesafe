@@ -908,9 +908,9 @@ print("#########################################################################
 ################################################################################
 # clear env as best we can until this all gets refactored
 # delete by name
-del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, y_pred, y_pred_predict)
+del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
 # then loop and verify
-for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'y_pred' , 'y_pred_predict' ]:
+for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'X_test', 'y_pred' , 'y_pred_predict' ]:
     print(var)
     if var not in locals():
       print("varcheck pass - succesfully removed " + var)
@@ -1042,51 +1042,41 @@ user_environment = {
 geodata = mock_receive_request_json()
 if(0): # not using using overview_path, too many datapoints
     print("route data - overview_path")
-    pp.pprint(
-            geodata['routes'][0]['overview_path']
-            )
+    pp.pprint( geodata['routes'][0]['overview_path'])
 
-print("convert to model-consumable format")
-print('''
- need to format GPS as
-        ''')
 print("required features:")
-pp.pprint(
-        X_test.head()
-        )
+pp.pprint(  clf_score_predictors )
+print("convert to model-consumable format")
+print(" need to merge GPS data with user input:")
+pp.pprint( user_environment.keys())
 if(verbose_score_manual_generic_route == 1):
     print('''
 
     until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
     => need to match the lengths
     ''')
-# In [67]: pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path'])
-
-# In [84]: user_route_data[:pd.DataFrame.from_dict(mock_receive_request_json()['routes'][0]['overview_path']).shape[0]].shape
-# Out[84]: (12, 18)
 print("munge - length-adjusted dataset [ auto_route_data ] ")
-# just the gps coords
-# TODO: anticipate several routes
-# [ ] TODO: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
-# [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
 
-# process google directions data
-'''
-A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
-For routes that contain no waypoints, the route will consist of a single "leg,"
- but for routes that define one or more waypoints, the route will consist of one or more legs,
- corresponding to the specific legs of the journey.
-'''
-'''
-start_location contains the LatLng of the origin of this leg.
-    Because the Directions Web Service calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, start_location may be different than the provided origin of this leg if, for example, a road is not near the origin.
-end_location contains the LatLng of the destination of this leg.
-    Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
-'''
-        #geodata['routes'][0]['overview_path']
+#<def_get_gmap_direction_coords>
+# process google directions data, i.e. extract only  the gps coords
+# [x] TODOne: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
+# [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
 def get_gmap_direction_coords(geodata):
+    '''
+    A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
+    For routes that contain no waypoints, the route will consist of a single "leg,"
+     but for routes that define one or more waypoints, the route will consist of one or more legs,
+     corresponding to the specific legs of the journey.
+    '''
+    '''
+    start_location contains the LatLng of the origin of this leg.
+        Because the Directions Web Service calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, start_location may be different than the provided origin of this leg if, for example, a road is not near the origin.
+    end_location contains the LatLng of the destination of this leg.
+        Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
+    '''
     route_list=[]
     # routes: 1 , legs : 1 (no waypoints) , steps : n
+    # TODO: anticipate several routes, legs (waypoints) etc
     # geodata['routes'][0]['legs'][0]['steps'][0]['start_location']
     for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
         # start_location is segment start, end_location is segment stop
@@ -1100,6 +1090,7 @@ def get_gmap_direction_coords(geodata):
     return route_list
     # too many coords
     return geodata['routes'][0]['overview_path']
+#</def_get_gmap_direction_coords>
 
 auto_route_gps = pd.DataFrame.from_dict(
         get_gmap_direction_coords(geodata)
