@@ -1092,10 +1092,11 @@ def get_gmap_direction_coords(geodata):
     return geodata['routes'][0]['overview_path']
 #</def_get_gmap_direction_coords>
 
-auto_route_gps = pd.DataFrame.from_dict(
-        get_gmap_direction_coords(geodata)
-        )
-
+#-# # feeds auto_route_data at some point
+#-# auto_route_gps = pd.DataFrame.from_dict(
+#-#         get_gmap_direction_coords(geodata)
+#-#         )
+#-# 
 #  mock_random_envdata
 
 # get gps coordinates and the user data
@@ -1103,7 +1104,8 @@ auto_route_gps = pd.DataFrame.from_dict(
 # 20:21 progress
 # 22:47 progress
 # 23:05 refactor1
-#+ this is the futrar datastructure to replace auto_route_data
+
+# feeds X_test
 auto_route_data = pd.DataFrame.from_dict(
         get_gmap_direction_coords(geodata)
         )
@@ -1122,20 +1124,20 @@ print(auto_route_data.head())
 print("overwriting mock auto_route_data with pretend-client-data, should make it easy to pass in from client now")
 auto_route_data = auto_route_data
 # TODO: remove this gps_rename_pointless
-auto_route_data.rename(columns={'lat':'latitude','lng':'longitude'}, inplace=True)
+# auto_route_data.rename(columns={'lat':'latitude','lng':'longitude'}, inplace=True)
 
 print("auto_route_data total amount:" + str(auto_route_data.shape) )
 
 print("--------------------------------------------------------------------------------")
 print(" DATA VERIFICATION " )
-print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['latitude','longitude']].shape) )
-print("auto_route_gps ['lat','lng'] shape:" + str(auto_route_gps.shape) )
+print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['lat','lng']].shape) )
+#-# print("auto_route_gps ['lat','lng'] shape:" + str(auto_route_gps.shape) )
 
-if ( ( auto_route_data[['latitude','longitude']].shape == auto_route_gps.shape ) != True):
-    print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
-    print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
-    print("-E-: shape mismatch")
-    quit()
+#-# if ( ( auto_route_data[['lat','lng']].shape == auto_route_gps.shape ) != True):
+#-#     print("auto_route_data shape:" + str(auto_route_data[['lat','lng']].shape) )
+#-#     print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
+#-#     print("-E-: shape mismatch")
+#-#     quit()
 print("--------------------------------------------------------------------------------")
 
 print('''
@@ -1153,34 +1155,34 @@ auto_route_data.reset_index(inplace=True)
 #+ colname mismatch prevents: auto_route_data[auto_route_gps.columns] = auto_route_gps
 #+ or 
 #+  auto_route_data[auto_route_gps.columns].update(auto_route_gps)
-auto_route_data['latitude']  = auto_route_gps['lat']
-auto_route_data['longitude'] = auto_route_gps['lng']
+# auto_route_data['latitude']  = auto_route_gps['lat']
+# auto_route_data['longitude'] = auto_route_gps['lng']
 
 print("munge - ^^^ should verify that the GPS coords actually took ^^^")
 print('''
 
 until timer 20min: 
 ''')
-print("munge - quickly - verify that auto_route_data == auto_route_gps")
+#-# print("munge - quickly - verify that auto_route_data == auto_route_gps")
 # how to use?
-auto_route_data[['latitude','longitude']].values == auto_route_gps.values
-# as follows: 
-print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
-print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
-if ( ( auto_route_data[['latitude','longitude']].shape == auto_route_gps.shape ) != True):
-    print("-E-: shape mismatch")
-    quit()
-
-#+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
-pp.pprint(
-(auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all()
-)
-if( (auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all() != True ):
-    print("-E-: GPS update not work, exiting to avoid weird consequences")
-    print("-I-: umm, so this is awkward. can't just exit, so I'll just have an 'else' after this and try to remember do to nothing else.")
-    print("bye!")
-    print(" workaround: do something really nasty, like undefined beh, to get it to exit")
-    quit()
+#-# auto_route_data[['latitude','longitude']].values == auto_route_gps.values
+#-# # as follows: 
+#-# print("auto_route_data shape:" + str(auto_route_data[['latitude','longitude']].shape) )
+#-# print("auto_route_gps  shape:" + str(auto_route_gps.shape) )
+#-# if ( ( auto_route_data[['latitude','longitude']].shape == auto_route_gps.shape ) != True):
+#-#     print("-E-: shape mismatch")
+#-#     quit()
+#-# 
+#-# #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
+#-# pp.pprint(
+#-# (auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all()
+#-# )
+#-# if( (auto_route_data[['latitude','longitude']].values == auto_route_gps.values).all() != True ):
+#-#     print("-E-: GPS update not work, exiting to avoid weird consequences")
+#-#     print("-I-: umm, so this is awkward. can't just exit, so I'll just have an 'else' after this and try to remember do to nothing else.")
+#-#     print("bye!")
+#-#     print(" workaround: do something really nasty, like undefined beh, to get it to exit")
+#-#     quit()
 
 print("# vvv copypasta vvv")
 # TODO: copy-pasted the minimal setup, still need to setup model etc
