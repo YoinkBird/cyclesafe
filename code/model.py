@@ -994,10 +994,11 @@ with open ("path_saved_model.pkl", 'wb') as fh:
  user_route_data = data[ clf_score_predictors + my_likey ][:].dropna()
 
 geodata = mock_receive_request_json()
-print("route data - overview_path")
-pp.pprint(
-        geodata['routes'][0]['overview_path']
-        )
+if(0): # not using using overview_path, too many datapoints
+    print("route data - overview_path")
+    pp.pprint(
+            geodata['routes'][0]['overview_path']
+            )
 
 print("convert to model-consumable format")
 print('''
@@ -1029,8 +1030,39 @@ print("munge - length-adjusted dataset [ auto_route_data ] ")
 # TODO: anticipate several routes
 # [ ] TODO: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
 # [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
+# process google directions data
+'''
+A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
+For routes that contain no waypoints, the route will consist of a single "leg,"
+ but for routes that define one or more waypoints, the route will consist of one or more legs,
+ corresponding to the specific legs of the journey.
+'''
+'''
+start_location contains the LatLng of the origin of this leg.
+    Because the Directions Web Service calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, start_location may be different than the provided origin of this leg if, for example, a road is not near the origin.
+end_location contains the LatLng of the destination of this leg.
+    Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
+'''
+        #geodata['routes'][0]['overview_path']
+def get_gmap_direction_coords(geodata):
+    route_list=[]
+    # routes: 1 , legs : 1 (no waypoints) , steps : n
+    # geodata['routes'][0]['legs'][0]['steps'][0]['start_location']
+    for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
+        # start_location is segment start, end_location is segment stop
+        #+ may be useful in future to look up crash-location data for a segment
+        if(0): # miniscule difference, not visible on map at all
+            print( step['start_location'] )
+            route_list.append( step['start_location'] )
+        print( step['end_location'] )
+        route_list.append( step['end_location'] )
+    # only a few coords
+    return route_list
+    # too many coords
+    return geodata['routes'][0]['overview_path']
+
 auto_route_gps = pd.DataFrame.from_dict(
-        geodata['routes'][0]['overview_path']
+        get_gmap_direction_coords(geodata)
         )
 # copy-hack the existing dataset - TODO: mock this up much better, e.g. mock_random_envdata
 auto_route_data = user_route_data[:auto_route_gps.shape[0]]
