@@ -984,6 +984,7 @@ with open (path_saved_model, 'wb') as fh:
             (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
             , fh )
 
+# TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
 # </PICKLE>
 ########################################
 # MOCK user environmental input
@@ -992,16 +993,12 @@ with open (path_saved_model, 'wb') as fh:
 
 ########################################
 # USER ENVIRONMENT DATA
-# user_route_data feeds auto_route_data
-#
-# TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
-# fake user env data. mocking user input for everything in my_likey (other than lat,lon)
-#+ for better code clarity, could dropna this in two steps with dropna(inplace=True)
-# user_route_data = data[ clf_score_predictors + my_likey ][:].dropna()
-
+# auto_route_data is the automatically obtained data from the client
+# Note: working on mock data, but with the human_read_dectree that's not a problem. Essentially this is hard-coded to best-possible conditions right now, but also a few "fake conditions" such as whether the cyclist would be at-fault for the accident (i.e. whether they are cycling defensively)
+# 
 # TODO: convert to handle input data from client
 # - steps for model:
-# [x] step1: hard-code a client request with input data, populate user_route_data
+# [x] step1: hard-code a client request with input data, populate auto_route_data
 # [ ] step1a: create function to read client env-data from file
 # - steps for client:
 # [ ] step2: update client to send hard-coded data
@@ -1038,8 +1035,6 @@ user_environment = {
         'bin_light_condition' : '1',      # 1 : daylight , 0 : all others
         'bin_manner_of_collision' : '0',  # our distinction: 0 : motorist likely at fault , 1 : fault unclear
         }
-# lat,lng will come from gmaps data, the rest from an additional submitted dataset
-user_route_data = data[ ['latitude','longitude'] + list(user_environment.keys()) ][:].dropna()
 #
 ########################################
 
@@ -1060,13 +1055,6 @@ pp.pprint(
         X_test.head()
         )
 if(verbose_score_manual_generic_route == 1):
-    print("total format:")
-    pp.pprint(
-            user_route_data.columns
-            )
-    pp.pprint(
-            user_route_data.head()
-            )
     print('''
 
     until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
@@ -1117,43 +1105,38 @@ auto_route_gps = pd.DataFrame.from_dict(
         get_gmap_direction_coords(geodata)
         )
 
-# copy-hack the existing dataset - [x] TODOne in auto_route_data2: mock this up much better, e.g. mock_random_envdata
-auto_route_data = user_route_data[:auto_route_gps.shape[0]]
+#  mock_random_envdata
 
 # get gps coordinates and the user data
 #+ [x] disable until model works -> works now
 # 20:21 progress
 # 22:47 progress
-if(1):
-    #+ this is the futrar datastructure to replace auto_route_data
-    auto_route_data2 = pd.DataFrame.from_dict(
-            get_gmap_direction_coords(geodata)
-            )
+# 23:05 refactor1
+#+ this is the futrar datastructure to replace auto_route_data
+auto_route_data = pd.DataFrame.from_dict(
+        get_gmap_direction_coords(geodata)
+        )
 
-    # need to impute the values to each row
-    # first, add user-data to the df:
-    auto_route_data2[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
-    # then set the user-data cols to the df
-    # either:
-    # auto_route_data2[list(user_environment.keys())] = 
-    #     auto_route_data2[list(user_environment.keys())].fillna(method='ffill')
-    # or:
-    auto_route_data2.update(
-            auto_route_data2[list(user_environment.keys())].fillna(method='ffill'))
-    print("mock auto_route_data from crash data")
-    print(auto_route_data.head())
-    print("mock auto_route_data pretending it's from client")
-    print(auto_route_data2.head())
-    print("overwriting mock auto_route_data with pretend-client-data, should make it easy to pass in from client now")
-    auto_route_data = auto_route_data2
-    # TODO: remove this gps_rename_pointless
-    auto_route_data.rename(columns={'lat':'latitude','lng':'longitude'}, inplace=True)
+# need to impute the values to each row
+# first, add user-data to the df:
+auto_route_data[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
+# then set the user-data cols to the df
+# either:
+# auto_route_data[list(user_environment.keys())] = 
+#     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
+# or:
+auto_route_data.update(
+        auto_route_data[list(user_environment.keys())].fillna(method='ffill'))
+print(auto_route_data.head())
+print("overwriting mock auto_route_data with pretend-client-data, should make it easy to pass in from client now")
+auto_route_data = auto_route_data
+# TODO: remove this gps_rename_pointless
+auto_route_data.rename(columns={'lat':'latitude','lng':'longitude'}, inplace=True)
 
 print("auto_route_data total amount:" + str(auto_route_data.shape) )
 
 print("--------------------------------------------------------------------------------")
 print(" DATA VERIFICATION " )
-print("user_route_data['lat','lng'] shape:" + str(user_route_data[['latitude','longitude']].shape) )
 print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['latitude','longitude']].shape) )
 print("auto_route_gps ['lat','lng'] shape:" + str(auto_route_gps.shape) )
 
