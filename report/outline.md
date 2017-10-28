@@ -131,6 +131,40 @@ Recommendation is to increase data collection in areas with most crashes to bett
 <!--</@breadcrumb>-->
 <!-- Explain why this work is important giving a general introduction to the subject, list the basic knowledge needed and outline the purpose of the report. -->
 
+<!--!@section_sentence-->
+The goal of this project is to create a continuously updated traffic study using data passively gathered from existing sources and to present the results in a readily interpretable manner in order to improve personal safety for cyclists.  
+
+<!-- general introduction to the subject -->
+#### Traffic Studies - Active vs Passive
+Current traffic studies typically involve observing specific sections of road for fixed time period.  
+This provides a lot of data which can be used to improve traffic safety, but is limited by the frequency and scale at which such studies can be done.  
+Staffing is required to run these studies, therefore there are practical constraints on how often and how widespread they can be run.  
+The result is very accurate data for a few representative locations, but the data represents a static section in time and is expensive to update.
+
+Machine learning and automated monitoring can help reduce the cost of active studies, but there is still cost involved in obtaining widespread coverage using automated equipment (e.g. installing cameras at every intersection).
+
+A passive traffic study using data from indirect sources can run continuously and monitor as many locations as the data can provide.  
+The drawback is that indirect data sources may not provide as much information as actively collected traffic data.  
+This alternative application of machine learning has the advantage that it is scalable and requires fewer additional resources.  
+In many cities, crash reports are one of the readily available indirect sources. On the one hand, they are continuously updated and widespread - a police report is filed any time police are called to the scene of an accident anywhere in the region. On the other hand, police reports for crashes are meant for establishing facts related to a crash, and as such don't capture all of the data required by an active traffic study. Additionally, not every crash leads to a police report, so these types of report are also limited by statistical significance.  
+However, these reports are advantageous due to their frequency and geographic distribution; they can reflect time-based trends and localised trends where active traffic studies can only capture a snapshot.
+
+#### Interpretability in Statistics and Machine Learning
+Interpretability describes how readily understandable a process is. For studies based entirely on statistics, it describes how easily the results can be interpretted to correlate cause and effect. This concept extends to machine learning, and describes how easily the inputs to a model can be traced to the model's results.  
+Machine learning is heavily based on traditional statistic methods, but is nonetheless often perceived as a black box due to its ability to produce results from large amounts of data which could not be handled by traditional techniques.  
+It is important to be able to understand the output of a machine learning model for several reasons. The model exists as part of a larger framework to solve a particlar problem, and as such requires supervision to ensure that the results are relevant. In this context, interpretability is important for adjusting the inputs, or even the problem statement, to achieve better results.  
+Interpretability is also important for the end-usage of the model; the model is specific to one particular goal, whereas applications of the model may have various goals and as such need to understand how the model fits in with the overarching application.  
+For example, if a model indicates that a certain trait is involved in a certain outcome, it is important to be able to understand the actual significance of this trait.  Another example could be a model which finds that two traits lead to a certain outcome; this result requires being able to understand to what extent these traits interact. 
+
+#### Public Safety and Trafffic Study Interpretability 
+To maximise public safety, it is important for traffic studies to be interpretable.  
+This report interprets interpretability of a traffic study in two ways: The traditional method of explaining which inputs lead to which outcome, and a more usable interpretation of how to best use the results of the study to improve traffic safety.  
+In simpler terms, understanding how the study achieves its results, and how to practically apply the study's results.  
+The traditional method involves explaining the methods used and explaining how inputs can be traced to outputs.  
+The second method is implemented as a publicly accessible interface to the model used for the study.  
+
+<!-- provide overview of report sections -->
+
 <!-- brainstorming draft
 * fundamental goal: improve safety for cyclists
 * current approaches seem to be based on conventional methods, e.g. apply various measures after a simple traffic study
