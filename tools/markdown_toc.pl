@@ -9,6 +9,13 @@ sub basename{
 my $scriptName = basename($0);
 my $fileName = $ARGV[0];
 
+# mode?
+my $mode = "mini_toc";
+if($ARGV[1] && $ARGV[1] eq "bc_toc"){
+  # breadcrumb toc
+  $mode = "bc_toc";
+}
+
 #### Process incoming text: ###########################
 my $text;
 {
@@ -111,6 +118,129 @@ sub get_mini_toc{
   return @ul_arr;
 }
 
+sub get_header_anchortext{
+# print(join("\n",sort({ $a <=> $b } keys(%header_hash))) . "\n");
+  my $cutoff_limit = shift;
+  # vvv testing vvvv
+  # only use if want to focus on certain indentation level
+  my $startLine = shift if(@_); #testing
+  my $startLevel = 0; #testing
+  my $started = 0; #testing
+  my $prevHighest=0;
+  my $prevLine=0;
+  my @ul_arr;
+  my @bc_arr;
+  for my $ln (sort({ $a <=> $b } keys(%header_hash))){
+    printf("%s %s %s\n", 'ln','lvl','txt') if(0);
+    printf("%s %s %s\n",
+      $ln,
+      $header_hash{$ln}{'level'},
+      $header_hash{$ln}{'text'},
+    ) if(0);
+    if ($started > 1){
+      next;
+    }
+    my $cur_lev = $header_hash{$ln}{'level'};
+    next if($ln < $startLine); # ignore all previous
+    if($ln >= $startLine && $started == 0){
+      $startLevel = $header_hash{$ln}{'level'};
+      $started = 1;
+    }
+    # quit if already started building ul and current level receeds beyond initial level
+    if ($cur_lev < $startLevel){
+      if($started == 1){
+        $started++;
+      }
+      next;
+    }
+
+    if($cur_lev < $prevHighest){
+      print("new tree\n") if(0);
+    }
+    elsif($cur_lev == $prevHighest){
+      print("parallel tree\n") if(0);
+    }
+    $prevHighest = $cur_lev;
+
+    # don't include headers 1th and below
+    my $cutoff_limit = 1;
+
+    # breadcrumb
+    if ( $cur_lev <= $cutoff_limit ){
+      # gh markdown header-anchors: 
+      # https://gist.github.com/asabaylus/3071099#gistcomment-1593627
+      # lowercase
+      my $bc_head = lc($header_hash{$ln}{'text'});
+      # remove non number, letter, space, hyphen
+      $bc_head =~ s/[^0-9a-zA-Z\s-]//g;
+      # space to hyphen
+      $bc_head =~ s/\s/-/g;
+      # uniqify
+      # stub
+      push(@bc_arr, $bc_head);
+    }
+  }
+  return @bc_arr;
+}
+
+sub get_toc_breadcrumb{
+  my @toc_l1 = &get_header_anchortext(1); # testing
+  my $toc_breadcrumb = "| ";
+  for my $l1 (@toc_l1) {
+    my $anchor = sprintf("[%s](#%s)" , $l1,$l1);
+    #print($anchor . "\n");
+    $toc_breadcrumb .= "$anchor |\n";
+  }
+  return($toc_breadcrumb);
+}
+
+sub update_bc_toc{
+  my $target = '@breadcrumb';
+  # add new or update existing
+  my $found_flag=0;
+  for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
+    my $line = $text[$lineNo];
+    my $toc_ins   = '<!--'   . $target . '-->';
+    my $toc_noins = '<!--!'  . $target . '-->';
+    my $toc_start = '<!--<'  . $target . '>-->';
+    my $toc_end   = '<!--</' . $target . '>-->';
+    my $re_insert = qr($toc_ins);
+    # add new
+    if($line =~ m/$re_insert/){
+      my $bc_toc = &get_toc_breadcrumb(1);
+      print($toc_noins . "\n");
+      print($toc_start . "\n");
+      print($bc_toc . "\n");
+      print($toc_end   . "\n");
+      next;
+    }
+    my $re_start = qr($toc_start);
+    my $re_end = qr($toc_end);
+    # clear existing
+    # raise
+    if($line =~ m/$re_start/){
+      $found_flag = 1;
+      # lower
+    } elsif($line =~ m/$re_end/){
+      my $bc_toc = &get_toc_breadcrumb(1);
+      print($toc_start . "\n");
+      print($bc_toc . "\n");
+      print($toc_end   . "\n");
+      $found_flag = 0;
+      next;
+    }
+    if($found_flag == 0){
+      print($line . "\n");
+    }
+  }
+}
+# disable by default; can't do both toc breadcrumb and toc_mini because script relies on modifying stdout
+#+ would have to run once for toc_mini, then again for toc_breadcrumb on the prevous output
+if( $mode eq "bc_toc" ){
+  # print(&get_toc_breadcrumb);
+  print(&update_bc_toc);
+  exit;
+}
 if(0){
   my @mini_toc = &get_mini_toc(0); # testing
   print(join("\n",@mini_toc) . "\n");
@@ -120,6 +250,10 @@ if(0){
   print(join("\n",@mini_toc) . "\n");
   my @mini_toc = &get_mini_toc(8); # testing
   print(join("\n",@mini_toc) . "\n");
+}
+
+if( $mode ne "mini_toc" ){
+  exit;
 }
 
 # add new or update existing
