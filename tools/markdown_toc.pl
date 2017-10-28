@@ -103,7 +103,9 @@ sub get_mini_toc{
     # my $ul_li = sprintf('* ' x ($cur_lev - $startLevel + 1) . $header_hash{$ln}{'text'});
     # vvv indent by level-num spaces, then add '* ' vvv
     my $ul_li = sprintf('  ' x ($cur_lev - $startLevel + 0) . '* ' . $header_hash{$ln}{'text'});
-    push(@ul_arr, $ul_li);
+    # don't include headers 4th and below
+    my $cutoff_limit = 4;
+    push(@ul_arr, $ul_li) if ($cur_lev < $cutoff_limit) ;
 
   }
   return @ul_arr;
