@@ -114,6 +114,21 @@ Recommendation is to increase data collection in areas with most crashes to bett
 
 
 # Introduction
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- Explain why this work is important giving a general introduction to the subject, list the basic knowledge needed and outline the purpose of the report. -->
 
 <!-- brainstorming draft
@@ -172,6 +187,21 @@ The following descriptions explain the purpose of sections which seeminly overla
 
 
 # Background and Results to Date
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
 <!-- TODO: brief overview of this section. -->
@@ -243,6 +273,21 @@ This project continues the work of the previous project and will combine the acc
 <hr />
 
 # Goals
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 <!-- note: each goal should also be present in the abstract --> 
 
@@ -299,6 +344,21 @@ Model is location unaware because it would essentially end up scoring the more p
 <hr />
 
 # Methodology
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 
 **Section Overview:**
 <!--!toc_mini-->
@@ -798,10 +858,40 @@ TBD - TODO: combine with WP descriptions
 
 
 # Time Plan for Master’s Project Proposal and Master’s Thesis
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 @STUB: track the completed work-packages from Roadmap
 
 # Discussion / Conclusion
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!--
 * Explain what is striking/noteworthy about the results.
 * Summarize the state of knowledge and understanding after the completion of your work.
@@ -831,7 +921,23 @@ models are incorrect
 
 <hr />
 
-# Future Work <!-- very flexible, most of plan will be here -->
+# Future Work
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
+<!-- very flexible, most of plan will be here -->
 ## Crash Data
 
 Add data on bike-lane presence
@@ -858,6 +964,21 @@ This could be loosely correlated with the probability of a crash, although it co
 Use data from strava,mapmyride,etc to find the most common routes (among the users of these apps) and correlate with crash data
 
 # Acknowledgements
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- Thank the people who have helped to successfully complete your project, like project partners, tutors, etc. -->
 Source For Outline: 
 https://www.ethz.ch/content/dam/ethz/special-interest/erdw/department/dokumente/studium/master/msc-project-proposal-guidelines.pdf 
@@ -867,9 +988,39 @@ https://www.honors.umass.edu/abstract-guidelines
 http://www.sfedit.net/abstract.pdf  
 
 # Reference & Literature (Bibliography)
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- List papers and publication you have already cited in your proposal or which you have collected for further reading. The style of each reference follows that of international scientific journals. -->
 
 # Appendix
+<!--!@breadcrumb-->
+<!--<@breadcrumb>-->
+ | [table-of-content](#table-of-content) |
+ [abstract](#abstract) |
+ [introduction](#introduction) |
+ [background-and-results-to-date](#background-and-results-to-date) |
+ [goals](#goals) |
+ [methodology](#methodology) |
+ [time-plan-for-masters-project-proposal-and-masters-thesis](#time-plan-for-masters-project-proposal-and-masters-thesis) |
+ [discussion--conclusion](#discussion--conclusion) |
+ [future-work](#future-work) |
+ [acknowledgements](#acknowledgements) |
+ [reference--literature-bibliography](#reference--literature-bibliography) |
+ [appendix](#appendix) |
+<!--</@breadcrumb>-->
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
 
 
