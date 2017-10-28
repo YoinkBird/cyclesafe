@@ -75,6 +75,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
 <!--!toc_mini-->
 <!--<toc_mini>-->
 * Introduction
+  * Structure of this Paper
 * Background and Results to Date
   * Relevant Work
   * Previous Work
@@ -93,8 +94,6 @@ Recommendation is to increase data collection in areas with most crashes to bett
     * Data Quality Report
   * Data Preparation
     * Data Quality Issues
-      * Identified
-      * Fixed
   * Modeling
   * Evaluation
   * Deployment
@@ -102,9 +101,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
     * Project Preparation Gantt Chart
     * Project Execution Gantt Chart
     * Work-Packages:
-    * WP Deliverables:
     * Roadmap
-      * Critical Path
 * Time Plan for Master’s Project Proposal and Master’s Thesis
 * Discussion / Conclusion
 * Future Work
@@ -249,10 +246,11 @@ This project continues the work of the previous project and will combine the acc
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 <!-- note: each goal should also be present in the abstract --> 
 
+<!--
+exclude for now, 'Goals' has no subsections and therefore toc gen keeps inserting too much
 **Section Overview:**  
-<!--!toc_mini-->
-<!--<toc_mini>-->
-<!--</toc_mini>-->
+-->
+<!--!toc _mini-->
 <!--
 fill in from abstract:
 seems the first two goals need to be re-synced with abstract.
@@ -317,8 +315,6 @@ Model is location unaware because it would essentially end up scoring the more p
   * Data Quality Report
 * Data Preparation
   * Data Quality Issues
-    * Identified
-    * Fixed
 * Modeling
 * Evaluation
 * Deployment
@@ -326,9 +322,7 @@ Model is location unaware because it would essentially end up scoring the more p
   * Project Preparation Gantt Chart
   * Project Execution Gantt Chart
   * Work-Packages:
-  * WP Deliverables:
   * Roadmap
-    * Critical Path
 <!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
@@ -613,14 +607,14 @@ E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safet
 Each WP lists the a critical path (i.e. simplest functioning product ) it can be integrated into.  
 
 
-### WP: data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
+#### WP: data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
 WP: [data:  GPS-fuzzy-match]  
 Dependency: TODO  
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]  
 **Description:**   
 crash data GPS coordinates will not be exactly same as route-mapper GPS-coordinates. Therefore, imprecisely (fuzzy) compare user-input GPS coords to crash-data GPS coords to find closest match. Initially only perform this fuzzy match on intersection coordinates, as single-location coordinates can be harder to place precisely.  
 
-### WP: data: impute more mph limits [impute_mph_limit-noninter]  
+#### WP: data: impute more mph limits [impute_mph_limit-noninter]  
 WP: [data:  impute_mph_limit-noninter]  
 Dependency: TODO  
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]  
@@ -634,28 +628,28 @@ Dependency: TODO
 Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.  
 @originalProject already imputes speed limiits for intersections. TODO: <!-- this is definitely explained somewhere, just copy-paste it -->
 
-### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
+#### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
 Dependency: TODO  
 [route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
 **Description:**   
 TODO: fill in from roadmap, critical path  
 
-### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
+#### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
 WP: [route: GPS-manual-generic]  
 Dependency: TODO  
 [route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
 **Description:**   
 TODO: fill in from roadmap, critical path  
 
-### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
+#### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
 WP: [route: GPS-automatic-generic]  
 Dependency: TODO  
 [route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
 **Description:**   
 TODO: fill in from roadmap, critical path  
 
-### WP: route: implement map as output interface [UI-nointer-GPS-generic]  
+#### WP: route: implement map as output interface [UI-nointer-GPS-generic]  
 WP: [route: UI-nointer-GPS-generic]  
 Dependency: TODO  
 [route: GPS\*] --> [gui: UI-nointer-GPS-generic]  
@@ -663,7 +657,7 @@ Dependency: TODO
 html+js display route on map  
 current state: html+js display GPS coordinates on map  
 
-### WP: route: implement map as input interface [UI-inter-GPS-generic]  
+#### WP: route: implement map as input interface [UI-inter-GPS-generic]  
 WP: [route: UI-inter-GPS-generic]  
 Dependency: [UI-nointer-GPS-generic]  
 [route: GPS\*] <-> [gui: UI-inter-GPS-generic]  
@@ -671,42 +665,42 @@ Dependency: [UI-nointer-GPS-generic]
 html+js let user plan route using map in addition to displaying route  
 
 
-### WP: route: overlay score on map [UI-map-safety_score-partial]  
+#### WP: route: overlay score on map [UI-map-safety_score-partial]  
 WP: [route: UI-map-safety_score-partial]  
 Dependency: [UI-nointer-GPS-generic] + TODO  
 [route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-partial]  
 **Description:**   
 Show the safety score for partial route on the map.
 
-### WP: route: overlay score on map [UI-map-safety_score-total]  
+#### WP: route: overlay score on map [UI-map-safety_score-total]  
 WP: [route: UI-map-safety_score-total]  
 Dependency: [UI-nointer-GPS-generic] + TODO  
 [route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-total]  
 **Description:**   
 Show the safety score for entire route on the map.  
 
-### WP: route: total score [safety_score-total]  
+#### WP: route: total score [safety_score-total]  
 WP: [route: safety_score-total]  
 Dependency: TODO  
 [route: GPS-\*]     -> [model: safety_score-total] -> [display total score]  
 **Description:**   
 calculate safety score for entire route  
 
-### WP: route: recommend best route [UI-recommend-simple]  
+#### WP: route: recommend best route [UI-recommend-simple]  
 WP: [route: UI-recommend-simple]  
 Dependency: TODO  
 [route,several: GPS-\*]     -> [model: safety_score-total,several] -> [model: safety_score-total] -> [display best total score out of several (i.e. find safest route out of multiple routes)]  
 **Description:**   
 retrieve multiple routes from third-party mapping service, calculate total score (safety_score-total) for each one, recommend the safest  
 
-### WP: route: partial score [safety_score-partial]  
+#### WP: route: partial score [safety_score-partial]  
 WP: [route: safety_score-partial]  
 Dependency: TODO  
 [route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]  
 **Description:**   
 calculate safety score for each route segment
 
-### WP: route: mix routes [UI-recommend-complex]  
+#### WP: route: mix routes [UI-recommend-complex]  
 WP: [route: UI-recommend-complex]  
 Dependency: TODO  
 [route,several: GPS-\*]     -> [model: safety_score-partial,several] -> [model: safety_score-partial] -> [display best combined scores out of several (i.e. combine safest sections of multiple routes into one route)]   
