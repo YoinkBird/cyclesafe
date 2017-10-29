@@ -18,10 +18,6 @@ REV1 [2017xxxx] roadmap: first pass
 Data Driven Approach towards Improving Road Safety for Cyclists
 
 ## Time Plan for Master’s Project Proposal and Master’s Thesis
-<!--!@breadcrumb-->
-<!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
-<!--</@breadcrumb>-->
 <!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 @STUB: track the completed work-packages from Roadmap
 
