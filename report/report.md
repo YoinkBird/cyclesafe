@@ -358,8 +358,6 @@ i.e. user provides a route, and analysis factors in known coordinates
 Caveat: the model itself will be location unaware, whereas the interface to the model will enable the location-aware features.  
 Model is location unaware because it would essentially end up scoring the more popular roots with a higher safety-factor. location-aware modelling could be useful for identifying where more crashes happen, but in a practical route-planning scenario this would lead to cyclists having to take large detours.   
 
- @TODO: refactor this sentence, is it a stream-of-thought:  In essence, the model is deliberately location unaware, with the caveat and assumption that end-users can't simply avoid parts of town. If location 'b' has more crashes, and the route is 'A'->'B'->'C', it isn't helpful to tell end-user that they have to avoid 'B' by routing through a potential 'D','E','F'. HOWEVER - it could be useful to inform users of this factor, but would require a different model. For now, the goal is to make safe transit more convenient; it is already known that one can ride on the sidewalk for the whole commute at 15mph to increase relative-safety , so adding in "avoid these entire areas" won't increase the convenience.  
-@TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
 
 <hr />
 
@@ -723,19 +721,68 @@ Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat ab
 quicknote: use python data mining libraries to generate the model
 start with simple DecisionTree, move to more efficient models later
 
+@STUB: why dectree suited to problem
+
+Decision Trees are well suited for analysing categorical data.  
+
+@DATADESC: Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.
+
+NOTE: model had to be "dialed back" to accomodate what users can provide
+
+Overview of Modeling Stage:  
+
+The stub_model was quickly implemented in order to develop the framework for modeling and deployment as well as for data exploration.  
+It was then replaced by the interpretable_model, which was quickly found to rely on features which were not available in deployment.  
+The interpretable_model2 is the re-implemented interpretable_model containing only features whch could be obtained once deployed.  
+Further models were not implemented at this time.  
+However, the next logical step would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
+Such a model was created for this project's predecessor, and could be re-implemented for this project without the unavailable features.  
+
+As such, only interpretable_model2 will be evaluated in this section as it includes stub_model and interpretable_model.  
+stub_model and interpretable_model will be mentioned in context of their role in the overall lifecycle.  
+
+
+@STUB: describe the x-val functions in model.py  
+
+interpretable_model2:
+Technique:  Decision Tree  
+Assumptions: ignores location, ignores intersection, only focuses on ... TODO: featdef    
+Test Design: xval, roc score, see model.py  
+Build Model: parameters - see model.py
+Assessment:  
+put Evaluation in next section as this is the final model
+
+
+Explanation of Assumptions:  
+Location unaware : @TODO: refactor this sentence, is it a stream-of-thought:  In essence, the model is deliberately location unaware, with the caveat and assumption that end-users can't simply avoid parts of town. If location 'b' has more crashes, and the route is 'A'->'B'->'C', it isn't helpful to tell end-user that they have to avoid 'B' by routing through a potential 'D','E','F'. HOWEVER - it could be useful to inform users of this factor, but would require a different model. For now, the goal is to make safe transit more convenient; it is already known that one can ride on the sidewalk for the whole commute at 15mph to increase relative-safety , so adding in "avoid these entire areas" won't increase the convenience.  
+@TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
+
+stub_model:
+Technique: DecisionTree
+Evaluation: Adequate enough for enabling deployment
+Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately
+
+<!-- compare interpretable_model perf with interpretable_model2 perf -->
+interpretable_model: 
+Technique: DecisionTree
+Evaluation: better than stub_model 
+Deployment: dataset for crash data contains data not easily obtainable in the field. E.g. whether a particular GPS coordinate has an intersection.  
+The decision was made to build a new model without this field-unobtainable data.
+The alternative would have been to follow the CRISP-DM flowchart and "loop back" to the business-understanding phase to reasses the feasibility of this project. For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented.  
+
 ## Evaluation
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
-ABOUT: Prediction, cv, etc
 * evaluate results
   * assess results in terms of project/business success criteria
   * list approved models, i.e. which models to be used for the project
 * review process: summarise process until this point, determine what needs to be repeated or still be done
 * determine next steps: decide whether to proceed to next stage or loop back to a previous stage based on the current results.
   * list out possible actions, reasons, pro/con ; then describe decision
-@STUB: describe the x-val functions in model.py  
+
+Pending: evaluation comparison between interpretable_model2, interpretable_model, stub_model , using the previous project's xgb model as a benchmark.   This is low-priority as the focus for this project is on interpretability and deployment.  
 
 ## Deployment
 <!--!@breadcrumb-->
@@ -750,6 +797,7 @@ aka Application
 * review project - "experience documentation" to summarise the knowledge gained during this project
 @STUB: currently this is the mapgen.py  
 @STUB: introduce the final concept, but leave details to the defined work-packages to define how the overall solution will work together.  
+
 ### Technology
 @STUB: brief overview of the stack used, WPs describe the rest
 quicknote: browser-based application using python, html, javascript
