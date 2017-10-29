@@ -999,10 +999,13 @@ models are incorrect
 
 Add data on bike-lane presence
 
+---
+
 Examine before/after lane reduction: car+car |vv|^^| => |cv|<>|vc| bike+car '|cv|' + turn lane '|<>|'
-studies show...
+support with studies
 
 
+---
 
 Interpret How Cyclists Can Ride Defensively
 additional requirement: data source update, new model, but reuse application layer, re-analysis of data (i.e. start a new CRISP-DM lifecycle)
@@ -1011,10 +1014,18 @@ focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
 classification into "avoidable" and "avoidable" crashes
 e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
 
+---
 
 interpret limited data more creatively  
 e.g. analyse frequency of crashes to determine which locations tend to have more reported crashes.  
 This could be loosely correlated with the probability of a crash, although it could also just mean that certain locations tend to be over-reported vs others. However, since there's not much data, this is also not a bad idea in a pragmatic sense. Can't avoid an unknown, but can avoid a known - work with the data which is available.
+
+---
+
+traffic: use general traffic data (instead of cyclist data) and find 'reported crashes'/'street segment traffic'  
+src: traffic count : https://data.austintexas.gov/Transportation-and-Mobility/Traffic-Count-Study-Area/cqdh-farx
+
+---
 
 ## Data Sources
 
