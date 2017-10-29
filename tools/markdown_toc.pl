@@ -143,7 +143,7 @@ sub get_header_anchortext{
     my $cur_lev = $header_hash{$ln}{'level'};
     next if($ln < $startLine); # ignore all previous
     if($ln >= $startLine && $started == 0){
-      $startLevel = $header_hash{$ln}{'level'};
+      $startLevel = $header_hash{$ln}{'level'}; # = $cur_lev;
       $started = 1;
     }
     # quit if already started building ul and current level receeds beyond initial level
@@ -165,6 +165,10 @@ sub get_header_anchortext{
     # don't include headers 1th and below
     my $cutoff_limit = 1;
 
+    # TODO:
+    # e.g. (cur 4 - start 3 == 1) < 1 -> stop
+    # e.g. (cur 4 - start 4 == 0) < 1 -> ok
+    # if ( ( $cur_lev - $startLevel ) < $cutoff_limit ) {
     # breadcrumb
     if ( $cur_lev <= $cutoff_limit ){
       # gh markdown header-anchors: 
