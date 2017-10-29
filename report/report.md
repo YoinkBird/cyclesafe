@@ -579,15 +579,49 @@ Costs and Benefits:
 Business Success Criteria: tool which can display any route and its associated risk of severe injury in a crash  
 Data Mining Success Criteria: model which predicts on "accident severity", i.e. the crash severity
 
-#### create project plan.  
 
+### Project Preparation Gantt Chart
 project plan:
 @TODO: create overview of model creation plan; this is not the same as the work-packages for deploymennt
-Note: mention updates 
+
+| status | | | | | | | | | |
+|-|-|-|-|-|-|-|-|-|-|
+| **prep** | clean project | | | | | | | | |
+| **prep** | | stub_model |
+| **analysis** | | | interpretable_model |
+| **analysis** | | | interpretable_model2 |
+<!-- | **modeling** | | | | optimised_model1 | -->
+
+#### WP: stub_model
+Simple model using unoptimised decision tree and 3 binary features to predict 1 binary target  
+Purpose: Gathering requirements and enabling all dependent work-packages  
+Creating an intermediate simple model allows for the external interfaces to be defined and enables the rest of the technology stack.  
+This strategy was found to be very useful for quickly iterating through the CRISP-DM process to "flush out" hidden requirements and dependencies.  
+The stub model also allows for work on deployment to begin before the model is finalised. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
+Dependency: @TODO  
+
+#### WP: interpretable_model  
+Model using decision tree with as many features as possible to predict the crash severity.  
+Purpose: data analysis to decide which model to choose ; allows dependent interfaces to work with real data.  
+Dependency: @TODO
+
+@TODO: summarise changes
 
 tools and techniques:
 @TODO: create overview of terminology for model creation; may have overlap with the work-packages for deploymennt
 Note: mention updates
+
+<!--
+#### WP: optimised_model1  
+Model using type of algorithm most suited to the data  
+Purpose: increase prediction accuracy  
+see 'modeling' for specifics
+keep in sync with 'modeling':
+Likely RandomForest (bagged) or XGB (boosted), depends on data available
+Dimension <4k, so boosted tree likely best solution (src: [@caruana_et_al_2008]) 
+
+[@caruana_et_al_2008]: src: http://icml2008.cs.helsinki.fi/papers/632.pdf
+-->
 
 
 ## Data Understanding - Analysis
@@ -720,26 +754,6 @@ aka Application
 @STUB: brief overview of the stack used, WPs describe the rest
 quicknote: browser-based application using python, html, javascript
 
-### Project Preparation Gantt Chart
-| status | | | | | | | | | |
-|-|-|-|-|-|-|-|-|-|-|
-| **prep** | clean project | | | | | | | | |
-| **prep** | | generate basic model |
-
-
-<!--
-Basically:
-# strip bullets
-'<,'>s/\* /  /g
-# leading '|'
-'<,'>s/  /| /g
-# trailing '|'
-'<,'>s/$/ |/g
-# somehow generate the header
-| |...|
-|-|...|
-
--->
 
 ### Project Execution Gantt Chart
 <!--
@@ -1180,6 +1194,21 @@ This is particularly well adapted for data mining, as the goal must be well unde
 
 interpretable models
 https://www.google.com/search?q=machine+learning+understandability+of+model&oq=machine+learning+understandability+of+model&aqs=chrome..69i57.4599j0j1&client=ubuntu&sourceid=chrome&ie=UTF-8
+
+<!--
+Table Generation from Bullets
+Basically:
+# strip bullets
+'<,'>s/\* /  /g
+# leading '|'
+'<,'>s/  /| /g
+# trailing '|'
+'<,'>s/$/ |/g
+# somehow generate the header
+| |...|
+|-|...|
+
+-->
 
 <!--
 Markdown Reminders:
