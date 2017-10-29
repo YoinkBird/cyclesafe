@@ -449,20 +449,28 @@ In summary, while the accuracy of the data model can improve over time, the appl
 With this in mind, the primary focus is on creating a simple UI for interacting with the output from the model.  
 The model accuracy is the secondary focus, since it is expected to change over time.  
 
-To this end, the project is done in three phases.  
-
-Phases:  
+<!-- map to CRISP-DM, i.e. 'three' is the continued deployment -->
+To this end, the project is done in three phases:  
 one: create simple model for the application to consume  
 two: create application with minimal functionality  
-three: improve model accuracy
+three: improve model accuracy  
+
+This phased incremental approach is an application of a process commonly used in industry, which is covered in the next section.  
 
 
 ## CRISP-DM
 
-This project will follow the CRISP-DM data mining process [@crispDmWiki]:
+The cyclical product development resulting from the trade-off between performance and usability fits perfectly within the CRISP-DM structure.
+
+This section provides an abstract overview of CRISP-DM followed by its implementation for this project.  
+At certain points, comparisons to other common project management frameworks are made.  
+
+CRISP-DM (CRoss Industry Standard Porcess for Data Mining) [@crispDmWiki] is a cyclical framework designed to structure a data mining project from first conception to its deployment.
 
 [@crispDmWiki]: https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining "CRISP DM"
 
+<!-- original pdf available as well, this is a more convenient webpage -->
+[@crispDmStages]: http://www.sv-europe.com/crisp-dm-methodology/
 
 1. Business Understanding
 2. Data Understanding
@@ -471,9 +479,87 @@ This project will follow the CRISP-DM data mining process [@crispDmWiki]:
 5. Evaluation
 6. Deployment
 
+The framework consists of 6 stages which flow into each other and can loop back into a previous stage at any time.  
+This is similar to the traditional waterfall framework, with the major exception that the stages can be updated as new information becomes available.  
+
+The stages are:  
+
+1. Business Understanding  
+This stage is the project-planning portion of the project and is most similar to conventional waterfall project planning.  
+The project scope is defined, project feasibility is determined, and data-mining goals are set.  
+In contrast to waterfall, this stage is more flexible as it can be revised as-needed based on the subsequent "data understanding" phase.
+In essence, this stage lays the groundwork for a successful project.  
+
+First, determine the desired outputs of the project.  
+Set the objectives - determine the primary goal and which goals are secondary.  
+Create a project plan for how to set up the data mining goals, and how these results will be implemented to achieve the business goals.  
+Then define measurable criteria to determine success.  
+This will set expectations for everyone involved while also setting clear completion criteria.  
+
+Second, assess the feasibility of the project.  
+This involves determining which resources are required and which still need to be obtained, such as data sources or domain experts.  
+The full project requirements are determined in order to obtain the best possible a priori understanding of project risks, constraints, and results.  
+At this point, terminology relevant to the project should be compiled into a glossary. Keep in mind that this can be updated from the next stage as needed.  
+The feasibility asessment concludes with a cost-benefit analysis of project cost vs benefit to the business.
+
+Third, determine the data mining goals.  
+This step maps the business goals to the data mining goals, ensuring that there is not a mismatch in objectives.  
+This is done by defining the success criteria for the business and data mining objectives.  
+I.e. first define project success in terms of the business, then define project success in technical terms.
+This helps set clear goals, while also ensuring that the technical goals are aligned with the business objectives.  
+
+Fourth, and finally, produce the project plan.  
+At this point, the goals of the project is clear and the project can be planned out.  
+The project plan lists a timeline of project stages and the resources they require.  
+At the end of each phase this plan is then updated and adjusted as needed.  
+This strategy is most similar to agile project planning.
+
+In summary, the "business understanding" phase is a combination of waterfall and agile project planning.  
+The project is planned out in terms of phases and resources as it would be with waterfall, but is meant to be updated under certain conditions as with agile project planning.  
+This is particularly well adapted for data mining, as the goal must be well understood in advance, but the model has to be able to change based on its inputs.  
+
+
+2. Data Understanding  
+This stage is for acquiring and exploring data in order to evaluate the quality and usefulness of the data sources provided in stage 1.  
+@STUB:  
+* Data Collection Report
+* Data Description Report
+* Data Exploration Report
+* ABT
+* Data Quality Report
+
+3. Data Preparation  
+@STUB:  
+* Select
+* Clean
+* Construct required data (derived features, imputed values, etc)
+* Integrate (merge/collate together different sources, aggregate multiple records into one)
+
+4. Modeling  
+@STUB:  
+* choose technique, list assumptions
+* create test train-test-eval plan
+* create model (set parameters, build model, report about process involved)
+* assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.
+5. Evaluation  
+@STUB:  
+Note: not same as error evaluation  
+* evaluate results
+  * assess results in terms of project/business success criteria
+  * list approved models, i.e. which models to be used for the project
+* review process: summarise process until this point, determine what needs to be repeated or still be done
+* determine next steps: decide whether to proceed to next stage or loop back to a previous stage based on the current results.
+  * list out possible actions, reasons, pro/con ; then describe decision
+6. Deployment  
+@STUB:  
+* deployment plan - how will this be used for the business?
+* monitoring + maintenance plan - how will model be updated and supervised?
+* final report
+* review project - "experience documentation" to summarise the knowledge gained during this project
+
 
 ## Business Understanding
-ABOUT: 'business' not to be taken literally, just means the environment in which the problem exists
+@STUB: 'business' not to be taken literally, just means the environment in which the problem exists
 
 <!-- 2 Data to Insights to Decisions -->
 <!-- 2.1 Converting Business Problems into Analytics Solutions -->
