@@ -185,13 +185,19 @@ sub get_header_anchortext{
 
 sub get_toc_breadcrumb{
   my @toc_l1 = &get_header_anchortext(1); # testing
-  my $toc_breadcrumb = "| ";
+  my $toc_breadcrumb;
+  my $first_anchor = "| ";
   for my $l1 (@toc_l1) {
     my $anchor = sprintf("[%s](#%s)" , $l1,$l1);
     #print($anchor . "\n");
-    $toc_breadcrumb .= "$anchor |\n";
+    # exception for TOC
+    if($l1 =~ m/table-of-content/){
+      $first_anchor .= "$anchor | ";
+      next;
+    }
+    $toc_breadcrumb .= "$anchor | ";
   }
-  return($toc_breadcrumb);
+  return($first_anchor . $toc_breadcrumb);
 }
 
 sub update_bc_toc{
