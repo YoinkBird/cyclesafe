@@ -464,39 +464,15 @@ This is similar to the traditional waterfall framework, with the major exception
 The stages are:  
 
 1. Business Understanding  
-This stage is the project-planning portion of the project and is most similar to conventional waterfall project planning.  
-The project scope is defined, project feasibility is determined, and data-mining goals are set.  
-In contrast to waterfall, this stage is more flexible as it can be revised as-needed based on the subsequent "data understanding" phase.
-In essence, this stage lays the groundwork for a successful project.  
-
-First, determine the desired outputs of the project.  
-Set the objectives - determine the primary goal and which goals are secondary.  
-Create a project plan for how to set up the data mining goals, and how these results will be implemented to achieve the business goals.  
-Then define measurable criteria to determine success.  
-This will set expectations for everyone involved while also setting clear completion criteria.  
-
-Second, assess the feasibility of the project.  
-This involves determining which resources are required and which still need to be obtained, such as data sources or domain experts.  
-The full project requirements are determined in order to obtain the best possible a priori understanding of project risks, constraints, and results.  
-At this point, terminology relevant to the project should be compiled into a glossary. Keep in mind that this can be updated from the next stage as needed.  
-The feasibility asessment concludes with a cost-benefit analysis of project cost vs benefit to the business.
-
-Third, determine the data mining goals.  
-This step maps the business goals to the data mining goals, ensuring that there is not a mismatch in objectives.  
-This is done by defining the success criteria for the business and data mining objectives.  
-I.e. first define project success in terms of the business, then define project success in technical terms.
-This helps set clear goals, while also ensuring that the technical goals are aligned with the business objectives.  
-
-Fourth, and finally, produce the project plan.  
-At this point, the goals of the project is clear and the project can be planned out.  
-The project plan lists a timeline of project stages and the resources they require.  
-At the end of each phase this plan is then updated and adjusted as needed.  
-This strategy is most similar to agile project planning.
-
-In summary, the "business understanding" phase is a combination of waterfall and agile project planning.  
+This stage is the project-planning portion of the project and as such combines both waterfall and agile planning strategies.  
 The project is planned out in terms of phases and resources as it would be with waterfall, but is meant to be updated under certain conditions as with agile project planning.  
 This is particularly well adapted for data mining, as the goal must be well understood in advance, but the model has to be able to change based on its inputs.  
+In essence, this stage lays the groundwork for a successful project.  
 
+* determine the desired outputs of the project.  
+* assess the feasibility of the project.  
+* determine the data mining goals.  
+* create project plan.  
 
 2. Data Understanding  
 This stage is for acquiring and exploring data in order to evaluate the quality and usefulness of the data sources provided in stage 1.  
@@ -544,13 +520,22 @@ Note: not same as error evaluation
 <!-- 2.1 Converting Business Problems into Analytics Solutions -->
 <!-- 2.2 Assessing Feasibility -->
 ### Problem Statement
+* determine the desired outputs of the project.  
 @STUB: round1: Use crash data to help reduce number of accidents  
 @STUB: round2: Use crash data to help reduce number of accidents with severe injury  
 ### Feasibility Assessment
+* assess the feasibility of the project.  
+* determine the data mining goals.  
+* create project plan.  
 @STUB: round1: data on crashes-vs-non-crashes doesn't exist (no tracking of avoided accidents). loop back to problem statement fo round2 (as expected in the CRISP-DM lifecycle)  
 @STUB: round2: accident data not available txdot data on crashes is available.  there is enough data to train at least a basic model  
 
 ## Data Understanding - Analysis
+* Data Collection Report
+* Data Description Report
+* Data Exploration Report
+* ABT
+* Data Quality Report
 @STUB: Use the pandas python library to create the ABT, add functionality as needed.  
 @TODO: this can be added to report later in project  
 summary: use python, pandas, matplotlib to analyse data
@@ -593,6 +578,10 @@ ABOUT: i.e. quality of selected features
 @STUB: use pandas libs and custom functions to generate report. current implementation only a draft.
 
 ## Data Preparation
+* Select
+* Clean
+* Construct required data (derived features, imputed values, etc)
+* Integrate (merge/collate together different sources, aggregate multiple records into one)
 @STUB: explain txdot_parse.py works to prepare data, create features, etc  
 @STUB: introduce featdef.py in it's role of feature creation, but make sure to mention it under modelling as well for its feature management capabilities  
 @STUB: 
@@ -624,17 +613,31 @@ Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat ab
 -->
 
 ## Modeling
+* choose technique, list assumptions
+* create test train-test-eval plan
+* create model (set parameters, build model, report about process involved)
+* assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.
 @STUB: describe the 'model.py' in its current implementation  
 quicknote: use python data mining libraries to generate the model
 start with simple DecisionTree, move to more efficient models later
 
 ## Evaluation
 ABOUT: Prediction, cv, etc
+* evaluate results
+  * assess results in terms of project/business success criteria
+  * list approved models, i.e. which models to be used for the project
+* review process: summarise process until this point, determine what needs to be repeated or still be done
+* determine next steps: decide whether to proceed to next stage or loop back to a previous stage based on the current results.
+  * list out possible actions, reasons, pro/con ; then describe decision
 @STUB: describe the x-val functions in model.py  
 
 ## Deployment
 ABOUT: the application of the 'analytics solution'
 aka Application
+* deployment plan - how will this be used for the business?
+* monitoring + maintenance plan - how will model be updated and supervised?
+* final report
+* review project - "experience documentation" to summarise the knowledge gained during this project
 @STUB: currently this is the mapgen.py  
 @STUB: introduce the final concept, but leave details to the defined work-packages to define how the overall solution will work together.  
 ### Technology
@@ -1058,8 +1061,46 @@ http://www.sfedit.net/abstract.pdf
 <!--</@breadcrumb>-->
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
 
+**CRISP-DM**  
 
-Machine Learning Notes:
+DRAFT - expanded description of CRISP-DM process
+
+1. Business Understanding  
+This stage is the project-planning portion of the project and as such combines both waterfall and agile methods.
+The project scope is defined, project feasibility is determined, and data-mining goals are set.  
+In contrast to waterfall, this stage is more flexible as it can be revised as-needed based on the subsequent "data understanding" phase.
+In essence, this stage lays the groundwork for a successful project.  
+
+First, determine the desired outputs of the project.  
+Set the objectives - determine the primary goal and which goals are secondary.  
+Create a project plan for how to set up the data mining goals, and how these results will be implemented to achieve the business goals.  
+Then define measurable criteria to determine success.  
+This will set expectations for everyone involved while also setting clear completion criteria.  
+
+Second, assess the feasibility of the project.  
+This involves determining which resources are required and which still need to be obtained, such as data sources or domain experts.  
+The full project requirements are determined in order to obtain the best possible a priori understanding of project risks, constraints, and results.  
+At this point, terminology relevant to the project should be compiled into a glossary. Keep in mind that this can be updated from the next stage as needed.  
+The feasibility asessment concludes with a cost-benefit analysis of project cost vs benefit to the business.
+
+Third, determine the data mining goals.  
+This step maps the business goals to the data mining goals, ensuring that there is not a mismatch in objectives.  
+This is done by defining the success criteria for the business and data mining objectives.  
+I.e. first define project success in terms of the business, then define project success in technical terms.
+This helps set clear goals, while also ensuring that the technical goals are aligned with the business objectives.  
+
+Fourth, and finally, produce the project plan.  
+At this point, the goals of the project is clear and the project can be planned out.  
+The project plan lists a timeline of project stages and the resources they require.  
+At the end of each phase this plan is then updated and adjusted as needed.  
+This strategy is most similar to agile project planning.
+
+In summary, the "business understanding" phase is a combination of waterfall and agile project planning.  
+The project is planned out in terms of phases and resources as it would be with waterfall, but is meant to be updated under certain conditions as with agile project planning.  
+This is particularly well adapted for data mining, as the goal must be well understood in advance, but the model has to be able to change based on its inputs.  
+
+
+**Machine Learning Notes:**  
 
 interpretable models
 https://www.google.com/search?q=machine+learning+understandability+of+model&oq=machine+learning+understandability+of+model&aqs=chrome..69i57.4599j0j1&client=ubuntu&sourceid=chrome&ie=UTF-8
