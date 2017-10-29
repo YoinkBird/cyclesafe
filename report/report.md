@@ -466,7 +466,7 @@ This is particularly well adapted for data mining, as the goal must be well unde
 In essence, this stage lays the groundwork for a successful project.  
 
 * determine the desired outputs of the project.  
-* assess the feasibility of the project.  
+* Feasibility Assessment - assess the feasibility of the project.  
 * determine the data mining goals.  
 * create project plan.  
 
@@ -514,26 +514,81 @@ Note: not same as error evaluation
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
+The report will summarise the cycles of the CRISP-DM as one pass, i.e. without revising sections.    
+Where applicable, the first passes will be described.  
+
+<!-- 2 Data to Insights to Decisions -->
+<!-- 2.1 Converting Business Problems into Analytics Solutions -->
+<!-- 2.2 Assessing Feasibility -->
+
 ## Business Understanding
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
-@STUB: 'business' not to be taken literally, just means the environment in which the problem exists
+The "business" can be understood as any entity concerned with public transportation safety. The "business needs" for this project are oriented around increasing traffic safety for cyclists.  
 
-<!-- 2 Data to Insights to Decisions -->
-<!-- 2.1 Converting Business Problems into Analytics Solutions -->
-<!-- 2.2 Assessing Feasibility -->
-### Problem Statement
 * determine the desired outputs of the project.  
-@STUB: round1: Use crash data to help reduce number of accidents  
-@STUB: round2: Use crash data to help reduce number of accidents with severe injury  
-### Feasibility Assessment
+
+Desired Outputs:  
+Objective: The objective of this project is to help cyclists avoid crashes which lead to severe injury.  
+Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a map-planning tool.  
+Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash.  
+In simpler terms, a successful project will provide a product which cyclists use to make informed decisions about which routes to choose.  
+
+Constraints on the Objective:  
+The objective of this project is not to help cyclist avoid crashes altogether, as the main data source is post-crash data.  
+
+Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient.  
+
+@STUB: round1: Use crash data to help reduce number of accidents  -> no available data  
+@STUB: round2: Use crash data to help reduce number of accidents with severe injury ->  available data  
+
+
+#### Feasibility Assessment
 * assess the feasibility of the project.  
-* determine the data mining goals.  
-* create project plan.  
+
 @STUB: round1: data on crashes-vs-non-crashes doesn't exist (no tracking of avoided accidents). loop back to problem statement fo round2 (as expected in the CRISP-DM lifecycle)  
 @STUB: round2: accident data not available txdot data on crashes is available.  there is enough data to train at least a basic model  
+
+
+Inventory of resources:  
+Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway and Safety Administration (NHSA), and the City of Austin Police Department (APD).  
+Data on actual ridership is very sparse in comparisson to data on crashes, which prevents significant correlation and therefore will not be considered.  
+The software necessary for data processing and modelling is available as free python libraries (pandas, sklearn, scikit learn, other ML libraries as needed).  
+The scale of this project is appropriate for any modern hardware as it does not require intense computing resources.  
+
+Requirements, assumptions, and constraints:  
+Requirements: all data and tools are free for use  
+Assumptions: The crash data is assumed to be accurately reported as it is sourced directly from police crash reports @TODO:terminology.  
+Constraints: The crash data only represents reported crashes, which may be biased towards severe injury. Therefore, it is possible that the model will be biased towards predicting more severe injuries than would happen in reality.  
+This overestimation cannot be assumed to be evenly distributed accross the dataset without understanding the factors which lead to a police report being filed, which  is beyond the scope of this project.  
+
+@TODO: fill in more assumptions,requirements while processing next sections
+
+
+Risks and Contingencies:  
+
+Terminology:  
+@TODO: fill in from elsewhere
+
+Costs and Benefits:  
+
+
+#### determine the data mining goals.  
+Business Success Criteria: tool which can display any route and its associated risk of severe injury in a crash  
+Data Mining Success Criteria: model which predicts on "accident severity", i.e. the crash severity
+
+#### create project plan.  
+
+project plan:
+@TODO: create overview of model creation plan; this is not the same as the work-packages for deploymennt
+Note: mention updates 
+
+tools and techniques:
+@TODO: create overview of terminology for model creation; may have overlap with the work-packages for deploymennt
+Note: mention updates
+
 
 ## Data Understanding - Analysis
 <!--!@breadcrumb-->
