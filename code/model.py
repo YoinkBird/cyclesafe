@@ -1234,12 +1234,13 @@ print(" final response: ")
 import json
 # refactor_multi_route_score_r3 - score all routes , return limited json
 # refactor_multi_route_score_r4 - score all routes , return full json
-response_dict = {}
+response_dict = {'routes' : [] }
 for ri,route in enumerate(auto_route_data):
     # TODO: can omit the slice [['score','lat','lng']] as this is done further above already
-    response_dict[ri] = auto_route_data[ri][['score','lat','lng']].to_dict(orient='records')
+    response_dict['routes'].append( auto_route_data[ri][['score','lat','lng']].to_dict(orient='records') )
 response_json = json.dumps(response_dict)
 
+print("response json")
 pp.pprint( json.loads(
     response_json
 ))
