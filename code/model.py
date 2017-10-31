@@ -1174,7 +1174,11 @@ def score_single_route(route_gps_coord_list):
 
 # refactor_multi_route_score_r1
 # refactor_multi_route_score_r2 - limited response for first conversion
-auto_route_data = score_single_route( get_gmap_direction_coords(geodata)[0] )
+geodata_routes = get_gmap_direction_coords(geodata)
+# refactor_multi_route_score_r3 - score all routes , return limited json
+auto_route_data = {}
+for ri,route in enumerate(geodata_routes):
+    auto_route_data[ri] = score_single_route( geodata_routes[ri] )
 
 print('''
 
@@ -1226,7 +1230,8 @@ Out[38]:
 print("--------------------------------------------------------------------------------")
 print(" final response: ")
 import json
-response_json = auto_route_data[['score','lat','lng']].to_json(orient='records')
+# refactor_multi_route_score_r3 - score all routes , return limited json
+response_json = auto_route_data[0][['score','lat','lng']].to_json(orient='records')
 pp.pprint( json.loads(
     response_json
 ))
@@ -1236,8 +1241,9 @@ print("save json to file. is mock equivalent of submitting json as a response")
 if( mock_return_response_json( response_json ) ):
     print("json mock-response sent")
 print("internal data structure, with only response variables")
+# refactor_multi_route_score_r3 - score all routes , return limited json
 pp.pprint(
-        auto_route_data[['score','lat','lng']]
+        auto_route_data[0][['score','lat','lng']]
         )
 if(verbose_score_manual_generic_route == 2):
     print("response data:")
