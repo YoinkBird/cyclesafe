@@ -1178,7 +1178,9 @@ geodata_routes = get_gmap_direction_coords(geodata)
 # refactor_multi_route_score_r3 - score all routes , return limited json
 auto_route_data = {}
 for ri,route in enumerate(geodata_routes):
-    auto_route_data[ri] = score_single_route( geodata_routes[ri] )
+    # refactor_multi_route_score_r4 - score all routes , return full json
+    # returns pandas dataframe, only need score and gps coords
+    auto_route_data[ri] = score_single_route( geodata_routes[ri])[['score','lat','lng']]
 
 print('''
 
@@ -1231,7 +1233,13 @@ print("-------------------------------------------------------------------------
 print(" final response: ")
 import json
 # refactor_multi_route_score_r3 - score all routes , return limited json
-response_json = auto_route_data[0][['score','lat','lng']].to_json(orient='records')
+# refactor_multi_route_score_r4 - score all routes , return full json
+response_dict = {}
+for ri,route in enumerate(auto_route_data):
+    # TODO: can omit the slice [['score','lat','lng']] as this is done further above already
+    response_dict[ri] = auto_route_data[ri][['score','lat','lng']].to_dict(orient='records')
+response_json = json.dumps(response_dict)
+
 pp.pprint( json.loads(
     response_json
 ))
@@ -1240,10 +1248,11 @@ pp.pprint( json.loads(
 print("save json to file. is mock equivalent of submitting json as a response")
 if( mock_return_response_json( response_json ) ):
     print("json mock-response sent")
-print("internal data structure, with only response variables")
+print("internal data structure") #, with only response variables")
 # refactor_multi_route_score_r3 - score all routes , return limited json
+# refactor_multi_route_score_r4 - score all routes , return full json
 pp.pprint(
-        auto_route_data[0][['score','lat','lng']]
+        auto_route_data # [0][['score','lat','lng']]
         )
 if(verbose_score_manual_generic_route == 2):
     print("response data:")
