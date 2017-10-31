@@ -1074,23 +1074,25 @@ def get_gmap_direction_coords(geodata):
     end_location contains the LatLng of the destination of this leg.
         Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
     '''
-    route_list=[]
+    routes_steps={}
     # routes: 1 , legs : 1 (no waypoints) , steps : n
 # refactor_multi_route_score_r1
-    # TODO: vvvv DO THIS vvv
-    # TODO: anticipate several routes, legs (waypoints) etc
-    # TODO: ^^^^ DO THIS ^^^
+    # [x] TODOne: anticipate several routes
+    # [ ]TODO: anticipate several legs (waypoints) etc
     # geodata['routes'][0]['legs'][0]['steps'][0]['start_location']
-    for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
-        # start_location is segment start, end_location is segment stop
-        #+ may be useful in future to look up crash-location data for a segment
-        if(0): # miniscule difference, not visible on map at all
-            print( step['start_location'] )
-            route_list.append( step['start_location'] )
-        print( step['end_location'] )
-        route_list.append( step['end_location'] )
+    for ri, route in enumerate( geodata['routes'] ):
+        routes_steps[ri] = []
+        #for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
+        for step in ( route['legs'][0]['steps'] ):
+            # start_location is segment start, end_location is segment stop
+            #+ may be useful in future to look up crash-location data for a segment
+            if(0): # miniscule difference, not visible on map at all
+                print( step['start_location'] )
+                routes_steps[ri].append( step['start_location'] )
+            print( step['end_location'] )
+            routes_steps[ri].append( step['end_location'] )
     # only a few coords
-    return route_list
+    return routes_steps
     # too many coords
     return geodata['routes'][0]['overview_path']
 #</def_get_gmap_direction_coords>
@@ -1171,7 +1173,8 @@ def score_single_route(route_gps_coord_list):
 #</def_score_single_route>
 
 # refactor_multi_route_score_r1
-auto_route_data = score_single_route( get_gmap_direction_coords(geodata) )
+# refactor_multi_route_score_r2 - limited response for first conversion
+auto_route_data = score_single_route( get_gmap_direction_coords(geodata)[0] )
 
 print('''
 
