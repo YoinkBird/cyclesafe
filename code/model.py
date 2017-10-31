@@ -1076,7 +1076,10 @@ def get_gmap_direction_coords(geodata):
     '''
     route_list=[]
     # routes: 1 , legs : 1 (no waypoints) , steps : n
+# refactor_multi_route_score_r1
+    # TODO: vvvv DO THIS vvv
     # TODO: anticipate several routes, legs (waypoints) etc
+    # TODO: ^^^^ DO THIS ^^^
     # geodata['routes'][0]['legs'][0]['steps'][0]['start_location']
     for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
         # start_location is segment start, end_location is segment stop
@@ -1092,74 +1095,84 @@ def get_gmap_direction_coords(geodata):
     return geodata['routes'][0]['overview_path']
 #</def_get_gmap_direction_coords>
 
-print("creating dataframe")
-print("munge - insert gps coords")
-# create dataframe for X_test
-# get gps coordinates and the user data
-auto_route_data = pd.DataFrame.from_dict(
-        get_gmap_direction_coords(geodata)
-        )
+#<def_score_single_route>
+def score_single_route(route_gps_coord_list):
+    print("creating dataframe")
+    print("munge - insert gps coords")
+    # create dataframe for X_test
+    # get gps coordinates and the user data
+    auto_route_data = pd.DataFrame.from_dict(
+# refactor_multi_route_score_r1
+#            get_gmap_direction_coords(geodata)
+            route_gps_coord_list
+            )
 
-print("munge - insert user-env data")
-# need to impute the user-env values to each row
-# first, add user-data to the df:
-auto_route_data[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
-# then set the user-data cols to the df
-#+ # avoid the following error:
-#+ A value is trying to be set on a copy of a slice from a DataFrame.
-#+ Try using .loc[row_indexer,col_indexer] = value instead
-#+ 
-#+ => actually - use temporary assignments instead
-#+ either:
-#+ auto_route_data[list(user_environment.keys())] = 
-#+     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
-#+ or:
-auto_route_data.update(
-        auto_route_data[list(user_environment.keys())].fillna(method='ffill'))
+    print("munge - insert user-env data")
+    # need to impute the user-env values to each row
+    # first, add user-data to the df:
+    auto_route_data[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
+    # then set the user-data cols to the df
+    #+ # avoid the following error:
+    #+ A value is trying to be set on a copy of a slice from a DataFrame.
+    #+ Try using .loc[row_indexer,col_indexer] = value instead
+    #+ 
+    #+ => actually - use temporary assignments instead
+    #+ either:
+    #+ auto_route_data[list(user_environment.keys())] = 
+    #+     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
+    #+ or:
+    auto_route_data.update(
+            auto_route_data[list(user_environment.keys())].fillna(method='ffill'))
 
-print(auto_route_data.head())
+    print(auto_route_data.head())
 
-print("auto_route_data total amount:" + str(auto_route_data.shape) )
+    print("auto_route_data total amount:" + str(auto_route_data.shape) )
 
-print("--------------------------------------------------------------------------------")
-print(" DATA VERIFICATION " )
-print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['lat','lng']].shape) )
-print("--------------------------------------------------------------------------------")
+    print("--------------------------------------------------------------------------------")
+    print(" DATA VERIFICATION " )
+    print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['lat','lng']].shape) )
+    print("--------------------------------------------------------------------------------")
 
-#-# print("munge - quickly - verify that two np arrays have same values:")
-#-# #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
-#-# if( (auto_route_data[['latitude','longitude']].values == auto_route_dict.values).all() != True ):
+    #-# print("munge - quickly - verify that two np arrays have same values:")
+    #-# #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
+    #-# if( (auto_route_data[['latitude','longitude']].values == auto_route_dict.values).all() != True ):
 
-print("running the model")
-print("# vvv copypasta vvv")
-# TODO: copy-pasted the minimal setup, still need to setup model etc
-########################################
-# scoring the route, assume sanitised input
-########################################
-# extract relevant data for scoring
-X_test = auto_route_data[clf_score_predictors]
+    print("running the model")
+    print("# vvv copypasta vvv")
+    # TODO: copy-pasted the minimal setup, still need to setup model etc
+    ########################################
+    # scoring the route, assume sanitised input
+    ########################################
+    # extract relevant data for scoring
+    X_test = auto_route_data[clf_score_predictors]
 
-# 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
-y_pred = model_clf_score_route.predict_proba(X_test)
-y_pred_predict = model_clf_score_route.predict(X_test)
-print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
-print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
-print("# ^^^ copypasta ^^^")
+    # 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
+    y_pred = model_clf_score_route.predict_proba(X_test)
+    y_pred_predict = model_clf_score_route.predict(X_test)
+    print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
+    print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
+    print("# ^^^ copypasta ^^^")
 
-print(" combine score with gps coordinates")
-auto_route_data['score'] = y_pred[:,1]
-#---------------------------------------- 
-# TODO: do it right
-'''
-In [12]: auto_route_data['score'] = y_pred[:,1]
-/home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
+    print(" combine score with gps coordinates")
+    auto_route_data['score'] = y_pred[:,1]
+    #---------------------------------------- 
+    # TODO: do it right
+    '''
+    In [12]: auto_route_data['score'] = y_pred[:,1]
+    /home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: 
+    A value is trying to be set on a copy of a slice from a DataFrame.
+    Try using .loc[row_indexer,col_indexer] = value instead
 
-See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-  """Entry point for launching an IPython kernel.
-'''
-#---------------------------------------- 
+    See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+      """Entry point for launching an IPython kernel.
+    '''
+    #---------------------------------------- 
+    return auto_route_data
+#</def_score_single_route>
+
+# refactor_multi_route_score_r1
+auto_route_data = score_single_route( get_gmap_direction_coords(geodata) )
+
 print('''
 
 15:00 - until timer 20min: 
