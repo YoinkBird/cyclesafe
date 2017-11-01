@@ -1031,7 +1031,7 @@ user_environment = {
 
 # if using model from map_generate_human_readable_dectree
 user_environment = {
-        'bin_intersection_related' : '0', # 1 : intersection where cyclist should expect cars , 0 : all others
+#gmap#        'bin_intersection_related' : '0', # 1 : intersection where cyclist should expect cars , 0 : all others
         'bin_light_condition' : '1',      # 1 : daylight , 0 : all others
         'bin_manner_of_collision' : '0',  # our distinction: 0 : motorist likely at fault , 1 : fault unclear
         }
@@ -1069,10 +1069,12 @@ def get_gmap_direction_coords(geodata):
      corresponding to the specific legs of the journey.
     '''
     '''
+    doc source: https://developers.google.com/maps/documentation/javascript/directions src "Directions Steps"
     start_location contains the LatLng of the origin of this leg.
         Because the Directions Web Service calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, start_location may be different than the provided origin of this leg if, for example, a road is not near the origin.
     end_location contains the LatLng of the destination of this leg.
         Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
+    'maneuver' not readily documented 
     '''
     routes_steps={}
     # routes: 1 , legs : 1 (no waypoints) , steps : n
@@ -1089,8 +1091,27 @@ def get_gmap_direction_coords(geodata):
             if(0): # miniscule difference, not visible on map at all
                 print( step['start_location'] )
                 routes_steps[ri].append( step['start_location'] )
-            print( step['end_location'] )
+#            print( step['end_location'] )
             routes_steps[ri].append( step['end_location'] )
+            # maneuver : left,right, etc . shove it in with the lat/lng
+            if('maneuver' in step):
+                # for determining possible vals of maneuver
+                print("maneuver: " + step['maneuver'])
+                # NOTE: this is a hard-coded mapping between gmaps api and txdot-model feature, ideally would be abstracted
+                # txdot-model has data on 'intersection_related'
+                # routes_steps[ri][-1]['maneuver'] = step['maneuver']
+                # encode in txdot-model-friendly format
+                # values for maneuver:
+                # maneuver: ''
+                # maneuver: turn-left
+                # maneuver: turn-right
+                # values for bin_intersection_related :
+                # bin_true = ['intersection_related', 'intersection',]
+                # bin_false = ['non_intersection', 'driveway_access',]
+                routes_steps[ri][-1]['bin_intersection_related'] = 1
+                if(step['maneuver'] == ''):
+                    routes_steps[ri][-1]['bin_intersection_related'] = 0
+                
     # only a few coords
     return routes_steps
     # too many coords
@@ -1098,15 +1119,15 @@ def get_gmap_direction_coords(geodata):
 #</def_get_gmap_direction_coords>
 
 #<def_score_single_route>
-def score_single_route(route_gps_coord_list):
+def score_single_route(route_feat_list):
     print("creating dataframe")
     print("munge - insert gps coords")
     # create dataframe for X_test
-    # get gps coordinates and the user data
+    # get gps coordinates, maneuver and the user data
     auto_route_data = pd.DataFrame.from_dict(
 # refactor_multi_route_score_r1
 #            get_gmap_direction_coords(geodata)
-            route_gps_coord_list
+            route_feat_list
             )
 
     print("munge - insert user-env data")
@@ -1397,3 +1418,16 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 # 20:58 - done refactoring
 #jmisc stuff
 # 22:53 - done with adding hard-coded mock client data
+
+
+# 20171031
+# 18:18 - start extract route geojson
+# 18:21 - found steps[n][manuever]
+# strategy: extract 'manuever' in get_gmap_direction_coords (need to refactor to extract_gmap_feats )
+# map/convert to intersection_related
+# arch: add extract_gmap_feats , let get_gmap_direction_coords 'filter out' gps coords from extract_gmap_feats 
+# for now: just return a tuple with the updated info
+# 18:41 - added maneuver to geodata
+#         next: enable expanded model
+# 18:48 - /break
+# 19:12 - in the map! 
