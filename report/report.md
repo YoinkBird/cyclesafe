@@ -452,7 +452,8 @@ CRISP-DM (CRoss Industry Standard Porcess for Data Mining) [@crispDmWiki] is a c
 5. Evaluation
 6. Deployment
 
-The framework consists of 6 stages which flow into each other and can loop back into a previous stage at any time.  
+@TODO: update summary based on description in 'Business Understanding' - structure of waterfall with planned flexibility of agile.  
+The framework consists of 6 stages which flow into each other and can loop back into a previous stage TODO at any time.  
 This is similar to the traditional waterfall framework, with the major exception that the stages can be updated as new information becomes available.  
 
 The stages are:  
@@ -515,6 +516,15 @@ Note: not same as error evaluation
 The report will summarise the cycles of the CRISP-DM as one pass, i.e. without revising sections.    
 Where applicable, the first passes will be described.  
 
+|
+[business-understanding](#business-understanding) |
+[data-understanding---analysis](#data-understanding---analysis) |
+[data-preparation](#data-preparation) |
+[modeling](#modeling) |
+[evaluation](#evaluation) |
+[deployment](#deployment) |
+
+
 <!-- 2 Data to Insights to Decisions -->
 <!-- 2.1 Converting Business Problems into Analytics Solutions -->
 <!-- 2.2 Assessing Feasibility -->
@@ -530,14 +540,16 @@ The "business" can be understood as any entity concerned with public transportat
 
 Desired Outputs:  
 Objective: The objective of this project is to help cyclists avoid crashes which lead to severe injury.  
-Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a map-planning tool.  
+Objective: The objective of this project is to help cyclists severe injury when involved in a crash.
+Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a route-planning tool.  
 Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash.  
 In simpler terms, a successful project will provide a product which cyclists use to make informed decisions about which routes to choose.  
 
 Constraints on the Objective:  
 The objective of this project is not to help cyclist avoid crashes altogether, as the main data source is post-crash data.  
 
-Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient.  
+Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient. 
+In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes isntead of a cross-sample of all crashes.  
 
 @STUB: round1: Use crash data to help reduce number of accidents  -> no available data  
 @STUB: round2: Use crash data to help reduce number of accidents with severe injury ->  available data  
@@ -553,6 +565,7 @@ Original Objective: The objective was originally to help cyclists avoid crashes 
 Inventory of resources:  
 Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway and Safety Administration (NHSA), and the City of Austin Police Department (APD).  
 Data on actual ridership is very sparse in comparisson to data on crashes, which prevents significant correlation and therefore will not be considered.  
+Data on traffic-counts is available for certain road segments and is the total count for a 24 hour period.  
 The software necessary for data processing and modelling is available as free python libraries (pandas, sklearn, scikit learn, other ML libraries as needed).  
 The scale of this project is appropriate for any modern hardware as it does not require intense computing resources.  
 
@@ -560,6 +573,7 @@ Requirements, assumptions, and constraints:
 Requirements: all data and tools are free for use  
 Assumptions: The crash data is assumed to be accurately reported as it is sourced directly from police crash reports @TODO:terminology.  
 Constraints: The crash data only represents reported crashes, which may be biased towards severe injury. Therefore, it is possible that the model will be biased towards predicting more severe injuries than would happen in reality.  
+@citationNeeded:[sources on how many crashes get reported]  
 This overestimation cannot be assumed to be evenly distributed accross the dataset without understanding the factors which lead to a police report being filed, which  is beyond the scope of this project.  
 
 @TODO: fill in more assumptions,requirements while processing next sections
@@ -725,11 +739,11 @@ start with simple DecisionTree, move to more efficient models later
 
 Decision Trees are well suited for analysing categorical data.  
 
-@DATADESC: Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.
+@DATADESC: Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.  
 
 NOTE: model had to be "dialed back" to accomodate what users can provide
 
-Overview of Modeling Stage:  
+#### Overview of Modeling Stage:  
 
 The stub_model was quickly implemented in order to develop the framework for modeling and deployment as well as for data exploration.  
 It was then replaced by the interpretable_model, which was quickly found to rely on features which were not available in deployment.  
@@ -744,30 +758,30 @@ stub_model and interpretable_model will be mentioned in context of their role in
 
 @STUB: describe the x-val functions in model.py  
 
-interpretable_model2:
+#### interpretable_model2:  
 Technique:  Decision Tree  
 Assumptions: ignores location, ignores intersection, only focuses on ... TODO: featdef    
 Test Design: xval, roc score, see model.py  
-Build Model: parameters - see model.py
+Build Model: parameters - see model.py  
 Assessment:  
-put Evaluation in next section as this is the final model
+put Evaluation in next section as this is the final model  
 
 
 Explanation of Assumptions:  
 Location unaware : @TODO: refactor this sentence, is it a stream-of-thought:  In essence, the model is deliberately location unaware, with the caveat and assumption that end-users can't simply avoid parts of town. If location 'b' has more crashes, and the route is 'A'->'B'->'C', it isn't helpful to tell end-user that they have to avoid 'B' by routing through a potential 'D','E','F'. HOWEVER - it could be useful to inform users of this factor, but would require a different model. For now, the goal is to make safe transit more convenient; it is already known that one can ride on the sidewalk for the whole commute at 15mph to increase relative-safety , so adding in "avoid these entire areas" won't increase the convenience.  
 @TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
 
-stub_model:
-Technique: DecisionTree
-Evaluation: Adequate enough for enabling deployment
-Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately
+#### stub_model:  
+Technique: DecisionTree  
+Evaluation: Adequate enough for enabling deployment  
+Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately  
 
 <!-- compare interpretable_model perf with interpretable_model2 perf -->
-interpretable_model: 
-Technique: DecisionTree
+#### interpretable_model: 
+Technique: DecisionTree  
 Evaluation: better than stub_model 
 Deployment: dataset for crash data contains data not easily obtainable in the field. E.g. whether a particular GPS coordinate has an intersection.  
-The decision was made to build a new model without this field-unobtainable data.
+The decision was made to build a new model without this field-unobtainable data.  
 The alternative would have been to follow the CRISP-DM flowchart and "loop back" to the business-understanding phase to reasses the feasibility of this project. For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented.  
 
 ## Evaluation
@@ -1242,6 +1256,9 @@ This is particularly well adapted for data mining, as the goal must be well unde
 
 interpretable models
 https://www.google.com/search?q=machine+learning+understandability+of+model&oq=machine+learning+understandability+of+model&aqs=chrome..69i57.4599j0j1&client=ubuntu&sourceid=chrome&ie=UTF-8
+
+**Misc**  
+@FUTUREWORK: change parameters such as 'lighting condition' according to local time, i.e. if route time estimate starts during daylight, ends in twilight, change the values according to the time estimates per segment.  
 
 <!--
 Table Generation from Bullets
