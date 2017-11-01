@@ -516,13 +516,13 @@ Note: not same as error evaluation
 The report will summarise the cycles of the CRISP-DM as one pass, i.e. without revising sections.    
 Where applicable, the first passes will be described.  
 
-|
-[business-understanding](#business-understanding) |
-[data-understanding---analysis](#data-understanding---analysis) |
-[data-preparation](#data-preparation) |
-[modeling](#modeling) |
-[evaluation](#evaluation) |
-[deployment](#deployment) |
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
 
 
 <!-- 2 Data to Insights to Decisions -->
@@ -530,10 +530,19 @@ Where applicable, the first passes will be described.
 <!-- 2.2 Assessing Feasibility -->
 
 ## Business Understanding
+<!--business_understanding-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
+
 The "business" can be understood as any entity concerned with public transportation safety. The "business needs" for this project are oriented around increasing traffic safety for cyclists.  
 
 * determine the desired outputs of the project.  
@@ -556,6 +565,7 @@ In particular, there is no data on the number of cyclists for a given road segme
 
 
 #### Feasibility Assessment
+<!--feasibility_assessment-->
 * assess the feasibility of the project.  
 
 @STUB: round1: data on crashes-vs-non-crashes doesn't exist (no tracking of avoided accidents). loop back to problem statement fo round2 (as expected in the CRISP-DM lifecycle)  
@@ -637,10 +647,19 @@ Dimension <4k, so boosted tree likely best solution (src: [@caruana_et_al_2008])
 
 
 ## Data Understanding - Analysis
+<!--data_understanding-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
+
 * Data Collection Report
 * Data Description Report
 * Data Exploration Report
@@ -688,6 +707,15 @@ ABOUT: i.e. quality of selected features
 @STUB: use pandas libs and custom functions to generate report. current implementation only a draft.
 
 ## Data Preparation
+<!--data_preparation-->
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
+
 * Select
 * Clean
 * Construct required data (derived features, imputed values, etc)
@@ -723,10 +751,19 @@ Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat ab
 -->
 
 ## Modeling
+<!--modeling-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
+
 * choose technique, list assumptions
 * create test train-test-eval plan
 * create model (set parameters, build model, report about process involved)
@@ -799,10 +836,19 @@ Purpose: real-world sometimes has missing data. naive approach is to create mode
 
 
 ## Evaluation
+<!--evaluation-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
+
 * evaluate results
   * assess results in terms of project/business success criteria
   * list approved models, i.e. which models to be used for the project
@@ -813,10 +859,19 @@ Purpose: real-world sometimes has missing data. naive approach is to create mode
 Pending: evaluation comparison between interpretable_model2, interpretable_model, stub_model , using the previous project's xgb model as a benchmark.   This is low-priority as the focus for this project is on interpretability and deployment.  
 
 ## Deployment
+<!--crispdm_deployment-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [meta](#meta) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
+| CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
+[business-understanding](#business-understanding) |                <!--business_understanding-->
+[data-understanding---analysis](#data-understanding---analysis) |  <!--data_understanding-->
+[data-preparation](#data-preparation) |                            <!--data_preparation-->
+[modeling](#modeling) |                                            <!--modeling-->
+[evaluation](#evaluation) |                                        <!--evaluation-->
+[deployment](#deployment) |                                        <!--deployment-->
+
 ABOUT: the application of the 'analytics solution'
 aka Application
 * deployment plan - how will this be used for the business?
