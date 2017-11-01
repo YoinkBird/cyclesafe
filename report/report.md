@@ -741,7 +741,7 @@ Decision Trees are well suited for analysing categorical data.
 
 @DATADESC: Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.  
 
-NOTE: model had to be "dialed back" to accomodate what users can provide
+NOTE: model had to be "dialed back" to accomodate what users can provide, @FUTUREWORK: segmentation  
 
 #### Overview of Modeling Stage:  
 
@@ -749,7 +749,9 @@ The stub_model was quickly implemented in order to develop the framework for mod
 It was then replaced by the interpretable_model, which was quickly found to rely on features which were not available in deployment.  
 The interpretable_model2 is the re-implemented interpretable_model containing only features whch could be obtained once deployed.  
 Further models were not implemented at this time.  
-However, the next logical step would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
+@FUTUREWORK: Improve precision and accuracy  
+Data Segmentation - improve precision - use models created from subsets of the data according to which features can be expected.  
+Improved accuracy - The next step to improve accuracy would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
 Such a model was created for this project's predecessor, and could be re-implemented for this project without the unavailable features.  
 
 As such, only interpretable_model2 will be evaluated in this section as it includes stub_model and interpretable_model.  
@@ -781,8 +783,20 @@ Deployment: very useful for finalising architecture and enabling the technologie
 Technique: DecisionTree  
 Evaluation: better than stub_model 
 Deployment: dataset for crash data contains data not easily obtainable in the field. E.g. whether a particular GPS coordinate has an intersection.  
-The decision was made to build a new model without this field-unobtainable data.  
+The decision was made to build a new model without this field-unobtainable data. @FUTUREWORK: segmentation  
 The alternative would have been to follow the CRISP-DM flowchart and "loop back" to the business-understanding phase to reasses the feasibility of this project. For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented.  
+
+@FUTUREWORK:  
+#### segmentation_models: 
+Technique: Multiple models operating on Segmented Dataset  
+Assumption: #@TODO:notsure# output of different models with more/less features is statistically significant @citationNeeded  
+Test Design: xval, roc score, etc; need to test the combined score.  
+Build Model: determine avail feats, choose model according to avail feats, resulting in more/less accurate score.  
+Caveat: This is not stacking, it is dataset segmentation, i.e. choosing the most appropriate model for the dataset prediction.  
+
+Purpose: real-world sometimes has missing data. naive approach is to create model with "lowest common denominator" of missing data, as in the interpretable_model\*, but the resulting model lacks features unique to each route. Better approach is to create multiple models based on anticipated data avalability, i.e. one model based on a "common denominator" dataset, one model based on "common dataset" + "feature set A", one model based on "common dataset" + "feature set B", etc. This allows the most optimal model to be used based on the data available, providing a more accurate score based on increased availability of data. In general, training models on different slices of the dataset is referrred to as segmentation. @citationNeeded  
+(e.g. lighting condition, weather is always available, but can be assumed to be identical or indistinguishable for any route. E.g. user can only input conditions at start, would require advanced knowledge to know whether lighting conditions will change further along in the route )  
+
 
 ## Evaluation
 <!--!@breadcrumb-->
