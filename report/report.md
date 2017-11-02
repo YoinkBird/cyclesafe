@@ -881,6 +881,21 @@ aka Application
 @STUB: currently this is the mapgen.py  
 @STUB: introduce the final concept, but leave details to the defined work-packages to define how the overall solution will work together.  
 
+Deployment Plan / Application Overview:  
+For this report, the model itself is already "deployed", as the model is already integrated into an application.  
+Therefore, at this point the paper will describe the application architecture and further plans for deployment.  
+
+Currently, the model is integrated into a user-facing application which can be run on a local machine.  
+
+monitoring and maintenance plan:  
+Crash data can be obtained in an automated report, which can be used to continuously update the model.  
+This will require further work to parse, as it uses a different format than the manual query used to build this model.  
+
+For ongoing maintenance, the model parameters will need to be updated as new data becomes available.  
+The schedule for this will be based on the amount of new data received, for which a threshold needs to be set.  
+
+Project Review: 
+
 ### Technology
 @STUB: brief overview of the stack used, WPs describe the rest
 quicknote: browser-based application using python, html, javascript
