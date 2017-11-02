@@ -768,11 +768,12 @@ Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat ab
 * create test train-test-eval plan
 * create model (set parameters, build model, report about process involved)
 * assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.  
-start with simple DecisionTree, move to more efficient models later
 
-@STUB: why dectree suited to problem
+The modeling phase was revisited several times as part of the rapid-implementation strategy.  
+In essence, the first iteration started with a simple placeholder model and by the final iteration had been transformed into an application-specific model suited for real-world implementation.  
 
-Decision Trees are well suited for analysing categorical data.  
+As determined during the data understanding phase, the dataset is mostly categorical.  
+Therefore, each model is based on a decision tree algorithm, which are well suited for analysing categorical data.  
 
 @DATADESC: Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.  
 
@@ -831,6 +832,7 @@ Caveat: This is not stacking, it is dataset segmentation, i.e. choosing the most
 
 Purpose: real-world sometimes has missing data. naive approach is to create model with "lowest common denominator" of missing data, as in the interpretable_model\*, but the resulting model lacks features unique to each route. Better approach is to create multiple models based on anticipated data avalability, i.e. one model based on a "common denominator" dataset, one model based on "common dataset" + "feature set A", one model based on "common dataset" + "feature set B", etc. This allows the most optimal model to be used based on the data available, providing a more accurate score based on increased availability of data. In general, training models on different slices of the dataset is referrred to as segmentation. @citationNeeded  
 (e.g. lighting condition, weather is always available, but can be assumed to be identical or indistinguishable for any route. E.g. user can only input conditions at start, would require advanced knowledge to know whether lighting conditions will change further along in the route )  
+
 
 
 ## Evaluation
