@@ -767,9 +767,7 @@ Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat ab
 * choose technique, list assumptions
 * create test train-test-eval plan
 * create model (set parameters, build model, report about process involved)
-* assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.
-@STUB: describe the 'model.py' in its current implementation  
-quicknote: use python data mining libraries to generate the model
+* assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.  
 start with simple DecisionTree, move to more efficient models later
 
 @STUB: why dectree suited to problem
@@ -1177,6 +1175,101 @@ WP: [GPS-automatic-generic]
 
 About GPS-coordinates for intersections vs non-intersections:
 TBD - TODO: combine with WP descriptions
+
+### Architecture
+@STUB: describe the 'model.py' in its current implementation  
+quicknote: use python data mining libraries to generate the model,  
+
+<!-- github doesn't know about 'pre' tags, I guess. either do '< -' or '&lt;-' -->
+#### Legend:
+
+<pre>
+[ end-point ]
+{ data transfer }
+
+</pre>
+
+#### User-client Interaction: 
+
+<pre>
+[user] ----{Map-UI: route start,end}--&gt; [ client ]  
+[    ] &lt;---{Map-UI: route + scores }--- [        ]  
+</pre>
+
+End-user uses client application as a conventional routing tool.  
+Client application displays available routes and their score.  
+
+
+#### Client-Model Interaction:
+
+<pre>
+[ client ] ----{Map-API: start,end         }--&gt; [External Routing Service]
+[        ] &lt;---{Map-API: multi route coords}--- [External Routing Service]
+    ^
+    |
+{rest-json: vvv route vvv |rest-json: ^^^scores^^^}
+    |
+    V
+[ server ] ----{json-file: route coords}--&gt; [ Modeling Application ]
+[        ] &lt;---{json-file: route scores}--- [                      ]
+</pre>
+
+Client Application sends route start, end to external routing service.  
+External routing service returns geo-json containing routing information, including GPS coordinates representing route.  
+
+Client submits geo-json to server  
+Server relays geo-json to modelling application, which itself is not a server  
+
+Modeling Application processes relevant information from geo-json to score route, stores in geo-json
+
+Modeling Application sends route-score geo-json to server
+Server relays route-score geo-json to client
+
+Client displays original route information plus route-scoring information to client
+
+
+#### Modeling Application:
+
+<pre>
+Data Preparation and Feature Implementation:  
+/data sources/ ---&gt; [Preprocessor per source, feature] ---&gt; [df: dataset | df: feature definitions ]
+
+Model Creation:   
+[dataset,featdef] ---{query: desired features}---&gt;---{slice: dataset}---&gt;[model]
+
+</pre>
+
+Build models using feature definitions and optimise using python ML libraries
+
+Modules:
+
+| Filename | Purpose |
+|---|---|
+| model.py        | Model Build, Optimise, Predict Route-Score |
+| txdot_parse.py  | Prepare data as outlined under Data Preparation  |
+| feature_defs.py | Track features and their purpose  |
+| mapgen.py       | Generate maps for static heatmap visualisation  |
+| helpers.py      | Useful functions |
+
+
+**Data Parser**  
+Convert input data format to pandas dataframe, handle quality issues and feature generation.  
+Updates feature definitions.  
+
+**Feature Definitions**  
+aka featdef - pandas dataframe to track features and their attributes, meant to be queried when creating a model.  
+The attributes defined in the feature df can be queried using pandas syntax, 
+thus making it trivial to maintain multiple models and their attributes.
+
+A few examples:  
+Building a model requires a set of descriptive features and target features.  
+Typically, this is done using individual arrays of feature names, which are then used to query the pandas dataframe containing all features.  
+With featdef, the features can be queried dynamically as 'target' or 'non-target' instead of maintaining individual lists.  
+One implication is that as the project evolves, any new features are automatically picked up by the models instead of the maintainer having to update each model's individual list of descriptive and target features.  
+
+featdef is used to track the origin of newly implemented features, so if a model needs to exclude them it can easily do so.
+
+featdef tracks the type of feature as well to identify which features are meant to be used in the model and which aren't, such as the case-id.   
 
 
 # Discussion / Conclusion
