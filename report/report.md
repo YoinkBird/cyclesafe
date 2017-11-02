@@ -697,6 +697,7 @@ quicknote: use available crash-data, augment with other data sources as necessar
 primary source: TxDOT data  
  practical assessment: using txdot limited feature csv format is simpler than other more complicated formats, e.g. NIST or txdot csv with all features.  
 
+@BEGIN: the crash data was obtained from txdot website
 
 <!-- 3 Data Exploration -->
 <!-- 3.1 The Data Quality Report -->
@@ -724,11 +725,107 @@ ABOUT: i.e. quality of selected features
 @STUB: introduce featdef.py in it's role of feature creation, but make sure to mention it under modelling as well for its feature management capabilities  
 @STUB: 
 summary: use python, pandas to ensure data is useful
+
+@BEGIN:
+The data preparation steps were summarised as python code in order to apply the same steps to new data from the same source in the future.  
+
+This section will mention the python functions when describing the steps taken.  
+Python module: txdot_parse.py
+
+
+**Select**  
+'clean_data' loads the crash data into a pandas (pd) dataframe (df) from a csv file, which requires ignoring the non-machine-readable header.  
+
+**Clean**  
+The function 'clear-csv' ensures that the data is machine readable to avoid parsing errors as well as to facilitate the coding process.  
+List:  
+* replace punctuation with underscores
+* lowercase feature names 
+* encode strings containing numbers as a numeric   datatype
+* encode strings containing dates   as a date-time datatype
+* encode strings representing missing data as a null datatype
+  * convert human-readable descriptions for missing data to machine-readable datatype
+    * This includes converting '0' for "missing" to 'np.nan' to prevent the modelling algorithms from evaluating it as a real value. This also improves runtime performance, as a proper null value is evaluated quicker than an integer representation (numpy knows not to evaluate np.nan, but can't know in advance whether an 'int' is '0' and therefore spends extra time to evaluate it)
+    Caveat: This does not apply to data which is actually '0', only to cases when '0' represents a missing value.
+
+#### Construct required data (derived features, imputed values, etc) (@TODO: merge 'feature implementation' further above into this portion
+**Construct Required Data**  
+**Imputed Values**
+imput speed limits - of the set of intersections with multiple entries, for any intersections missing the speed limit, impute speed limit from identical rows. If speed limit changed throughout time, use first available value either from the future speed limit or the past speed limit. As most speed limits were observed to increase over time, this induces a bias towards associating crash severity with higher-than-actual speed limits. This is accepted as the difference in speed limit is typically only 5mph.
+Note that this will bias the overall model towards a higher speed limit associated with injury severity. This has a few consequences, but can be considered as a relatively safe assumption as the correlation between crash-severity and speed-of-impact is well understood. Furthermore, the speed limit itself is not the same as the impact speed.  
+
+**Derived Features**
+* decimal crash time - encoded 24h time to decimal as model does not understand 24h time and processes it as an integer value  
+
+* 30min-rounded crash time - round date-time to within 30minute intervals to clarify visualisations
+
+binary categories: 
+This was done for a few reasons:  
+Some of the data provided was more granular than required, as it encapsulaetd a degree of information unobtainable in production.
+
+Visualisation: when visualising the data, more categories can become difficult to interpret. 
+
+Some values were encoded as categorical data, but some algorithms only operate on numeric data or yes/no outcomes.  
+
+surface condition:  
+Factorize 'Wet' 'Dry' to '1' '0'
+
+crash severity:  
+convert 'non_incapacitating_injury','possible_injury','not_injured' to 1  
+convert 'incapacitating_injury','killed' to 0  
+This is how TxDot groups crash severity in their visualisations. @citationNeeded
+Other splits were tried in an attempt to create a model to simply predict injury, but most reported crashes result in injury. @citationNeeded:[refer to visualisations and data report]  
+
+intersection related:  
+
+encoded as 1    :  'intersection_related', 'intersection'  
+encoded as 0    :  'non_intersection', 'driveway_access'  
+encoded as null :  'not_reported'  
+
+@ASSUMPTION  
+Two assumptions: 
+Routing data will not distinguish at this level of granularity, especially for driveway_access, but does provide information as to when to turn.  
+intersection-related crashes assumed to be avoidable by cyclist (not always true) and non-intersection crashes assumed to be unavoidable by cyclist (not always true).
+
+light condition:  
+Simple breakdown between "good visibility" and "bad visibility".  
+
+encoded as 0 : 'dark_lighted', 'dark_not_lighted', 'dusk', 'dark_unknown_lighting', 'dawn'
+encoded as 1 : daylight
+
+manner of collision: 
+This feature is complicated for binarisation as it requires several assumptions.  
+In the end, it was not used.  
+Explanation: Manner of Collision - direction of Units involved  
+motorist fault likelihood higher for "non changing" situations, e.g. if going straight  
+
+encoded as 1: 
+* 'one_motor_vehicle_going_straight',
+* 'angle_both_going_straight',
+* 'one_motor_vehicle_other',
+* 'opposite_direction_one_straight_one_left_turn',
+* 'same_direction_one_straight_one_stopped'
+encoded as 0: 
+* 'one_motor_vehicle_backing',
+* 'same_direction_both_going_straight_rear_end',
+* 'opposite_direction_both_going_straight',
+* 'one_motor_vehicle_turning_left',
+* 'one_motor_vehicle_turning_right',
+
+
+#### Integrate (merge/collate together different sources, aggregate multiple records into one)
+
 <!-- counting "quality issues" as part of crisp-dm preparation" to keep 'quality found' and 'quality fixed' together; may need to change this mentality -->
 ### Data Quality Issues
 @STUB: add report of overall quality issues, e.g. before/after fixing  
 @STUB: find the references to dropna or features without enough values (e.g. average daily traffic amount)  
 Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat abc, fixed yes/no'  
+
+@BEGIN:
+speed_limit was sometimes 0, sometimes -1
+
+@ASSUMPTION;
+impact-speed not available, assume speed limit
 <!-- 3.3 Identifying Data Quality Issues -->
 #### Identified
 <!-- 3.3.1 Missing Values -->
