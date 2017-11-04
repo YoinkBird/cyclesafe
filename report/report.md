@@ -580,7 +580,7 @@ In particular, there is no data on the number of cyclists for a given road segme
 
 
 Inventory of resources:  
-Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway and Safety Administration (NHSA), and the City of Austin Police Department (APD).  
+Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway Traffic Safety Administration (NHSTA), and the City of Austin Police Department (APD).  
 Data on actual ridership is very sparse in comparisson to data on crashes, which prevents significant correlation and therefore will not be considered.  
 Data on traffic-counts is available for certain road segments and is the total count for a 24 hour period.  
 The software necessary for data processing and modelling is available as free python libraries (pandas, sklearn, scikit learn, other ML libraries as needed).  
