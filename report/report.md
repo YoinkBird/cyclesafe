@@ -689,6 +689,11 @@ Data is in CSV format with a header describing the query parameters used to obta
 @TODO: fill in from featdef.py in [data description report appendix](#appendix-data-description-report), add excerpt with relevant data here  
 -->
 
+<!--
+3.5 Advanced Data Exploration
+3.5.1 Visualizing Relationships Between Features
+3.5.2 Measuring Covariance and Correlation
+-->
 ### Data Exploration Report  
 <!--
 @TODO: build on [@originalProject]  
@@ -697,6 +702,7 @@ Data is in CSV format with a header describing the query parameters used to obta
 * ABT  
 * Data Quality Report
   * mph incomplete, encoded either as -1 or 0
+  * "average daily traffic amount" and "average daily traffic year" only present for major roads   
 
 <!-- 3 Data Exploration -->
 <!-- 3.1 The Data Quality Report -->
@@ -729,27 +735,45 @@ first findings, hypothesis
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+**Overview**  
 * Select
 * Clean
 * Construct required data (derived features, imputed values, etc)
-* Integrate (merge/collate together different sources, aggregate multiple records into one)
-@STUB: explain txdot_parse.py works to prepare data, create features, etc  
-@STUB: introduce featdef.py in it's role of feature creation, but make sure to mention it under modelling as well for its feature management capabilities  
-@STUB: 
-summary: use python, pandas to ensure data is useful
+* Integrate (merge/collate together different sources, aggregate multiple records into one)  
 
-@BEGIN:
+**Implementation**  
 The data preparation steps were summarised as python code in order to apply the same steps to new data from the same source in the future.  
+During the preparation steps, the feature-definition dataframe (featdef) is also updated as needed.  
+For example, any generated features are registered in featdef along with their category and the features they were derived from.
+In essence, this allows the features to be accessed in an abstract manner without needing to know the feature names.  
+This is in contrast to a wide-spread approach of hard-coding feature names at the time of use.  
 
 This section will mention the python functions when describing the steps taken.  
-Python module: txdot_parse.py
+Python module: txdot_parse.py , feature_definitions.py
 
 
 **Select**  
-'clean_data' loads the crash data into a pandas (pd) dataframe (df) from a csv file, which requires ignoring the non-machine-readable header.  
+'clean_data' loads the crash data into a pandas (pd) dataframe (df) from a csv file, which requires ignoring the meta-header.  
 
+No data is removed, but instead managed via featdef and categorised according to purpose within the project. E.g. some features are used for building the model, some for visualisation, etc.  
+The featdef for this project is in the [Appendix on Featdef Values](#appendix-featdef-values).  
+
+
+<!-- 3.3 Identifying Data Quality Issues -->
+<!-- 3.3.1 Missing Values -->
+<!-- 3.3.2 Irregular Cardinality -->
+<!-- 3.3.3 Outliers -->
+<!-- 3.4 Handling Data Quality Issues -->
+<!-- 3.4.1 Handling Missing Values -->
+<!-- 3.4.2 Handling Outliers -->
+<!--
+3.6 Data Preparation
+3.6.1 Normalization
+3.6.2 Binning
+3.6.3 Sampling
+-->
 **Clean**  
-The function 'clear-csv' ensures that the data is machine readable to avoid parsing errors as well as to facilitate the coding process.  
+The function 'clean_data' ensures that the data is machine readable to avoid parsing errors as well as to facilitate the coding process.  
 List:  
 * replace punctuation with underscores
 * lowercase feature names 
@@ -760,21 +784,19 @@ List:
     * This includes converting '0' for "missing" to 'np.nan' to prevent the modelling algorithms from evaluating it as a real value. This also improves runtime performance, as a proper null value is evaluated quicker than an integer representation (numpy knows not to evaluate np.nan, but can't know in advance whether an 'int' is '0' and therefore spends extra time to evaluate it)
     Caveat: This does not apply to data which is actually '0', only to cases when '0' represents a missing value.
 
+Note: Missing values were not removed, as different models and visualisations require different sets of features. As such, the missing data is handled at the time of usage.  
+
+Certain features are consistently under-represented, such as "average daily traffic amount" and "average daily traffic year" and are marked as less-important in featdef.   
+
+
 
 ### Feature Implementation
-ABOUT: i.e. choose or create features for ABT  
-proxy features  
-Consider:  
-data availability  
-timing of data  
-longevity of data  
-
-@STUB: Then: how are new features created? e.g. impute mph, create binary categories, etc  
-
-#### Construct required data (derived features, imputed values, etc) (@TODO: merge 'feature implementation' further above into this portion
+<!--
+#### Construct required data (derived features, imputed values, etc) ([x]@TODO: merge 'feature implementation' further above into this portion
+-->
 **Construct Required Data**  
 **Imputed Values**
-imput speed limits - of the set of intersections with multiple entries, for any intersections missing the speed limit, impute speed limit from identical rows. If speed limit changed throughout time, use first available value either from the future speed limit or the past speed limit. As most speed limits were observed to increase over time, this induces a bias towards associating crash severity with higher-than-actual speed limits. This is accepted as the difference in speed limit is typically only 5mph.
+impute speed limits - of the set of intersections with multiple entries, for any intersections missing the speed limit, impute speed limit from identical rows. If speed limit changed throughout time, use first available value either from the future speed limit or the past speed limit. As most speed limits were observed to increase over time, this induces a bias towards associating crash severity with higher-than-actual speed limits. This is accepted as the difference in speed limit is typically only 5mph.
 Note that this will bias the overall model towards a higher speed limit associated with injury severity. This has a few consequences, but can be considered as a relatively safe assumption as the correlation between crash-severity and speed-of-impact is well understood. Furthermore, the speed limit itself is not the same as the impact speed.  
 
 **Derived Features**
@@ -837,38 +859,7 @@ encoded as 0:
 
 
 #### Integrate (merge/collate together different sources, aggregate multiple records into one)
-
-<!-- counting "quality issues" as part of crisp-dm preparation" to keep 'quality found' and 'quality fixed' together; may need to change this mentality -->
-### Data Quality Issues
-@STUB: add report of overall quality issues, e.g. before/after fixing  
-@STUB: find the references to dropna or features without enough values (e.g. average daily traffic amount)  
-Note: combine 'Identified' and 'fixed' per-feature, i.e. 'qual issue for feat abc, fixed yes/no'  
-
-@BEGIN:
-speed_limit was sometimes 0, sometimes -1
-
-@ASSUMPTION;
-impact-speed not available, assume speed limit
-<!-- 3.3 Identifying Data Quality Issues -->
-#### Identified
-<!-- 3.3.1 Missing Values -->
-<!-- 3.3.2 Irregular Cardinality -->
-<!-- 3.3.3 Outliers -->
-<!-- 3.4 Handling Data Quality Issues -->
-#### Fixed
-<!-- 3.4.1 Handling Missing Values -->
-<!-- 3.4.2 Handling Outliers -->
-<!--
-3.5 Advanced Data Exploration
-3.5.1 Visualizing Relationships Between Features
-3.5.2 Measuring Covariance and Correlation
--->
-<!--
-3.6 Data Preparation
-3.6.1 Normalization
-3.6.2 Binning
-3.6.3 Sampling
--->
+none.  
 
 ## Modeling
 <!--modeling-->
@@ -1587,6 +1578,19 @@ Speed Limit
 Street Name
 Surface Condition
 Weather Condition
+
+## Appendix: Featdef Values  
+
+| attribute | description | values | 
+|---|---|---|
+|'target'| indicate whether feature is a predictor or target | [False, True] |
+|'regtype' | type of values w.r.t. modelling | string - continuous, categorical, bin_cat (binary) , onehot (dummy-encoded) |
+|'input'| importance of feature to make a prediction | integer - ascending from 0 |
+|'dummies'| whether feature can be dummy-encoded | [False, True] |
+|'type' | datatype, used to filter features, e.g. models need to ignore data encoded as 24h  | string - ['int', 'str', '24h', 'street', 'gps', 'datetime', 'float'] |
+|'pairplot'| whether data can be plotted in a pairplot | [False, True] | 
+|'jsmap'| whether data can be plotted on a map | [False, True] |
+|'origin'| name of contributing feature for derived features | string - ['crash_datetime', 'crash_severity', 'intersection_related', 'light_condition', 'manner_of_collision', 'day_of_week', 'road_base_type'] |
 
 <!--
 Table Generation from Bullets
