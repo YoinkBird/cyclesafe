@@ -9,7 +9,21 @@ import pandas as pd
 '''
 register attrributes here which need to be defaulted to False
 this is almost any new attribute
+
+values from: for feat in featdef.columns: print(feat); featdef[feat].unique()
+
+| attribute | description | values | 
+|---|---|---|
+|'target'| indicate whether feature is a predictor or target | [False, True] |
+|'regtype' | type of values w.r.t. modelling | string - continuous, categorical, bin_cat (binary) , onehot (dummy-encoded) |
+|'input'| importance of feature to make a prediction | integer - ascending from 0 |
+|'dummies'| whether feature can be dummy-encoded | [False, True] |
+|'type' | datatype, used to filter features, e.g. models need to ignore data encoded as 24h  | string - ['int', 'str', '24h', 'street', 'gps', 'datetime', 'float'] |
+|'pairplot'| whether data can be plotted in a pairplot | [False, True] | 
+|'jsmap'| whether data can be plotted on a map | [False, True] |
+|'origin'| name of contributing feature for derived features | string - ['crash_datetime', 'crash_severity', 'intersection_related', 'light_condition', 'manner_of_collision', 'day_of_week', 'road_base_type'] |
 '''
+
 def get_list_of_attributes():
     attlist = ['target','dummies','jsmap']
     return attlist
