@@ -660,14 +660,51 @@ Dimension <4k, so boosted tree likely best solution (src: [@caruana_et_al_2008])
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+**Overview**  
 * Data Collection Report
 * Data Description Report
 * Data Exploration Report
+* Data Quality Report  
 * ABT
+
+### Data Collection Report
+<!-- ### Data Acquisition  -->
+<!-- list data sources,locations,methods, problems encountered, solutions -->
+Practical Assessment: Several sources available for crash data, will use TXDOT csv obtained via interactive web-based query. This requires a one-time effort to manually formulate the query each time the dataset is to be updated.    
+NHTSA and TXDOT both offer a complete dataset which is not in a simple csv format and requires significant processing in order to be queried.  
+APD offers a limited dataset for certain years, which excludes it from consideration as a source of data.  
+For the purpose of this project, it is more efficient to focus the available resources on the easily obtained yet complete dataset offered by the interactive web-query. However, for ongoing maintenance, the full-featured dataset will be used as it can be obtained automatically.  
+
+<!--
+@TODO: see google-doc for procedure to obtain data  
+-->
+
+Following reports will focus on the TXDOT CRIS Crash Data.  
+
+### Data Description Report
+Data is in CSV format with a header describing the query parameters used to obtain the data  
+2233 records  
+25 fields  
+<!--
+@TODO: fill in from featdef.py in [data description report appendix](#appendix-data-description-report), add excerpt with relevant data here  
+-->
+
+### Data Exploration Report  
+<!--
+@TODO: build on [@originalProject]  
+-->
+
+* ABT  
 * Data Quality Report
-@STUB: Use the pandas python library to create the ABT, add functionality as needed.  
-@TODO: this can be added to report later in project  
-summary: use python, pandas, matplotlib to analyse data
+  * mph incomplete, encoded either as -1 or 0
+
+<!-- 3 Data Exploration -->
+<!-- 3.1 The Data Quality Report -->
+### Data Quality Report
+ABOUT: i.e. quality of selected features
+<!-- 3.2 Getting to Know the Data -->
+<!-- 3.2.1 The Normal Distribution -->
+
 <!--
 2.3 Analytics Base Table
 This work sits primarily in the Data Understanding phase
@@ -677,35 +714,10 @@ This work sits primarily in the Data Understanding phase
 ### Analytics Base Table
 Choose prediction subject, one-row-per-subject  
 determine domain concepts for features  
-
-### Feature Implementation
-ABOUT: i.e. choose or create features for ABT  
-proxy features  
-Consider:  
-data availability  
-timing of data  
-longevity of data  
-
-@STUB: Then: how are new features created? e.g. impute mph, create binary categories, etc  
-
-availability:  
-### Data Acquisition  
-TODO: this needs to be more along the lines of "which data sources readily exist" or "which were considered"  
-the later section 'feature implementation' deals with availability, at which point the choice of data-source can be stated  
-@STUB:
-quicknote: use available crash-data, augment with other data sources as necessary and as possible  
-primary source: TxDOT data  
- practical assessment: using txdot limited feature csv format is simpler than other more complicated formats, e.g. NIST or txdot csv with all features.  
-
-@BEGIN: the crash data was obtained from txdot website
-
-<!-- 3 Data Exploration -->
-<!-- 3.1 The Data Quality Report -->
-### Data Quality Report
-ABOUT: i.e. quality of selected features
-<!-- 3.2 Getting to Know the Data -->
-<!-- 3.2.1 The Normal Distribution -->
-@STUB: use pandas libs and custom functions to generate report. current implementation only a draft.
+first findings, hypothesis  
+<!--
+@TODO: create in pandas  
+-->
 
 ## Data Preparation
 <!--data_preparation-->
@@ -747,6 +759,17 @@ List:
   * convert human-readable descriptions for missing data to machine-readable datatype
     * This includes converting '0' for "missing" to 'np.nan' to prevent the modelling algorithms from evaluating it as a real value. This also improves runtime performance, as a proper null value is evaluated quicker than an integer representation (numpy knows not to evaluate np.nan, but can't know in advance whether an 'int' is '0' and therefore spends extra time to evaluate it)
     Caveat: This does not apply to data which is actually '0', only to cases when '0' represents a missing value.
+
+
+### Feature Implementation
+ABOUT: i.e. choose or create features for ABT  
+proxy features  
+Consider:  
+data availability  
+timing of data  
+longevity of data  
+
+@STUB: Then: how are new features created? e.g. impute mph, create binary categories, etc  
 
 #### Construct required data (derived features, imputed values, etc) (@TODO: merge 'feature implementation' further above into this portion
 **Construct Required Data**  
@@ -1535,6 +1558,35 @@ https://www.google.com/search?q=machine+learning+understandability+of+model&oq=m
 
 **Misc**  
 @FUTUREWORK: change parameters such as 'lighting condition' according to local time, i.e. if route time estimate starts during daylight, ends in twilight, change the values according to the time estimates per segment.  
+
+## Appendix: Data Description Report  
+### TXDOT data  
+
+Crash ID
+Average Daily Traffic Amount
+Average Daily Traffic Year
+Crash Death Count
+Crash Incapacitating Injury Count
+Crash Non-incapacitating Injury Count
+Crash Not Injured Count
+Crash Possible Injury Count
+Crash Severity
+Crash Time
+Crash Year
+Day of Week
+Intersecting Street Name
+Intersection Related
+Latitude
+Light Condition
+Longitude
+Manner of Collision
+Medical Advisory Flag
+Object Struck
+Road Base Type
+Speed Limit
+Street Name
+Surface Condition
+Weather Condition
 
 <!--
 Table Generation from Bullets
