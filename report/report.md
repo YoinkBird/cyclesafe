@@ -484,20 +484,18 @@ This balance is best exemplified by two scenarios: one in which the model is acc
 #pending, out of place here: The solution is to have a route planning tool which automatically generates a list of GPS coordinates for a route and uses these coordinates to predict the safety factor. The end-user need only plan their route as usual, and the tool does the rest.
 -->
 The first scenario would be a model which can accurately predict the safety of a route, but requires the end-user to fit the model to an independently generated collection of GPS coordinates representing their route.  
-The first scenario could be a model which can accurately predict the safety of a route, but requires the end-user to independently provide the exact data which the model depends upon. Among other things, this would involve generating a collection of GPS coordinates representing the desired route and the various environmental conditions which the model uses for its prediction.  
-The second scenario would be existing map-based route planning tools, which are easy to use but have no safety prediction whatsoever.  Although most of these tools offer alternative routes based on various factors, they do not include safety in their calculations.
+The second scenario is exemplified by existing map-based route planning tools, which are easy to use but have no safety prediction whatsoever.  Although most of these tools offer alternative routes based on various factors, they do not include safety in their calculations.
 
 
 In scenario one, a model with high accuracy can easily predict the danger of a given route, but would require the end-user to have a detailed understanding of data mining, the language used to create the model, and how to translate their desired route into a format which the model can use to make a prediction.  
-
 In the second scenario, the application with a good UI makes it easy for the end-user to plan their route, but the inaccurate model will mislead the end-user about the actual safety of the route.  
+
 Both scenarios are unfavourable, but fortunately the nature of application design and creating an accurate model help prioritise which component to focus on first.  
-Data Mining is an open-ended problem: the model is trying to use existing data to make an accurate prediction about the future. As new data is made available, the accuracy of a given model is constantly changing, which requires the model to constantly change. E.g. new data sources may provide better input, which in turn requires the model to use different parameters or even a different algorithm.  
-On the other hand, the application layer is more of a finite problem: the application consumes and presents data in a pre-defined format. The goal of abstracting the model for easier use is accomplished once the interface between the end-user and the and data is created. Of course, the application will change over time to accomodate user feedback, but this is secondary to the primary purpose of allowing users to interact with the data.  
+Data Mining is an open-ended problem: the model is trying to use existing data to make an accurate prediction about the future. The accuracy of a model is constantly changes as new data is made available, which in turn requires the model to constantly change. E.g. new data sources may provide better input, which in turn requires the model to use different parameters or even a different algorithm.  
+On the other hand, the application layer represents a finite problem: the application consumes and presents data in a pre-defined format. The goal of abstracting the model for easier use is accomplished once the interface between the end-user and the and data is created. Of course, the application will change over time to accomodate user feedback, but this is secondary to the primary purpose of allowing users to interact with the data.  
 In summary, while the accuracy of the data model can improve over time, the application has no impact on the accuracy of the model.  
 
-With this in mind, the primary focus is on creating a simple UI for interacting with the output from the model.  
-The model accuracy is the secondary focus, since it is expected to change over time.  
+Therefore, the primary focus of this project is on creating a UI for interacting with the output from the model. As the model itself is expected to change over time, its optimisation is a secondary focus.  
 
 <!-- map to CRISP-DM, i.e. 'three' is the continued deployment -->
 To this end, the project is done in three phases:  
@@ -505,7 +503,7 @@ one: create simple model for the application to consume
 two: create application with minimal functionality  
 three: improve model accuracy  
 
-This phased incremental approach is an application of a process commonly used in industry, which is covered in the next section.  
+This phased incremental approach is an application of CRISP-DM, a process commonly used in industry.
 
 
 ## CRISP-DM
