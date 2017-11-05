@@ -98,28 +98,32 @@ Recommendation is to increase data collection in areas with most crashes to bett
   * Previous Work
   * Results to Date
 * Goals
+* Roadway Safety Analysis
 * Methodology
+  * Introduction to Data Mining
   * Summary
   * CRISP-DM
+* CRISP-DM Report
   * Business Understanding
     * Problem Statement
     * Feasibility Assessment
+    * Project Preparation Gantt Chart
   * Data Understanding - Analysis
-    * Analytics Base Table
-    * Feature Implementation
-    * Data Acquisition
+    * Data Collection Report
+    * Data Description Report
+    * Data Exploration Report
     * Data Quality Report
+    * Analytics Base Table
   * Data Preparation
-    * Data Quality Issues
+    * Feature Implementation
   * Modeling
   * Evaluation
   * Deployment
     * Technology
-    * Project Preparation Gantt Chart
     * Project Execution Gantt Chart
     * Work-Packages:
     * Roadmap
-* Time Plan for Master’s Project Proposal and Master’s Thesis
+    * Architecture
 * Discussion / Conclusion
 * Future Work
   * Crash Data
@@ -127,6 +131,9 @@ Recommendation is to increase data collection in areas with most crashes to bett
 * Acknowledgements
 * Reference & Literature (Bibliography)
 * Appendix
+  * Appendix: Data Description Report
+    * TXDOT data
+  * Appendix: Featdef Values
 <!--</toc_mini>-->
 
 
@@ -446,26 +453,9 @@ Applied safety scores for roadway segments
 **Section Overview:**
 <!--!toc_mini-->
 <!--<toc_mini>-->
+* Introduction to Data Mining
 * Summary
 * CRISP-DM
-* Business Understanding
-  * Problem Statement
-  * Feasibility Assessment
-* Data Understanding - Analysis
-  * Analytics Base Table
-  * Feature Implementation
-  * Data Acquisition
-  * Data Quality Report
-* Data Preparation
-  * Data Quality Issues
-* Modeling
-* Evaluation
-* Deployment
-  * Technology
-  * Project Preparation Gantt Chart
-  * Project Execution Gantt Chart
-  * Work-Packages:
-  * Roadmap
 <!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
@@ -628,6 +618,7 @@ Where applicable, the first passes will be described.
 
 The "business" can be understood as any entity concerned with public transportation safety. The "business needs" for this project are oriented around increasing traffic safety for cyclists.  
 
+### Problem Statement  
 * determine the desired outputs of the project.  
 
 Desired Outputs:  
@@ -647,7 +638,7 @@ In particular, there is no data on the number of cyclists for a given road segme
 @STUB: round2: Use crash data to help reduce number of accidents with severe injury ->  available data  
 
 
-#### Feasibility Assessment
+### Feasibility Assessment
 <!--feasibility_assessment-->
 * assess the feasibility of the project.  
 
