@@ -323,40 +323,36 @@ make one of them correspond to 'generic route anlysis'. "explanation of factors"
 make the other correspond to the 'historical crash data'
 -->
 
-@STUB  
-Create tool to help cyclists plan relatively-safe routes.  
-In this context, relatively-safe is defined as "given a crash, will the cyclist be incapacitated or worse".  
+Create application for scoring routes in real time.  
+This will provide a familiar interface to allow end-users to make use of safety scores while also taking advantage of the highly optimised services offered by third-party route planners.  
+This is developed as an interface to the route scoring model which allows the end-user to conveniently factor in safety scores while planning their route.  
+
+Develop framework for managing crash data.  
+This includes facilitating the use of data from different sources and the management of features throughout the various stages of the modelling process.
+
+Follow the CRISP-DM process to produce a thorough machine learning product developed according to widespread industry standards.  
+This will be implemented as a machine learning model which finds a relationship between environmental factors and safety of a route.  
+
 <!--
 (May want to redefine according to less severe injuries, e.g. "safe" as "able to ride away")  
 -->
 
 <!--
 Todo: terminology: use the phrase "severity", or something, in lieu of "safety". Keeps the mission clear, and is accurate without interruption. Later, introduce the safety score.  
--->
+
 [@terminology]: relatively-safe - placeholder term. see relative-safety  
 [@terminology]: relative-safety - placeholder term. Assuming a cyclist is involved in a crash, how likely are they to be severely inured. ML: This is the target feature. @TODO: use featdef to list features and definitions  
+-->
 
 <!-- tags: studies
 Todo: should research whether accident severity correlates with responsibility. If studies show that light injury is usually cyclists fault, would be able to draw a line and cite the study.  
 -->
 
-This Involves:
-
-Model to find relationship between environmental factors and safety/severity  
 
 
-Interface to model which interprets the results in a manner which is meaningful to a human user.  
-I.e. something that lets cyclists conveniently factor in relative-safety when planning their route  
 
-Model depends on GIS-enabled crash data which lists locations of past crashes and environmental factors  
-This data interpreted in two ways:  
-Generic location-unaware analysis in order to calculate relative-safety of any generic route  
-i.e. user provides a route, but exact coordinates are not used in the analysis  
-Specific location-aware analysis in order to improve pertinance/relevance/argh of relative-safety score  
-i.e. user provides a route, and analysis factors in known coordinates
 
-Caveat: the model itself will be location unaware, whereas the interface to the model will enable the location-aware features.  
-Model is location unaware because it would essentially end up scoring the more popular roots with a higher safety-factor. location-aware modelling could be useful for identifying where more crashes happen, but in a practical route-planning scenario this would lead to cyclists having to take large detours.   
+
 
 
 <hr />
@@ -785,6 +781,9 @@ Note: Missing values were not removed, as different models and visualisations re
 Certain features have very few datapoints and therefore only used for specific visualisations.  
 "average daily traffic amount" and "average daily traffic year" are features to describe the overall traffic on a given road and only have data for large roads.  
 
+
+GPS coordinates will be omitted. Geographic location is not correlated with traffic safety. Furthermore, gps coordinates in the dataset are directly correlated with the crash report and crash id, and therefore would bias the model towards "remembering" locations of crashes. This is counter to the goal of determining generic crash-factors which can be used to analyse any road segment.  
+If GPS coordinates were used to create a location-aware model, the resulting predictions would be contingent upon number of reported crashes and would need to be combined with total ridership data or traffic volume data for a specific road segment. This requires addtional data and is beyond the scope of this project.  
 
 ### Feature Implementation
 <!--
