@@ -348,12 +348,92 @@ Todo: terminology: use the phrase "severity", or something, in lieu of "safety".
 Todo: should research whether accident severity correlates with responsibility. If studies show that light injury is usually cyclists fault, would be able to draw a line and cite the study.  
 -->
 
+# Roadway Safety Analysis
+
+Adapt current descriptive analytics for predictive analysis and create a method for situations involving limited data.  
+
+**Road Safety Analysis based on Traffic Data**  
+NHTSA does a descriptive analysis of existing data for a given segment to measure that segment's crash rate.  
+This crash rate is used to determine which segments need to be improved, and this analysis is performed before and after the improvement to measure the effectiveness.  
+This analysis is not performed for segments without crash data.  
+
+**Predictive Road Safety Analysis**  
+The formulas currently used to evaluate road segment safety rely on the presence of data for the specific segment being analysed.  
+As a result, any crashes which are not reported will not be factored in the analysis. For example, a segment which leads to minor collisions which require no police involvement would not be fixed if no report is fileed.  
+The NHTSA does have some techniques for predictive modelling, @citationNeeded but these focus on rural roads @citationNeeded and involve complex formulas which in turn rely on a plethora of measurments @citationNeeded.  
+
+These formulas are meant for posterior analysis in order to determine which roadways to improve.  
+This is a good approach for continuously improving safety, but requires crashes to happen before action can be taken.  
+
+For cyclists, this is a particularly perilous approach as crashes tend to lead to more severe injury for cyclists.  
+
+This problem could be addressed by applying a predictive approach towards road segment safetey analysis.  
+
+The existing formulas and body of knowledge based on crash rates can be adapted for crash probability with the following changes:  
+
+1. predict crashes instead of measuring crashes
+2. change crash rate formula to use predicted crashes instead of measured crashes  
+
+The concept of crash prediction lies in identifying trends in the road segments for reported crashes and using these trends to analyse a road segment to make an educated guess about the number of crashes it should have.  
+
+This estimated number of crashes for a segment can then be used in the existing formulas to calculate that segment's safety score.  
+
+In essence, this changes the formula from "#reported_crashes/traffic_volume" to #predicted_crashes/#traffic_volume". 
+
+This approach is still limited by the availability of traffic volume data for a given road segment.  
+However, as it is a predictive model, its accuracy can be improved by ensuring that traffic volume data is continuously updated.  
+The exact reasons for re-measuring traffic volume on a segment can vary, but may be combination of age of the data, predicted crashes for the segment, and actually measured crashes for the segment.  
+After all, the predictive model should still be used with the descriptive techniques to ensure maximum coverage for the best overall solution.  
 
 
+**Predictive Road Safety Analysis using limited data**  
+The predictive approach relies on traffic volume for a given segment, and is therefore limited by age and availability of the data. Older data will not reflect current trends, and segments with unavailable data cannot be evaluated.  
+
+Traffic flow cannot be measured for every segment using current techniques.  
+The methods for measuring traffic flow are only applied on demand @citationNeeded and are therefore not available for every road segment.  
+
+One solution could be to create a separate predictive model for traffic volume, which would represent an entirely different problem than predicting crashes.  
+Traffic volume itself depends on several factors not measured in crash data, for example, connectivity of the road segment (throughfare, neighbourhood road, dead end), lane width, population density along the segment, and several other factors.  
+Therefore, predicting traffic volume is beyond the scope of this project.  
+
+The problem remains that traffic volume for cyclists is not well known.  
+The methods for measuring traffic flow do not distinguish between types of vehicle and @citationNeeded and are not available for every road segment.  
 
 
+In order to create a safety measurement applicable to any road segment, a different measurement must be used.  
+Crash severity measures the severity of injury sustained in a crash, and is a self-contained measurement in that it is measured per individual reported crash instead of per total reported crashes for a segment.  
+This imposes the limitation that it can not be used to avoid a crash, but instead to avoid severe injury given a crash.  
+Therefore, any prediction based on crash severity will be constrained by the assumption that a crash occurred.  
+This removes the reliance on unavailable traffic volume data, but imposes the bias that any prediction assumes that a crash has already occurred.  
+
+The formula introduced for assessing crash-risk for a segment cannot be adapted for crash-severity.  
+The crash-risk measures the frequency of crashes (measured or predicted), whereas crash-severity measures a the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
+The crash-severity risk will be taken directly from the confidence interval of the predictive model.  
+This preserves the probability property of risk as a number between 0 and 1.
 
 
+**Applying Safety Score to a Route**  
+The segment crash rate is used to compare road segments and determine which ones need to be improved. While this ratio is used probabilistically where possible @citationNeeded:[3.2.4 Using Crash Rates], its application is for road segment improvement, not route planning.  
+
+The risk-based scores can be adapted for risk-aware route planning.  
+Route planning generates paths consisting of segments, therefore the risk score for each segment can be combined to a total risk score for each path which then allows them to be scored.  
+
+Measuring the risk of a route is calculated as:
+<pre>
+risk(Route) = 1 - PRODUCT[segment element Route] ( 1 - risk(segment) )
+</pre>
+
+**Route Planning**  
+Route planning will be done by third party route planning services for several reasons.  
+Third party services already provide several alternative routes, which eliminates the need to implement routing algorithms.  
+Modern route planning tools consider several factors when optimising routes, whereas this project only aims to optimise one factor. By using an external routing service, the risk optimisation can be performed on routes pre-optimised for other factors, thereby providing a more optimal service.  
+
+
+* no problem if not enough data to distinguish segments, simply compare two routes and choose safest => no problem - the "segment score" encapsulates this concept. "risk score" calculated based on whatever data the model consumes, serves as abstraction for "route score" . if "segment score" gets more accurate, "route score" automatically reflects this.  
+
+
+**Cumulative Predictive Safety Score for a Route**
+Applied safety scores for roadway segments
 
 <hr />
 
