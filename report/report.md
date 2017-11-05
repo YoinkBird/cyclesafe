@@ -527,47 +527,58 @@ CRISP-DM (CRoss Industry Standard Porcess for Data Mining) [@crispDmWiki] is a c
 5. Evaluation
 6. Deployment
 
-@TODO: update summary based on description in 'Business Understanding' - structure of waterfall with planned flexibility of agile.  
-The framework consists of 6 stages which flow into each other and can loop back into a previous stage TODO at any time.  
-This is similar to the traditional waterfall framework, with the major exception that the stages can be updated as new information becomes available.  
+The CRISP-DM framework consists of 6 stages which each provide input into the next stage and allow for stages to be revised at certain points in the process.
+This is similar to the traditional waterfall framework, with the major exception that it is designed to flexibly accomodate new requirements as new information becomes available.  
 
 The stages are:  
 
-1. Business Understanding  
+1\. Business Understanding  
+
 This stage is the project-planning portion of the project and as such combines both waterfall and agile planning strategies.  
 The project is planned out in terms of phases and resources as it would be with waterfall, but is meant to be updated under certain conditions as with agile project planning.  
 This is particularly well adapted for data mining, as the goal must be well understood in advance, but the model has to be able to change based on its inputs.  
 In essence, this stage lays the groundwork for a successful project.  
 
+Overview:  
 * determine the desired outputs of the project.  
 * Feasibility Assessment - assess the feasibility of the project.  
 * determine the data mining goals.  
 * create project plan.  
 
-2. Data Understanding  
+2\. Data Understanding  
+
 This stage is for acquiring and exploring data in order to evaluate the quality and usefulness of the data sources provided in stage 1.  
-@STUB:  
+
+Overview:  
 * Data Collection Report
 * Data Description Report
 * Data Exploration Report
 * ABT
 * Data Quality Report
 
-3. Data Preparation  
-@STUB:  
+3\. Data Preparation  
+
+This stage is for processing data for use by the modeling stage.  
+
+Overview:  
 * Select
 * Clean
 * Construct required data (derived features, imputed values, etc)
 * Integrate (merge/collate together different sources, aggregate multiple records into one)
 
-4. Modeling  
-@STUB:  
+4\. Modeling  
+
+This stage is for creating a model which satisfies the objectives.  
+Overview:  
 * choose technique, list assumptions
 * create test train-test-eval plan
 * create model (set parameters, build model, report about process involved)
 * assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.
-5. Evaluation  
-@STUB:  
+5\. Evaluation  
+
+This stage is for determining which models achieved the objectives.  
+
+Overview:  
 Note: not same as error evaluation  
 * evaluate results
   * assess results in terms of project/business success criteria
@@ -575,8 +586,12 @@ Note: not same as error evaluation
 * review process: summarise process until this point, determine what needs to be repeated or still be done
 * determine next steps: decide whether to proceed to next stage or loop back to a previous stage based on the current results.
   * list out possible actions, reasons, pro/con ; then describe decision
-6. Deployment  
-@STUB:  
+
+6\. Deployment  
+
+This final stage is for recommending how to apply the approved models towards solving the initial problem outlined in the first stage, business understanding.  
+
+Overview:  
 * deployment plan - how will this be used for the business?
 * monitoring + maintenance plan - how will model be updated and supervised?
 * final report
