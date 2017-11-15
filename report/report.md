@@ -149,29 +149,29 @@ The goal of this project is to create a continuously updated traffic study using
 
 <!-- general introduction to the subject -->
 #### Traffic Studies - Active vs Passive
-Current traffic studies typically involve observing specific sections of road for fixed time period.  
+Current traffic studies typically involve observing specific sections of road for a fixed time period.  
 This provides a lot of data which can be used to improve traffic safety, but is limited by the frequency and scale at which such studies can be done.  
 Staffing is required to run these studies, therefore there are practical constraints on how often and how widespread they can be run.  
 The result is very accurate data for a few representative locations, but the data represents a static section in time and is expensive to update.
 
 Machine learning and automated monitoring can help reduce the cost of active studies, but there is still cost involved in obtaining widespread coverage using automated equipment (e.g. installing cameras at every intersection).
 
-A passive traffic study using data from indirect sources can run continuously and monitor as many locations as the data can provide.  
+A passive traffic study using data from indirect sources and can run continuously while monitoring as many locations as the data can provide.  
 The drawback is that indirect data sources may not provide as much information as actively collected traffic data.  
 This alternative application of machine learning has the advantage that it is scalable and requires fewer additional resources.  
 In many cities, crash reports are one of the readily available indirect sources. On the one hand, they are continuously updated and widespread - a police report is filed any time police are called to the scene of an accident anywhere in the region. On the other hand, police reports for crashes are meant for establishing facts related to a crash, and as such don't capture all of the data required by an active traffic study. Additionally, not every crash leads to a police report, so these types of report are also limited by statistical significance.  
-However, these reports are advantageous due to their frequency and geographic distribution; they can reflect time-based trends and localised trends where active traffic studies can only capture a snapshot.
+However, these reports are advantageous due to their frequency and geographic distribution; they can reflect both time-based trends and localised trends where active traffic studies can only capture a snapshot.
 
 #### Interpretability in Statistics and Machine Learning
 Interpretability describes how readily understandable a process is. For studies based entirely on statistics, it describes how easily the results can be interpretted to correlate cause and effect. This concept extends to machine learning, and describes how easily the inputs to a model can be traced to the model's results.  
 Machine learning is heavily based on traditional statistic methods, but is nonetheless often perceived as a black box due to its ability to produce results from large amounts of data which could not be handled by traditional techniques.  
-It is important to be able to understand the output of a machine learning model for several reasons. The model exists as part of a larger framework to solve a particlar problem, and as such requires supervision to ensure that the results are relevant. In this context, interpretability is important for adjusting the inputs, or even the problem statement, to achieve better results.  
+It is important to be able to understand the output of a machine learning model for several reasons. The model exists as part of a larger framework to solve a particular problem, and as such requires supervision to ensure that the results are relevant. In this context, interpretability is important for adjusting the inputs, or even the problem statement, to achieve better results.  
 Interpretability is also important for the end-usage of the model; the model is specific to one particular goal, whereas applications of the model may have various goals and as such need to understand how the model fits in with the overarching application.  
 For example, if a model indicates that a certain trait is involved in a certain outcome, it is important to be able to understand the actual significance of this trait.  Another example could be a model which finds that two traits lead to a certain outcome; this result requires being able to understand to what extent these traits interact. 
 
 #### Public Safety and Trafffic Study Interpretability 
 To maximise public safety, it is important for traffic studies to be interpretable.  
-This report interprets interpretability of a traffic study in two ways: The traditional method of explaining which inputs lead to which outcome, and a more usable interpretation of how to best use the results of the study to improve traffic safety.  
+This report defines interpretability of a traffic study in two ways: The traditional method of explaining which inputs lead to which outcome, and a more usable interpretation of how to best use the results of the study to improve traffic safety.  
 In simpler terms, understanding how the study achieves its results, and how to practically apply the study's results.  
 The traditional method involves explaining the methods used and explaining how inputs can be traced to outputs.  
 The second method is implemented as a publicly accessible interface to the model used for the study.  
@@ -244,7 +244,7 @@ The following descriptions explain the purpose of sections which seemingly overl
 
 <!-- TODO: brief overview of this section. -->
 While improving traffic safety is not a new topic, addressing it with machine learning techniques on an existing dataset seems to be a novel approach.  
-This project builds on a previous project which used this approach as a proof-of-concept.  
+This project builds on a previous project which explored this approach as a proof-of-concept.  
 Conventional applications of using machine learning to improve traffic safety tend to involve traffic studies or long running trials of novel traffic-controls to determine safety factors.  However, this method tends to require a higher budget and active involvement by a public or private organisation with an interest in traffic safety.  
 The advantage of using machine learning techniques on existing data is to provide a low-budget analysis of traffic safety factors with a quick turnaround time, independent of existing policies.  
 <hr />
@@ -408,7 +408,7 @@ Therefore, predicting traffic volume is beyond the scope of this project.
 @citationNeeded[https://dl.acm.org/citation.cfm?doid=2996913.2996934]
 
 The problem remains that traffic volume for cyclists is not well known.  
-The methods for measuring traffic flow do not distinguish between types of vehicle and @citationNeeded and are not available for every road segment.  
+The methods for measuring traffic flow do not distinguish between types of vehicle @citationNeeded and are not available for every road segment.  
 
 
 In order to create a safety measurement applicable to any road segment, a different measurement must be used.  
@@ -418,8 +418,8 @@ Therefore, any prediction based on crash severity will be constrained by the ass
 This removes the reliance on unavailable traffic volume data, but imposes the bias that any prediction assumes that a crash has already occurred.  
 
 The formula introduced for assessing crash-risk for a segment cannot be adapted for crash-severity.  
-The crash-risk measures the frequency of crashes (measured or predicted), whereas crash-severity measures a the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
-The crash-severity risk will be taken directly from the confidence interval of the predictive model.  
+The crash-risk measures the frequency of crashes (measured or predicted), whereas crash-severity measures the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
+The crash-severity risk will be taken directly from the confidence of the predictive model.  
 This preserves the probability property of risk as a number between 0 and 1.
 
 
@@ -471,7 +471,7 @@ Predicting: Once the model been trained on this dataset of inputs and known outp
 In python sklearn terms, training is referred to as "fit" and prediction is referred to as "predict".  
 
 
-## Summary
+## Implementation Overview
 
 The final product consists of two parts, the user-facing application, or front-end, and the non-public data processing model, or back-end.  
 The core mission of this project is to improve safety for cyclists.  
@@ -638,8 +638,7 @@ The "business" can be understood as any entity concerned with public transportat
 * determine the desired outputs of the project.  
 
 Desired Outputs:  
-Objective: The objective of this project is to help cyclists avoid crashes which lead to severe injury.  
-Objective: The objective of this project is to help cyclists severe injury when involved in a crash.
+Objective: The objective of this project is to help cyclists severe injury when involved in a crash.  
 Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a route-planning tool.  
 Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash.  
 In simpler terms, a successful project will provide a product which cyclists use to make informed decisions about which routes to choose.  
@@ -708,7 +707,7 @@ project plan:
 Simple model using unoptimised decision tree and 3 binary features to predict 1 binary target  
 Purpose: Gathering requirements and enabling all dependent work-packages  
 Creating an intermediate simple model allows for the external interfaces to be defined and enables the rest of the technology stack.  
-This strategy was found to be very useful for quickly iterating through the CRISP-DM process to "flush out" hidden requirements and dependencies.  
+This strategy was found to be very useful for quickly iterating through the CRISP-DM process to discover hidden requirements and dependencies.  
 The stub model also allows for work on deployment to begin before the model is finalised. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
 Dependency: @TODO  
 
@@ -989,6 +988,7 @@ stub_model and interpretable_model will be mentioned in context of their role in
 
 @STUB: describe the x-val functions in model.py  
 
+<!-- @TODO: what is the different between interpretable_model and interpretable_model2 ? -->
 #### interpretable_model2:  
 Technique:  Decision Tree  
 Assumptions: ignores location, ignores intersection, only focuses on ... TODO: featdef    
