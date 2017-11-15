@@ -1051,6 +1051,17 @@ Purpose: real-world sometimes has missing data. naive approach is to create mode
 
 Pending: evaluation comparison between interpretable_model2, interpretable_model, stub_model , using the previous project's xgb model as a benchmark.   This is low-priority as the focus for this project is on interpretability and deployment.  
 
+* review process: summarise process until this point, determine what needs to be repeated or still be done
+At this point in the process, the original dataset has been successfully converted for use with a machine learning model and an initial "enablement model" has been created.  
+The most important features have been determined via a combination of recursive feature elimination, cross validation, and manual feature reduction.  
+The resulting decision tree model has been optimised using cross validation, thereby demonstrating that the developed framework adequately implements the technical requirements of the CRISP framework.  
+
+* determine next steps: decide whether to proceed to next stage or loop back to a previous stage based on the current results.
+  * list out possible actions, reasons, pro/con ; then describe decision
+
+The interpretable_model/interpretable_model2 is functional and therefore satisfies the requirements for enabling the rest of the required technology.  
+However, the model will need to be re-implemented using more robust techniques as part of ongoing deployment.  
+
 ## Deployment
 <!--crispdm_deployment-->
 <!--!@breadcrumb-->
@@ -1086,6 +1097,16 @@ This will require further work to parse, as it uses a different format than the 
 
 For ongoing maintenance, the model parameters will need to be updated as new data becomes available.  
 The schedule for this will be based on the amount of new data received, for which a threshold needs to be set.  
+
+<!-- "drift" -->
+Commonly, this is done by comparing the model scores for the original dataset against scores for new incoming data.  
+If the scores start to decline too much, the model needs to be re-evaluated.  
+On the one hand, it could be that the the underlying data has changed, i.e. there are simply more severe crashes.  
+If this is determined to be the case, the model parameters do not need to be re-tuned.  
+Otherwise, the model needs to be re-recreated with different parameters to improve the score.  
+
+<!-- @TODO: add the depl. plan from the book -->
+
 
 Project Review: 
 
