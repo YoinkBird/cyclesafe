@@ -788,6 +788,8 @@ Data is in CSV format with a header describing the query parameters used to obta
 @TODO: build on [@originalProject]  
 -->
 
+Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.  
+
 * ABT  
 * Data Quality Report
   * mph incomplete, encoded either as -1 or 0
@@ -962,14 +964,11 @@ none.
 * assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.  
 
 The modeling phase was revisited several times as part of the rapid-implementation strategy.  
-In essence, the first iteration started with a simple placeholder model and by the final iteration had been transformed into an application-specific model suited for real-world implementation.  
+The first iteration started with a simple placeholder model and the final iteration consisted of an application-specific model suited for real-world implementation.  
 
 As determined during the data understanding phase, the dataset is mostly categorical.  
 Therefore, each model is based on a decision tree algorithm, which are well suited for analysing categorical data.  
 
-@DATADESC: Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.  
-
-NOTE: model had to be "dialed back" to accomodate what users can provide, @FUTUREWORK: segmentation  
 
 #### Overview of Modeling Stage:  
 
@@ -995,12 +994,16 @@ Assumptions: ignores location, ignores intersection, only focuses on ... TODO: f
 Test Design: xval, roc score, see model.py  
 Build Model: parameters - see model.py  
 Assessment:  
-put Evaluation in next section as this is the final model  
-
 
 Explanation of Assumptions:  
+Location unaware - model does not use gps coordinates for prediction as it needs to analyse road segment types regardless of location. This was explained during the data preparation phase.  
+
+
+
+<!--
 Location unaware : @TODO: refactor this sentence, is it a stream-of-thought:  In essence, the model is deliberately location unaware, with the caveat and assumption that end-users can't simply avoid parts of town. If location 'b' has more crashes, and the route is 'A'->'B'->'C', it isn't helpful to tell end-user that they have to avoid 'B' by routing through a potential 'D','E','F'. HOWEVER - it could be useful to inform users of this factor, but would require a different model. For now, the goal is to make safe transit more convenient; it is already known that one can ride on the sidewalk for the whole commute at 15mph to increase relative-safety , so adding in "avoid these entire areas" won't increase the convenience.  
 @TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
+-->
 
 #### stub_model:  
 Technique: DecisionTree  
@@ -1855,6 +1858,10 @@ Basically:
 
 <!--
 Markdown Reminders:
+
+# citation links for pandoc
+citation inline:      [@linkName]
+citation definition:  [@linkName]: link_url
 
 # paragraphs
 https://daringfireball.net/projects/markdown/syntax#p
