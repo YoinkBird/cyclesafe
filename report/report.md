@@ -632,13 +632,17 @@ Where applicable, the first passes will be described.
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+<!-- probably not needed now
 The "business" can be understood as any entity concerned with public transportation safety. The "business needs" for this project are oriented around increasing traffic safety for cyclists.  
+-->
 
 ### Problem Statement  
+<!--
 * determine the desired outputs of the project.  
+-->
 
 Desired Outputs:  
-Objective: The objective of this project is to help cyclists severe injury when involved in a crash.  
+Objective: The objective of this project is to help cyclists avoid severe injury when involved in a crash.  
 Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a route-planning tool.  
 Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash.  
 In simpler terms, a successful project will provide a product which cyclists use to make informed decisions about which routes to choose.  
@@ -649,17 +653,12 @@ The objective of this project is not to help cyclist avoid crashes altogether, a
 Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient. 
 In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes isntead of a cross-sample of all crashes.  
 
-@STUB: round1: Use crash data to help reduce number of accidents  -> no available data  
-@STUB: round2: Use crash data to help reduce number of accidents with severe injury ->  available data  
-
 
 ### Feasibility Assessment
 <!--feasibility_assessment-->
+<!--
 * assess the feasibility of the project.  
-
-@STUB: round1: data on crashes-vs-non-crashes doesn't exist (no tracking of avoided accidents). loop back to problem statement fo round2 (as expected in the CRISP-DM lifecycle)  
-@STUB: round2: accident data not available txdot data on crashes is available.  there is enough data to train at least a basic model  
-
+-->
 
 Inventory of resources:  
 Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway Traffic Safety Administration (NHSTA), and the City of Austin Police Department (APD).  
@@ -668,22 +667,43 @@ Data on traffic-counts is available for certain road segments and is the total c
 The software necessary for data processing and modelling is available as free python libraries (pandas, sklearn, scikit learn, other ML libraries as needed).  
 The scale of this project is appropriate for any modern hardware as it does not require intense computing resources.  
 
+[@txdot_crash_report_source]: http://www.txdot.gov/driver/laws/crash-reports.html
+
 Requirements, assumptions, and constraints:  
 Requirements: all data and tools are free for use  
-Assumptions: The crash data is assumed to be accurately reported as it is sourced directly from police crash reports @TODO:terminology.  
+Assumptions: The crash data is assumed to be accurately reported as it is sourced directly from law enforcement officers [@txdot_crash_report_source].  
 Constraints: The crash data only represents reported crashes, which may be biased towards severe injury. Therefore, it is possible that the model will be biased towards predicting more severe injuries than would happen in reality.  
-@citationNeeded:[sources on how many crashes get reported]  
+@citationNeededWanted:[sources on how many crashes get reported]  
 This overestimation cannot be assumed to be evenly distributed accross the dataset without understanding the factors which lead to a police report being filed, which  is beyond the scope of this project.  
 
-@TODO: fill in more assumptions,requirements while processing next sections
-
+Feasibility Conclusion:  
+The available crash data on the txdot website contains information about incidents involving bicyclists and contains enough data to create a predictive model.  
 
 Risks and Contingencies:  
+The TXDOT crash dataset is based on reported crashes, of which only crashes which lead to injury are required to be reported.  
+As a result, the dataset does not encapsulate unreported crashes, and may exclude reported crashes which did not lead to injury.  
+Therefore, the project is at risk of being biased towards crashes which lead to injury while being unaware of less severe crashes.  
+The resulting predictions will be biased towards outcomes with injury.  
+This bias is mitigated by a few factors. The end-usage of the model is for comparing different routes and as such the relative accuracy between routes is most important. Since the prediction bias results from the entire dataset, each route's prediction will be equally biased. I.e. the predictions will not be absolutely accurate, but would still be relatively accurate.  
+For the end goal of reducing severe injury, the tendency towards over-predicting injury is more desirable than under-predicting injury. The predictions are meant for use by individual cyclists, who may want to exercise as much caution as possible and therefore would benefit from an overly cautious recommendation. The risk with this assumption is that overly cautious safety recommendations could also lead to cyclists choosing other modes of transportation if they feel that cycling would not be safe.  
+These risks are acceptable within the constraints of this project, as they can be addressed in future iterations as more data becomes available.  
+
+This project is based on data for reported crashes, and as such does not include data for crashes which went unreported or did not lead to injury.  
 
 Terminology:  
-@TODO: fill in from elsewhere
 
+<!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, othewise this requires user to be self-aware and add the when they use the term. -->
+
+[@terminology]: segment - a section of a road  
+
+[@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection  
+
+[@terminology]: crash report
+
+<!-- N/A, but could be "project will benefit society by reducing cycling crashes and improving the transit situation overall at a relatively low cost of maintaining computing resources and expertise to update the resulting tool.
+Ideally would base benefit on some numbers on cost of cycling crashes or potential reduction in traffic if cycling increased; base cost in having an agency maintain the tool and having experts keep model updated
 Costs and Benefits:  
+-->
 
 
 #### determine the data mining goals.  
@@ -703,24 +723,30 @@ project plan:
 | **analysis** | | | interpretable_model2 |
 <!-- | **modeling** | | | | optimised_model1 | -->
 
+#### WP: clean project
+The previous project's codebase which initially explored the txdot dataset focused on model optimisation an dfeature selection, and therefore needs to be rewritten as a model generator for this project.  
+
 #### WP: stub_model
-Simple model using unoptimised decision tree and 3 binary features to predict 1 binary target  
+Simple model with basic optimisation and limited feature set
 Purpose: Gathering requirements and enabling all dependent work-packages  
 Creating an intermediate simple model allows for the external interfaces to be defined and enables the rest of the technology stack.  
-This strategy was found to be very useful for quickly iterating through the CRISP-DM process to discover hidden requirements and dependencies.  
-The stub model also allows for work on deployment to begin before the model is finalised. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
-Dependency: @TODO  
+This strategy was found to be very useful for quickly iterating through the CRISP-DM process to discover unknown requirements and dependencies.  
+The stub model allows the deployment stage to start in parallel with model optimisation. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
+Dependency: Data Preparation
 
 #### WP: interpretable_model  
-Model using decision tree with as many features as possible to predict the crash severity.  
-Purpose: data analysis to decide which model to choose ; allows dependent interfaces to work with real data.  
-Dependency: @TODO
+Simple model with advanced optimisation and as many features as possible to predict the crash severity.  
+Purpose: data analysis, implementation and definition of interface between application and model
+Data Analysis: This model helps with processing the dataset through a process called feature selection, which can also help increase the amount of usable data.  
+Implementation and Definition of interface between application and model: The process of creating a machine learning model is separate from the process for using the model with new data, as is needed for the final application.  This model helps explore and define a process for allowing the final application and the model to send data back and forth.  Once this process is defined, the model also allows the application to work with the model's predictions and discover any potential flaws in the communication process. Until then, the application would be using static predictions.  
+Dependency: Data Preparation , Routing Application
 
-@TODO: summarise changes
 
-tools and techniques:
+Tools and Techniques:
+For this project, the tools and techniques are created from readily available python machine learning libraries and will be described in further sections.  No third-party services or machine learning software packages will be used to process the data, as may be expected in other contexts.  Note that using python machine learning libraries is not considered as using a machine learning software package, the usage of which requires no software programming.  
+<!--
 @TODO: create overview of terminology for model creation; may have overlap with the work-packages for deploymennt
-Note: mention updates
+-->
 
 <!--
 #### WP: optimised_model1  
@@ -1375,11 +1401,6 @@ crash data GPS coordinates will not be exactly same as route-mapper GPS-coordina
 WP: [data:  impute_mph_limit-noninter]  
 Dependency: TODO  
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]  
-<!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, othewise this requires user to be self-aware and add the when they use the term. -->
-
-[@terminology]: segment - a part of a road  
-
-[@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection  
 
 **Description:**   
 Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.  
