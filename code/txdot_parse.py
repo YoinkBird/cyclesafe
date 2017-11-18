@@ -22,6 +22,54 @@ if(__name__ == '__main__'):
     datafile = "my_map_grid.csv"
     datafile = os.path.join(datadir, datafile)
 
+def print_total(df, value):
+#    print(value)
+    # https://stackoverflow.com/a/26641085
+    mask = df.select_dtypes([np.object]).apply(lambda x: x.str.contains(r"%s" % value, na=False))
+    # name important for appending. src: https://stackoverflow.com/a/31292395
+    ser = pd.Series(name=value)
+    # find/count occurrences of string. src: https://stackoverflow.com/a/20076611
+    for col in mask:
+        # print(col)
+        #print(mask[col].value_counts())
+        # print(df[mask[col]][col].value_counts())
+ #       print(df[mask[col]][col].count())
+        tmpser = pd.Series(df[mask[col]][col].count(), index=[ col ], name=value)
+        ser = ser.append(tmpser)
+        ser.append(pd.Series(df[mask[col]][col].count(), index=[ col ]))
+    return ser
+
+
+def replace_with_npnan(data , printout=False):
+    # convert to 'nan'
+    nan_report_df = pd.DataFrame()
+
+    if(1):
+        print(data.shape)
+        # replace ['No Data','Not Applicable'] with NaN
+        print(data.dropna().shape)
+
+        print("No Data")
+        nan_report_df = nan_report_df.append(print_total(data, "No Data"))
+        data.replace(to_replace='No Data', value=np.nan, inplace=True)
+        print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "Not Applicable"))
+        data.replace(to_replace='Not Applicable', value=np.nan, inplace=True)
+        print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "UNKNOWN"))
+        data.replace(to_replace='UNKNOWN', value=np.nan, inplace=True) # intersecting_street_name
+        print(data.dropna().shape)
+
+        data['speed_limit'].replace(0,np.nan,inplace=True) # speed_limit - np.nan is faster
+        data['speed_limit'].replace(-1,np.nan,inplace=True) # speed_limit - np.nan is faster
+
+    if(printout):
+        orig_val_expand_frame_repr = pd.get_option('display.expand_frame_repr')
+        pd.set_option('display.expand_frame_repr', False)
+        print(nan_report_df.transpose())
+        pd.set_option('display.expand_frame_repr', orig_val_expand_frame_repr)
+    return (data, nan_report_df)
+
 # ensure all data is machine-readable
 def clean_data(datafile, source='txdot', verbose=0):
     data = pd.read_csv(datafile,header=10)
@@ -36,7 +84,7 @@ def clean_data(datafile, source='txdot', verbose=0):
         'intersection' : ['street_name','intersecting_street_name','intersection_related'],
       }
     # preprocessing
-    # remove punctuation, then lowercase (src: http://stackoverflow.com/a/38931854)
+    # for column names: remove punctuation, then lowercase (src: http://stackoverflow.com/a/38931854)
     def process_cols(df):
       return df.columns.str.replace('[,\s()]+','_').str.lower()
     data.columns = process_cols(data)
@@ -48,19 +96,14 @@ def clean_data(datafile, source='txdot', verbose=0):
            df[category] = df[category].str.replace(regexpunct,'_')
         return df
     data = process_data_punctuation(data)
+    # convert to 'nan'
+    (data, nan_report_df) = replace_with_npnan(data, True)
     # special cases
     data.columns = data.columns.str.replace('crash_i_d', 'crash_id')
-    # convert to 'nan'
-    if(1):
-        # replace ['No Data','Not Applicable'] with NaN
-        data.replace(to_replace='No Data', value=np.nan, inplace=True)
-        data.replace(to_replace='Not Applicable', value=np.nan, inplace=True)
-        data.replace(to_replace='UNKNOWN', value=np.nan, inplace=True) # intersecting_street_name
-        data['speed_limit'].replace(0,np.nan,inplace=True) # speed_limit - np.nan is faster
-        data['speed_limit'].replace(-1,np.nan,inplace=True) # speed_limit - np.nan is faster
     # GPS coordinates were initially read in as string because missing entries were called 'No Data'
     data['latitude'] = data['latitude'].astype(float)
     data['longitude'] = data['longitude'].astype(float)
+
     return(data,featdef)
 
 # catch-all pre-processing function
