@@ -53,11 +53,31 @@ def replace_with_npnan(data , printout=False):
         nan_report_df = nan_report_df.append(print_total(data, "No Data"))
         data.replace(to_replace='No Data', value=np.nan, inplace=True)
         print(data.dropna().shape)
+        print("no_data")
+        nan_report_df = nan_report_df.append(print_total(data, "no_data"))
+        data.replace(to_replace='no_data', value=np.nan, inplace=True)
+        print(data.dropna().shape)
         nan_report_df = nan_report_df.append(print_total(data, "Not Applicable"))
         data.replace(to_replace='Not Applicable', value=np.nan, inplace=True)
         print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "not_applicable"))
+        data.replace(to_replace='not_applicable', value=np.nan, inplace=True)
+        print(data.dropna().shape)
+        #data.replace(to_replace='N/A', value=np.nan, inplace=True)
         nan_report_df = nan_report_df.append(print_total(data, "UNKNOWN"))
         data.replace(to_replace='UNKNOWN', value=np.nan, inplace=True) # intersecting_street_name
+        print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "unknown"))
+        data.replace(to_replace='unknown', value=np.nan, inplace=True) # intersecting_street_name
+        print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "NOT REPORTED"))
+        data.replace(to_replace='NOT REPORTED', value=np.nan, inplace=True) # intersection_related
+        print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "Not Reported"))
+        data.replace(to_replace='Not Reported', value=np.nan, inplace=True) # intersection_related
+        print(data.dropna().shape)
+        nan_report_df = nan_report_df.append(print_total(data, "not_reported"))
+        data.replace(to_replace='not_reported', value=np.nan, inplace=True) # intersection_related
         print(data.dropna().shape)
 
         data['speed_limit'].replace(0,np.nan,inplace=True) # speed_limit - np.nan is faster
