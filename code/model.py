@@ -33,6 +33,17 @@ runmodels = {
         'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
         }
 
+# src: https://docs.python.org/3/howto/argparse.html#id1
+import argparse
+# if __name__ == '__main__':
+parser = argparse.ArgumentParser()
+parser.add_argument('--graphics', type=int, default=0) # action="store_true", default=False)
+parser.add_argument('--verbose', type=int, default=0)
+args = parser.parse_args()
+# "args" defined with 'default=<>', no need for a conditional
+options['graphics'] = args.graphics
+options['verbose'] = args.verbose
+
 #<def_model_prepare>
 def model_prepare():
     # manual verification and verbose:
