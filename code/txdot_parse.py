@@ -25,7 +25,7 @@ if(__name__ == '__main__'):
 def print_total(df, value):
 #    print(value)
     # https://stackoverflow.com/a/26641085
-    mask = df.select_dtypes([np.object]).apply(lambda x: x.str.contains(r"%s" % value, na=False))
+    mask = df.select_dtypes([np.object]).apply(lambda x: x.str.contains(r"%s" % value, case=False, na=False))
     # name important for appending. src: https://stackoverflow.com/a/31292395
     ser = pd.Series(name=value)
     # find/count occurrences of string. src: https://stackoverflow.com/a/20076611
@@ -44,46 +44,53 @@ def replace_with_npnan(data , printout=False):
     # convert to 'nan'
     nan_report_df = pd.DataFrame()
 
+    verbose=0
     if(1):
-        print(data.shape)
-        # replace ['No Data','Not Applicable'] with NaN
-        print(data.dropna().shape)
+        # standardise
+        #------
+        re_missing='no.*data'
+        re_replace='no_data'
+        if( verbose > 0):
+            print("r'%s'" % re_missing)
+        nan_report_df = nan_report_df.append(print_total(data, re_missing))
+        for cat in data.columns:
+            data[cat] = data[cat].apply(lambda x: x if type(x) != str else re.sub(r"%s" % re_missing, re_replace, x, flags=re.IGNORECASE))
+        data.replace(to_replace=re_replace, value=np.nan, inplace=True)
+        #---
+        re_missing='unknown'
+        re_replace='unknown'
+        if( verbose > 0):
+            print("r'%s'" % re_missing)
+        nan_report_df = nan_report_df.append(print_total(data, re_missing))
+        for cat in data.columns:
+            data[cat] = data[cat].apply(lambda x: x if type(x) != str else re.sub(r"%s" % re_missing, re_replace, x, flags=re.IGNORECASE))
+        data.replace(to_replace=re_replace, value=np.nan, inplace=True)
+        #---
+        re_missing='not.*reported'
+        re_replace='not_reported'
+        if( verbose > 0):
+            print("r'%s'" % re_missing)
+        nan_report_df = nan_report_df.append(print_total(data, re_missing))
+        for cat in data.columns:
+            data[cat] = data[cat].apply(lambda x: x if type(x) != str else re.sub(r"%s" % re_missing, re_replace, x, flags=re.IGNORECASE))
+        data.replace(to_replace=re_replace, value=np.nan, inplace=True)
+        #---
+        re_missing='not.*applicable'
+        re_replace='not_applicable'
+        if( verbose > 0):
+            print("r'%s'" % re_missing)
+        nan_report_df = nan_report_df.append(print_total(data, re_missing))
+        for cat in data.columns:
+            data[cat] = data[cat].apply(lambda x: x if type(x) != str else re.sub(r"%s" % re_missing, re_replace, x, flags=re.IGNORECASE))
+        data.replace(to_replace=re_replace, value=np.nan, inplace=True)
+        #---
+        #------
 
-        print("No Data")
-        nan_report_df = nan_report_df.append(print_total(data, "No Data"))
-        data.replace(to_replace='No Data', value=np.nan, inplace=True)
-        print(data.dropna().shape)
-        print("no_data")
-        nan_report_df = nan_report_df.append(print_total(data, "no_data"))
-        data.replace(to_replace='no_data', value=np.nan, inplace=True)
-        print(data.dropna().shape)
-        nan_report_df = nan_report_df.append(print_total(data, "Not Applicable"))
-        data.replace(to_replace='Not Applicable', value=np.nan, inplace=True)
-        print(data.dropna().shape)
-        nan_report_df = nan_report_df.append(print_total(data, "not_applicable"))
-        data.replace(to_replace='not_applicable', value=np.nan, inplace=True)
-        print(data.dropna().shape)
-        #data.replace(to_replace='N/A', value=np.nan, inplace=True)
-        nan_report_df = nan_report_df.append(print_total(data, "UNKNOWN"))
-        data.replace(to_replace='UNKNOWN', value=np.nan, inplace=True) # intersecting_street_name
-        print(data.dropna().shape)
-        nan_report_df = nan_report_df.append(print_total(data, "unknown"))
-        data.replace(to_replace='unknown', value=np.nan, inplace=True) # intersecting_street_name
-        print(data.dropna().shape)
-        nan_report_df = nan_report_df.append(print_total(data, "NOT REPORTED"))
-        data.replace(to_replace='NOT REPORTED', value=np.nan, inplace=True) # intersection_related
-        print(data.dropna().shape)
-        nan_report_df = nan_report_df.append(print_total(data, "Not Reported"))
-        data.replace(to_replace='Not Reported', value=np.nan, inplace=True) # intersection_related
-        print(data.dropna().shape)
-        nan_report_df = nan_report_df.append(print_total(data, "not_reported"))
-        data.replace(to_replace='not_reported', value=np.nan, inplace=True) # intersection_related
-        print(data.dropna().shape)
-
-        data['speed_limit'].replace(0,np.nan,inplace=True) # speed_limit - np.nan is faster
-        data['speed_limit'].replace(-1,np.nan,inplace=True) # speed_limit - np.nan is faster
+    data['speed_limit'].replace(0,np.nan,inplace=True) # speed_limit - np.nan is faster
+    data['speed_limit'].replace(-1,np.nan,inplace=True) # speed_limit - np.nan is faster
 
     if(printout):
+        print("txdot data undefined values report:")
         orig_val_expand_frame_repr = pd.get_option('display.expand_frame_repr')
         pd.set_option('display.expand_frame_repr', False)
         print(nan_report_df.transpose())
