@@ -27,6 +27,7 @@ options = {
 
 # choose which model to run
 runmodels = {
+        'dectree_evaluate_cv_strat' : 0, # loop through decision strategies - depends on manual_analyse_strongest_predictors
         'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
         'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
         'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
@@ -166,6 +167,9 @@ def model_prepare():
 ################################################################################
 # FUNCTIONS
 ################################################################################
+
+################################################################################
+# <def_dectree_evaluate_cv_strategy>
 def dectree_evaluate_cv_strategy(X_full, y_full):
   # Recursive Feature Elimination CV
   # http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_with_cross_validation.html#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py
@@ -223,8 +227,11 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
     roc_auc_scores.append(rfecv.n_features_)
     #print("Optimal number of features [scoring:%s]: %d" % (scorer, rfecv.n_features_))
   print("[depth:00][scoring:%s] avg score: %f , std: %f, med: %f" % (scorer, np.mean(roc_auc_scores), np.std(roc_auc_scores), np.median(roc_auc_scores)))
+# </def_dectree_evaluate_cv_strategy>
+################################################################################
 
-
+################################################################################
+# <def_run_cross_val>
 def run_cross_val(data_dummies,featdef,dropfeatures=[]):
     verbose = options['verbose']
     print("-I-: creating new dataset without %s" % dropfeatures)
@@ -266,7 +273,7 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
     y_full = df_int_nonan[responsecls]
 
     print("-I-: DecisionTree - evaluating CV strategy")
-    if(0):
+    if(runmodels['dectree_evaluate_cv_strat'] == 1):
       dectree_evaluate_cv_strategy(X_full, y_full)
     else:
       print("-I-: ... skipping")
@@ -302,7 +309,10 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
             num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
             print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     return (predictors,responsecls)
+# </def_run_cross_val>
+################################################################################
 
+################################################################################
 # <def_generate_clf_scatter_plot>
 def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
     from sklearn import tree
@@ -365,6 +375,8 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
     if (options['graphics'] == 1):
         plt.show()
 # </def_generate_clf_scatter_plot>
+################################################################################
+
 ################################################################################
 # /FUNCTIONS
 ################################################################################
