@@ -1203,22 +1203,12 @@ However, the model will need to be re-implemented using more robust techniques a
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
-ABOUT: the application of the 'analytics solution'
-aka Application
-* deployment plan - how will this be used for the business?
-* monitoring + maintenance plan - how will model be updated and supervised?
-* final report
-* review project - "experience documentation" to summarise the knowledge gained during this project
-@STUB: currently this is the mapgen.py  
-@STUB: introduce the final concept, but leave details to the defined work-packages to define how the overall solution will work together.  
+<!-- * deployment plan - how will this be used for the business?  -->
+#### Deployment Plan  
+The models created for the dataset will be used with a web-based routing tool to create prediction scores for routes.  
 
-Deployment Plan / Application Overview:  
-For this report, the model itself is already "deployed", as the model is already integrated into an application.  
-Therefore, at this point the paper will describe the application architecture and further plans for deployment.  
-
-Currently, the model is integrated into a user-facing application which can be run on a local machine.  
-
-monitoring and maintenance plan:  
+<!-- * monitoring + maintenance plan - how will model be updated and supervised?  -->
+#### Monitoring and Maintenance Plan  
 Crash data can be obtained in an automated report, which can be used to continuously update the model.  
 This will require further work to parse, as it uses a different format than the manual query used to build this model.  
 
@@ -1232,6 +1222,8 @@ On the one hand, it could be that the the underlying data has changed, i.e. ther
 If this is determined to be the case, the model parameters do not need to be re-tuned.  
 Otherwise, the model needs to be re-recreated with different parameters to improve the score.  
 
+<!-- * final report -->
+<!-- * review project - "experience documentation" to summarise the knowledge gained during this project  -->
 <!-- @TODO: add the depl. plan from the book -->
 
 
