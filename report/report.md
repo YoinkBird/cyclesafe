@@ -1574,6 +1574,33 @@ WP: [GPS-automatic-generic]
 About GPS-coordinates for intersections vs non-intersections:
 TBD - TODO: combine with WP descriptions
 
+
+### User Application
+
+**User Interface**  
+The user interface is browser-based and was designed to be similar in feel to many popular routing services.  
+The user visits a webpage and types in a source address and a destination address, upon which the possible routes are displayed with the safety score overlayed at each intersection.  
+The user can then choose the route with the lowest score.  
+
+For routing, the user can either type in the exact address or use autocomplete by typing a partial match and selecting the correct result from a list of possible matches. This is implemented using the google maps Places API, which enables the autocomplete.
+
+The routing and map display are implemented using the google maps javascript API. The scoring is implemented by displaying google maps markers for each score retrieved from the server hosting the model.  
+
+
+<pre>
+img_of_routing_ui
+</pre>
+
+**Route Scoring Server**  
+[@terminology]: geo-json
+The route scoring server is designed to process third-party routing geo-json by extracting the intersections and process them using the scoring model.  
+The server itself simply receives routing geo-json and returns geo-json containing routing scores.  
+The routing score geo-json contains scores for each intersection of each route along with a final score for the route, stored at both the beginning and end fo the route.  
+
+**Technology**  
+The routing information is retrieved from google maps as geo-json, and then sent to the server hosting the model.  
+The route scoring information is retrieved from scoring server as geo-json, and then displayed on the map.
+
 ### Architecture
 @STUB: describe the 'model.py' in its current implementation  
 quicknote: use python data mining libraries to generate the model,  
@@ -1625,6 +1652,20 @@ Server relays route-score geo-json to client
 
 Client displays original route information plus route-scoring information to client
 
+#### Data Formats
+**google maps geo-json**
+
+<!-- TODO -->
+<pre>
+code: google maps geo-json
+</pre>
+
+**route score geo-json**
+
+<!-- TODO -->
+<pre>
+code: scoring server geo-json
+</pre>
 
 #### Modeling Application:
 
