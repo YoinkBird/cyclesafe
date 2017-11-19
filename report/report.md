@@ -77,7 +77,7 @@ These are the results the project hopes to accomplish:
 * which routes dangerous, and do they have feasible alternatives?  
 
 CONCLUSION:  
-The created application will help cyclists ride more defensively, but more effort needs to be made a city level.  
+The created application will help cyclists ride more defensively, but more effort needs to be made on a municipal level.  
 Cycling safely will continue to be inconvenient as long as safe routes are a big detour.  
 Recommendation is to increase data collection in areas with most crashes to better analyse the factors leading into it.  
 
@@ -1006,6 +1006,9 @@ The interpretable_model2 is the re-implemented interpretable_model containing on
 Further models were not implemented at this time.  
 <!--
 @FUTUREWORK: Improve precision and accuracy  
+@STUB: accuracy not the focus, usability is -and- accuracy doesn't matter as much when comparing -and- available data makes all routes look the same anyway
+
+The created application will help cyclists ride more defensively, but more effort needs to be made on a municipal level.  
 -->
 Data Segmentation - improve precision - use models created from subsets of the data according to which features can be expected.  
 Improved accuracy - The next step to improve accuracy would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
@@ -1727,35 +1730,16 @@ TBD - TODO: combine with WP descriptions
 
 <hr />
 
-@STUB: update from conclusion in "abstract" 
-
-**PROPOSAL DRAFT**  
-
-read as "what is this going to change?"
-
-this work will improve understanding of what leads to avoidable crashes, which will enable cyclists to plan better routes and municipal traffic departments to address problem areas
-
-the main limitation will be the unavailability of complete cyclist numbers, e.g. it could be possible that all recorded crashes are outliers and most cyclists ride safely
-
-methodology could fail if:
-
-significant crash data is missing, i.e. crashes which go unreported
-
-models are incorrect
-
-**/PROPOSAL DRAFT**  
-
 This paper explored the process of applying machine learning to solve a real world problem by providing a user-friendly interface to the model's predictions.  
 
 <!-- Goal: Develop framework for managing crash data.  -->
-A framework was created for managing the data throughout the CRISP-DM process, which was particularly useful when creating new models and adapting to changing requirements.
+A framework was created for managing the data throughout the CRISP-DM process, which proved useful when creating new models and adapting to changing requirements.
 Dataframes, in particular python's Pandas library, are very useful at every stage of the CRISP-DM process, as they can be used to manage the input data as well as the internal state of the program.  
 
 
 <!-- Goal: Create application for scoring routes in real time.  -->
-The user-facing application for scoring routes in real time was implemented as a proof-of-concept and demonstrated the ability to score different routes as well as ease-of-use for the end-user.  
-The application can be improved to gather more data in order to improve the prediction scores. 
-To this end, the application architecture was designed to allow for additional data sources to be easily integrated in order to improve the prediction accuracy. 
+The user-facing application for scoring routes in real time was implemented as a proof-of-concept and demonstrated the ability to score different routes as well as ease-of-use for the end-user. 
+The application architecture was designed to allow for additional data sources to be easily integrated in order to improve the prediction accuracy. 
 
 <!-- Goal: Produce machine learning model.  -->
 The machine learning model for calculating route scores proved to be the most challenging aspect. 
@@ -1763,7 +1747,20 @@ Deploying it for use with data available proved to be challenging, and its accur
 However, acquiring the necessary data is a solved problem simply beyond the scope of this project. 
 A future iteration could use other datasources and techniques to accumulate the missing data. 
 
-<hr />
+
+
+Ultimately, the success of such projects depends on the available data more than the underlying prediction techniques.  
+To improve the prediction accuracy, more data on cyclist ridership and crashes needs to be made available. 
+This is both the responsibility of the municipality, which can improve crash data collection and accesibility, and the cyclists, who can improve ridership data by self-reporting their riding habits.  
+
+Increased ridership data collection would additionally allow for traffic flow analysis, something this project was not able to take advantage of. 
+Such analysis would allow crash-frequency to be calculated to identify problem areas which lead to more crashes. 
+This would allow the municipality to address these areas through improved traffic control, and would allow cyclists to avoid these areas until they are improved.
+
+The end result would be an increase in traffic safety for cyclists, and more cyclists would lead to reduced traffic congestion for motorised vehicles.  
+
+
+
 
 # Future Work
 <!--!@breadcrumb-->
