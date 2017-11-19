@@ -555,8 +555,8 @@ Overview:
 * Data Collection Report
 * Data Description Report
 * Data Exploration Report
-* ABT
 * Data Quality Report
+* ABT - Analytics Base Table
 
 3\. Data Preparation  
 
@@ -816,7 +816,7 @@ Data is in CSV format with a header describing the query parameters used to obta
 @TODO: build on [@originalProject]  
 -->
 
-Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be used as categorical features.  
+Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be converted to categorical features.  
 
 * ABT  
 * Data Quality Report
@@ -1004,7 +1004,9 @@ The stub_model was quickly implemented in order to develop the framework for mod
 It was then replaced by the interpretable_model, which was quickly found to rely on features which were not available in deployment.  
 The interpretable_model2 is the re-implemented interpretable_model containing only features whch could be obtained once deployed.  
 Further models were not implemented at this time.  
+<!--
 @FUTUREWORK: Improve precision and accuracy  
+-->
 Data Segmentation - improve precision - use models created from subsets of the data according to which features can be expected.  
 Improved accuracy - The next step to improve accuracy would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
 Such a model was created for this project's predecessor, and could be re-implemented for this project without the unavailable features.  
@@ -1041,12 +1043,12 @@ Deployment: very useful for finalising architecture and enabling the technologie
 <!-- compare interpretable_model perf with interpretable_model2 perf -->
 #### interpretable_model: 
 Technique: DecisionTree  
-Evaluation: better than stub_model 
+Evaluation: Not Applicable
 Deployment: dataset for crash data contains data not easily obtainable in the field. E.g. whether a particular GPS coordinate has an intersection.  
-The decision was made to build a new model without this field-unobtainable data. @FUTUREWORK: segmentation  
+The decision was made to build a new model without this field-unobtainable data. <!-- @FUTUREWORK: segmentation  -->
 The alternative would have been to follow the CRISP-DM flowchart and "loop back" to the business-understanding phase to reasses the feasibility of this project. For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented.  
 
-@FUTUREWORK:  
+<!-- @FUTUREWORK:  -->
 #### segmentation_models: 
 Technique: Multiple models operating on Segmented Dataset  
 Assumption: #@TODO:notsure# output of different models with more/less features is statistically significant @citationNeeded  
