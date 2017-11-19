@@ -121,11 +121,11 @@ Recommendation is to increase data collection in areas with most crashes to bett
   * Deployment
 * Application
     * Technology
+    * User Application
+    * Architecture
     * Project Execution Gantt Chart
     * Work-Packages:
     * Roadmap
-    * User Application
-    * Architecture
 * Discussion / Conclusion
 * Future Work
   * Crash Data
@@ -1287,6 +1287,142 @@ The function 'clean_data' ensures that the data is machine readable to avoid par
 Certain features are consistently under-represented, such as "average daily traffic amount" and "average daily traffic year" and are marked as less-important in featdef.   
 
 
+
+### User Application
+
+**User Interface**  
+The user interface is browser-based and was designed to be similar in feel to many popular routing services.  
+The user visits a webpage and types in a source address and a destination address, upon which the possible routes are displayed with the safety score overlayed at each intersection.  
+The user can then choose the route with the lowest score.  
+
+For routing, the user can either type in the exact address or use autocomplete by typing a partial match and selecting the correct result from a list of possible matches. This is implemented using the google maps Places API, which enables the autocomplete.
+
+The routing and map display are implemented using the google maps javascript API. The scoring is implemented by displaying google maps markers for each score retrieved from the server hosting the model.  
+
+
+<pre>
+img_of_routing_ui
+</pre>
+
+**Route Scoring Server**  
+[@terminology]: geo-json
+The route scoring server is designed to process third-party routing geo-json by extracting the intersections and process them using the scoring model.  
+The server itself simply receives routing geo-json and returns geo-json containing routing scores.  
+The routing score geo-json contains scores for each intersection of each route along with a final score for the route, stored at both the beginning and end fo the route.  
+
+**Technology**  
+The routing information is retrieved from google maps as geo-json, and then sent to the server hosting the model.  
+The route scoring information is retrieved from scoring server as geo-json, and then displayed on the map.
+
+### Architecture
+@STUB: describe the 'model.py' in its current implementation  
+quicknote: use python data mining libraries to generate the model,  
+
+<!-- github doesn't know about 'pre' tags, I guess. either do '< -' or '&lt;-' -->
+#### Legend:
+
+<pre>
+[ end-point ]
+{ data transfer }
+
+</pre>
+
+#### User-client Interaction: 
+
+<pre>
+[user] ----{Map-UI: route start,end}--&gt; [ client ]  
+[    ] &lt;---{Map-UI: route + scores }--- [        ]  
+</pre>
+
+End-user uses client application as a conventional routing tool.  
+Client application displays available routes and their score.  
+
+
+#### Client-Model Interaction:
+
+<pre>
+[ client ] ----{Map-API: start,end         }--&gt; [External Routing Service]
+[        ] &lt;---{Map-API: multi route coords}--- [External Routing Service]
+    ^
+    |
+{rest-json: vvv route vvv |rest-json: ^^^scores^^^}
+    |
+    V
+[ server ] ----{json-file: route coords}--&gt; [ Modeling Application ]
+[        ] &lt;---{json-file: route scores}--- [                      ]
+</pre>
+
+Client Application sends route start, end to external routing service.  
+External routing service returns geo-json containing routing information, including GPS coordinates representing route.  
+
+Client submits geo-json to server  
+Server relays geo-json to modelling application, which itself is not a server  
+
+Modeling Application processes relevant information from geo-json to score route, stores in geo-json
+
+Modeling Application sends route-score geo-json to server
+Server relays route-score geo-json to client
+
+Client displays original route information plus route-scoring information to client
+
+#### Data Formats
+**google maps geo-json**
+
+<!-- TODO -->
+<pre>
+code: google maps geo-json
+</pre>
+
+**route score geo-json**
+
+<!-- TODO -->
+<pre>
+code: scoring server geo-json
+</pre>
+
+#### Modeling Application:
+
+<pre>
+Data Preparation and Feature Implementation:  
+/data sources/ ---&gt; [Preprocessor per source, feature] ---&gt; [df: dataset | df: feature definitions ]
+
+Model Creation:   
+[dataset,featdef] ---{query: desired features}---&gt;---{slice: dataset}---&gt;[model]
+
+</pre>
+
+Build models using feature definitions and optimise using python ML libraries
+
+Modules:
+
+| Filename | Purpose |
+|---|---|
+| model.py        | Model Build, Optimise, Predict Route-Score |
+| txdot_parse.py  | Prepare data as outlined under Data Preparation  |
+| feature_defs.py | Track features and their purpose  |
+| mapgen.py       | Generate maps for static heatmap visualisation  |
+| helpers.py      | Useful functions |
+
+
+**Data Parser**  
+Convert input data format to pandas dataframe, handle quality issues and feature generation.  
+Updates feature definitions.  
+
+**Feature Definitions**  
+aka featdef - pandas dataframe to track features and their attributes, meant to be queried when creating a model.  
+The attributes defined in the feature df can be queried using pandas syntax, 
+thus making it trivial to maintain multiple models and their attributes.
+
+A few examples:  
+Building a model requires a set of descriptive features and target features.  
+Typically, this is done using individual arrays of feature names, which are then used to query the pandas dataframe containing all features.  
+With featdef, the features can be queried dynamically as 'target' or 'non-target' instead of maintaining individual lists.  
+One implication is that as the project evolves, any new features are automatically picked up by the models instead of the maintainer having to update each model's individual list of descriptive and target features.  
+
+featdef is used to track the origin of newly implemented features, so if a model needs to exclude them it can easily do so.
+
+featdef tracks the type of feature as well to identify which features are meant to be used in the model and which aren't, such as the case-id.   
+
 ### Project Execution Gantt Chart
 <!--
 REV2 [20171017] roadmap: remove gps fuzzy match from CP
@@ -1573,142 +1709,6 @@ WP: [GPS-automatic-generic]
 
 About GPS-coordinates for intersections vs non-intersections:
 TBD - TODO: combine with WP descriptions
-
-
-### User Application
-
-**User Interface**  
-The user interface is browser-based and was designed to be similar in feel to many popular routing services.  
-The user visits a webpage and types in a source address and a destination address, upon which the possible routes are displayed with the safety score overlayed at each intersection.  
-The user can then choose the route with the lowest score.  
-
-For routing, the user can either type in the exact address or use autocomplete by typing a partial match and selecting the correct result from a list of possible matches. This is implemented using the google maps Places API, which enables the autocomplete.
-
-The routing and map display are implemented using the google maps javascript API. The scoring is implemented by displaying google maps markers for each score retrieved from the server hosting the model.  
-
-
-<pre>
-img_of_routing_ui
-</pre>
-
-**Route Scoring Server**  
-[@terminology]: geo-json
-The route scoring server is designed to process third-party routing geo-json by extracting the intersections and process them using the scoring model.  
-The server itself simply receives routing geo-json and returns geo-json containing routing scores.  
-The routing score geo-json contains scores for each intersection of each route along with a final score for the route, stored at both the beginning and end fo the route.  
-
-**Technology**  
-The routing information is retrieved from google maps as geo-json, and then sent to the server hosting the model.  
-The route scoring information is retrieved from scoring server as geo-json, and then displayed on the map.
-
-### Architecture
-@STUB: describe the 'model.py' in its current implementation  
-quicknote: use python data mining libraries to generate the model,  
-
-<!-- github doesn't know about 'pre' tags, I guess. either do '< -' or '&lt;-' -->
-#### Legend:
-
-<pre>
-[ end-point ]
-{ data transfer }
-
-</pre>
-
-#### User-client Interaction: 
-
-<pre>
-[user] ----{Map-UI: route start,end}--&gt; [ client ]  
-[    ] &lt;---{Map-UI: route + scores }--- [        ]  
-</pre>
-
-End-user uses client application as a conventional routing tool.  
-Client application displays available routes and their score.  
-
-
-#### Client-Model Interaction:
-
-<pre>
-[ client ] ----{Map-API: start,end         }--&gt; [External Routing Service]
-[        ] &lt;---{Map-API: multi route coords}--- [External Routing Service]
-    ^
-    |
-{rest-json: vvv route vvv |rest-json: ^^^scores^^^}
-    |
-    V
-[ server ] ----{json-file: route coords}--&gt; [ Modeling Application ]
-[        ] &lt;---{json-file: route scores}--- [                      ]
-</pre>
-
-Client Application sends route start, end to external routing service.  
-External routing service returns geo-json containing routing information, including GPS coordinates representing route.  
-
-Client submits geo-json to server  
-Server relays geo-json to modelling application, which itself is not a server  
-
-Modeling Application processes relevant information from geo-json to score route, stores in geo-json
-
-Modeling Application sends route-score geo-json to server
-Server relays route-score geo-json to client
-
-Client displays original route information plus route-scoring information to client
-
-#### Data Formats
-**google maps geo-json**
-
-<!-- TODO -->
-<pre>
-code: google maps geo-json
-</pre>
-
-**route score geo-json**
-
-<!-- TODO -->
-<pre>
-code: scoring server geo-json
-</pre>
-
-#### Modeling Application:
-
-<pre>
-Data Preparation and Feature Implementation:  
-/data sources/ ---&gt; [Preprocessor per source, feature] ---&gt; [df: dataset | df: feature definitions ]
-
-Model Creation:   
-[dataset,featdef] ---{query: desired features}---&gt;---{slice: dataset}---&gt;[model]
-
-</pre>
-
-Build models using feature definitions and optimise using python ML libraries
-
-Modules:
-
-| Filename | Purpose |
-|---|---|
-| model.py        | Model Build, Optimise, Predict Route-Score |
-| txdot_parse.py  | Prepare data as outlined under Data Preparation  |
-| feature_defs.py | Track features and their purpose  |
-| mapgen.py       | Generate maps for static heatmap visualisation  |
-| helpers.py      | Useful functions |
-
-
-**Data Parser**  
-Convert input data format to pandas dataframe, handle quality issues and feature generation.  
-Updates feature definitions.  
-
-**Feature Definitions**  
-aka featdef - pandas dataframe to track features and their attributes, meant to be queried when creating a model.  
-The attributes defined in the feature df can be queried using pandas syntax, 
-thus making it trivial to maintain multiple models and their attributes.
-
-A few examples:  
-Building a model requires a set of descriptive features and target features.  
-Typically, this is done using individual arrays of feature names, which are then used to query the pandas dataframe containing all features.  
-With featdef, the features can be queried dynamically as 'target' or 'non-target' instead of maintaining individual lists.  
-One implication is that as the project evolves, any new features are automatically picked up by the models instead of the maintainer having to update each model's individual list of descriptive and target features.  
-
-featdef is used to track the origin of newly implemented features, so if a model needs to exclude them it can easily do so.
-
-featdef tracks the type of feature as well to identify which features are meant to be used in the model and which aren't, such as the case-id.   
 
 
 # Discussion / Conclusion
