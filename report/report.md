@@ -1745,6 +1745,24 @@ models are incorrect
 
 **/PROPOSAL DRAFT**  
 
+This paper explored the process of applying machine learning to solve a real world problem by providing a user-friendly interface to the model's predictions.  
+
+<!-- Goal: Develop framework for managing crash data.  -->
+A framework was created for managing the data throughout the CRISP-DM process, which was particularly useful when creating new models and adapting to changing requirements.
+Dataframes, in particular python's Pandas library, are very useful at every stage of the CRISP-DM process, as they can be used to manage the input data as well as the internal state of the program.  
+
+
+<!-- Goal: Create application for scoring routes in real time.  -->
+The user-facing application for scoring routes in real time was implemented as a proof-of-concept and demonstrated the ability to score different routes as well as ease-of-use for the end-user.  
+The application can be improved to gather more data in order to improve the prediction scores. 
+To this end, the application architecture was designed to allow for additional data sources to be easily integrated in order to improve the prediction accuracy. 
+
+<!-- Goal: Produce machine learning model.  -->
+The machine learning model for calculating route scores proved to be the most challenging aspect. 
+Deploying it for use with data available proved to be challenging, and its accuracy had to be reduced to accomodate the available data. 
+However, acquiring the necessary data is a solved problem simply beyond the scope of this project. 
+A future iteration could use other datasources and techniques to accumulate the missing data. 
+
 <hr />
 
 # Future Work
