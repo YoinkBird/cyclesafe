@@ -67,7 +67,7 @@ This is an approximation of a closed form solution, as there is insufficient dat
 Previous Work:  
 This project is based off of a previous project to identify the factors associated with severe injury.  
 Caveat:  
-This project does not directly focus on factors which cause a crash, as there is not enough data to allow for a closed solution.  
+This project does not directly focus on factors which cause a crash, as there is not enough data to allow for a closed solution.  <!-- @terminology -->
 
 RESULTS:  
 These are the results the project hopes to accomplish:  
@@ -166,13 +166,13 @@ In many cities, crash reports are one of the readily available indirect sources.
 However, these reports are advantageous due to their frequency and geographic distribution; they can reflect both time-based trends and localised trends where active traffic studies can only capture a snapshot.
 
 #### Interpretability in Statistics and Machine Learning
-Interpretability describes how readily understandable a process is. For studies based entirely on statistics, it describes how easily the results can be interpretted to correlate cause and effect. This concept extends to machine learning, and describes how easily the inputs to a model can be traced to the model's results.  
+Interpretability describes how readily understandable a process is. For studies based entirely on statistics, it describes how easily the results can be interpreted to correlate cause and effect. This concept extends to machine learning, and describes how easily the inputs to a model can be traced to the model's results.  
 Machine learning is heavily based on traditional statistic methods, but is nonetheless often perceived as a black box due to its ability to produce results from large amounts of data which could not be handled by traditional techniques.  
 It is important to be able to understand the output of a machine learning model for several reasons. The model exists as part of a larger framework to solve a particular problem, and as such requires supervision to ensure that the results are relevant. In this context, interpretability is important for adjusting the inputs, or even the problem statement, to achieve better results.  
 Interpretability is also important for the end-usage of the model; the model is specific to one particular goal, whereas applications of the model may have various goals and as such need to understand how the model fits in with the overarching application.  
 For example, if a model indicates that a certain trait is involved in a certain outcome, it is important to be able to understand the actual significance of this trait.  Another example could be a model which finds that two traits lead to a certain outcome; this result requires being able to understand to what extent these traits interact. 
 
-#### Public Safety and Trafffic Study Interpretability 
+#### Public Safety and Traffic Study Interpretability 
 To maximise public safety, it is important for traffic studies to be interpretable.  
 This report defines interpretability of a traffic study in two ways: The traditional method of explaining which inputs lead to which outcome, and a more usable interpretation of how to best use the results of the study to improve traffic safety.  
 In simpler terms, understanding how the study achieves its results, and how to practically apply the study's results.  
@@ -312,7 +312,7 @@ For example, this visualisation does not portray whether the safety of an inters
 **Past Project's Future, Presently**  
 The previous project layed a good foundation, and in doing so opened up many possibilities for new projects.  
 
-This project continues the work of the previous project and will combine the accurate but non-interpretable model with the inaccurate but interpretable model into one tool which will both be accurate and interpretable. It will also make sure that this sentence gets changed to be less poindexter.  
+This project continues the work of the previous project and will combine the accurate but non-interpretable model with the inaccurate but interpretable model into one tool which will both be accurate and interpretable.
 
 <hr />
 
@@ -376,7 +376,7 @@ This analysis is not performed for segments without crash data.
 
 **Predictive Road Safety Analysis**  
 The formulas currently used to evaluate road segment safety rely on the presence of data for the specific segment being analysed.  
-As a result, any crashes which are not reported will not be factored in the analysis. For example, a segment which leads to minor collisions which require no police involvement would not be fixed if no report is fileed.  
+As a result, any crashes which are not reported will not be factored in the analysis. For example, a segment which leads to minor collisions which require no police involvement would not be fixed if no report is filed.  
 The NHTSA does have some techniques for predictive modelling, @citationNeeded but these focus on rural roads @citationNeeded and involve complex formulas which in turn rely on a plethora of measurments @citationNeeded.  
 
 These formulas are meant for posterior analysis in order to determine which roadways to improve.  
@@ -384,7 +384,7 @@ This is a good approach for continuously improving safety, but requires crashes 
 
 For cyclists, this is a particularly perilous approach as crashes tend to lead to more severe injury for cyclists.  
 
-This problem could be addressed by applying a predictive approach towards road segment safetey analysis.  
+This problem could be addressed by applying a predictive approach towards road segment safety analysis.  
 
 The existing formulas and body of knowledge based on crash rates can be adapted for crash probability with the following changes:  
 
@@ -502,7 +502,7 @@ In the second scenario, the application with a good UI makes it easy for the end
 
 Both scenarios are unfavourable, but fortunately the nature of application design and creating an accurate model help prioritise which component to focus on first.  
 Data Mining is an open-ended problem: the model is trying to use existing data to make an accurate prediction about the future. The accuracy of a model is constantly changes as new data is made available, which in turn requires the model to constantly change. E.g. new data sources may provide better input, which in turn requires the model to use different parameters or even a different algorithm.  
-On the other hand, the application layer represents a finite problem: the application consumes and presents data in a pre-defined format. The goal of abstracting the model for easier use is accomplished once the interface between the end-user and the and data is created. Of course, the application will change over time to accomodate user feedback, but this is secondary to the primary purpose of allowing users to interact with the data.  
+On the other hand, the application layer represents a finite problem: the application consumes and presents data in a pre-defined format. The goal of abstracting the model for easier use is accomplished once the interface between the end-user and the and data is created. Of course, the application will change over time to accommodate user feedback, but this is secondary to the primary purpose of allowing users to interact with the data.  
 In summary, while the accuracy of the data model can improve over time, the application has no impact on the accuracy of the model.  
 
 Therefore, the primary focus of this project is on creating a UI for interacting with the output from the model. As the model itself is expected to change over time, its optimisation is a secondary focus.  
@@ -523,7 +523,7 @@ The cyclical product development resulting from the trade-off between performanc
 This section provides an abstract overview of CRISP-DM followed by its implementation for this project.  
 At certain points, comparisons to other common project management frameworks are made.  
 
-CRISP-DM (CRoss Industry Standard Porcess for Data Mining) [@crispDmWiki] is a cyclical framework designed to structure a data mining project from first conception to its deployment.
+CRISP-DM (CRoss Industry Standard Process for Data Mining) [@crispDmWiki] is a cyclical framework designed to structure a data mining project from first conception to its deployment.
 
 [@crispDmWiki]: https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining "CRISP DM"
 
@@ -538,7 +538,7 @@ CRISP-DM (CRoss Industry Standard Porcess for Data Mining) [@crispDmWiki] is a c
 6. Deployment
 
 The CRISP-DM framework consists of 6 stages which each provide input into the next stage and allow for stages to be revised at certain points in the process.
-This is similar to the traditional waterfall framework, with the major exception that it is designed to flexibly accomodate new requirements as new information becomes available.  
+This is similar to the traditional waterfall framework, with the major exception that it is designed to flexibly accommodate new requirements as new information becomes available.  
 
 The stages are:  
 
@@ -661,7 +661,7 @@ Constraints on the Objective:
 The objective of this project is not to help cyclist avoid crashes altogether, as the main data source is post-crash data.  
 
 Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient. 
-In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes isntead of a cross-sample of all crashes.  
+In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes instead of a cross-sample of all crashes.  
 
 
 ### Feasibility Assessment
@@ -672,7 +672,7 @@ In particular, there is no data on the number of cyclists for a given road segme
 
 Inventory of resources:  
 Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway Traffic Safety Administration (NHSTA), and the City of Austin Police Department (APD).  
-Data on actual ridership is very sparse in comparisson to data on crashes, which prevents significant correlation and therefore will not be considered.  
+Data on actual ridership is very sparse in comparison to data on crashes, which prevents significant correlation and therefore will not be considered.  
 Data on traffic-counts is available for certain road segments and is the total count for a 24 hour period.  
 The software necessary for data processing and modelling is available as free python libraries (pandas, sklearn, scikit learn, other ML libraries as needed).  
 The scale of this project is appropriate for any modern hardware as it does not require intense computing resources.  
@@ -723,7 +723,9 @@ Data Mining Success Criteria: model which predicts on "accident severity", i.e. 
 
 ### Project Preparation Gantt Chart
 project plan:
-@TODO: create overview of model creation plan; this is not the same as the work-packages for deploymennt
+<!--
+@TODO: create overview of model creation plan; this is not the same as the work-packages for deployment
+-->
 
 | status | | | | | | | | | |
 |-|-|-|-|-|-|-|-|-|-|
