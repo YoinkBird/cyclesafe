@@ -9,7 +9,7 @@ This is for transparency, so customer is aware of conceptual changes,
 and for docmentation, the iterative nature of the project lifecycle is clear.  
   
 <!-- look for the REV<n> keyword throughout the doc -->
-REV2 [20171017] roadmap: remove gps fuzzy match from CP  
+REV2 [20171017] roadmap: remove gps fuzzy match from critPath
 REV1 [2017xxxx] roadmap: first pass  
 
 ## Title
@@ -1423,7 +1423,7 @@ The feature definition framework implemented as a pandas dataframe, which provid
 
 ### Project Execution Gantt Chart
 <!--
-REV2 [20171017] roadmap: remove gps fuzzy match from CP
+REV2 [20171017] roadmap: remove gps fuzzy match from critPath
 * simplest proof-of-concept doesn't require real-world gps coords at all
 * scoring doesn't depend on gps coordinates
 REV1 [2017xxxx] roadmap: first pass
@@ -1443,8 +1443,8 @@ This table describes the phases of the project, as well as abbreviations used wi
 
 | phrase | description |
 |-|-|
-| c-p , CP , critPath | critical path i.e. core requirements for project or subproject (i.e. component of a project) |
-| poc | proof of concept, implementaiton of a CP . e.g. code implemented such that its state conforms with a critical path. |
+| critPath , crit | critical path i.e. core requirements for project or subproject (i.e. component of a project) |
+| poc | proof of concept, implementation of a critPath . e.g. code implemented such that its state conforms with a critical path. |
 
 | phase | description | importance | 
 |-|-|-|
