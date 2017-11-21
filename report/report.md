@@ -210,6 +210,9 @@ The second method is implemented as a publicly accessible interface to the model
 
 ## Structure of this Paper  
 
+This paper is organised as follows: One section presents the probability-based adaptation of existing roadway safety analysis. The next section introduces the industry standard CRISP-DM process for creating a data analytics solution, followed by a section on using this process to create a machine learning model to analyse traffic data. The subsequent section describes the implementation of a user-interface to the created analytics solution. 
+
+<!--
 This paper largely follows a traditional structure [@citationNeeded], but wraps the data-mining-specific process 'CRISP-DM'.  
 There is some overlap between the two formats, but each have a different focus.  
 
@@ -235,6 +238,7 @@ The following descriptions explain the purpose of sections which seemingly overl
 | 4. Modeling |  choose,develop the right ML model |
 | 5. Evaluation |  improve accuracy of ML model (cross validation, etc) |
 | 6. Deployment |  integrating the model into the "business environment", in this case, the application |
+-->
 
 
 # Background and Results to Date
