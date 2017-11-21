@@ -17,10 +17,11 @@ REV1 [2017xxxx] roadmap: first pass
 
 Data Driven Approach towards Improving Road Safety for Cyclists
 
+<!--
 ## Time Plan for Master’s Project Proposal and Master’s Thesis
-<!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 @STUB: track the completed work-packages from Roadmap
-
+-->
+<!-- Give a detailed time plan. Show what work needs to be done and when it will be completed. Include other responsibilities or obligations. -->
 
 # Abstract
 <!-- Succinct abstract of less than one page. -->
@@ -1025,7 +1026,6 @@ As such, only interpretable_model2 will be evaluated in this section as it inclu
 stub_model and interpretable_model will be mentioned in context of their role in the overall lifecycle.  
 
 
-@STUB: describe the x-val functions in model.py  
 
 <!-- @TODO: what is the different between interpretable_model and interpretable_model2 ? -->
 #### interpretable_model2:  
@@ -1542,7 +1542,7 @@ Dependency: TODO
 
 **Description:**   
 Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.  
-@originalProject already imputes speed limiits for intersections. TODO: <!-- this is definitely explained somewhere, just copy-paste it -->
+@originalProject already imputes speed limits for intersections. <!-- @TODO: this is definitely explained somewhere, just copy-paste it -->
 
 #### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
