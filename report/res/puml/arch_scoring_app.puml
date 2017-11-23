@@ -1,0 +1,67 @@
+@startuml
+skinparam componentStyle uml2
+/'
+PURPOSE: architecture of the scoring application, which uses scoring model on gps+env data
+'/
+/'
+    package
+    node
+    folder
+    frame
+    cloud
+    database
+'/
+
+' "feature data"
+' route data
+'cloud {
+  package extInterface{
+    interface routeInfo
+    interface scoreInfo
+  }
+'}
+package ScoringServer {
+  frame dataSources
+  dataSources --> preprocessor
+  package ScoringApplication{
+    node preprocessor {
+      node featdef
+      'database dataframe as dataset
+    }
+    () "featureSelection\n(query featdef)" as featureSelection
+    node procRouteInfo {
+      node extractEnvData
+      node extractGPSData
+    }
+    routeInfo --> procRouteInfo
+    node modelUse as modelBuild {
+      node model
+      ' "fit" is sklearn-specific
+      'no fit during deploy' () "train" as fit
+      ' during model creation, predict is for the x-val 'test'
+      ' during model usage,    predict is to get the prediction scores
+      () "predict"  as predict
+    }
+    frame scores
+    predict --> scores
+    predict <-left- model
+    node generateScoreInfo {
+      node combineScoreAndLocation
+      scores --> combineScoreAndLocation
+      extractGPSData --> combineScoreAndLocation
+      combineScoreAndLocation --> scoreInfo
+    }
+    database localStorage {
+      node scoringModel
+    }
+    model <- scoringModel : retrieve from disk
+  }
+  extractEnvData --> predict
+}
+
+
+
+
+
+
+@enduml
