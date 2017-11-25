@@ -318,6 +318,8 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
 
     cvFold = StratifiedKFold(n_splits=9)
     # use previously chosen important features from dataset
+    print("-I: RFECV important predictors")
+    pp.pprint(clf_imp_feats.index)
     X_full = df_int_nonan[clf_imp_feats.index]
     y_full = df_int_nonan[responsecls]
     # store multiple true-positive-rate
@@ -369,7 +371,14 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
 
 
 
+    print("-I-: total predictors:")
+    pp.pprint(predictors)
+    print("-I: RFECV important predictors")
+    pp.pprint(clf_imp_feats.index)
     # TODO: return clf_imp_feats instead of predictors
+    #+ RFECV returns very small list of important features (only two for now). Judgement says this would be too few for real-world use, especially when keeping in mind that RFECV is also just a random process based on a seed. Best approach would likely be stacking a few models, or finding the "second best" number of features. For now, RFECV has done its job for eliminating the features with lowest number of values, don't use for determining optimal predictors though. Simply return predictors list, which is generated without the dropfeatures and therefore the caller is getting predictors from passed-in featdef - list of dropfeatures
+    # return (clf_imp_feats.index,responsecls)
+    # for now, return full list of predictors
     return (predictors,responsecls)
 # </def_run_cross_val>
 ################################################################################
@@ -614,7 +623,8 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     '''
     print(" ################################################################################")
     print("-I-: Fourth Run") # creating new dataset without speed_limit and surface_condition")
-    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
+    # (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
+    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
     print("-I-: result: the remaining factors are varied, but seem to settle around two categories: binary categories, or their counterparts. this makes intuitive sense, and the dataset should be re-run without the binary categories. this was a mistake")
     '''
     # without bin_cat
