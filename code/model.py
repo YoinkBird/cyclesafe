@@ -663,14 +663,16 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     clf.fit(data_nonan[predictors],data_nonan[responsecls])
 
     # prediction and scoring
-    print("-I-: cross_val_score on train (itself)")
+    print("-I-: cross_val_score on train (itself) with default, then with roc_auc")
     print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel()))
+    print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel(), scoring='roc_auc'))
     # TODO: how to use multioutput-multioutput?
     # vvv multiclass-multioutput is not supported vvv
     # print(model_selection.cross_val_score(clf, X_train, y_train))
     y_pred = clf.predict_proba(X_test)
-    print("-I-: cross_val_score against test")
+    print("-I-: cross_val_score against test with default, then with roc_auc")
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
+    print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel(), scoring='roc_auc'))
 
     # plot important features
     if( verbose >= 1 ):
