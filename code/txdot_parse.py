@@ -116,13 +116,33 @@ def clean_data(datafile, source='txdot', verbose=0):
       return df.columns.str.replace('[,\s()]+','_').str.lower()
     data.columns = process_cols(data)
     regexpunct = '[,\s()-]+'
+    regexpunct_gps_safe = '[,\s()]+'
     def process_data_punctuation(df):
+        # improved - convert if string (adapted from src: https://stackoverflow.com/a/22245305 )
+        # for col in data: print(data[col].apply(lambda x: x if type(x) != str else x.lower()).unique())
         for category in list(featdef[featdef.type == 'str'].index):
            df[category] = df[category].str.replace(regexpunct,'_').str.lower()
         for category in list(featdef[featdef.type == 'street'].index):
            df[category] = df[category].str.replace(regexpunct,'_')
         return df
     data = process_data_punctuation(data)
+    # validate string values - standardise to lowercase and remove punctuation
+    #TODO: featdef_or_regex? see vvvbelowvvv for context# for cat in list(featdef[featdef.type != 'street'].index):
+    for cat in data.columns:
+        # exception for 'street name'; not used for model and values may rely on punctuation to remain unique
+        #TODO: featdef_or_regex? see ^^^above^^^ for context#
+        if ( re.match(r"%s" % ".*street_name.*", cat)):
+            if(verbose):
+                print("skipping %s" % cat)
+            continue 
+        if(verbose):
+            print("category: %s" % (cat));
+        # lowercase, replace things with '_'. can't use the var "regexpunct" because the '-' breaks gps vals as gps is encoded with '+'/'-'<value>
+        #TODO-useTheVar: data[cat] = data[cat].apply(lambda x: x if type(x) != str else re.sub(regexpunct_gps_safe,'_',x).lower())
+        data[cat] = data[cat].apply(lambda x: x if type(x) != str else re.sub('[,\s()]+','_',x).lower())
+#        print( data[cat].map(lambda x: "" if type(x) != str else x).unique())
+        if(verbose > 4):
+             print( data[cat].value_counts() )
     # convert to 'nan'
     (data, nan_report_df) = replace_with_npnan(data, True)
     # special cases
@@ -130,6 +150,18 @@ def clean_data(datafile, source='txdot', verbose=0):
     # GPS coordinates were initially read in as string because missing entries were called 'No Data'
     data['latitude'] = data['latitude'].astype(float)
     data['longitude'] = data['longitude'].astype(float)
+
+    # debugging info
+    if(verbose > 2):
+        for col in data.columns:
+            if col in list(featdef[featdef.type == 'street'].index):
+                print("skipping %s" % col)
+                continue
+            if ( re.match(r"%s" % ".*street_name.*", col)):
+                print("skipping %s" % col)
+                continue 
+            print("column: %s" % (col));
+            print(data[col].unique())
 
     return(data,featdef)
 
