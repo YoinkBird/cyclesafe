@@ -1361,8 +1361,17 @@ print(" final response: ")
 import json
 # refactor_multi_route_score_r3 - score all routes , return limited json
 # refactor_multi_route_score_r4 - score all routes , return full json
-response_dict = {'routes' : [] }
+response_dict = {'routes' : [] , 'totalScores' : [] }
 for ri,route in enumerate(auto_route_data):
+    # add total score
+    # total route score:
+    # 1 - prob of nothing happening, i.e. 1 - product of "non-event" 
+    print(1 - auto_route_data[ri]['score'].apply(lambda x: 1 - x).prod())
+    # average route score:
+    print(auto_route_data[ri]['score'].sum() / auto_route_data[ri]['score'].size)
+    response_dict['totalScores'].append( auto_route_data[ri]['score'].sum() / auto_route_data[ri]['score'].size ) 
+    #---
+    # add segment scores
     # TODO: can omit the slice [['score','lat','lng']] as this is done further above already
     response_dict['routes'].append( auto_route_data[ri][['score','lat','lng']].to_dict(orient='records') )
 response_json = json.dumps(response_dict)
