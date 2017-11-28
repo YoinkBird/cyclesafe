@@ -21,32 +21,33 @@ import os,sys
 # hard-coded globals
 resource_dir = "output"
 
-# global options
-options = {
-        'graphics' : 0, # 0 - disable, 1 - enable
-        'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
-        }
+if __name__ == '__main__':
+    # global options
+    options = {
+            'graphics' : 0, # 0 - disable, 1 - enable
+            'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
+            }
 
-# choose which model to run
-runmodels = {
-        'dectree_evaluate_cv_strat' : 0, # loop through decision strategies - depends on manual_analyse_strongest_predictors
-        'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
-        'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
-        'score_manual_predef_route' : 0, # hard-coded route generated from input data, used for enabling scoring of new data
-        'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
-        'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
-        }
+    # choose which model to run
+    runmodels = {
+            'dectree_evaluate_cv_strat' : 0, # loop through decision strategies - depends on manual_analyse_strongest_predictors
+            'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
+            'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
+            'score_manual_predef_route' : 0, # hard-coded route generated from input data, used for enabling scoring of new data
+            'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
+            'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
+            }
 
-# src: https://docs.python.org/3/howto/argparse.html#id1
-import argparse
-# if __name__ == '__main__':
-parser = argparse.ArgumentParser()
-parser.add_argument('--graphics', type=int, default=0) # action="store_true", default=False)
-parser.add_argument('--verbose', type=int, default=0)
-args = parser.parse_args()
-# "args" defined with 'default=<>', no need for a conditional
-options['graphics'] = args.graphics
-options['verbose'] = args.verbose
+    # src: https://docs.python.org/3/howto/argparse.html#id1
+    import argparse
+    # if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--graphics', type=int, default=0) # action="store_true", default=False)
+    parser.add_argument('--verbose', type=int, default=0)
+    args = parser.parse_args()
+    # "args" defined with 'default=<>', no need for a conditional
+    options['graphics'] = args.graphics
+    options['verbose'] = args.verbose
 
 #<def_model_prepare>
 def model_prepare():
