@@ -941,7 +941,7 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     #+ the pie chart also confines the visualisation to a fixed area, thereby creating a simple overview.
     #+ a bar chart could also work, but the widths of the diagrams would vary with cardinality and 
     #+   somewhat hides the cumulation of the values with fewer entries as several small-ish bars
-    if (options['graphics'] == 1):
+    if (options['graphics'] == 2):
         print_imp_feats_piecharts(data,featdef, clf,predictors)
 
     print("-I-:" + "model accuracy:")
