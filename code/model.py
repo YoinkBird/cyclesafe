@@ -728,14 +728,28 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     # prediction and scoring
     print("-I-: cross_val_score on train (itself) with default, then with roc_auc")
     print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel()))
-    print(model_selection.cross_val_score(clf, X_train, y_train.values.ravel(), scoring='roc_auc'))
+    scores = model_selection.cross_val_score(clf, X_train, y_train.values.ravel(), cv=5, scoring='roc_auc')
+    print(scores)
+    print(np.mean(scores))
     # TODO: how to use multioutput-multioutput?
     # vvv multiclass-multioutput is not supported vvv
     # print(model_selection.cross_val_score(clf, X_train, y_train))
     y_pred = clf.predict_proba(X_test)
     print("-I-: cross_val_score against test with default, then with roc_auc")
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
-    print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel(), scoring='roc_auc'))
+    scores = model_selection.cross_val_score(clf, X_test, y_test.values.ravel(), cv=5, scoring='roc_auc')
+    print(scores)
+    print(np.mean(scores))
+
+    # data after feature selection [Third Run] - re-running here to make it clear that this is the curve for the chosen set of features
+    # plot the ROC-AUC curve
+    (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, data_nonan, predictors, responsecls, cv=5)
+    print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
+
+    # data before feature selection [First Run] - not running here because it modifies the 'clf' object
+    # # plot the ROC-AUC curve
+    # (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, data_nonan, predictors_first, responsecls_first)
+    # print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
 
     # doesn't work as expected
     # (mean_auc, std_auc, std_tpr) = plot_roc_curve(y_test.values.ravel(), y_pred[:,1])
