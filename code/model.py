@@ -32,6 +32,7 @@ runmodels = {
         'dectree_evaluate_cv_strat' : 0, # loop through decision strategies - depends on manual_analyse_strongest_predictors
         'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
         'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
+        'score_manual_predef_route' : 0, # hard-coded route generated from input data, used for enabling scoring of new data
         'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
         'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
         }
@@ -883,129 +884,155 @@ if( options['verbose'] >= 0):
     print("-I-: End of File")
     print("################################################################################")
 
-print("################################################################################")
-print("#                                      TODO                                     ")
-print("#                                      TODO                                     ")
-print("#                                      TODO                                     ")
-print("start here for the model fitting on pre-defined gps data                        ")
-print(" create an X_test_gps_coord of crash-data entries and then clf.predict(X_test_gps_coord)  ")
-print("may have to remove 'manner of collision' and other after-the fact features. see 'post-fact' in feature_definitions.py")
-print("################################################################################")
+################################################################################
+# MODEL+EVALUATION - score manual-created user route
+################################################################################
+# <def_score_manual_predef_route>
+def score_manual_predef_route(data, data_dummies, featdef):
+    print("################################################################################")
+    print("#                                      TODO                                     ")
+    print("#                                      TODO                                     ")
+    print("#                                      TODO                                     ")
+    print("start here for the model fitting on pre-defined gps data                        ")
+    print(" create an X_test_gps_coord of crash-data entries and then clf.predict(X_test_gps_coord)  ")
+    print("may have to remove 'manner of collision' and other after-the fact features. see 'post-fact' in feature_definitions.py")
+    print("################################################################################")
 
-print("################################################################################")
-print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route <score_manual_predef_route>")
-print("################################################################################")
-print("#                                      NEXT:                                     ")
-print("#                                      NEXT:                                     ")
-print("#                                      NEXT:                                     ")
-print(" !! NOT YET !! fuzzy gps match")
-print("refer to the outline for more details")
-# dump out file which contains values whch can be provided by user/tool/etc
-#+ user is expected to plan their route by selecting intersections and deleting the remaining columns
-#+ note - this is a WIP, just to illustrate the type of data needed, still needs to be claned up.
-#+ e.g. user won't remove columns based on 'crash_year', or know the 'manner_of_collision', but these values could be useful yet
-#+ e.g. user can enter the time they are going to travel, but doesn't remove cols based on 'crash_time'.
-#+ in that sense, some cols are for conveying info to user, some are for user to input info
-#+ won't change this format though, since this is just a bootstrapping procedure to get this code to correlate user input with existing data
+    print("################################################################################")
+    print("-I-: " + "WORK_IN_PROGRESS - scoring manual user route <score_manual_predef_route>")
+    print("################################################################################")
+    print("#                                      NEXT:                                     ")
+    print("#                                      NEXT:                                     ")
+    print("#                                      NEXT:                                     ")
+    print(" !! NOT YET !! fuzzy gps match")
+    print("refer to the outline for more details")
+    # dump out file which contains values whch can be provided by user/tool/etc
+    #+ user is expected to plan their route by selecting intersections and deleting the remaining columns
+    #+ note - this is a WIP, just to illustrate the type of data needed, still needs to be claned up.
+    #+ e.g. user won't remove columns based on 'crash_year', or know the 'manner_of_collision', but these values could be useful yet
+    #+ e.g. user can enter the time they are going to travel, but doesn't remove cols based on 'crash_time'.
+    #+ in that sense, some cols are for conveying info to user, some are for user to input info
+    #+ won't change this format though, since this is just a bootstrapping procedure to get this code to correlate user input with existing data
 
-# hard-code:
-# step 1: dump valid, then read in, score, etc
-# step 2: edit dump, feed into 'step 1'
+    # hard-code:
+    # step 1: dump valid, then read in, score, etc
+    # step 2: edit dump, feed into 'step 1'
 
-# organisation: relative importance roughly from left->right in the resulting csv
-#+ route most important, on the left
-#+ weather, time, etc easy to provide, next left
-#+ remaining unsure data, all on the right
-# Note: order etc subject to change based on the model. Starting with the basic model for now, moving on from there
-# TODO: this is hard-coded based on deciding which options are not needed. find a way to use featdef to get these features. May need to compare the columns to the following output to determine the pattern. 
-# +TODO: -or- BETTER IDEA -  only dump the predictors, which is the better idea
-temp_user_csv_name="route_planner_options.csv" # full csv
-my_likey = [
-    'latitude' ,
-    'longitude' ,
-    'intersecting_street_name' ,  # required
-    'street_name' ,               # required
-    #----
-    'crash_time' ,                # meant as 'time of travel' 
-    'light_condition' ,           # user should know this, but ultimately it can be looked up based on time?
-    'weather_condition' ,         # good to know
-    'surface_condition' ,         # not always known, but maybe?
-    'day_of_week' ,               # less relevant for immediate route planning
-    #----
-    'intersection_related' ,      # user won't know, but maybe model can
-    'manner_of_collision' ,       # leaving here to indicate that model may be able to predict what to watch out for 
-    'crash_datetime' ,            # enter exact time ... I think preproc can handle this conversion, actually
-    'crash_time_30m',             # probably irrelevant? maybe easier for planning purposes
-    'crash_year' ,                # irrelevant, may be needed later for granularity
-    ]
-data[my_likey].to_csv(temp_user_csv_name)
-# ^^^ IGNORING FOR NOW ^^^^ 
-#+ the human-readable model only has three predictors, start with that and get complex later
+    # organisation: relative importance roughly from left->right in the resulting csv
+    #+ route most important, on the left
+    #+ weather, time, etc easy to provide, next left
+    #+ remaining unsure data, all on the right
+    # Note: order etc subject to change based on the model. Starting with the basic model for now, moving on from there
+    # TODO: this is hard-coded based on deciding which options are not needed. find a way to use featdef to get these features. May need to compare the columns to the following output to determine the pattern. 
+    # +TODO: -or- BETTER IDEA -  only dump the predictors, which is the better idea
+    temp_user_csv_name="route_planner_options.csv" # full csv
+    my_likey = [
+        'latitude' ,
+        'longitude' ,
+        'intersecting_street_name' ,  # required
+        'street_name' ,               # required
+        #----
+        'crash_time' ,                # meant as 'time of travel' 
+        'light_condition' ,           # user should know this, but ultimately it can be looked up based on time?
+        'weather_condition' ,         # good to know
+        'surface_condition' ,         # not always known, but maybe?
+        'day_of_week' ,               # less relevant for immediate route planning
+        #----
+        'intersection_related' ,      # user won't know, but maybe model can
+        'manner_of_collision' ,       # leaving here to indicate that model may be able to predict what to watch out for 
+        'crash_datetime' ,            # enter exact time ... I think preproc can handle this conversion, actually
+        'crash_time_30m',             # probably irrelevant? maybe easier for planning purposes
+        'crash_year' ,                # irrelevant, may be needed later for granularity
+        ]
+    data[my_likey].to_csv(temp_user_csv_name)
+    # ^^^ IGNORING FOR NOW ^^^^ 
+    #+ the human-readable model only has three predictors, start with that and get complex later
 
-# limited UI-CSV, with only ~3 cols
-temp_user_csv_name="route_planner_options_limited.csv"
-########################################
-# prepare model
-########################################
-# current SIMPLE user input:
-#+ use the generate_human_readable_dectree model, which has only three features
-# get a copy of the complete model which was run on the entire dataset
-model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+    # limited UI-CSV, with only ~3 cols
+    temp_user_csv_name="route_planner_options_limited.csv"
+    ########################################
+    # prepare model
+    ########################################
+    # current SIMPLE user input:
+    #+ use the generate_human_readable_dectree model, which has only three features
+    # get a copy of the complete model which was run on the entire dataset
+    model_clf_simple, clf_simple_predictors, clf_simple_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
 
-# user-required data will be based on model's features
-#+ TODO: the model features are copy-pasted from generate_human_readable_dectree, make this flexible!
-#+ +TODO otherwise we have to manually update hard-coded values, no fun. 
-#notNeeded-ReturnedFromModelGeneratorNow# clf_simple_predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
-#notNeeded-WontPredictOnResponseCLS# clf_simple_responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
+    # user-required data will be based on model's features
+    #+ TODO: the model features are copy-pasted from generate_human_readable_dectree, make this flexible!
+    #+ +TODO otherwise we have to manually update hard-coded values, no fun. 
+    #notNeeded-ReturnedFromModelGeneratorNow# clf_simple_predictors  = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target != True)].index)
+    #notNeeded-WontPredictOnResponseCLS# clf_simple_responsecls = list(featdef[(featdef.regtype == 'bin_cat') & (featdef.target == True)].index)
 
-########################################
-# interact with user
-########################################
-# generate the "user interface", a spreadsheet with all of the options
-# TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
-# limit to 80 rows
-data[ clf_simple_predictors + my_likey ][:80].to_csv(temp_user_csv_name)
+    ########################################
+    # interact with user
+    ########################################
+    # generate the "user interface", a spreadsheet with all of the options
+    # TODO: this is too bare-bones, only has the bin_cat with no street-names. will need to use the pre-processing to do this right! I.e. let the CSV contain street names etc but only use the required predictors once it's loaded in
+    # limit to 80 rows
+    data[ clf_simple_predictors + my_likey ][:80].to_csv(temp_user_csv_name)
 
-# drop NA inputs, can't assume user data is correct!
-#+ for better code clarity, could do this in two steps with dropna(inplace=True)
-user_route_data = pd.read_csv(temp_user_csv_name).dropna()
+    # drop NA inputs, can't assume user data is correct!
+    #+ for better code clarity, could do this in two steps with dropna(inplace=True)
+    user_route_data = pd.read_csv(temp_user_csv_name).dropna()
 
-# make user data useful
-# NOTE: phase1 - don't worry about this for this phase, this isn't the final input form
-#+ NEXT STEP:
-#+ focus on correlating intersections against the DB (fuzzy match of gps)
-# add binary categories - user not expected to know the breakdown, as definitions of bin_cat can change over time
-# (user_route_data,featdef) = preproc_add_bin_categories(user_route_data, featdef, verbose=1)
+    # make user data useful
+    # NOTE: phase1 - don't worry about this for this phase, this isn't the final input form
+    #+ NEXT STEP:
+    #+ focus on correlating intersections against the DB (fuzzy match of gps)
+    # add binary categories - user not expected to know the breakdown, as definitions of bin_cat can change over time
+    # (user_route_data,featdef) = preproc_add_bin_categories(user_route_data, featdef, verbose=1)
 
-########################################
-# scoring the route, assume sanitised input
-########################################
-# extract relevant data for scoring
-X_test = user_route_data[clf_simple_predictors]
+    ########################################
+    # scoring the route, assume sanitised input
+    ########################################
+    # extract relevant data for scoring
+    X_test = user_route_data[clf_simple_predictors]
 
-## prediction and scoring
-#noNeedHere-onlyForModelGen# print("-I-: cross_val_score on train (itself)")
-#noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_train, y_train.values.ravel()))
+    ## prediction and scoring
+    #noNeedHere-onlyForModelGen# print("-I-: cross_val_score on train (itself)")
+    #noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_train, y_train.values.ravel()))
 
-# 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
-y_pred = model_clf_simple.predict_proba(X_test)
-y_pred_predict = model_clf_simple.predict(X_test)
-print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
-print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
-# TODO: determine how to score using the prediction
-#PROBABLY-noNeedHere-onlyForModelGen# print("-I-: cross_val_score against test")
-#PROBABLY-noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_test, y_test.values.ravel()))
-#PROBABLY-noNeedHere-onlyForModelGen# cm = confusion_matrix(y_test,model_clf_simple.predict(X_test))
-#PROBABLY-noNeedHere-onlyForModelGen# plot_confusion_matrix(cm,classes=['fubar','aight'])
-#PROBABLY-noNeedHere-onlyForModelGen# plt.show()
-print("################################################################################")
-print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </score_manual_predef_route>")
-print("################################################################################")
+    # 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
+    y_pred = model_clf_simple.predict_proba(X_test)
+    y_pred_predict = model_clf_simple.predict(X_test)
+    print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
+    print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
+    # TODO: determine how to score using the prediction
+    #PROBABLY-noNeedHere-onlyForModelGen# print("-I-: cross_val_score against test")
+    #PROBABLY-noNeedHere-onlyForModelGen# print(model_selection.cross_val_score(model_clf_simple, X_test, y_test.values.ravel()))
+    #PROBABLY-noNeedHere-onlyForModelGen# cm = confusion_matrix(y_test,model_clf_simple.predict(X_test))
+    #PROBABLY-noNeedHere-onlyForModelGen# plot_confusion_matrix(cm,classes=['fubar','aight'])
+    #PROBABLY-noNeedHere-onlyForModelGen# plt.show()
+    print("################################################################################")
+    print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </score_manual_predef_route>")
+    print("################################################################################")
+# <def_score_manual_predef_route>
+################################################################################
+# MODEL+EVALUATION - score manual-created user route
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Score Manually-Created User Route")
+if( runmodels['score_manual_predef_route'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+    # no return value, just an enablement stub
+    score_manual_predef_route(data, data_dummies, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+################################################################################
+# /MODEL+EVALUATION - score manual-created user route
+################################################################################
 
 ################################################################################
 # clear env as best we can until this all gets refactored
 # delete by name
-del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
+if(0):
+    del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
 # then loop and verify
 for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'X_test', 'y_pred' , 'y_pred_predict' ]:
     print(var)
