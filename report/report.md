@@ -1305,7 +1305,7 @@ Section Glossary:
 The user interface is browser-based and was designed to be similar in feel to many popular routing services. 
 The user visits a webpage and types in a source address and a destination address, upon which the possible routes are displayed with the safety score overlayed at each intersection. 
 The user can then choose the route with the lowest score, which corresponds to the lowest injury risk.  
-For routing, the user can either type in the exact address or use autocomplete by typing a partial match and selecting the correct result from a list of possible matches. This autocompletion is implemented using the google maps Places API.
+For routing, the user can either type in the exact address or use autocomplete by typing a partial match and selecting the correct result from a list of possible matches. This autocompletion is implemented using the Google Places API.
 
 
 <pre>
@@ -1383,7 +1383,7 @@ The modeling application then sends route-score geo-json to server, which relays
 
 The client then displays the unmodified third-party routing information along with the route-scoring information to the user. 
 
-For this implementation, the Google Maps Directions Service was used as the third-party routing provider, and the Google Maps Places API was used to enable autocompletion for the starting and end location names. 
+For this implementation, the Google Maps Directions Service was used as the third-party routing provider, and the Google Places API was used to enable autocompletion for the starting and end location names. 
 
 
 #### Data Formats
@@ -1539,14 +1539,14 @@ Each WP lists the a critical path (i.e. simplest functioning product ) it can be
 
 #### WP: data: fuzzy-match GPS coordinates [GPS-fuzzy-match]  
 WP: [data:  GPS-fuzzy-match]  
-Dependency: TODO  
+Dependency: GPS-coordinates
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: safety_score] -> [display score]  
 **Description:**   
 crash data GPS coordinates will not be exactly same as route-mapper GPS-coordinates. Therefore, imprecisely (fuzzy) compare user-input GPS coords to crash-data GPS coords to find closest match. Initially only perform this fuzzy match on intersection coordinates, as single-location coordinates can be harder to place precisely.  
 
 #### WP: data: impute more mph limits [impute_mph_limit-noninter]  
 WP: [data:  impute_mph_limit-noninter]  
-Dependency: TODO  
+Dependency: GPS-fuzzy-match
 [route: GPS-\*-generic] -> [model: GPS-fuzzy-match] -> [model: impute_mph_limit-noninter] -> [model: safety_score] -> [display score]  
 
 **Description:**   
@@ -1555,28 +1555,28 @@ Impute speed limits (mph limit) for segment data [@term:segment-data] which does
 
 #### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
-Dependency: TODO  
+Dependency: None
 [route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
 **Description:**   
 TODO: fill in from roadmap, critical path  
 
 #### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
 WP: [route: GPS-manual-generic]  
-Dependency: TODO  
+Dependency: GPS-manual-predef
 [route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
 **Description:**   
 TODO: fill in from roadmap, critical path  
 
 #### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
 WP: [route: GPS-automatic-generic]  
-Dependency: TODO  
+Dependency: GPS-manual-predef
 [route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
 **Description:**   
 TODO: fill in from roadmap, critical path  
 
 #### WP: route: implement map as output interface [UI-nointer-GPS-generic]  
 WP: [route: UI-nointer-GPS-generic]  
-Dependency: TODO  
+Dependency: GPS-manual-predef
 [route: GPS\*] --> [gui: UI-nointer-GPS-generic]  
 **Description:**   
 html+js display route on map  
@@ -1606,28 +1606,28 @@ Show the safety score for entire route on the map.
 
 #### WP: route: total score [safety_score-total]  
 WP: [route: safety_score-total]  
-Dependency: TODO  
+Dependency: GPS-manual-predef
 [route: GPS-\*]     -> [model: safety_score-total] -> [display total score]  
 **Description:**   
 calculate safety score for entire route  
 
 #### WP: route: recommend best route [UI-recommend-simple]  
 WP: [route: UI-recommend-simple]  
-Dependency: TODO  
+Dependency: safety_score-total
 [route,several: GPS-\*]     -> [model: safety_score-total,several] -> [model: safety_score-total] -> [display best total score out of several (i.e. find safest route out of multiple routes)]  
 **Description:**   
 retrieve multiple routes from third-party mapping service, calculate total score (safety_score-total) for each one, recommend the safest  
 
 #### WP: route: partial score [safety_score-partial]  
 WP: [route: safety_score-partial]  
-Dependency: TODO  
+Dependency: GPS-manual-predef
 [route: GPS-\*]     -> [model: safety_score-partial] -> [display partial scores]  
 **Description:**   
 calculate safety score for each route segment
 
 #### WP: route: mix routes [UI-recommend-complex]  
 WP: [route: UI-recommend-complex]  
-Dependency: TODO  
+Dependency: safety_score-partial
 [route,several: GPS-\*]     -> [model: safety_score-partial,several] -> [model: safety_score-partial] -> [display best combined scores out of several (i.e. combine safest sections of multiple routes into one route)]   
 **Description:**   
 retrieve multiple routes from third-party mapping service, calculate segment scores (safety_score-partial) for each one, combine lowest scores to create a safest route (i.e. combine safest sections of multiple routes into one route)]  
