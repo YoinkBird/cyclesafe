@@ -605,6 +605,149 @@ def mock_return_response_json(route):
 #def mock_return_response_json(route):
 
     # not sure how args should look
+
+################################################################################
+#<def_get_gmap_direction_coords>
+# process google directions data, i.e. extract only  the gps coords
+# [x] TODOne: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
+# [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
+def get_gmap_direction_coords(geodata):
+    '''
+    A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
+    For routes that contain no waypoints, the route will consist of a single "leg,"
+     but for routes that define one or more waypoints, the route will consist of one or more legs,
+     corresponding to the specific legs of the journey.
+    '''
+    '''
+    doc source: https://developers.google.com/maps/documentation/javascript/directions src "Directions Steps"
+    start_location contains the LatLng of the origin of this leg.
+        Because the Directions Web Service calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, start_location may be different than the provided origin of this leg if, for example, a road is not near the origin.
+    end_location contains the LatLng of the destination of this leg.
+        Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
+    'maneuver' not readily documented 
+    '''
+    routes_steps={}
+    # routes: 1 , legs : 1 (no waypoints) , steps : n
+# refactor_multi_route_score_r1
+    # [x] TODOne: anticipate several routes
+    # [ ]TODO: anticipate several legs (waypoints) etc
+    # geodata['routes'][0]['legs'][0]['steps'][0]['start_location']
+    for ri, route in enumerate( geodata['routes'] ):
+        routes_steps[ri] = []
+        #for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
+        for step in ( route['legs'][0]['steps'] ):
+            # start_location is segment start, end_location is segment stop
+            #+ may be useful in future to look up crash-location data for a segment
+            if(0): # miniscule difference, not visible on map at all
+                print( step['start_location'] )
+                routes_steps[ri].append( step['start_location'] )
+#            print( step['end_location'] )
+            routes_steps[ri].append( step['end_location'] )
+            # maneuver : left,right, etc . shove it in with the lat/lng
+            if('maneuver' in step):
+                # for determining possible vals of maneuver
+                print("maneuver: " + step['maneuver'])
+                # NOTE: this is a hard-coded mapping between gmaps api and txdot-model feature, ideally would be abstracted
+                # txdot-model has data on 'intersection_related'
+                # routes_steps[ri][-1]['maneuver'] = step['maneuver']
+                # encode in txdot-model-friendly format
+                # values for maneuver:
+                # maneuver: ''
+                # maneuver: turn-left
+                # maneuver: turn-right
+                # values for bin_intersection_related :
+                # bin_true = ['intersection_related', 'intersection',]
+                # bin_false = ['non_intersection', 'driveway_access',]
+                routes_steps[ri][-1]['bin_intersection_related'] = 1
+                if(step['maneuver'] == ''):
+                    routes_steps[ri][-1]['bin_intersection_related'] = 0
+                
+    # only a few coords
+    return routes_steps
+    # too many coords
+    return geodata['routes'][0]['overview_path']
+#</def_get_gmap_direction_coords>
+################################################################################
+
+################################################################################
+#<def_score_single_route>
+def score_single_route(route_feat_list, user_environment, model_clf_score_route, clf_score_predictors):
+    print("creating dataframe")
+    print("munge - insert gps coords")
+    # create dataframe for X_test
+    # get gps coordinates, maneuver and the user data
+    auto_route_data = pd.DataFrame.from_dict(
+# refactor_multi_route_score_r1
+#            get_gmap_direction_coords(geodata)
+            route_feat_list
+            )
+
+    print("munge - insert user-env data")
+    # need to impute the user-env values to each row
+    # first, add user-data to the df:
+    auto_route_data[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
+    # then set the user-data cols to the df
+    #+ # avoid the following error:
+    #+ A value is trying to be set on a copy of a slice from a DataFrame.
+    #+ Try using .loc[row_indexer,col_indexer] = value instead
+    #+ 
+    #+ => actually - use temporary assignments instead
+    #+ either:
+    #+ auto_route_data[list(user_environment.keys())] = 
+    #+     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
+    #+ or:
+    auto_route_data.update(
+            auto_route_data[list(user_environment.keys())].fillna(method='ffill'))
+
+    print(auto_route_data.head())
+
+    print("auto_route_data total amount:" + str(auto_route_data.shape) )
+
+    print("--------------------------------------------------------------------------------")
+    print(" DATA VERIFICATION " )
+    print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['lat','lng']].shape) )
+    print("--------------------------------------------------------------------------------")
+
+    #-# print("munge - quickly - verify that two np arrays have same values:")
+    #-# #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
+    #-# if( (auto_route_data[['latitude','longitude']].values == auto_route_dict.values).all() != True ):
+
+    print("running the model")
+    print("# vvv copypasta vvv")
+    # TODO: copy-pasted the minimal setup, still need to setup model etc
+    ########################################
+    # scoring the route, assume sanitised input
+    ########################################
+    # extract relevant data for scoring
+    X_test = auto_route_data[clf_score_predictors]
+
+    # 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
+    y_pred = model_clf_score_route.predict_proba(X_test)
+    y_pred_predict = model_clf_score_route.predict(X_test)
+    print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
+    print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
+    print("# ^^^ copypasta ^^^")
+
+    print(" combine score with gps coordinates")
+    auto_route_data['score'] = y_pred[:,1]
+
+
+    #---------------------------------------- 
+    # TODO: do it right
+    '''
+    In [12]: auto_route_data['score'] = y_pred[:,1]
+    /home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: 
+    A value is trying to be set on a copy of a slice from a DataFrame.
+    Try using .loc[row_indexer,col_indexer] = value instead
+
+    See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+      """Entry point for launching an IPython kernel.
+    '''
+    #---------------------------------------- 
+    return auto_route_data
+#</def_score_single_route>
+################################################################################
+
 ################################################################################
 # /FUNCTIONS_FOR_API
 ################################################################################
@@ -1317,141 +1460,6 @@ if(verbose_score_manual_generic_route == 1):
     ''')
 print("munge - length-adjusted dataset [ auto_route_data ] ")
 
-#<def_get_gmap_direction_coords>
-# process google directions data, i.e. extract only  the gps coords
-# [x] TODOne: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
-# [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
-def get_gmap_direction_coords(geodata):
-    '''
-    A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
-    For routes that contain no waypoints, the route will consist of a single "leg,"
-     but for routes that define one or more waypoints, the route will consist of one or more legs,
-     corresponding to the specific legs of the journey.
-    '''
-    '''
-    doc source: https://developers.google.com/maps/documentation/javascript/directions src "Directions Steps"
-    start_location contains the LatLng of the origin of this leg.
-        Because the Directions Web Service calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, start_location may be different than the provided origin of this leg if, for example, a road is not near the origin.
-    end_location contains the LatLng of the destination of this leg.
-        Because the DirectionsService calculates directions between locations by using the nearest transportation option (usually a road) at the start and end points, end_location may be different than the provided destination of this leg if, for example, a road is not near the destination.
-    'maneuver' not readily documented 
-    '''
-    routes_steps={}
-    # routes: 1 , legs : 1 (no waypoints) , steps : n
-# refactor_multi_route_score_r1
-    # [x] TODOne: anticipate several routes
-    # [ ]TODO: anticipate several legs (waypoints) etc
-    # geodata['routes'][0]['legs'][0]['steps'][0]['start_location']
-    for ri, route in enumerate( geodata['routes'] ):
-        routes_steps[ri] = []
-        #for step in ( geodata['routes'][0]['legs'][0]['steps'] ):
-        for step in ( route['legs'][0]['steps'] ):
-            # start_location is segment start, end_location is segment stop
-            #+ may be useful in future to look up crash-location data for a segment
-            if(0): # miniscule difference, not visible on map at all
-                print( step['start_location'] )
-                routes_steps[ri].append( step['start_location'] )
-#            print( step['end_location'] )
-            routes_steps[ri].append( step['end_location'] )
-            # maneuver : left,right, etc . shove it in with the lat/lng
-            if('maneuver' in step):
-                # for determining possible vals of maneuver
-                print("maneuver: " + step['maneuver'])
-                # NOTE: this is a hard-coded mapping between gmaps api and txdot-model feature, ideally would be abstracted
-                # txdot-model has data on 'intersection_related'
-                # routes_steps[ri][-1]['maneuver'] = step['maneuver']
-                # encode in txdot-model-friendly format
-                # values for maneuver:
-                # maneuver: ''
-                # maneuver: turn-left
-                # maneuver: turn-right
-                # values for bin_intersection_related :
-                # bin_true = ['intersection_related', 'intersection',]
-                # bin_false = ['non_intersection', 'driveway_access',]
-                routes_steps[ri][-1]['bin_intersection_related'] = 1
-                if(step['maneuver'] == ''):
-                    routes_steps[ri][-1]['bin_intersection_related'] = 0
-                
-    # only a few coords
-    return routes_steps
-    # too many coords
-    return geodata['routes'][0]['overview_path']
-#</def_get_gmap_direction_coords>
-
-#<def_score_single_route>
-def score_single_route(route_feat_list):
-    print("creating dataframe")
-    print("munge - insert gps coords")
-    # create dataframe for X_test
-    # get gps coordinates, maneuver and the user data
-    auto_route_data = pd.DataFrame.from_dict(
-# refactor_multi_route_score_r1
-#            get_gmap_direction_coords(geodata)
-            route_feat_list
-            )
-
-    print("munge - insert user-env data")
-    # need to impute the user-env values to each row
-    # first, add user-data to the df:
-    auto_route_data[list(user_environment.keys())] = pd.DataFrame.from_dict(user_environment, orient='index').transpose()
-    # then set the user-data cols to the df
-    #+ # avoid the following error:
-    #+ A value is trying to be set on a copy of a slice from a DataFrame.
-    #+ Try using .loc[row_indexer,col_indexer] = value instead
-    #+ 
-    #+ => actually - use temporary assignments instead
-    #+ either:
-    #+ auto_route_data[list(user_environment.keys())] = 
-    #+     auto_route_data[list(user_environment.keys())].fillna(method='ffill')
-    #+ or:
-    auto_route_data.update(
-            auto_route_data[list(user_environment.keys())].fillna(method='ffill'))
-
-    print(auto_route_data.head())
-
-    print("auto_route_data total amount:" + str(auto_route_data.shape) )
-
-    print("--------------------------------------------------------------------------------")
-    print(" DATA VERIFICATION " )
-    print("auto_route_data['lat','lng'] shape:" + str(auto_route_data[['lat','lng']].shape) )
-    print("--------------------------------------------------------------------------------")
-
-    #-# print("munge - quickly - verify that two np arrays have same values:")
-    #-# #+ src: https://stackoverflow.com/questions/10580676/comparing-two-numpy-arrays-for-equality-element-wise
-    #-# if( (auto_route_data[['latitude','longitude']].values == auto_route_dict.values).all() != True ):
-
-    print("running the model")
-    print("# vvv copypasta vvv")
-    # TODO: copy-pasted the minimal setup, still need to setup model etc
-    ########################################
-    # scoring the route, assume sanitised input
-    ########################################
-    # extract relevant data for scoring
-    X_test = auto_route_data[clf_score_predictors]
-
-    # 2 cols, corresponding to range of response-class. I.e. binary 0,1 therefore 2 cols
-    y_pred = model_clf_score_route.predict_proba(X_test)
-    y_pred_predict = model_clf_score_route.predict(X_test)
-    print("-I-: WARNING - author could be misinterpretting the function calls! /WARNING As per current understanding of sklearn, for the given route the chance of severe injury given an accident is:")
-    print(np.average(y_pred[:,1])) # second column is chance of '1', i.e. severe injury
-    print("# ^^^ copypasta ^^^")
-
-    print(" combine score with gps coordinates")
-    auto_route_data['score'] = y_pred[:,1]
-    #---------------------------------------- 
-    # TODO: do it right
-    '''
-    In [12]: auto_route_data['score'] = y_pred[:,1]
-    /home/yoinkbird/devtools/miniconda3/lib/python3.6/site-packages/ipykernel_launcher.py:1: SettingWithCopyWarning: 
-    A value is trying to be set on a copy of a slice from a DataFrame.
-    Try using .loc[row_indexer,col_indexer] = value instead
-
-    See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
-      """Entry point for launching an IPython kernel.
-    '''
-    #---------------------------------------- 
-    return auto_route_data
-#</def_score_single_route>
 
 # refactor_multi_route_score_r1
 # refactor_multi_route_score_r2 - limited response for first conversion
@@ -1461,7 +1469,7 @@ auto_route_data = {}
 for ri,route in enumerate(geodata_routes):
     # refactor_multi_route_score_r4 - score all routes , return full json
     # returns pandas dataframe, only need score and gps coords
-    auto_route_data[ri] = score_single_route( geodata_routes[ri])[['score','lat','lng']]
+    auto_route_data[ri] = score_single_route( geodata_routes[ri], user_environment, model_clf_score_route, clf_score_predictors)[['score','lat','lng']]
 
 print('''
 
