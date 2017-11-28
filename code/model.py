@@ -235,6 +235,54 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
 ################################################################################
 
 ################################################################################
+# <def_plot_roc_curve>
+def plot_roc_curve(y_true, y_score):
+    # plot ROC curve
+    my_graphics=options['graphics']
+    # store multiple true-positive-rate
+    tprs = []
+    # store multiple area-under-curve
+    aucs = []
+    mean_fpr = np.linspace(0, 1, 100)
+    i = 0
+    fpr, tpr, thresholds = roc_curve(y_true, y_score)
+    tprs.append(interp(mean_fpr, fpr, tpr))
+    tprs[-1][0] = 0.0
+    roc_auc = auc(fpr, tpr)
+    aucs.append(roc_auc)
+    if (my_graphics == 1):
+        plt.plot( fpr, tpr, lw=1, alpha=0.3, label = 'ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+    if (my_graphics == 1):
+        plt.plot( [0, 1], [0, 1], linestyle='--', lw=2, color='r', label='50%', alpha=0.8)
+    # plot average true-positive-rate vs average false-positive-rate
+    mean_tpr = np.mean(tprs, axis=0)
+    mean_tpr[-1] = 1.0
+    mean_auc = auc(mean_fpr, mean_tpr)
+    std_auc = np.std(aucs)
+    if ( my_graphics == 1):
+        plt.plot(mean_fpr, mean_tpr, color='b', label=r'Mean ROC (AUC= %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=0.8)
+    # plot average false-positive-rate vs
+    std_tpr = np.std(tprs, axis=0)
+    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+    if (my_graphics == 1):
+        plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=0.2, label=r'$\pm$ 1 std. dev.')
+
+    if (my_graphics == 1):
+        # options
+        plt.xlim([-0.05, 1.05])
+        plt.ylim([-0.05, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True  Positive Rate')
+        plt.title('Receiver Operating Characteristic Curves')
+        plt.legend(loc="lower right")
+        # display
+        plt.show()
+    return( mean_auc, std_auc, std_tpr)
+# </def_plot_roc_curve>
+################################################################################
+
+################################################################################
 # <def_cvfold_plot_roc_curve>
 def plot_cvfold_roc_curve(clf, data, predictors, responsecls, cv=5):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
@@ -688,6 +736,11 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     print("-I-: cross_val_score against test with default, then with roc_auc")
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel()))
     print(model_selection.cross_val_score(clf, X_test, y_test.values.ravel(), scoring='roc_auc'))
+
+    # doesn't work as expected
+    # (mean_auc, std_auc, std_tpr) = plot_roc_curve(y_test.values.ravel(), y_pred[:,1])
+    # print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
+
 
     # plot important features
     if( verbose >= 1 ):
