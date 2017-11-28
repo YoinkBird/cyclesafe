@@ -198,6 +198,7 @@ def preproc_add_bin_categories(data, featdef, verbose=0):
         # print number of unique entries
         if(verbose > 0):
             for colname in data.columns:
+                # np method uses 'size': print("% 4d : %s" % (data[colname].unique().size, colname))
                 print("% 4d : %s" % (len(data[colname].unique()), colname))
         # remove data which is has no importance
         # better to drop cols with all NaN and convert "unimportant" data to NaN
@@ -427,6 +428,53 @@ def impute_mph(data, verbose=0):
         print("total new missing speed limit data:\n %s" % (data[data['speed_limit'].isnull()].shape[0]))
     return data
 
+# def get_abt(data):
+# data quality report
+def get_data_quality_report(data):
+    # TEMP
+    # 3.1 data quality report
+    # 'count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max' included in DataFrame.describe()
+    # '%mising', 'cardinality' not in DataFrame.describe()
+    # pandas=>book equivalents: '25%' equ '1st qrt', '50%' ?equ median?, '75%' equ '3rd qrt', 'max' is_same
+    #
+    # pandas order + book vals:
+    # 'count', '%mising', 'cardinality', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'
+    # book order:
+    # 'count',  '%mising',  'cardinality',  'min',  '25%',  'mean',  '50% (median)',  '75%',  'max',  'std', 
+    print("data quality report for %s" % 'txdot crash data')
+    df_quality_rpt = data.describe(exclude=['datetime64']).transpose()
+    # adding things
+    # eg. df_quality_rpt.ix['speed_limit'].append(pd.Series('hi'), index="new"))
+    newvals=pd.DataFrame()
+    for row in df_quality_rpt.index:
+        # print(row);
+        percent_missing = (100 * data[row].isnull().sum()) / data.shape[0]
+        # print(percent_missing)
+        tmpser = (pd.Series({'%missing': percent_missing ,'cardinality': data[row].unique().size}))
+        tmpser.name=row
+        newvals = newvals.append(tmpser)
+        # df_quality_rpt.append(tmpser)
+    # cardinality is integer
+    newvals['cardinality'] = newvals['cardinality'].astype('int')
+    # column order:
+    # 0th is 'count' followed by newvals (missing,cardinality) 
+    # 1th+ is mean,std, etc
+    colorder = [df_quality_rpt.columns[0]] + newvals.columns.values.tolist() + df_quality_rpt.columns[1:].tolist()
+    colorder = ['count','%missing','cardinality','mean','std','min','25%','50%','75%','max','freq','top'] # ,'unique'
+    # add the new columns in correct order
+    df_quality_rpt = df_quality_rpt.join(newvals)[colorder]
+    return df_quality_rpt
+
+def print_get_data_quality_report(df_quality_rpt):
+    # df_quality_rpt = get_data_quality_report(data)
+    orig_val_expand_frame_repr = pd.get_option('display.expand_frame_repr')
+    pd.set_option('display.expand_frame_repr', False)
+    # pd.set_option('max_colwidth', 15)
+    pd.set_option('precision', 4)
+    print("pandas Describe + %missing + cardinality")
+    print(df_quality_rpt)
+    pd.set_option('display.expand_frame_repr', orig_val_expand_frame_repr)
+
 # run for testing purposes
 if(__name__ == '__main__'):
     print("-I-: Self-Test: txdot_parse.py")
@@ -443,6 +491,15 @@ if(__name__ == '__main__'):
     print("-I-: binary categories")
     # add binary categories
     (data,featdef) = preproc_add_bin_categories(data, featdef, verbose=1)
+
+    # data quality report
+    df_quality_rpt = get_data_quality_report(data)
+    print_get_data_quality_report(df_quality_rpt)
+
+    # save to file
+    with open ('data_quality_report.html', 'w') as outfile: df_quality_rpt.fillna('').to_html(outfile)
+
+
 
     # impute speed_limit mph
     if(test_impute_mph):
