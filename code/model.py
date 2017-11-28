@@ -977,6 +977,52 @@ def score_manual_predef_route(data, data_dummies, featdef):
 # /MODEL+EVALUATION - score manual-created user route
 ################################################################################
 
+################################################################################
+# MODEL CACHING - generate or retrieve model+features
+################################################################################
+def retrieve_model(data, data_dummies, featdef):
+    # <PICKLE>
+    # https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
+    # path to pickle:
+    import pickle
+    path_saved_model = str()
+    if( runmodels['map_generate_human_readable_dectree'] ):
+        path_saved_model = "output/human_read_dectree.pkl"
+    elif( runmodels['map_manual_analyse_strongest_predictors'] ):
+        path_saved_model = "output/human_read_dectree.pkl"
+    import os.path
+    # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
+    model_clf_score_route, clf_score_predictors, clf_score_responsecls = ([],[],[])
+    # load if exists
+    loadpickle=1
+    if (loadpickle  and os.path.exists(path_saved_model) and os.path.isfile(path_saved_model) ):
+        print("-I-: retrieving model from pickle file")
+        with open (path_saved_model, 'rb') as fh:
+            model_clf_score_route, clf_score_predictors, clf_score_responsecls = pickle.load(  fh )
+            # model_clf_score_route = pickle.load(fh)
+
+    else:
+        print("-I-: creating model")
+        if( runmodels['map_generate_human_readable_dectree'] ):
+            model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
+        if( runmodels['map_manual_analyse_strongest_predictors'] ):
+            model_clf_score_route, clf_score_predictors, clf_score_responsecls = manual_analyse_strongest_predictors(data, data_dummies, featdef)
+    # dump
+    print("-I-: storing model to path %s" % path_saved_model)
+    with open (path_saved_model, 'wb') as fh:
+        # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
+        pickle.dump(
+                (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
+                , fh )
+
+    # TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
+    # </PICKLE>
+    # return the model
+    return (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
+################################################################################
+# /MODEL CACHING - generate or retrieve model+features
+################################################################################
+
 # self-run
 if(__name__ != '__main__'):
     # TMP
@@ -1093,42 +1139,8 @@ verbose_score_manual_generic_route = 0
 #+ use the generate_human_readable_dectree model, which has only three features
 # get a copy of the complete model which was run on the entire dataset
 
-# <PICKLE>
-# https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
-# path to pickle:
-import pickle
-path_saved_model = str()
-if( runmodels['map_generate_human_readable_dectree'] ):
-    path_saved_model = "output/human_read_dectree.pkl"
-elif( runmodels['map_manual_analyse_strongest_predictors'] ):
-    path_saved_model = "output/human_read_dectree.pkl"
-import os.path
-# model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
-model_clf_score_route, clf_score_predictors, clf_score_responsecls = ([],[],[])
-# load if exists
-loadpickle=1
-if (loadpickle  and os.path.exists(path_saved_model) and os.path.isfile(path_saved_model) ):
-    print("-I-: retrieving model from pickle file")
-    with open (path_saved_model, 'rb') as fh:
-        model_clf_score_route, clf_score_predictors, clf_score_responsecls = pickle.load(  fh )
-        # model_clf_score_route = pickle.load(fh)
-
-else:
-    print("-I-: creating model")
-    if( runmodels['map_generate_human_readable_dectree'] ):
-        model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
-    if( runmodels['map_manual_analyse_strongest_predictors'] ):
-        model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
-# dump
-print("-I-: storing model to path %s" % path_saved_model)
-with open (path_saved_model, 'wb') as fh:
-    # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
-    pickle.dump(
-            (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
-            , fh )
-
-# TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
-# </PICKLE>
+# get relevant model
+model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, featdef)
 ########################################
 # MOCK user environmental input
 ########################################
