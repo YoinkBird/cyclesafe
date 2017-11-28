@@ -235,6 +235,71 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
 ################################################################################
 
 ################################################################################
+# TODO: return the data calculated for the graph
+# <def_plot_roc_curve>
+def plot_roc_curve(clf, data, predictors, responsecls):
+    from sklearn.model_selection import StratifiedKFold,GroupKFold
+    #--------------------------------------------------------------------------------------------------------------
+    # ROC curve
+    # source: http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py
+    #------
+
+    cvFold = StratifiedKFold(n_splits=9)
+    # use previously chosen important features from dataset
+    print("-I: RFECV important predictors")
+    pp.pprint(predictors)
+    X_full = data[predictors]
+    y_full = data[responsecls]
+    # store multiple true-positive-rate
+    tprs = []
+    # store multiple area-under-curve
+    aucs = []
+    mean_fpr = np.linspace(0, 1, 100)
+    i = 0
+    for train, test in cvFold.split(X_full, y_full.values.ravel()):
+        # DOC: indexing src: https://stackoverflow.com/a/45116022
+        #+ DOC: alternative - shuffle df.index -  src: https://stackoverflow.com/a/31247293
+        proba_list_ = clf.fit(X_full.iloc[train], y_full.iloc[train]).predict_proba(X_full.iloc[test])
+        # compute ROC curve and ROCAUC (area under ROC curve)
+        #+ false-positive-rate, true-positive-rate
+        fpr, tpr, thresholds = roc_curve(y_full.iloc[test], proba_list_[:,1])
+        tprs.append(interp(mean_fpr, fpr, tpr))
+        tprs[-1][0] = 0.0
+        roc_auc = auc(fpr, tpr)
+        aucs.append(roc_auc)
+        if (options['graphics'] == 1):
+            plt.plot( fpr, tpr, lw=1, alpha=0.3, label = 'ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+        i += 1
+    if (options['graphics'] == 1):
+        plt.plot( [0, 1], [0, 1], linestyle='--', lw=2, color='r', label='50%', alpha=0.8)
+    # plot average true-positive-rate vs average false-positive-rate
+    mean_tpr = np.mean(tprs, axis=0)
+    mean_tpr[-1] = 1.0
+    mean_auc = auc(mean_fpr, mean_tpr)
+    std_auc = np.std(aucs)
+    if ( options['graphics'] == 1):
+        plt.plot(mean_fpr, mean_tpr, color='b', label=r'Mean ROC (AUC= %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=0.8)
+    # plot average false-positive-rate vs
+    std_tpr = np.std(tprs, axis=0)
+    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+    if (options['graphics'] == 1):
+        plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=0.2, label=r'$\pm$ 1 std. dev.')
+
+    if (options['graphics'] == 1):
+        # options
+        plt.xlim([-0.05, 1.05])
+        plt.ylim([-0.05, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True  Positive Rate')
+        plt.title('Receiver Operating Characteristic Curves')
+        plt.legend(loc="lower right")
+        # display
+        plt.show()
+# </def_plot_roc_curve>
+################################################################################
+
+################################################################################
 # <def_run_cross_val>
 # TODO: split into "find max feats" and "run_cross_val"
 def run_cross_val(data_dummies,featdef,dropfeatures=[]):
@@ -313,63 +378,8 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
         for i,feat in enumerate(clf_imp_feats.index):
             num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
             print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
-    #--------------------------------------------------------------------------------------------------------------
-    # ROC curve - currently independent of RFECV results
-    # source: http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py
-    #------
-
-    cvFold = StratifiedKFold(n_splits=9)
-    # use previously chosen important features from dataset
-    print("-I: RFECV important predictors")
-    pp.pprint(clf_imp_feats.index)
-    X_full = df_int_nonan[clf_imp_feats.index]
-    y_full = df_int_nonan[responsecls]
-    # store multiple true-positive-rate
-    tprs = []
-    # store multiple area-under-curve
-    aucs = []
-    mean_fpr = np.linspace(0, 1, 100)
-    i = 0
-    for train, test in cvFold.split(X_full, y_full.values.ravel()):
-        # DOC: indexing src: https://stackoverflow.com/a/45116022
-        #+ DOC: alternative - shuffle df.index -  src: https://stackoverflow.com/a/31247293
-        proba_list_ = clf.fit(X_full.iloc[train], y_full.iloc[train]).predict_proba(X_full.iloc[test])
-        # compute ROC curve and ROCAUC (area under ROC curve)
-        #+ false-positive-rate, true-positive-rate
-        fpr, tpr, thresholds = roc_curve(y_full.iloc[test], proba_list_[:,1])
-        tprs.append(interp(mean_fpr, fpr, tpr))
-        tprs[-1][0] = 0.0
-        roc_auc = auc(fpr, tpr)
-        aucs.append(roc_auc)
-        if (options['graphics'] == 1):
-            plt.plot( fpr, tpr, lw=1, alpha=0.3, label = 'ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
-        i += 1
-    if (options['graphics'] == 1):
-        plt.plot( [0, 1], [0, 1], linestyle='--', lw=2, color='r', label='50%', alpha=0.8)
-    # plot average true-positive-rate vs average false-positive-rate
-    mean_tpr = np.mean(tprs, axis=0)
-    mean_tpr[-1] = 1.0
-    mean_auc = auc(mean_fpr, mean_tpr)
-    std_auc = np.std(aucs)
-    if ( options['graphics'] == 1):
-        plt.plot(mean_fpr, mean_tpr, color='b', label=r'Mean ROC (AUC= %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc), lw=2, alpha=0.8)
-    # plot average false-positive-rate vs
-    std_tpr = np.std(tprs, axis=0)
-    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
-    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
-    if (options['graphics'] == 1):
-        plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=0.2, label=r'$\pm$ 1 std. dev.')
-
-    if (options['graphics'] == 1):
-        # options
-        plt.xlim([-0.05, 1.05])
-        plt.ylim([-0.05, 1.05])
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True  Positive Rate')
-        plt.title('Receiver Operating Characteristic Curves')
-        plt.legend(loc="lower right")
-        # display
-        plt.show()
+    # plot the curve - ROC curve is independent of RFECV results
+    plot_roc_curve(clf, df_int_nonan, clf_imp_feats.index, responsecls)
 
 
 
