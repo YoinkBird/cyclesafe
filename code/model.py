@@ -545,8 +545,6 @@ def mock_return_response_json(route):
 # /FUNCTIONS_FOR_API
 ################################################################################
 
-(data, data_dummies, df_int_nonan, featdef) = model_prepare()
-
 ################################################################################
 # MODELS - various
 ################################################################################
@@ -729,22 +727,9 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     return (clf, predictors, responsecls)
 #/end of determining strong features
 #</def_manual_analyse_strongest_predictors>
-
 ################################################################################
-# MODEL+EVALUATION - identify strong features
+# /MODEL+EVALUATION - identify strong features
 ################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Determination of Strongest Features")
-if( runmodels['manual_analyse_strongest_predictors'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
 
 
 ################################################################################
@@ -859,30 +844,9 @@ def generate_human_readable_dectree(data, data_dummies, featdef):
     # return the model
     return (clf, predictors, responsecls)
 #<def_generate_human_readable_dectree>
-
-################################################################################
-# MODEL+EVALUATION - human readable
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Human Readable Decision Tree")
-if( runmodels['generate_human_readable_dectree'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    model = generate_human_readable_dectree(data, data_dummies, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
 ################################################################################
 # /MODEL+EVALUATION - human readable
 ################################################################################
-
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: End of File")
-    print("################################################################################")
 
 ################################################################################
 # MODEL+EVALUATION - score manual-created user route
@@ -1008,6 +972,59 @@ def score_manual_predef_route(data, data_dummies, featdef):
     print("-I-: " + "END - WORK_IN_PROGRESS - scoring manual user route </score_manual_predef_route>")
     print("################################################################################")
 # <def_score_manual_predef_route>
+################################################################################
+# /MODEL+EVALUATION - score manual-created user route
+################################################################################
+
+# self-run
+if(__name__ != '__main__'):
+    # TMP
+    quit()
+
+################################################################################
+# PREPROCESS
+################################################################################
+# load data, featdef, etc
+(data, data_dummies, df_int_nonan, featdef) = model_prepare()
+################################################################################
+# /PREPROCESS
+################################################################################
+
+################################################################################
+# MODEL+EVALUATION - identify strong features
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Determination of Strongest Features")
+if( runmodels['manual_analyse_strongest_predictors'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+        model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+
+################################################################################
+# MODEL+EVALUATION - human readable
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Human Readable Decision Tree")
+if( runmodels['generate_human_readable_dectree'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+    model = generate_human_readable_dectree(data, data_dummies, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+################################################################################
+# /MODEL+EVALUATION - human readable
+################################################################################
+
 ################################################################################
 # MODEL+EVALUATION - score manual-created user route
 ################################################################################
@@ -1433,6 +1450,10 @@ print("#########################################################################
 print("-I-: " + "END - WORK_IN_PROGRESS - </score_manual_generic_route> ")
 print("################################################################################")
 
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: End of File")
+    print("################################################################################")
 ################################################################################
 #________________________________________________________________________________
 # FIN OVER FINITO STOP LOOKING FOR CODE
