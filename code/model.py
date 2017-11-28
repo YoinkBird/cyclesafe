@@ -34,6 +34,7 @@ if __name__ == '__main__':
             'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
             'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
             'score_manual_predef_route' : 0, # hard-coded route generated from input data, used for enabling scoring of new data
+            'score_manual_generic_route' : 1, # generic route passed in from routing service, used for scoring the route
             'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
             'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
             }
@@ -579,6 +580,7 @@ def mock_receive_request_json():
 # dump json to file for consumption by whatever else needs it
 # save, load, validate json
 def mock_return_response_json(route):
+    import json
     verbose = options['verbose']
     print("# save to file")
     # tmp:
@@ -596,7 +598,7 @@ def mock_return_response_json(route):
 
     return_value = -1
     # verify
-    if( response_json == loadedjson ):
+    if( route == loadedjson ):
         print("json string resurrected successfully")
         return_value = 1
     # compare the dict if possible?
@@ -1345,228 +1347,257 @@ for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , '
     else:
       print("varcheck fail - stil defined        " + var)
 
-print("################################################################################")
-print("-I-: " + "WORK_IN_PROGRESS - <score_manual_generic_route> ")
-print("################################################################################")
-print("#                                      NEXT:                                     ")
-print("#                                      NEXT:                                     ")
-print("#                                      NEXT:                                     ")
-print("refer to the outline for more details")
-print('''
-Today's menu:
-Get geo-json route:
-[x] * geo-json route planning: [JSFiddle+F12] - get sample of third-party routing json response
-[x] * client-server mock-interface: [ model.py + tbd ] - mock function returns hard-coded geo-json
-[ ]   * this approximates a future http connection
-[ ]   * "import mock_webthing as webthing" ....
-[ ] Score route:
-[x] * input to model: convert geo-json to format usable by model.predict
-[x]   * hack: re-use existing data for now, just overwrite the GPS
-[x] * score : scores = model.predict(<newdata>)
-15:00
-[x] * client-server mock-interface: [ model.py + tbd ] - generate json with gps coords, score
-[x]   * save coords to file
-[ ]   * consumer: maybe modified mapgen to display the scores, not sure yet.
+################################################################################
+# MODEL+EVALUATION - score manual-generic user route
+################################################################################
+# TODO?: is manual-generic actualy auto-generic?
+# <def_score_manual_generic_route>
+def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
+    print("################################################################################")
+    print("-I-: " + "WORK_IN_PROGRESS - <score_manual_generic_route> ")
+    print("################################################################################")
+    print("#                                      NEXT:                                     ")
+    print("#                                      NEXT:                                     ")
+    print("#                                      NEXT:                                     ")
+    print("refer to the outline for more details")
+    print('''
+    Today's menu:
+    Get geo-json route:
+    [x] * geo-json route planning: [JSFiddle+F12] - get sample of third-party routing json response
+    [x] * client-server mock-interface: [ model.py + tbd ] - mock function returns hard-coded geo-json
+    [ ]   * this approximates a future http connection
+    [ ]   * "import mock_webthing as webthing" ....
+    [ ] Score route:
+    [x] * input to model: convert geo-json to format usable by model.predict
+    [x]   * hack: re-use existing data for now, just overwrite the GPS
+    [x] * score : scores = model.predict(<newdata>)
+    15:00
+    [x] * client-server mock-interface: [ model.py + tbd ] - generate json with gps coords, score
+    [x]   * save coords to file
+    [ ]   * consumer: maybe modified mapgen to display the scores, not sure yet.
 
-Deliverable: 
-see literal pen-and-ink notebook (not ipynb)
-''')
-verbose_score_manual_generic_route = 0
-########################################
-# prepare model
-########################################
-# current SIMPLE user input:
-#+ use the generate_human_readable_dectree model, which has only three features
-# get a copy of the complete model which was run on the entire dataset
+    Deliverable: 
+    see literal pen-and-ink notebook (not ipynb)
+    ''')
+    verbose_score_manual_generic_route = 0
+    ########################################
+    # prepare model
+    ########################################
+    # current SIMPLE user input:
+    #+ use the generate_human_readable_dectree model, which has only three features
+    # get a copy of the complete model which was run on the entire dataset
 
-# get relevant model
-model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, df_int_nonan, featdef)
-########################################
-# MOCK user environmental input
-########################################
-print("################################################################################")
-print("-I-: " + "featdef:")
-print("################################################################################")
-for feat in featdef.columns:
-    print(feat);
-    pp.pprint( featdef[feat].unique() )
-print("################################################################################")
-print("-I-: " + "/featdef")
-print("################################################################################")
+    # get relevant model
+    model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, df_int_nonan, featdef)
+    ########################################
+    # MOCK user environmental input
+    ########################################
+    print("################################################################################")
+    print("-I-: " + "featdef:")
+    print("################################################################################")
+    for feat in featdef.columns:
+        print(feat);
+        pp.pprint( featdef[feat].unique() )
+    print("################################################################################")
+    print("-I-: " + "/featdef")
+    print("################################################################################")
 
-########################################
-# USER ENVIRONMENT DATA
-# auto_route_data is the automatically obtained data from the client
-# Note: working on mock data, but with the human_read_dectree that's not a problem. Essentially this is hard-coded to best-possible conditions right now, but also a few "fake conditions" such as whether the cyclist would be at-fault for the accident (i.e. whether they are cycling defensively)
-# 
-# TODO: convert to handle input data from client
-# - steps for model:
-# [x] step1: hard-code a client request with input data, populate auto_route_data
-# [ ] step1a: create function to read client env-data from file
-# - steps for client:
-# [ ] step2: update client to send hard-coded data
-# [ ] step3: update client to send user-selected data
-# [ ] step3b: find out if requested data can be auto-procured
+    ########################################
+    # USER ENVIRONMENT DATA
+    # auto_route_data is the automatically obtained data from the client
+    # Note: working on mock data, but with the human_read_dectree that's not a problem. Essentially this is hard-coded to best-possible conditions right now, but also a few "fake conditions" such as whether the cyclist would be at-fault for the accident (i.e. whether they are cycling defensively)
+    # 
+    # TODO: convert to handle input data from client
+    # - steps for model:
+    # [x] step1: hard-code a client request with input data, populate auto_route_data
+    # [ ] step1a: create function to read client env-data from file
+    # - steps for client:
+    # [ ] step2: update client to send hard-coded data
+    # [ ] step3: update client to send user-selected data
+    # [ ] step3b: find out if requested data can be auto-procured
 
-# step1:
-# if using model from map_manual_analyse_strongest_predictors
-if( runmodels['map_manual_analyse_strongest_predictors'] ):
-    print("-E-: user_environment not configured for map_manual_analyse_strongest_predictors")
-    quit()
-user_environment = {
-#    'latitude' ,
-#    'longitude' ,
-#    'intersecting_street_name' ,  # required
-#    'street_name' ,               # required
-    #----
-    'crash_time' : '16:18' ,                # meant as 'time of travel' 
-    'light_condition' : 'daylight' ,           # user should know this, but ultimately it can be looked up based on time?
-    'weather_condition' : 'cloudy' ,         # good to know
-    'surface_condition' : 'dry' ,         # not always known, but maybe?
-    'day_of_week' : 'wednesday' ,               # less relevant for immediate route planning
-    #----
-#    'intersection_related' ,      # user won't know, but maybe model can find out from DB
-#    'manner_of_collision' ,       # leaving here to indicate that model may be able to predict what to watch out for 
-    'crash_datetime' : '2017-01-01 16:18:00' ,            # enter exact time ... I think preproc can handle this conversion, actually
-    'crash_time_30m' : 1630 ,             # probably irrelevant? maybe easier for planning purposes
-    'crash_year' : '2017' ,                # irrelevant, may be needed later for granularity
-    }
-
-# if using model from map_generate_human_readable_dectree
-user_environment = {
-#gmap#        'bin_intersection_related' : '0', # 1 : intersection where cyclist should expect cars , 0 : all others
-        'bin_light_condition' : '1',      # 1 : daylight , 0 : all others
-        'bin_manner_of_collision' : '0',  # our distinction: 0 : motorist likely at fault , 1 : fault unclear
+    # step1:
+    # if using model from map_manual_analyse_strongest_predictors
+    if( runmodels['map_manual_analyse_strongest_predictors'] ):
+        print("-E-: user_environment not configured for map_manual_analyse_strongest_predictors")
+        quit()
+    user_environment = {
+    #    'latitude' ,
+    #    'longitude' ,
+    #    'intersecting_street_name' ,  # required
+    #    'street_name' ,               # required
+        #----
+        'crash_time' : '16:18' ,                # meant as 'time of travel' 
+        'light_condition' : 'daylight' ,           # user should know this, but ultimately it can be looked up based on time?
+        'weather_condition' : 'cloudy' ,         # good to know
+        'surface_condition' : 'dry' ,         # not always known, but maybe?
+        'day_of_week' : 'wednesday' ,               # less relevant for immediate route planning
+        #----
+    #    'intersection_related' ,      # user won't know, but maybe model can find out from DB
+    #    'manner_of_collision' ,       # leaving here to indicate that model may be able to predict what to watch out for 
+        'crash_datetime' : '2017-01-01 16:18:00' ,            # enter exact time ... I think preproc can handle this conversion, actually
+        'crash_time_30m' : 1630 ,             # probably irrelevant? maybe easier for planning purposes
+        'crash_year' : '2017' ,                # irrelevant, may be needed later for granularity
         }
-#
-########################################
 
-# TODO : pass in the filename
-geodata = mock_receive_request_json()
-if(0): # not using using overview_path, too many datapoints
-    print("route data - overview_path")
-    pp.pprint( geodata['routes'][0]['overview_path'])
+    # if using model from map_generate_human_readable_dectree
+    user_environment = {
+    #gmap#        'bin_intersection_related' : '0', # 1 : intersection where cyclist should expect cars , 0 : all others
+            'bin_light_condition' : '1',      # 1 : daylight , 0 : all others
+            'bin_manner_of_collision' : '0',  # our distinction: 0 : motorist likely at fault , 1 : fault unclear
+            }
+    #
+    ########################################
 
-print("required features:")
-pp.pprint(  clf_score_predictors )
-print("convert to model-consumable format")
-print(" need to merge GPS data with user input:")
-pp.pprint( user_environment.keys())
-if(verbose_score_manual_generic_route == 1):
+    # TODO : pass in the filename
+    geodata = mock_receive_request_json()
+    if(0): # not using using overview_path, too many datapoints
+        print("route data - overview_path")
+        pp.pprint( geodata['routes'][0]['overview_path'])
+
+    print("required features:")
+    pp.pprint(  clf_score_predictors )
+    print("convert to model-consumable format")
+    print(" need to merge GPS data with user input:")
+    pp.pprint( user_environment.keys())
+    if(verbose_score_manual_generic_route == 1):
+        print('''
+
+        until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
+        => need to match the lengths
+        ''')
+    print("munge - length-adjusted dataset [ auto_route_data ] ")
+
+
+    # refactor_multi_route_score_r1
+    # refactor_multi_route_score_r2 - limited response for first conversion
+    geodata_routes = get_gmap_direction_coords(geodata)
+    # refactor_multi_route_score_r3 - score all routes , return limited json
+    auto_route_data = {}
+    for ri,route in enumerate(geodata_routes):
+        # refactor_multi_route_score_r4 - score all routes , return full json
+        # returns pandas dataframe, only need score and gps coords
+        auto_route_data[ri] = score_single_route( geodata_routes[ri], user_environment, model_clf_score_route, clf_score_predictors)[['score','lat','lng']]
+
     print('''
 
-    until timer 20min: munge together dataset - insert generic gps as overwrite into manual-user-route data
-    => need to match the lengths
+    15:00 - until timer 20min: 
     ''')
-print("munge - length-adjusted dataset [ auto_route_data ] ")
+    print(" generate json with gps coords, score ")
+    # weird
+    if(verbose_score_manual_generic_route == 2):
+        print("original:")
+        # [x] TODOne: refactor to use 'geodata'
+        pp.pprint(
+                geodata['routes'][0]['overview_path']
+                )
+    if(verbose_score_manual_generic_route == 3):
+        print("new:")
+        pp.pprint(
+                auto_route_data[['score','latitude','longitude']].to_json()
+                )
+
+    # closer, need to get rid of index and rename col
+    '''
+    original:
+    [{'lat': 30.288230000000002, 'lng': -97.73692000000001},
+     {'lat': 30.289080000000002, 'lng': -97.73684000000002},
+     {'lat': 30.28947, 'lng': -97.73679000000001},
+
+    In [27]: json.loads(auto_route_data[['score','latitude','longitude']].transpose().to_json())
+    Out[27]: 
+    {'0': {'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
+     '1': {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
+
+    # has the index:
+    In [28]: auto_route_data[['score','latitude','longitude']].transpose()
+    Out[28]: 
+                      0          1          2          3          4          5   \
+    score       0.870229   0.888579   0.870229   0.909357   0.888579   0.909357   
+    latitude   30.288230  30.289080  30.289470  30.289550  30.289620  30.289630   
+    longitude -97.736920 -97.736840 -97.736790 -97.737980 -97.738950 -97.739130
+
+    # classic X-Y - 'transpose' was only in the way:
+    # src: https://stackoverflow.com/questions/28590663/pandas-dataframe-to-json-without-index
+    In [38]: json.loads(auto_route_data[['score','latitude','longitude']].to_json(orient='records'))
+    Out[38]: 
+    [{'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
+     {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
+    '''
 
 
-# refactor_multi_route_score_r1
-# refactor_multi_route_score_r2 - limited response for first conversion
-geodata_routes = get_gmap_direction_coords(geodata)
-# refactor_multi_route_score_r3 - score all routes , return limited json
-auto_route_data = {}
-for ri,route in enumerate(geodata_routes):
+    print("--------------------------------------------------------------------------------")
+    print(" final response: ")
+    import json
+    # refactor_multi_route_score_r3 - score all routes , return limited json
     # refactor_multi_route_score_r4 - score all routes , return full json
-    # returns pandas dataframe, only need score and gps coords
-    auto_route_data[ri] = score_single_route( geodata_routes[ri], user_environment, model_clf_score_route, clf_score_predictors)[['score','lat','lng']]
+    response_dict = {'routes' : [] , 'totalScores' : [] }
+    for ri,route in enumerate(auto_route_data):
+        # add total score
+        # total route score:
+        # 1 - prob of nothing happening, i.e. 1 - product of "non-event" 
+        print(1 - auto_route_data[ri]['score'].apply(lambda x: 1 - x).prod())
+        # average route score:
+        print(auto_route_data[ri]['score'].sum() / auto_route_data[ri]['score'].size)
+        response_dict['totalScores'].append( auto_route_data[ri]['score'].sum() / auto_route_data[ri]['score'].size ) 
+        #---
+        # add segment scores
+        # TODO: can omit the slice [['score','lat','lng']] as this is done further above already
+        response_dict['routes'].append( auto_route_data[ri][['score','lat','lng']].to_dict(orient='records') )
+    response_json = json.dumps(response_dict)
 
-print('''
-
-15:00 - until timer 20min: 
-''')
-print(" generate json with gps coords, score ")
-# weird
-if(verbose_score_manual_generic_route == 2):
-    print("original:")
-    # [x] TODOne: refactor to use 'geodata'
-    pp.pprint(
-            geodata['routes'][0]['overview_path']
-            )
-if(verbose_score_manual_generic_route == 3):
-    print("new:")
-    pp.pprint(
-            auto_route_data[['score','latitude','longitude']].to_json()
-            )
-
-# closer, need to get rid of index and rename col
-'''
-original:
-[{'lat': 30.288230000000002, 'lng': -97.73692000000001},
- {'lat': 30.289080000000002, 'lng': -97.73684000000002},
- {'lat': 30.28947, 'lng': -97.73679000000001},
-
-In [27]: json.loads(auto_route_data[['score','latitude','longitude']].transpose().to_json())
-Out[27]: 
-{'0': {'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
- '1': {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
-
-# has the index:
-In [28]: auto_route_data[['score','latitude','longitude']].transpose()
-Out[28]: 
-                  0          1          2          3          4          5   \
-score       0.870229   0.888579   0.870229   0.909357   0.888579   0.909357   
-latitude   30.288230  30.289080  30.289470  30.289550  30.289620  30.289630   
-longitude -97.736920 -97.736840 -97.736790 -97.737980 -97.738950 -97.739130
-
-# classic X-Y - 'transpose' was only in the way:
-# src: https://stackoverflow.com/questions/28590663/pandas-dataframe-to-json-without-index
-In [38]: json.loads(auto_route_data[['score','latitude','longitude']].to_json(orient='records'))
-Out[38]: 
-[{'latitude': 30.28823, 'longitude': -97.73692, 'score': 0.8702290076},
- {'latitude': 30.28908, 'longitude': -97.73684, 'score': 0.8885793872},
-'''
-
-
-print("--------------------------------------------------------------------------------")
-print(" final response: ")
-import json
-# refactor_multi_route_score_r3 - score all routes , return limited json
-# refactor_multi_route_score_r4 - score all routes , return full json
-response_dict = {'routes' : [] , 'totalScores' : [] }
-for ri,route in enumerate(auto_route_data):
-    # add total score
-    # total route score:
-    # 1 - prob of nothing happening, i.e. 1 - product of "non-event" 
-    print(1 - auto_route_data[ri]['score'].apply(lambda x: 1 - x).prod())
-    # average route score:
-    print(auto_route_data[ri]['score'].sum() / auto_route_data[ri]['score'].size)
-    response_dict['totalScores'].append( auto_route_data[ri]['score'].sum() / auto_route_data[ri]['score'].size ) 
-    #---
-    # add segment scores
-    # TODO: can omit the slice [['score','lat','lng']] as this is done further above already
-    response_dict['routes'].append( auto_route_data[ri][['score','lat','lng']].to_dict(orient='records') )
-response_json = json.dumps(response_dict)
-
-print("response json")
-pp.pprint( json.loads(
-    response_json
-))
-
-# reply
-print("save json to file. is mock equivalent of submitting json as a response")
-if( mock_return_response_json( response_json ) ):
-    print("json mock-response sent")
-print("internal data structure") #, with only response variables")
-# refactor_multi_route_score_r3 - score all routes , return limited json
-# refactor_multi_route_score_r4 - score all routes , return full json
-pp.pprint(
-        auto_route_data # [0][['score','lat','lng']]
-        )
-if(verbose_score_manual_generic_route == 2):
-    print("response data:")
+    print("response json")
     pp.pprint( json.loads(
         response_json
     ))
-    print("request data:")
+
+    # reply
+    print("save json to file. is mock equivalent of submitting json as a response")
+    if( mock_return_response_json( response_json ) ):
+        print("json mock-response sent")
+    print("internal data structure") #, with only response variables")
+    # refactor_multi_route_score_r3 - score all routes , return limited json
+    # refactor_multi_route_score_r4 - score all routes , return full json
     pp.pprint(
-            geodata['routes'][0]['overview_path']
+            auto_route_data # [0][['score','lat','lng']]
             )
+    if(verbose_score_manual_generic_route == 2):
+        print("response data:")
+        pp.pprint( json.loads(
+            response_json
+        ))
+        print("request data:")
+        pp.pprint(
+                geodata['routes'][0]['overview_path']
+                )
 
 
-print("################################################################################")
-print("-I-: " + "END - WORK_IN_PROGRESS - </score_manual_generic_route> ")
-print("################################################################################")
+    print("################################################################################")
+    print("-I-: " + "END - WORK_IN_PROGRESS - </score_manual_generic_route> ")
+    print("################################################################################")
+# </def_score_manual_generic_route>
+################################################################################
+# /MODEL+EVALUATION - score manual-generic user route
+################################################################################
+
+################################################################################
+# MODEL+EVALUATION - score manual-generic user route
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Score Manual-Generic User Route")
+if( runmodels['score_manual_generic_route'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+    score_manual_generic_route(data, data_dummies, df_int_nonan, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+################################################################################
+# /MODEL+EVALUATION - score manual-generic user route
+################################################################################
 
 if( options['verbose'] >= 0):
     print("################################################################################")
