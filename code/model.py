@@ -235,9 +235,8 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
 ################################################################################
 
 ################################################################################
-# TODO: return the data calculated for the graph
-# <def_plot_roc_curve>
-def plot_roc_curve(clf, data, predictors, responsecls):
+# <def_cvfold_plot_roc_curve>
+def plot_cvfold_roc_curve(clf, data, predictors, responsecls, cv=5):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
     my_graphics = options['graphics']
     #--------------------------------------------------------------------------------------------------------------
@@ -245,7 +244,7 @@ def plot_roc_curve(clf, data, predictors, responsecls):
     # source: http://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html#sphx-glr-auto-examples-model-selection-plot-roc-crossval-py
     #------
 
-    cvFold = StratifiedKFold(n_splits=9)
+    cvFold = StratifiedKFold(n_splits=cv)
     # use previously chosen important features from dataset
     print("-I: RFECV important predictors")
     pp.pprint(predictors)
@@ -297,8 +296,11 @@ def plot_roc_curve(clf, data, predictors, responsecls):
         plt.legend(loc="lower right")
         # display
         plt.show()
+    # mean of aucs same as mean_auc from auc(mean_fpr,mean_tpr)
+    print(aucs)
+    print(np.mean(aucs))
     return( mean_auc, std_auc, std_tpr)
-# </def_plot_roc_curve>
+# </def_cvfold_plot_roc_curve>
 ################################################################################
 
 ################################################################################
@@ -381,7 +383,7 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
             num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
             print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     # plot the curve - ROC curve is independent of RFECV results
-    (mean_auc, std_auc, std_tpr) = plot_roc_curve(clf, df_int_nonan, clf_imp_feats.index, responsecls)
+    (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, df_int_nonan, clf_imp_feats.index, responsecls)
     print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
 
 
