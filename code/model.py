@@ -737,7 +737,12 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
 # MODEL+EVALUATION - human readable
 ################################################################################
 #<def_generate_human_readable_dectree>
-def generate_human_readable_dectree(data, data_dummies, featdef):
+# note: 'df_int_nonan' not needed in this routine
+def generate_human_readable_dectree(*args):
+    if(len(args) == 3):
+        (data, data_dummies, featdef) = args
+    if(len(args) == 4):
+        (data, data_dummies, df_int_nonan, featdef) = args
     verbose = options['verbose']
     # this model is for human-consumption by generating a human-readable decision tree
     #+ as such, it focuses only on binary choices to reduce the complexity
@@ -980,16 +985,24 @@ def score_manual_predef_route(data, data_dummies, featdef):
 ################################################################################
 # MODEL CACHING - generate or retrieve model+features
 ################################################################################
-def retrieve_model(data, data_dummies, featdef):
+# <def_retrieve_model>
+def retrieve_model(*args):
+    if(len(args) == 3):
+        (data, data_dummies, featdef) = args
+    if(len(args) == 4):
+        (data, data_dummies, df_int_nonan, featdef) = args
     # <PICKLE>
     # https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
     # path to pickle:
     import pickle
     path_saved_model = str()
+    model_gen_fn = 0
     if( runmodels['map_generate_human_readable_dectree'] ):
         path_saved_model = "output/human_read_dectree.pkl"
+        model_gen_fn = generate_human_readable_dectree
     elif( runmodels['map_manual_analyse_strongest_predictors'] ):
         path_saved_model = "output/human_read_dectree.pkl"
+        model_gen_fn = manual_analyse_strongest_predictors
     import os.path
     # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
     model_clf_score_route, clf_score_predictors, clf_score_responsecls = ([],[],[])
@@ -1003,10 +1016,11 @@ def retrieve_model(data, data_dummies, featdef):
 
     else:
         print("-I-: creating model")
-        if( runmodels['map_generate_human_readable_dectree'] ):
-            model_clf_score_route, clf_score_predictors, clf_score_responsecls = generate_human_readable_dectree(data, data_dummies, featdef)
-        if( runmodels['map_manual_analyse_strongest_predictors'] ):
-            model_clf_score_route, clf_score_predictors, clf_score_responsecls = manual_analyse_strongest_predictors(data, data_dummies, featdef)
+        model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, df_int_nonan, featdef)
+#        if( runmodels['map_generate_human_readable_dectree'] ):
+#            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
+#        if( runmodels['map_manual_analyse_strongest_predictors'] ):
+#            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
     # dump
     print("-I-: storing model to path %s" % path_saved_model)
     with open (path_saved_model, 'wb') as fh:
@@ -1019,6 +1033,7 @@ def retrieve_model(data, data_dummies, featdef):
     # </PICKLE>
     # return the model
     return (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
+# </def_retrieve_model>
 ################################################################################
 # /MODEL CACHING - generate or retrieve model+features
 ################################################################################
@@ -1140,7 +1155,7 @@ verbose_score_manual_generic_route = 0
 # get a copy of the complete model which was run on the entire dataset
 
 # get relevant model
-model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, featdef)
+model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, df_int_nonan, featdef)
 ########################################
 # MOCK user environmental input
 ########################################
