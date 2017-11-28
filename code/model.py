@@ -1210,144 +1210,6 @@ def score_manual_predef_route(data, data_dummies, featdef):
 ################################################################################
 
 ################################################################################
-# MODEL CACHING - generate or retrieve model+features
-################################################################################
-# <def_retrieve_model>
-def retrieve_model(*args):
-    if(len(args) == 3):
-        (data, data_dummies, featdef) = args
-    if(len(args) == 4):
-        (data, data_dummies, df_int_nonan, featdef) = args
-    # <PICKLE>
-    # https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
-    # path to pickle:
-    import pickle
-    path_saved_model = str()
-    model_gen_fn = 0
-    if( runmodels['map_generate_human_readable_dectree'] ):
-        path_saved_model = "output/human_read_dectree.pkl"
-        model_gen_fn = generate_human_readable_dectree
-    elif( runmodels['map_manual_analyse_strongest_predictors'] ):
-        path_saved_model = "output/human_read_dectree.pkl"
-        model_gen_fn = manual_analyse_strongest_predictors
-    import os.path
-    # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
-    model_clf_score_route, clf_score_predictors, clf_score_responsecls = ([],[],[])
-    # load if exists
-    loadpickle=1
-    if (loadpickle  and os.path.exists(path_saved_model) and os.path.isfile(path_saved_model) ):
-        print("-I-: retrieving model from pickle file")
-        with open (path_saved_model, 'rb') as fh:
-            model_clf_score_route, clf_score_predictors, clf_score_responsecls = pickle.load(  fh )
-            # model_clf_score_route = pickle.load(fh)
-
-    else:
-        print("-I-: creating model")
-        model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, df_int_nonan, featdef)
-#        if( runmodels['map_generate_human_readable_dectree'] ):
-#            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
-#        if( runmodels['map_manual_analyse_strongest_predictors'] ):
-#            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
-    # dump
-    print("-I-: storing model to path %s" % path_saved_model)
-    with open (path_saved_model, 'wb') as fh:
-        # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
-        pickle.dump(
-                (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
-                , fh )
-
-    # TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
-    # </PICKLE>
-    # return the model
-    return (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
-# </def_retrieve_model>
-################################################################################
-# /MODEL CACHING - generate or retrieve model+features
-################################################################################
-
-# self-run
-if(__name__ != '__main__'):
-    # TMP
-    quit()
-
-################################################################################
-# PREPROCESS
-################################################################################
-# load data, featdef, etc
-(data, data_dummies, df_int_nonan, featdef) = model_prepare()
-################################################################################
-# /PREPROCESS
-################################################################################
-
-################################################################################
-# MODEL+EVALUATION - identify strong features
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Determination of Strongest Features")
-if( runmodels['manual_analyse_strongest_predictors'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-        model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-
-################################################################################
-# MODEL+EVALUATION - human readable
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Human Readable Decision Tree")
-if( runmodels['generate_human_readable_dectree'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    model = generate_human_readable_dectree(data, data_dummies, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-################################################################################
-# /MODEL+EVALUATION - human readable
-################################################################################
-
-################################################################################
-# MODEL+EVALUATION - score manual-created user route
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Score Manually-Created User Route")
-if( runmodels['score_manual_predef_route'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    # no return value, just an enablement stub
-    score_manual_predef_route(data, data_dummies, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-################################################################################
-# /MODEL+EVALUATION - score manual-created user route
-################################################################################
-
-################################################################################
-# clear env as best we can until this all gets refactored
-# delete by name
-if(0):
-    del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
-# then loop and verify
-for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'X_test', 'y_pred' , 'y_pred_predict' ]:
-    print(var)
-    if var not in locals():
-      print("varcheck pass - succesfully removed " + var)
-    else:
-      print("varcheck fail - stil defined        " + var)
-
-################################################################################
 # MODEL+EVALUATION - score manual-generic user route
 ################################################################################
 # TODO?: is manual-generic actualy auto-generic?
@@ -1581,6 +1443,132 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
 ################################################################################
 
 ################################################################################
+# MODEL CACHING - generate or retrieve model+features
+################################################################################
+# <def_retrieve_model>
+def retrieve_model(*args):
+    if(len(args) == 3):
+        (data, data_dummies, featdef) = args
+    if(len(args) == 4):
+        (data, data_dummies, df_int_nonan, featdef) = args
+    # <PICKLE>
+    # https://stackoverflow.com/questions/10592605/save-classifier-to-disk-in-scikit-learn
+    # path to pickle:
+    import pickle
+    path_saved_model = str()
+    model_gen_fn = 0
+    if( runmodels['map_generate_human_readable_dectree'] ):
+        path_saved_model = "output/human_read_dectree.pkl"
+        model_gen_fn = generate_human_readable_dectree
+    elif( runmodels['map_manual_analyse_strongest_predictors'] ):
+        path_saved_model = "output/human_read_dectree.pkl"
+        model_gen_fn = manual_analyse_strongest_predictors
+    import os.path
+    # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
+    model_clf_score_route, clf_score_predictors, clf_score_responsecls = ([],[],[])
+    # load if exists
+    loadpickle=1
+    if (loadpickle  and os.path.exists(path_saved_model) and os.path.isfile(path_saved_model) ):
+        print("-I-: retrieving model from pickle file")
+        with open (path_saved_model, 'rb') as fh:
+            model_clf_score_route, clf_score_predictors, clf_score_responsecls = pickle.load(  fh )
+            # model_clf_score_route = pickle.load(fh)
+
+    else:
+        print("-I-: creating model")
+        model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, df_int_nonan, featdef)
+#        if( runmodels['map_generate_human_readable_dectree'] ):
+#            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
+#        if( runmodels['map_manual_analyse_strongest_predictors'] ):
+#            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
+    # dump
+    print("-I-: storing model to path %s" % path_saved_model)
+    with open (path_saved_model, 'wb') as fh:
+        # wrong place, used to create the model # pickle.dump( (data, data_dummies, featdef) , fh )
+        pickle.dump(
+                (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
+                , fh )
+
+    # TODO-PICKLE  - validate here: ValueError: Unable to coerce to Series, length must be 65: given 14
+    # </PICKLE>
+    # return the model
+    return (model_clf_score_route, clf_score_predictors, clf_score_responsecls)
+# </def_retrieve_model>
+################################################################################
+# /MODEL CACHING - generate or retrieve model+features
+################################################################################
+
+# self-run
+if(__name__ != '__main__'):
+    # TMP
+    quit()
+
+################################################################################
+# PREPROCESS
+################################################################################
+# load data, featdef, etc
+(data, data_dummies, df_int_nonan, featdef) = model_prepare()
+################################################################################
+# /PREPROCESS
+################################################################################
+
+################################################################################
+# MODEL+EVALUATION - identify strong features
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Determination of Strongest Features")
+if( runmodels['manual_analyse_strongest_predictors'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+        model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+
+################################################################################
+# MODEL+EVALUATION - human readable
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Human Readable Decision Tree")
+if( runmodels['generate_human_readable_dectree'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+    model = generate_human_readable_dectree(data, data_dummies, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+################################################################################
+# /MODEL+EVALUATION - human readable
+################################################################################
+
+################################################################################
+# MODEL+EVALUATION - score manual-created user route
+################################################################################
+if( options['verbose'] >= 0):
+    print("################################################################################")
+    print("-I-: " + "Score Manually-Created User Route")
+if( runmodels['score_manual_predef_route'] ):
+    if( options['verbose'] >= 0):
+        print("-I-: " + "running ...")
+    # no return value, just an enablement stub
+    score_manual_predef_route(data, data_dummies, featdef)
+else:
+    if( options['verbose'] >= 0):
+        print("-I-: " + "skipping ...")
+if( options['verbose'] >= 0):
+    print("################################################################################")
+################################################################################
+# /MODEL+EVALUATION - score manual-created user route
+################################################################################
+
+
+################################################################################
 # MODEL+EVALUATION - score manual-generic user route
 ################################################################################
 if( options['verbose'] >= 0):
@@ -1598,6 +1586,20 @@ if( options['verbose'] >= 0):
 ################################################################################
 # /MODEL+EVALUATION - score manual-generic user route
 ################################################################################
+
+
+################################################################################
+# clear env as best we can
+# delete by name
+if(0):
+    del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
+# then loop and verify
+for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'X_test', 'y_pred' , 'y_pred_predict' ]:
+    print(var)
+    if var not in locals():
+      print("varcheck pass - succesfully removed " + var)
+    else:
+      print("varcheck fail - stil defined        " + var)
 
 if( options['verbose'] >= 0):
     print("################################################################################")
