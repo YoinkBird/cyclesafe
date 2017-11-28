@@ -1499,112 +1499,109 @@ def retrieve_model(*args):
 ################################################################################
 
 # self-run
-if(__name__ != '__main__'):
-    # TMP
-    quit()
+if(__name__ == '__main__'):
+    ################################################################################
+    # PREPROCESS
+    ################################################################################
+    # load data, featdef, etc
+    (data, data_dummies, df_int_nonan, featdef) = model_prepare()
+    ################################################################################
+    # /PREPROCESS
+    ################################################################################
 
-################################################################################
-# PREPROCESS
-################################################################################
-# load data, featdef, etc
-(data, data_dummies, df_int_nonan, featdef) = model_prepare()
-################################################################################
-# /PREPROCESS
-################################################################################
-
-################################################################################
-# MODEL+EVALUATION - identify strong features
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Determination of Strongest Features")
-if( runmodels['manual_analyse_strongest_predictors'] ):
+    ################################################################################
+    # MODEL+EVALUATION - identify strong features
+    ################################################################################
     if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-        model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-
-################################################################################
-# MODEL+EVALUATION - human readable
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Human Readable Decision Tree")
-if( runmodels['generate_human_readable_dectree'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    model = generate_human_readable_dectree(data, data_dummies, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-################################################################################
-# /MODEL+EVALUATION - human readable
-################################################################################
-
-################################################################################
-# MODEL+EVALUATION - score manual-created user route
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Score Manually-Created User Route")
-if( runmodels['score_manual_predef_route'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    # no return value, just an enablement stub
-    score_manual_predef_route(data, data_dummies, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-################################################################################
-# /MODEL+EVALUATION - score manual-created user route
-################################################################################
-
-
-################################################################################
-# MODEL+EVALUATION - score manual-generic user route
-################################################################################
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: " + "Score Manual-Generic User Route")
-if( runmodels['score_manual_generic_route'] ):
-    if( options['verbose'] >= 0):
-        print("-I-: " + "running ...")
-    score_manual_generic_route(data, data_dummies, df_int_nonan, featdef)
-else:
-    if( options['verbose'] >= 0):
-        print("-I-: " + "skipping ...")
-if( options['verbose'] >= 0):
-    print("################################################################################")
-################################################################################
-# /MODEL+EVALUATION - score manual-generic user route
-################################################################################
-
-
-################################################################################
-# clear env as best we can
-# delete by name
-if(0):
-    del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
-# then loop and verify
-for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'X_test', 'y_pred' , 'y_pred_predict' ]:
-    print(var)
-    if var not in locals():
-      print("varcheck pass - succesfully removed " + var)
+        print("################################################################################")
+        print("-I-: " + "Determination of Strongest Features")
+    if( runmodels['manual_analyse_strongest_predictors'] ):
+        if( options['verbose'] >= 0):
+            print("-I-: " + "running ...")
+            model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
     else:
-      print("varcheck fail - stil defined        " + var)
+        if( options['verbose'] >= 0):
+            print("-I-: " + "skipping ...")
+    if( options['verbose'] >= 0):
+        print("################################################################################")
 
-if( options['verbose'] >= 0):
-    print("################################################################################")
-    print("-I-: End of File")
-    print("################################################################################")
+    ################################################################################
+    # MODEL+EVALUATION - human readable
+    ################################################################################
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+        print("-I-: " + "Human Readable Decision Tree")
+    if( runmodels['generate_human_readable_dectree'] ):
+        if( options['verbose'] >= 0):
+            print("-I-: " + "running ...")
+        model = generate_human_readable_dectree(data, data_dummies, featdef)
+    else:
+        if( options['verbose'] >= 0):
+            print("-I-: " + "skipping ...")
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+    ################################################################################
+    # /MODEL+EVALUATION - human readable
+    ################################################################################
+
+    ################################################################################
+    # MODEL+EVALUATION - score manual-created user route
+    ################################################################################
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+        print("-I-: " + "Score Manually-Created User Route")
+    if( runmodels['score_manual_predef_route'] ):
+        if( options['verbose'] >= 0):
+            print("-I-: " + "running ...")
+        # no return value, just an enablement stub
+        score_manual_predef_route(data, data_dummies, featdef)
+    else:
+        if( options['verbose'] >= 0):
+            print("-I-: " + "skipping ...")
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+    ################################################################################
+    # /MODEL+EVALUATION - score manual-created user route
+    ################################################################################
+
+
+    ################################################################################
+    # MODEL+EVALUATION - score manual-generic user route
+    ################################################################################
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+        print("-I-: " + "Score Manual-Generic User Route")
+    if( runmodels['score_manual_generic_route'] ):
+        if( options['verbose'] >= 0):
+            print("-I-: " + "running ...")
+        score_manual_generic_route(data, data_dummies, df_int_nonan, featdef)
+    else:
+        if( options['verbose'] >= 0):
+            print("-I-: " + "skipping ...")
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+    ################################################################################
+    # /MODEL+EVALUATION - score manual-generic user route
+    ################################################################################
+
+
+    ################################################################################
+    # clear env as best we can
+    # delete by name
+    if(0):
+        del(user_route_data, model_clf_simple, clf_simple_predictors, clf_simple_responsecls, X_test, y_pred, y_pred_predict)
+    # then loop and verify
+    for var in ['user_route_data' , 'model_clf_simple' , 'clf_simple_predictors' , 'clf_simple_responsecls' , 'X_test', 'y_pred' , 'y_pred_predict' ]:
+        print(var)
+        if var not in locals():
+          print("varcheck pass - succesfully removed " + var)
+        else:
+          print("varcheck fail - stil defined        " + var)
+
+    if( options['verbose'] >= 0):
+        print("################################################################################")
+        print("-I-: End of File")
+        print("################################################################################")
 ################################################################################
 #________________________________________________________________________________
 # FIN OVER FINITO STOP LOOKING FOR CODE
