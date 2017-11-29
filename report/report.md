@@ -484,6 +484,18 @@ In python sklearn terms, training is referred to as "fit" and prediction is refe
 Cross Validation  
 Cross Validation is a technique to improve model accuracy by adjusting model parameters until the model achieves a maximum score against a separate testing dataset.  
 
+Cross Validation Score  
+Model performance is calculated by evaluating the model's predictions against known values. 
+This evaluation provides a measure of how accurate the model is.
+
+ROC-AUC - Receiver Operating Characteristic 
+ROC is often used to measure model performance for a categorical dataset. It measures the true-positive and against the false-positive rate of the predictions, thereby forming a curve. 
+AUC - Receiver Operating Characteristic Area Under Curve 
+The area under the curve formed by ROC is calculated and used as as the ROC score. The goal is to maximise the area, with an AUC of 1 meaning a perfect model. 
+
+As a side note, the receiver operating characteristic owes its name to its invention for use by radio receiver operators during World War 2. The metric was originally used to evaluate the prediction accuracy of radar systems when detecting aircraft and later found use in machine learning. [@wikiROChistory]
+
+[@wikiROChistory]: https://en.wikipedia.org/wiki/Receiver_operating_characteristic#History
 
 Feature Selection - Theory  
 Feature selection generally refers to the process of choosing which features to include in a model.  
