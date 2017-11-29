@@ -1102,6 +1102,8 @@ Deployment: dataset for crash data contains data not easily obtainable in the fi
 The decision was made to build a new model without this field-unobtainable data. <!-- @FUTUREWORK: segmentation  -->
 The alternative would have been to follow the CRISP-DM flowchart and "loop back" to the business-understanding phase to reassess the feasibility of this project. For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented.  
 
+Feature Selection:  
+
 <!-- @FUTUREWORK:  -->
 #### segmentation_models: 
 Technique: Multiple models operating on Segmented Dataset  
@@ -1118,57 +1120,6 @@ Purpose: real-world sometimes has missing data. naive approach is to create mode
 Cross-Validation Strategy: StratifiedKFold, score: roc_auc_score  
 Feature-Elimination: RFECV with cvFold(2), scoring =  roc_auc  
 
-**Feature Selection - Results**   
-RFECV on the full set of features with 233 data points lead to high variance between RFECV scores.  
-This indicated that the dataset for this number of features could not lead to a reliable model.  
-<pre>
--I-: First Run
--I-: creating new dataset without []
-NaN handling: Samples: NaN data 1999 / 2232 fullset => 233 newset
-NaN handling: no  feature reduction after dropna(): pre 54 , post 54
-</pre>
-
----
-For the second run the dataset was increased to reduce the variance in RFECV scores.  
-The 'average_daily_traffic_amount' and 'average_daily_traffic_year' were removed from the feature list as they were strong features with the least amount of data-points.
-This lead to a dataset with 1644 data-points instead of only 233, but there was still high variance between the RFECV scores although it had settled.  
-The most strongest features were crash_year and speed_limit.  
-<pre>
--I-: Second Run
--I-: creating new dataset without ['average_daily_traffic_amount', 'average_daily_traffic_year']
-NaN handling: Samples: NaN data 588 / 2232 fullset => 1644 newset
-NaN handling: no  feature reduction after dropna(): pre 52 , post 52
-</pre>
-
----
-crash_year was removed for the next run, as it is a posterior feature, i.e. it can be assumed that the current year will not be predictive of a crash.  
-The other strong feature, 'speed_limit', was not removed.  
-This lead to a local maximum stabilisation of the RFECV scores starting at 16 features.  
-The strongest features were speed_limit and surface_condition.  
-<pre>
--I-: Third Run
--I-: creating new dataset without ['average_daily_traffic_amount', 'average_daily_traffic_year', 'crash_year']
-NaN handling: Samples: NaN data 588 / 2232 fullset => 1644 newset
-NaN handling: no  feature reduction after dropna(): pre 51 , post 51
-</pre>
-
----
-The next run was performed without any of the previous strongest features.
-This lead to a RFECV scores with a sharp peak at 5 features which then gradually descended.  
-The most important features were 5 days of the week.
-This was the final run, as the resulting scores were much lower than the previous run. This indicated that this and any further feature elimination would only weaken the model.
-
-<pre>
--I-: Fourth Run
--I-: creating new dataset without ['average_daily_traffic_amount', 'average_daily_traffic_year', 'crash_year', 'speed_limit', 'surface_condition']
-NaN handling: Samples: NaN data 19 / 2232 fullset => 2213 newset
-NaN handling: no  feature reduction after dropna(): pre 49 , post 49
-</pre>
-
-**Final Features**  
-The features from the third run were chosen for the model due to the stable RFECV scores.  
-The fourth run resulted in features with scores an order of magnitude lower than the previous scores of the manually excluded features.
-Therefore, the feature list from the fourth run was determined to be the one to use for optimal model prediction.  
 
 [@sklearn_feat_sel_rfe]: http://scikit-learn.org/stable/modules/feature_selection.html#recursive-feature-elimination
 
@@ -1945,6 +1896,59 @@ featdef is used to track the origin of newly implemented features, so if a model
 
 featdef tracks the type of feature as well to identify which features are meant to be used in the model and which aren't, such as the case-id.   
 -->
+
+## Appendix: Modeling - Feature Selection for interpretable_model
+
+RFECV on the full set of features with 233 data points lead to high variance between RFECV scores.  
+This indicated that the dataset for this number of features could not lead to a reliable model.  
+<pre>
+-I-: First Run
+-I-: creating new dataset without []
+NaN handling: Samples: NaN data 1999 / 2232 fullset => 233 newset
+NaN handling: no  feature reduction after dropna(): pre 54 , post 54
+</pre>
+
+---
+For the second run the dataset was increased to reduce the variance in RFECV scores.  
+The 'average_daily_traffic_amount' and 'average_daily_traffic_year' were removed from the feature list as they were strong features with the least amount of data-points.
+This lead to a dataset with 1644 data-points instead of only 233, but there was still high variance between the RFECV scores although it had settled.  
+The most strongest features were crash_year and speed_limit.  
+<pre>
+-I-: Second Run
+-I-: creating new dataset without ['average_daily_traffic_amount', 'average_daily_traffic_year']
+NaN handling: Samples: NaN data 588 / 2232 fullset => 1644 newset
+NaN handling: no  feature reduction after dropna(): pre 52 , post 52
+</pre>
+
+---
+crash_year was removed for the next run, as it is a posterior feature, i.e. it can be assumed that the current year will not be predictive of a crash.  
+The other strong feature, 'speed_limit', was not removed.  
+This lead to a local maximum stabilisation of the RFECV scores starting at 16 features.  
+The strongest features were speed_limit and surface_condition.  
+<pre>
+-I-: Third Run
+-I-: creating new dataset without ['average_daily_traffic_amount', 'average_daily_traffic_year', 'crash_year']
+NaN handling: Samples: NaN data 588 / 2232 fullset => 1644 newset
+NaN handling: no  feature reduction after dropna(): pre 51 , post 51
+</pre>
+
+---
+The next run was performed without any of the previous strongest features.
+This lead to a RFECV scores with a sharp peak at 5 features which then gradually descended.  
+The most important features were 5 days of the week.
+This was the final run, as the resulting scores were much lower than the previous run. This indicated that this and any further feature elimination would only weaken the model.
+
+<pre>
+-I-: Fourth Run
+-I-: creating new dataset without ['average_daily_traffic_amount', 'average_daily_traffic_year', 'crash_year', 'speed_limit', 'surface_condition']
+NaN handling: Samples: NaN data 19 / 2232 fullset => 2213 newset
+NaN handling: no  feature reduction after dropna(): pre 49 , post 49
+</pre>
+
+**Final Features**  
+The features from the third run were chosen for the model due to the stable RFECV scores.  
+The fourth run resulted in features with scores an order of magnitude lower than the previous scores of the manually excluded features.
+Therefore, the feature list from the fourth run was determined to be the one to use for optimal model prediction.  
 
 <!--
 Table Generation from Bullets
