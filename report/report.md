@@ -481,6 +481,48 @@ In python sklearn terms, training is referred to as "fit" and prediction is refe
 @TODO: feature vs descriptive feature vs predictor
 -->
 
+Cross Validation  
+Cross Validation is a technique to improve model accuracy by adjusting model parameters until the model achieves a maximum score against a separate testing dataset.  
+
+
+Feature Selection - Theory  
+Feature selection generally refers to the process of choosing which features to include in a model.  
+By default, a model can be trained on all features and left to decide which features are most important.  
+However, there are several reasons that this approach may not be appropriate for finding the optimal solution.  
+Some features can be strong but induce a lot of variance in the model results, or some features are omitted based on domain expertise.  
+
+Feature elimination is used to improve model accuracy scores in case certain features induce too much variability.  
+In particular, it can be used to increase the prediction reliability for a decision tree classifier by removing features which cause high variance in model scores.  
+Decision Trees work by recursively partitioning the dataset between features based on how well they split the dataset.  
+Due to this criteria, when determining each partition there can be several eligible features.  
+Therefore, many implementations choose this feature at random with the expectation that the overall best features will be chosen by creating several decision trees together in what is known as a Random Forest.  
+
+Some features are ill-suited for a decision tree model because their data leads to several splits without increasing the prediction score, thus "hiding" more useful features.  
+
+**Recursive Feature Elimination**  
+Recursive feature elimination (RFE) works by creating models with a decreasing number of features until a desired number of features is reached [@sklearn_feat_sel_rfe] .  
+This technique is used to reduce the dimensionality of a feature set to a fixed magnitude.  
+
+**Recursive Feature Elimination with Cross Validation**   
+Recursive Feature Elimination with Cross Validation (RFECV) runs RFE in a cross-validation loop in order to find the optimal number of features to remove.   
+This technique is used to reduce the dimensionality of a feature set without an a priori constraint on the magnitude.  
+The cross-validation loop correlates an accuracy score with the number of features, which is used to determine which features can be removed with minimal impact to model accuracy.  
+
+However, this is not an automatic process as judgement is required to evaluate the resulting RFECV scores.  
+For example, simply using the max score to determine the optimal number of features could ignore similar scores with more features,
+or choose an outlier score while ignoring a more stable local maximum of scores.  
+For this reason, judgement needs to be exercised when deciding which of the optimal feature numbers to choose.  
+Sometimes the variability between scores is too high to make a meaningful decision, at which point the initial feature list needs to be re-evaluated or other techniques may need to be used.  
+
+
+**Low-Data Feature Selection**  
+Some features may be strong predictors for a decision tree but not have enough data-points to make a reliable model.  
+In many datasets there can be features with unknown values which cannot be easily imputed.  
+In such cases, a trade-off must be made between the number of features and the amount of available data.  
+This trade-off can be evaluated by iteratively removing features with a low number of data-points in combination with RFECV.  
+The results of this iterative process can be compared to determine which low-data features to remove.  
+
+
 ## Implementation Overview
 
 The final product consists of two parts, the user-facing application, or front-end, and the non-public data processing model, or back-end.  
@@ -1075,46 +1117,6 @@ Purpose: real-world sometimes has missing data. naive approach is to create mode
 
 Cross-Validation Strategy: StratifiedKFold, score: roc_auc_score  
 Feature-Elimination: RFECV with cvFold(2), scoring =  roc_auc  
-
-Cross Validation  
-Cross Validation is a technique to improve model accuracy by adjusting model parameters until the model achieves a maximum score against a separate testing dataset.  
-
-Feature Selection - Theory  
-Feature selection generally refers to the process of choosing which features to include in a model.  
-By default, a model can be trained on all features and left to decide which features are most important.  
-However, there are several reasons that this approach may not be appropriate for finding the optimal solution.  
-Some features can be strong but induce a lot of variance in the model results, or some features are omitted based on domain expertise.  
-
-Feature elimination is used to improve model accuracy scores in case certain features induce too much variability.  
-In particular, it can be used to increase the prediction reliability for a decision tree classifier by removing features which cause high variance in model scores.  
-Decision Trees work by recursively partitioning the dataset between features based on how well they split the dataset.  
-Due to this criteria, when determining each partition there can be several eligible features.  
-Therefore, many implementations choose this feature at random with the expectation that the overall best features will be chosen by creating several decision trees together in what is known as a Random Forest.  
-
-Some features are ill-suited for a decision tree model because their data leads to several splits without increasing the prediction score, thus "hiding" more useful features.  
-
-**Recursive Feature Elimination**  
-Recursive feature elimination (RFE) works by creating models with a decreasing number of features until a desired number of features is reached [@sklearn_feat_sel_rfe] .  
-This technique is used to reduce the dimensionality of a feature set to a fixed magnitude.  
-
-**Recursive Feature Elimination with Cross Validation**   
-Recursive Feature Elimination with Cross Validation (RFECV) runs RFE in a cross-validation loop in order to find the optimal number of features to remove.   
-This technique is used to reduce the dimensionality of a feature set without an a priori constraint on the magnitude.  
-The cross-validation loop correlates an accuracy score with the number of features, which is used to determine which features can be removed with minimal impact to model accuracy.  
-
-However, this is not an automatic process as judgement is required to evaluate the resulting RFECV scores.  
-For example, simply using the max score to determine the optimal number of features could ignore similar scores with more features,
-or choose an outlier score while ignoring a more stable local maximum of scores.  
-For this reason, judgement needs to be exercised when deciding which of the optimal feature numbers to choose.  
-Sometimes the variability between scores is too high to make a meaningful decision, at which point the initial feature list needs to be re-evaluated or other techniques may need to be used.  
-
-
-**Low-Data Feature Selection**  
-Some features may be strong predictors for a decision tree but not have enough data-points to make a reliable model.  
-In many datasets there can be features with unknown values which cannot be easily imputed.  
-In such cases, a trade-off must be made between the number of features and the amount of available data.  
-This trade-off can be evaluated by iteratively removing features with a low number of data-points in combination with RFECV.  
-The results of this iterative process can be compared to determine which low-data features to remove.  
 
 **Feature Selection - Results**   
 RFECV on the full set of features with 233 data points lead to high variance between RFECV scores.  
