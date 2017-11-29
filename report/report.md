@@ -1107,14 +1107,21 @@ Evaluation: Adequate enough for enabling deployment
 Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately  
 
 <!-- compare interpretable_model performance with interpretable_model2 performance -->
-#### interpretable_model: 
-Technique: DecisionTree  
-Evaluation: Not Applicable
-Deployment: dataset for crash data contains data not easily obtainable in the field. E.g. whether a particular GPS coordinate has an intersection.  
-The decision was made to build a new model without this field-unobtainable data. <!-- @FUTUREWORK: segmentation  -->
-The alternative would have been to follow the CRISP-DM flowchart and "loop back" to the business-understanding phase to reassess the feasibility of this project. For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented.  
-
+#### Feature Reduction Model
+<!-- interpretable_model: rename to: Feature Reduction Model  -->
+Technique: Decision Tree Classifier  
+Purpose: Enable application architecture, choose optimal predictors from features in crash dataset
 Feature Selection:  
+Low-dimensionality features were removed after confirming their low-importance by running RFECV before and after their removal. Additionally, an average ROC-AUC score was calculated by running k-fold cross-validation on the dataset before and after feature removal. 
+The removal of the following features increased the available data and optimised the resulting dataset's average ROC-AUC score: 
+'average_daily_traffic_amount', 'average_daily_traffic_year', 'crash_year' 
+.  
+The usable data was increased to 1644 usable samples and 47 features with a mean ROC of (AUC= 0.59 +/- 0.06) 
+from 233 usable samples and 50 features with a mean ROC of (AUC= 0.55 +/- 0.07).  
+Evaluation: Model evaluation was performed in combination with feature selection. 
+The model parameters were not optimised from their defaults as this model is meant to enable the overall application infrastructure and will not be the final deployed model. 
+
+
 
 <!-- @FUTUREWORK:  -->
 #### segmentation_models: 
@@ -1158,6 +1165,16 @@ Feature-Elimination: RFECV with cvFold(2), scoring =  roc_auc
   * list out possible actions, reasons, pro/con ; then describe decision
 
 Pending: evaluation comparison between interpretable_model2, interpretable_model, stub_model , using the previous project's XGB model as a benchmark.   This is low-priority as the focus for this project is on interpretability and deployment.  
+
+Feature Reduction Model: 
+The feature reduction model optimised the predictors used from the crash dataset. However, many of these features are not available from the routing data the model will use for predictions during deployment. Obtaining data for these features would require additional data-sources or imputation techniques, which would require re-assessing the feasibility of the project in the business-understanding stage. This was deemed unnecessary since the main objective is to implement a general framework, and instead the modeling stage was revised and a model created without this missing data. 
+<!-- @FUTUREWORK : 
+For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented. 
+-->
+<!-- @FUTUREWORK: segmentation  -->
+
+Routing Data Model: 
+
 
 * review process: summarise process until this point, determine what needs to be repeated or still be done
 At this point in the process, the original dataset has been successfully converted for use with a machine learning model and an initial "enablement model" has been created.  
