@@ -370,9 +370,70 @@ Todo: should research whether accident severity correlates with responsibility. 
 Adapt current descriptive analytics for predictive analysis and create a method for situations involving limited data.  
 
 **Road Safety Analysis based on Traffic Data**  
-NHTSA does a descriptive analysis of existing data for a given segment to measure that segment's crash rate.  
-This crash rate is used to determine which segments need to be improved, and this analysis is performed before and after the improvement to measure the effectiveness.  
+The Federal Highway Administration (FHWA) preforms a descriptive analysis of existing data for a given road section to measure the crash rate for that portion of road [@fhwa3DataAnalysis]. 
+This crash rate is used to determine which roadway sections need to be improved, and this analysis is performed before and after the improvement to measure the effectiveness.  
 This analysis is not performed for segments without crash data.  
+The crash rate is calculated for one specific portion of a roadway, which can be either a road segment or an intersection. 
+Two formulas are used when calculating this rate, one for road segments and one for intersections.  
+<!-- !@TERMINOLOGY -->
+Terminology:  
+An intersection is defined as the confluence of two roads at grade, i.e. at the same level such that the roads physically interact. 
+A road segment, or segment, is defined as a continuous stretch of road between intersections. 
+This paper will use the term "road section" or "roadway section" as a general descriptor of either a segment or an intersection.
+Traffic count, traffic volume, or traffic flow each refer to the recorded number of vehicles entering a given road section. 
+In the City of Austin, where this study is performed, the traffic count reflects a 24h period and is collected on an "as needed basis" [@coagovTrafficCount].
+
+The crash rate generally reflects the number of crashes per vehicles entering the intersection, and is expressed differently for intersections and road segments. 
+For intersections the crash rate unit is crashes per 1 million entering vehicles (MEV), where MEV expresses the number of vehicles entering the intersection. 
+For segments the crash rate unit is crashes per 100 million-vehicle-miles of travel (VMT), where VMT expresses the number of vehicles travelling per mile of road. 
+
+
+Each formula uses the following variables [@fhwa3DataAnalysisCrashRate]:  
+<!-- formula variables -->
+R = Crash rate for the road section, i.e. intersection or segment  
+C = Total number of crashes in the study period.  
+N = Number of years of data.  
+V = Number of vehicles per day  
+L = Length of the roadway segment in miles [only for road segment crash rate].  
+
+The intersection crash rate is defined as [@fhwa3DataAnalysisCrashRateIntersection] : 
+<!--
+rate = 10 * E^7 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
+-->
+$$
+\\ rate = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V \cdot L }
+$$
+i.e.:
+$$
+\\ rate = \frac{ 1 \cdot \mathrm{E}\,6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d \cdot "L: Segment Length"  }
+$$
+
+The road segment crash rate is defined as [@fhwa3DataAnalysisCrashRateSegment]: 
+<!--
+rate = 10 * E^7 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
+-->
+$$
+\\ rate = \frac{ 100 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V }
+$$
+i.e.:
+$$
+\\ rate = \frac{ 100 \cdot \mathrm{E}\,6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d }
+$$
+
+
+
+<!-- explanation -->
+<!-- normalise by days: crashes / 365 1/d * N 1/a -->
+The formulas initially normalise the crash data to match the timescale of the traffic volume data. As the traffic volume is measured daily, the resulting ratio expresses crashes per day. 
+Typically, these evaluations only consider yearly crash data, and this normalisation can be adjusted for other timescales. 
+<!-- normalise with volume,length C/V and C/V*L-->
+The crashes per day are then normalised against the daily traffic volume to obtain the relative frequency of crashes per traffic volume; note that this normalisation removes the timescale from the crash rate.  
+The formula for the road segment rate further normalises the crash-count by dividing it with the segment length, resulting in the relative frequency of crashes per traffic volume and unit of measurement, e.g. miles or kilometers. 
+<!-- upscale -->
+The resulting crash frequency as per-volume or per-volume-distance is then scaled up to millions of vehicles using a section-dependent constant.
+This results in a crash frequency expressed in per millions of vehicles travelling on a given road section. 
+For segments, the resulting crash rate is expressed as crashes per 100 million vehicle miles of travel.
+For intersections, the resulting crash rate is expressed as crashes per 1 million vehicles entering the intersection. 
 
 **Predictive Road Safety Analysis**  
 The formulas currently used to evaluate road segment safety rely on the presence of data for the specific segment being analysed.  
@@ -1812,6 +1873,12 @@ http://www.sfedit.net/abstract.pdf
 <!--</@breadcrumb>-->
 <!-- List papers and publication you have already cited in your proposal or which you have collected for further reading. The style of each reference follows that of international scientific journals. -->
 
+[@coagovTrafficCount]: https://data.austintexas.gov/Transportation-and-Mobility/Traffic-Count-Study-Area/cqdh-farx
+[@fhwa3DataAnalysis]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm  
+[@fhwa3DataAnalysisCrashRate]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s32  
+[@fhwa3DataAnalysisCrashRateIntersection]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s322  
+[@fhwa3DataAnalysisCrashRateSegment]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s321  
+
 # Appendix
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
@@ -1992,6 +2059,14 @@ Basically:
 | |...|
 |-|...|
 
+-->
+
+<!-- this syntax works when rendering the pdf with
+pandoc -s --data-dir=2007_and_2010/Thesis/Master_Document_Template.dotx report.md -o report.pdf --mathjax -t context
+Mathjax:  
+$$
+\\( ax^2 + \sqrt{bx} + c = 0 \\)
+$$
 -->
 
 <!--
