@@ -461,38 +461,99 @@ In essence, this changes the formula from "#reported_crashes/traffic_volume" to 
 This approach is still limited by the availability of traffic volume data for a given road segment.  
 However, as it is a predictive model, its accuracy can be improved by ensuring that traffic volume data is continuously updated.  
 The exact reasons for re-measuring traffic volume on a segment can vary, but may be combination of age of the data, predicted crashes for the segment, and actually measured crashes for the segment.  
-After all, the predictive model should still be used with the descriptive techniques to ensure maximum coverage for the best overall solution.  
+This maintenance is to be expected, as predictive models are meant to be used with the descriptive techniques to ensure maximum coverage for the best overall solution.  
 
 
-**Predictive Road Safety Analysis using limited data**  
+**Predictive Road Safety Analysis using Crash Severity**  
 The predictive approach relies on traffic volume for a given segment, and is therefore limited by age and availability of the data. Older data will not reflect current trends, and segments with unavailable data cannot be evaluated.  
 
 Traffic flow cannot be measured for every segment using current techniques.  
-The methods for measuring traffic flow are only applied on demand @citationNeeded and are therefore not available for every road segment.  
+The methods for measuring traffic flow are only applied on demand [@coagovTrafficCount] and are therefore not available for every road segment. 
+Furthermore, the methods for measuring traffic flow do not measure cyclists as they cannot distinguish between types of vehicle @citationNeeded .  
 
 One solution could be to create a separate predictive model for traffic volume, which would represent an entirely different problem than predicting crashes.  
 Traffic volume itself depends on several factors not measured in crash data, for example, connectivity of the road segment (thoroughfare, neighbourhood road, dead end), lane width, population density along the segment, and several other factors.  
-Therefore, predicting traffic volume is beyond the scope of this project.  
-@citationNeeded[https://dl.acm.org/citation.cfm?doid=2996913.2996934]
+While there is some research into predicting traffic volume [@trafficForecastingCrowdFlows], this falls beyond the scope of this project.  
 
-The problem remains that traffic volume for cyclists is not well known.  
-The methods for measuring traffic flow do not distinguish between types of vehicle @citationNeeded and are not available for every road segment.  
-
-
-In order to create a safety measurement applicable to any road segment, a different measurement must be used.  
+Therefore, in order to create a safety measurement applicable to any generic road section, a different measurement must be used which does not rely on the availability of traffic flow data. 
 Crash severity measures the severity of injury sustained in a crash, and is a self-contained measurement in that it is measured per individual reported crash instead of per total reported crashes for a segment.  
 This imposes the limitation that it can not be used to avoid a crash, but instead to avoid severe injury given a crash.  
 Therefore, any prediction based on crash severity will be constrained by the assumption that a crash occurred.  
 This removes the reliance on unavailable traffic volume data, but imposes the bias that any prediction assumes that a crash has already occurred.  
 
-The formula introduced for assessing crash-risk for a segment cannot be adapted for crash-severity.  
+The formula introduced for assessing crash-risk for road sections cannot be adapted for crash-severity.  
 The crash-risk measures the frequency of crashes (measured or predicted), whereas crash-severity measures the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
 The crash-severity risk will be taken directly from the confidence of the predictive model.  
 This preserves the probability property of risk as a number between 0 and 1.
 
+The relationship between crash-ratio and crash severity:
+
+$$
+\\ \text{Crash Rate} 
+\mapsto
+\\ \text{Crash-Severity Risk}
+$$
+$$
+\\ \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V}
+\mapsto
+\\ \text{Predicted Crash Severity}
+$$
+
+**Mapping Crash Rate to Predictive Crash Severity**  
+The principles of the original crash rate formulas can be applied to the crash-severity risk. 
+
+
+
+The crash rate reflects the total crashes per vehicle for intersections or crashes per vehicle-mile for road segments. 
+Each of these rates is expressing the number of crashes over a given distance, where the intersection-rate-distance is considered as one point and the segment-rate-distance is considered as 1 distance unit, e.g. 1 mile. 
+However, the formulas for calculating these rates only differ in that the segment rate extends the intersection rate calculation by further dividing by the segment length. 
+Therefore, for an input distance of '1 unit', the segment rate VMT calculation would return the same results as the intersection rate MEV calculation, although the resuling MEV would be per mile. 
+$$
+\\ \text{Intersection Rate} = \frac{ 100 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V }
+$$
+$$
+\\ \text{Segment Rate} = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V \cdot L }
+$$
+$$
+\\ \text{let L = 1 with no unit:} 
+$$
+$$
+\\ = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V \cdot 1 }
+$$
+$$
+\\ = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V }
+== Intersection Rate
+$$
+
+This demonstrates that the intersection rate can be expressed as the segment rate for a distance of 1 unit. 
+
+The purpose of the crash rate is to express the relative frequency of an event which is meant to be minimised, therefore a lower rate is desirable and a higher rate is undesirable. 
+
+These properties of the crash rate can be mapped to the previously defined crash-severity risk. 
+For both the crash rate and crash-severity risk, lower value is desirable, either to minimise the number of crashes or to minimise the probability of severe injury. 
+
+**Crash-Severity Segment Risk**  
+The segment crash rate is correlated with the length of a given road segment; a longer segment results in a lower ratio, a shorter segment results in a higher ratio. 
+In this sense, the crash-severity risk can be correlated with the segment length in the same way to normalise the crash-severity risk with the segment length. 
+In essence, since the VMT ratio is correlated with the segment length, it would also make sense to correlate the crash-severity risk with the segment length in a similar fashion. 
+This would preserve the property of normalising the score against the length of the segment, which avoids misrepresenting crash-severity risk. 
+For example, two road segments of different lengths may have the same number of recorded crashes, which would lead to a higher ratio for the shorter segment and a lower ratio for the longer segment. 
+This reflects that the shorter segment has more crashes per unit-distance. 
+In the same manner, two road segments of different lengths may have the same crash-severity risk based on the model's predictions. 
+However, the model does not use segment distance in its calculation as it is based on point measurements. 
+As a result, the segment length is not reflected in the calculated crash-severity risk as it would be in the crash rate. 
+Since the segment crash rate is calculated as the normalised crash-ratio divided by the segment length, and the crash-severity risk was previously defined as the replacement for the normalised crash-ratio, the segment crash-severity risk can be calculated as the crash-severity risk divided by the segment length. 
+
+$$
+\\ \text{Segment Crash Rate} = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V} \times \frac 1L
+$$
+$$
+\\ \text{Segment Crash-Severity} = \frac{ \text{Crash Severity Risk} }{ 1 } \times \frac 1L
+$$
+
 
 **Applying Safety Score to a Route**  
-The segment crash rate is used to compare road segments and determine which ones need to be improved. While this ratio is used probabilistically where possible @citationNeeded:[3.2.4 Using Crash Rates], its application is for road segment improvement, not route planning.  
+The section crash rate is used to compare road sections and determine which ones need to be improved. While this ratio is used probabilistically where possible @citationNeeded:[3.2.4 Using Crash Rates], its application is for road section improvement, not route planning.  
 
 The risk-based scores can be adapted for risk-aware route planning.  
 Route planning generates paths consisting of segments, therefore the risk score for each segment can be combined to a total risk score for each path which then allows them to be scored.  
@@ -1878,6 +1939,7 @@ http://www.sfedit.net/abstract.pdf
 [@fhwa3DataAnalysisCrashRate]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s32  
 [@fhwa3DataAnalysisCrashRateIntersection]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s322  
 [@fhwa3DataAnalysisCrashRateSegment]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s321  
+[@trafficForecastingCrowdFlows]: https://dl.acm.org/citation.cfm?doid=2996913.2996934
 
 # Appendix
 <!--!@breadcrumb-->
