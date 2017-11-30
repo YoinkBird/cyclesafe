@@ -38,6 +38,11 @@ if __name__ == '__main__':
             'map_manual_analyse_strongest_predictors' : 0, # analyse map with manual successive determination of strongest features
             'map_generate_human_readable_dectree' : 1, # analyse map with human-readable binary decision-tree
             }
+    # essential options for route-scoring service
+    # disable only temporarily to avoid filling up jupyter qtconsole buffer while trying to interpret results of previous runs
+    if(1):
+        runmodels['score_manual_generic_route'] = 1
+        runmodels['map_generate_human_readable_dectree'] = 1
 
     # src: https://docs.python.org/3/howto/argparse.html#id1
     import argparse
@@ -51,7 +56,7 @@ if __name__ == '__main__':
     options['verbose'] = args.verbose
 
 #<def_model_prepare>
-def model_prepare():
+def model_prepare(**options):
     # manual verification and verbose:
     #+ increased default verbosity during model prep
     #+ several steps are for manual verification, it must be printed in the normal "silent" case,
@@ -132,7 +137,7 @@ def model_prepare():
     if (options['graphics'] == 1):
         print("################################################################################")
         print("-I-: printing scatter plot for feature 'crash_severity'")
-        generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity')
+        generate_clf_scatter_plot(featdef, data_dummies, 'crash_severity', **options)
         print("################################################################################")
 
     # verify
@@ -175,7 +180,7 @@ def model_prepare():
 
 ################################################################################
 # <def_dectree_evaluate_cv_strategy>
-def dectree_evaluate_cv_strategy(X_full, y_full):
+def dectree_evaluate_cv_strategy(X_full, y_full, **options):
   # Recursive Feature Elimination CV
   # http://scikit-learn.org/stable/auto_examples/feature_selection/plot_rfe_with_cross_validation.html#sphx-glr-auto-examples-feature-selection-plot-rfe-with-cross-validation-py
   from sklearn.model_selection import StratifiedKFold,GroupKFold
@@ -237,7 +242,7 @@ def dectree_evaluate_cv_strategy(X_full, y_full):
 
 ################################################################################
 # <def_plot_roc_curve>
-def plot_roc_curve(y_true, y_score):
+def plot_roc_curve(y_true, y_score, **options):
     # plot ROC curve
     my_graphics=options['graphics']
     # store multiple true-positive-rate
@@ -285,7 +290,7 @@ def plot_roc_curve(y_true, y_score):
 
 ################################################################################
 # <def_cvfold_plot_roc_curve>
-def plot_cvfold_roc_curve(clf, data, predictors, responsecls, cv=5):
+def plot_cvfold_roc_curve(clf, data, predictors, responsecls, cv=5, **options):
     from sklearn.model_selection import StratifiedKFold,GroupKFold
     my_graphics = options['graphics']
     #--------------------------------------------------------------------------------------------------------------
@@ -355,7 +360,7 @@ def plot_cvfold_roc_curve(clf, data, predictors, responsecls, cv=5):
 ################################################################################
 # <def_run_cross_val>
 # TODO: split into "find max feats" and "run_cross_val"
-def run_cross_val(data_dummies,featdef,dropfeatures=[]):
+def run_cross_val(data_dummies,featdef,dropfeatures=[], **options):
     verbose = options['verbose']
     print("-I-: creating new dataset without %s" % dropfeatures)
     # mainly integer data
@@ -432,7 +437,7 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
             num_not_nan = data_dummies[~data_dummies[feat].isnull()].shape[0] # data_dummies[feat].count() wooudl work too
             print("%0.4f %0.4f %5d %5d %s" % (num_not_nan/ data_dummies.shape[0], clf_imp_feats[i], num_not_nan, data_dummies.shape[0], feat))
     # plot the curve - ROC curve is independent of RFECV results
-    (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, df_int_nonan, clf_imp_feats.index, responsecls)
+    (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, df_int_nonan, clf_imp_feats.index, responsecls, **options)
     print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
 
 
@@ -451,7 +456,7 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[]):
 
 ################################################################################
 # <def_generate_clf_scatter_plot>
-def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
+def generate_clf_scatter_plot(featdef, data_dummies, target_feat, **options):
     from sklearn import tree
     from sklearn.metrics import confusion_matrix
     print("simple scatter plot")
@@ -522,7 +527,7 @@ def generate_clf_scatter_plot(featdef, data_dummies, target_feat):
 ################################################################################
 # DUPLICATE from server.py
 # dump json to file for consumption by whatever else needs it
-def retrieve_json_file(filename):
+def retrieve_json_file(filename, **options):
     import json
     verbose = options['verbose']
     # for saving:
@@ -551,7 +556,7 @@ def retrieve_json_file(filename):
 #+ in practice, not such a great idea, but for now it is what it is
 #+ ultimately, the server needs to call the model anyway.
 #+ will have to fix the encoding issues of converting to 2to3; not impossible, but super annoying
-def save_json_file(response_json, filename): # ="gps_output_route.json"):
+def save_json_file(response_json, filename, **options): # ="gps_output_route.json"):
     import json
     verbose = options['verbose']
     if( verbose >= 1):
@@ -566,7 +571,7 @@ def save_json_file(response_json, filename): # ="gps_output_route.json"):
     return filename
 
 # mock json request
-def mock_receive_request_json():
+def mock_receive_request_json(**options):
     # NOTE: files may have to be symlinked first:
     # ln -s ../server/res/gps_input_route.json output/
     # tmp: - probably needs to be in a config
@@ -574,12 +579,12 @@ def mock_receive_request_json():
     filepath=("%s/%s" % (resource_dir, filename))
     # testing:
     # filepath="t/route_json/gps_generic.json"
-    return retrieve_json_file(filepath)
+    return retrieve_json_file(filepath, **options)
 
 
 # dump json to file for consumption by whatever else needs it
 # save, load, validate json
-def mock_return_response_json(route):
+def mock_return_response_json(route, **options):
     import json
     verbose = options['verbose']
     print("# save to file")
@@ -587,12 +592,12 @@ def mock_return_response_json(route):
     filepath="output/gps_scored_route.json"
     filepath="gps_scored_route.json"
     print("mock-response sending to : " + filepath)
-    save_json_file(route, filepath)
+    save_json_file(route, filepath, **options)
 
     # verify
     loadedjson = str()
     filepath="output/gps_scored_route.json"
-    loadedjson =  retrieve_json_file(filepath)
+    loadedjson =  retrieve_json_file(filepath, **options)
 
     loadedroute = json.loads(loadedjson)
 
@@ -613,7 +618,7 @@ def mock_return_response_json(route):
 # process google directions data, i.e. extract only  the gps coords
 # [x] TODOne: use 'steps' instead of 'overview_path' - overview_path has too much data, need something else
 # [x] TODOne: refactor to reference 'geodata' instead of mock_receive_request_json
-def get_gmap_direction_coords(geodata):
+def get_gmap_direction_coords(geodata, **options):
     '''
     A DirectionsLeg defines a single leg of a journey from the origin to the destination in the calculated route.
     For routes that contain no waypoints, the route will consist of a single "leg,"
@@ -673,7 +678,7 @@ def get_gmap_direction_coords(geodata):
 
 ################################################################################
 #<def_score_single_route>
-def score_single_route(route_feat_list, user_environment, model_clf_score_route, clf_score_predictors):
+def score_single_route(route_feat_list, user_environment, model_clf_score_route, clf_score_predictors, **options):
     print("creating dataframe")
     print("munge - insert gps coords")
     # create dataframe for X_test
@@ -770,12 +775,12 @@ def score_single_route(route_feat_list, user_environment, model_clf_score_route,
 # successively (eventually recursively?) get best predictors while increasing size of dataset
 # i.e. initially many features also have many NaN so the dataset is smaller
 # 
-def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef):
+def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef, **options):
     verbose = options['verbose']
     print(" ################################################################################")
     print("-I-: DecisionTree")
     print("-I-: First Run")
-    (predictors, responsecls) = run_cross_val(data_dummies, featdef)
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef, **options)
     print(" --------------------------------------------------------------------------------")
     print("-I-: result: average_daily_traffic_amount and average_daily_traffic_year are only a small portion of the dataset")
     '''
@@ -787,7 +792,7 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     '''
     print(" ################################################################################")
     print("-I-: Second Run") #creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
-    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year'])
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year'], **options)
     #plt.bar(data_dummies.crash_year.value_counts().index,data_dummies.crash_year.value_counts().values) ; plt.show()
     print(" --------------------------------------------------------------------------------")
     print("-I-: result: crash_year factors in very heavily and warrants further analysis. however, this cuold also simply be due to the fact that a crash year is always associated with every accident record.")
@@ -816,7 +821,7 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     '''
     print(" ################################################################################")
     print("-I-: Third Run") #creating new dataset without average_daily_traffic_year and average_daily_traffic_amount")
-    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year'])
+    (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year'], **options)
     print(" --------------------------------------------------------------------------------")
     print("-I-: result: the remaining factors are speed_limit and surface_condition. this makes intuitive sense. However, this result is subject to change on different runs, which is in line with the results seen while evaluating the CV strategy.")
     '''
@@ -831,8 +836,8 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
     '''
     print(" ################################################################################")
     print("-I-: Fourth Run") # creating new dataset without speed_limit and surface_condition")
-    # (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
-    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'])
+    # (predictors, responsecls) = run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'], **options)
+    run_cross_val(data_dummies, featdef, ['average_daily_traffic_amount','average_daily_traffic_year','crash_year','speed_limit','surface_condition'], **options)
     print("-I-: result: the remaining factors are varied, but seem to settle around two categories: binary categories, or their counterparts. this makes intuitive sense, and the dataset should be re-run without the binary categories. this was a mistake")
     '''
     # without bin_cat
@@ -888,12 +893,12 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
 
     # data after feature selection [Third Run] - re-running here to make it clear that this is the curve for the chosen set of features
     # plot the ROC-AUC curve
-    (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, data_nonan, predictors, responsecls, cv=5)
+    (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, data_nonan, predictors, responsecls, cv=5, **options)
     print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
 
     # data before feature selection [First Run] - not running here because it modifies the 'clf' object
     # # plot the ROC-AUC curve
-    # (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, data_nonan, predictors_first, responsecls_first)
+    # (mean_auc, std_auc, std_tpr) = plot_cvfold_roc_curve(clf, data_nonan, predictors_first, responsecls_first, **options)
     # print('Mean ROC (AUC= %0.2f +/- %0.2f)' % (mean_auc, std_auc))
 
     # doesn't work as expected
@@ -965,7 +970,7 @@ def manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featde
 ################################################################################
 #<def_generate_human_readable_dectree>
 # note: 'df_int_nonan' not needed in this routine
-def generate_human_readable_dectree(*args):
+def generate_human_readable_dectree(*args, **options):
     if(len(args) == 3):
         (data, data_dummies, featdef) = args
     if(len(args) == 4):
@@ -1085,7 +1090,7 @@ def generate_human_readable_dectree(*args):
 # MODEL+EVALUATION - score manual-created user route
 ################################################################################
 # <def_score_manual_predef_route>
-def score_manual_predef_route(data, data_dummies, featdef):
+def score_manual_predef_route(data, data_dummies, featdef, **options):
     print("################################################################################")
     print("#                                      TODO                                     ")
     print("#                                      TODO                                     ")
@@ -1214,7 +1219,7 @@ def score_manual_predef_route(data, data_dummies, featdef):
 ################################################################################
 # TODO?: is manual-generic actualy auto-generic?
 # <def_score_manual_generic_route>
-def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
+def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **options):
     print("################################################################################")
     print("-I-: " + "WORK_IN_PROGRESS - <score_manual_generic_route> ")
     print("################################################################################")
@@ -1250,7 +1255,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
     # get a copy of the complete model which was run on the entire dataset
 
     # get relevant model
-    model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, df_int_nonan, featdef)
+    model_clf_score_route, clf_score_predictors, clf_score_responsecls = retrieve_model(data, data_dummies, df_int_nonan, featdef, **options)
     ########################################
     # MOCK user environmental input
     ########################################
@@ -1312,7 +1317,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
     ########################################
 
     # TODO : pass in the filename
-    geodata = mock_receive_request_json()
+    geodata = mock_receive_request_json(**options)
     if(0): # not using using overview_path, too many datapoints
         print("route data - overview_path")
         pp.pprint( geodata['routes'][0]['overview_path'])
@@ -1415,7 +1420,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
 
     # reply
     print("save json to file. is mock equivalent of submitting json as a response")
-    if( mock_return_response_json( response_json ) ):
+    if( mock_return_response_json( response_json, **options ) ):
         print("json mock-response sent")
     print("internal data structure") #, with only response variables")
     # refactor_multi_route_score_r3 - score all routes , return limited json
@@ -1446,7 +1451,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef):
 # MODEL CACHING - generate or retrieve model+features
 ################################################################################
 # <def_retrieve_model>
-def retrieve_model(*args):
+def retrieve_model(*args, **options):
     if(len(args) == 3):
         (data, data_dummies, featdef) = args
     if(len(args) == 4):
@@ -1476,7 +1481,7 @@ def retrieve_model(*args):
 
     else:
         print("-I-: creating model")
-        model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, df_int_nonan, featdef)
+        model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, df_int_nonan, featdef, **options)
 #        if( runmodels['map_generate_human_readable_dectree'] ):
 #            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
 #        if( runmodels['map_manual_analyse_strongest_predictors'] ):
@@ -1500,11 +1505,14 @@ def retrieve_model(*args):
 
 # self-run
 if(__name__ == '__main__'):
+    # localise options, avoid accidental dependencies in other functions
+    options_local = options
+    del(options)
     ################################################################################
     # PREPROCESS
     ################################################################################
     # load data, featdef, etc
-    (data, data_dummies, df_int_nonan, featdef) = model_prepare()
+    (data, data_dummies, df_int_nonan, featdef) = model_prepare(**options_local)
     ################################################################################
     # /PREPROCESS
     ################################################################################
@@ -1512,33 +1520,33 @@ if(__name__ == '__main__'):
     ################################################################################
     # MODEL+EVALUATION - identify strong features
     ################################################################################
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
         print("-I-: " + "Determination of Strongest Features")
     if( runmodels['manual_analyse_strongest_predictors'] ):
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "running ...")
-            model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef)
+            model_clf_manual, clf_manual_predictors, clf_manual_responsecls = manual_analyse_strongest_predictors(data, data_dummies, df_int_nonan, featdef, **options_local)
     else:
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "skipping ...")
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
 
     ################################################################################
     # MODEL+EVALUATION - human readable
     ################################################################################
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
         print("-I-: " + "Human Readable Decision Tree")
     if( runmodels['generate_human_readable_dectree'] ):
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "running ...")
-        model = generate_human_readable_dectree(data, data_dummies, featdef)
+        model = generate_human_readable_dectree(data, data_dummies, featdef, **options_local)
     else:
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "skipping ...")
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
     ################################################################################
     # /MODEL+EVALUATION - human readable
@@ -1547,18 +1555,18 @@ if(__name__ == '__main__'):
     ################################################################################
     # MODEL+EVALUATION - score manual-created user route
     ################################################################################
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
         print("-I-: " + "Score Manually-Created User Route")
     if( runmodels['score_manual_predef_route'] ):
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "running ...")
         # no return value, just an enablement stub
-        score_manual_predef_route(data, data_dummies, featdef)
+        score_manual_predef_route(data, data_dummies, featdef, **options_local)
     else:
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "skipping ...")
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
     ################################################################################
     # /MODEL+EVALUATION - score manual-created user route
@@ -1568,17 +1576,17 @@ if(__name__ == '__main__'):
     ################################################################################
     # MODEL+EVALUATION - score manual-generic user route
     ################################################################################
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
         print("-I-: " + "Score Manual-Generic User Route")
     if( runmodels['score_manual_generic_route'] ):
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "running ...")
-        score_manual_generic_route(data, data_dummies, df_int_nonan, featdef)
+        score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **options_local)
     else:
-        if( options['verbose'] >= 0):
+        if( options_local['verbose'] >= 0):
             print("-I-: " + "skipping ...")
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
     ################################################################################
     # /MODEL+EVALUATION - score manual-generic user route
@@ -1598,7 +1606,7 @@ if(__name__ == '__main__'):
         else:
           print("varcheck fail - stil defined        " + var)
 
-    if( options['verbose'] >= 0):
+    if( options_local['verbose'] >= 0):
         print("################################################################################")
         print("-I-: End of File")
         print("################################################################################")
