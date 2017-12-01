@@ -528,29 +528,33 @@ Therefore, any prediction based on crash severity will be constrained by the ass
 This removes the reliance on unavailable traffic volume data, but imposes the bias that any prediction assumes that a crash has already occurred.  
 
 The formula introduced for assessing crash-risk for road sections cannot be adapted for crash-severity.  
-The crash-risk measures the frequency of crashes (measured or predicted), whereas crash-severity measures the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
+The crash-risk measures the frequency of crashes (measured or predicted) per section of road, whereas crash-severity measures the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
 The crash-severity risk will be taken directly from the confidence of the predictive model.  
 This preserves the probability property of risk as a number between 0 and 1.
 
-The relationship between crash-ratio and crash severity:
+The relationship between crash-frequency and crash severity:
 
 $$
-\\ \text{Crash Rate} 
+\\ \text{Crash Freqency} 
 \mapsto
 \\ \text{Crash-Severity Risk}
 $$
 $$
-\\ \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V}
+\\ \frac{ C }{ 365 \cdot N \cdot V}
 \mapsto
 \\ \text{Predicted Crash Severity}
 $$
 
 **Mapping Crash Rate to Predictive Crash Severity**  
-The principles of the original crash rate formulas can be applied to the crash-severity risk. 
+The relative safety of a road section can be calculated using the crash-severity risk by applying the principles underlying the crash rate formulas. 
 
+The crash rate formulas correlate crash frequency with road section length, which can be mapped to crash-severity by correlating crash-severity risk with road section length. 
 
+The relative safety of a road section can be calculated by applying the mapping between crash frequency and crash-severity risk to the descriptive crash rate formulas. 
 
+The descriptive formulas scale the crash frequency by a constant based on the section type, then divide that number by the road section length, which is '1' for intersections. 
 
+The crash-severity risk is independent of traffic volume and therefore does not need to implement the constant used to scale the crash frequency to a certain number of vehicles. 
 
 
 
