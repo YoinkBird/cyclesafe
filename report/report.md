@@ -396,24 +396,29 @@ N = Number of years of data.
 V = Number of vehicles per day  
 L = Length of the roadway segment in miles [only for road segment crash rate].  
 
-The intersection crash rate is defined as [@fhwa3DataAnalysisCrashRateIntersection] : 
+The crash frequency is defined as the traffic count normalised by the traffic volume data, then normalised by a section-specific constant:  
+$$
+\\ \text{crash frequency} = \frac{  C * \text{<section-constant>} }{ 365 \cdot N \cdot V }
+$$
+
+The intersection crash rate scales the frequency by a constant of 10^6 [@fhwa3DataAnalysisCrashRateIntersection] : 
 <!--
 rate = 1 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" )
 -->
 $$
-\\ rate = 1 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \ MEV
+\\ \text{intersection crash rate} = 1 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \ MEV
 $$
 i.e.:
 $$
 \\ rate = \frac{ 1 \cdot 10^6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d }
 $$
 
-The road segment crash rate is defined as [@fhwa3DataAnalysisCrashRateSegment]: 
+The road segment crash rate scales the frequency by a constant of 100 * 10^6 and divides the result by the segment length [@fhwa3DataAnalysisCrashRateSegment]: 
 <!--
 rate = 100 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
 -->
 $$
-\\ rate = 100 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \times \frac 1L  \ VMT
+\\ \text{road segment crash rate} = 100 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \times \frac 1L  \ VMT
 $$
 <!-- with units:
 $$
@@ -439,6 +444,42 @@ The resulting crash frequency as per-volume or per-volume-distance is then scale
 This results in a crash frequency expressed in per millions of vehicles travelling on a given road section. 
 For segments, the resulting crash rate is expressed as crashes per 100 million vehicle miles of travel.
 For intersections, the resulting crash rate is expressed as crashes per 1 million vehicles entering the intersection. 
+
+**Relationship between Intersection Crash Rate and Segment Crash Rate**
+When examining the crash rate formulas, it becomes apparent that each of them express the crash frequency distributed over a given distance: 
+the segment crash rate is calculated for the length of the road segment, 
+and the intersection crash rate is calculated for one point, i.e. the intersection. 
+
+The formula for segment crash rate is proportional to the intersection crash rate divided by the segment length. 
+Conversely, the formula for the intersection crash rate is proportional to the segment crash rate if the segment length is set to a fixed value of '1'. 
+This implies that there could be a linear relationship between the segment rate VMT calculation and the intersection rate MEV calculation. 
+This relationship is explored in the following formulas: 
+$$
+\\ \text{Intersection Rate} = 1 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }
+$$
+$$
+\\ \text{Segment Rate} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }  \times \frac 1L  
+$$
+$$
+\\ \text{let L = 1: } 
+$$
+$$
+\\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V } \times \frac 11
+$$
+$$
+\\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }
+$$
+$$
+\\ \text{Segment Rate(L=1)} == 100 \cdot Intersection Rate
+$$
+
+This demonstrates that the intersection crash rate formula can be expressed using the segment rate formula for a distance of 1 unit and a fixed constant of 1/100 . 
+$$
+\\ \text{Intersection Rate} = \frac{1}{100} \times \text{Segment Rate(L = 1) } = \frac{1}{100} \times \frac{ C }{ 365 \cdot N \cdot V }
+$$
+This demonstrates that the intersection crash rate formula can be expressed in terms of the segment crash rate. 
+
+This supports the initial claim that these formulae correlate risk with the crash frequency and length of the road section. 
 
 **Predictive Road Safety Analysis**  
 The formulas currently used to evaluate road segment safety rely on the presence of data for the specific segment being analysed.  
@@ -509,33 +550,9 @@ The principles of the original crash rate formulas can be applied to the crash-s
 
 
 
-The crash rate reflects the total crashes per vehicle for intersections or crashes per vehicle-mile for road segments. 
-Each of these rates is expressing the number of crashes over a given distance, where the intersection-rate-distance is considered as one point and the segment-rate-distance is considered as 1 distance unit, e.g. 1 mile. 
-However, the formulas for calculating these rates only differ in that the segment rate extends the intersection rate calculation by further dividing by the segment length. 
-Therefore, for an input distance of '1 unit', the segment rate VMT calculation would return the same results as the intersection rate MEV calculation, although the resuling MEV would be per mile. 
-$$
-\\ \text{Intersection Rate} = \frac{ 100 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V }
-$$
-$$
-\\ \text{Segment Rate} = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V \cdot L }
-$$
-$$
-\\ \text{let L = 1 with no unit:} 
-$$
-$$
-\\ = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V \cdot 1 }
-$$
-$$
-\\ = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V }
-== Intersection Rate
-$$
 
-This demonstrates that the intersection rate can be expressed as the segment rate for a distance of 1 unit. 
 
-The purpose of the crash rate is to express the relative frequency of an event which is meant to be minimised, therefore a lower rate is desirable and a higher rate is undesirable. 
 
-These properties of the crash rate can be mapped to the previously defined crash-severity risk. 
-For both the crash rate and crash-severity risk, lower value is desirable, either to minimise the number of crashes or to minimise the probability of severe injury. 
 
 **Crash-Severity Segment Risk**  
 The segment crash rate is correlated with the length of a given road segment; a longer segment results in a lower ratio, a shorter segment results in a higher ratio. 
