@@ -1,3 +1,4 @@
+<!--
 # Meta
 Formatting HALP:  
 https://help.github.com/articles/basic-writing-and-formatting-syntax/  
@@ -7,15 +8,29 @@ https://daringfireball.net/projects/markdown/syntax
 Document major changes to roadmap or implementation since last draft  
 This is for transparency, so customer is aware of conceptual changes,  
 and for docmentation, the iterative nature of the project lifecycle is clear.  
+-->
   
 <!-- look for the REV<n> keyword throughout the doc -->
+<!--
 REV2 [20171017] roadmap: remove GPS fuzzy match from critPath
 REV1 [2017xxxx] roadmap: first pass  
+-->
 
-## Title
 <!-- Define a short, significant title which reflects clearly the contents of your report. The title page follows the guidelines of scientific proposals at Department of Earth Sciences (see http://www.erdw.ethz.ch/documents/index). -->
 
-Data Driven Approach towards Improving Road Safety for Cyclists
+<!-- old title: Data Driven Approach towards Improving Road Safety for Cyclists -->
+
+# Probabilistic Routing-Based Injury Avoidance Framework for Pedalcyclists
+
+<!--
+Probabilistic  : machine-learning model
+Routing-Based  : input is route data
+Bicycle-Injury : prediction is for crash severity given a crash
+Avoidance      : multiple scored route choices 
+Planning       : user-defined routes
+Framework      : the tech stack implementation (not just one app) 
+-->
+
 
 <!--
 ## Time Plan for Master’s Project Proposal and Master’s Thesis
