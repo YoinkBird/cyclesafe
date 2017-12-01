@@ -398,26 +398,31 @@ L = Length of the roadway segment in miles [only for road segment crash rate].
 
 The intersection crash rate is defined as [@fhwa3DataAnalysisCrashRateIntersection] : 
 <!--
-rate = 10 * E^7 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
+rate = 1 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" )
 -->
 $$
-\\ rate = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V \cdot L }
+\\ rate = 1 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \ MEV
 $$
 i.e.:
 $$
-\\ rate = \frac{ 1 \cdot \mathrm{E}\,6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d \cdot "L: Segment Length"  }
+\\ rate = \frac{ 1 \cdot 10^6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d }
 $$
 
 The road segment crash rate is defined as [@fhwa3DataAnalysisCrashRateSegment]: 
 <!--
-rate = 10 * E^7 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
+rate = 100 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
 -->
 $$
-\\ rate = \frac{ 100 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V }
+\\ rate = 100 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \times \frac 1L  \ VMT
 $$
+<!-- with units:
+$$
+\\ rate = 100 \cdot \mathrm{E}\,6 \times \frac{ C }{ 365 \cdot N \cdot V} \frac{vehicles}{\frac {d \cdot a}{a \cdot d}} \times \frac 1L \frac {1}{\text{mile}} \ VMT
+$$
+-->
 i.e.:
 $$
-\\ rate = \frac{ 100 \cdot \mathrm{E}\,6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d }
+\\ rate = \frac{ 100 \cdot 10^6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d \cdot "L: Segment Length"  }
 $$
 
 
