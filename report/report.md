@@ -445,6 +445,20 @@ This results in a crash frequency expressed in per millions of vehicles travelli
 For segments, the resulting crash rate is expressed as crashes per 100 million vehicle miles of travel.
 For intersections, the resulting crash rate is expressed as crashes per 1 million vehicles entering the intersection. 
 
+<!--
+**Properties of Segment Crash Rate**
+The segment crash rate is correlated with the length of a given road segment; a longer segment results in a lower ratio, a shorter segment results in a higher ratio. 
+In this sense, the crash-severity risk can be correlated with the segment length in the same way to normalise the crash-severity risk with the segment length. 
+In essence, since the VMT ratio is correlated with the segment length, it would also make sense to correlate the crash-severity risk with the segment length in a similar fashion. 
+This would preserve the property of normalising the score against the length of the segment, which avoids misrepresenting crash-severity risk. 
+For example, two road segments of different lengths may have the same number of recorded crashes, which would lead to a higher ratio for the shorter segment and a lower ratio for the longer segment. 
+This reflects that the shorter segment has more crashes per unit-distance. 
+In the same manner, two road segments of different lengths may have the same crash-severity risk based on the model's predictions. 
+However, the model does not use segment distance in its calculation as it is based on point measurements. 
+As a result, the segment length is not reflected in the calculated crash-severity risk as it would be in the crash rate. 
+Since the segment crash rate is calculated as the normalised crash-ratio divided by the segment length, and the crash-severity risk was previously defined as the replacement for the normalised crash-ratio, the segment crash-severity risk can be calculated as the crash-severity risk divided by the segment length. 
+-->
+
 **Relationship between Intersection Crash Rate and Segment Crash Rate**
 When examining the crash rate formulas, it becomes apparent that each of them express the crash frequency distributed over a given distance: 
 the segment crash rate is calculated for the length of the road segment, 
@@ -557,24 +571,30 @@ The descriptive formulas scale the crash frequency by a constant based on the se
 The crash-severity risk is independent of traffic volume and therefore does not need to implement the constant used to scale the crash frequency to a certain number of vehicles. 
 
 
-
-**Crash-Severity Segment Risk**  
-The segment crash rate is correlated with the length of a given road segment; a longer segment results in a lower ratio, a shorter segment results in a higher ratio. 
-In this sense, the crash-severity risk can be correlated with the segment length in the same way to normalise the crash-severity risk with the segment length. 
-In essence, since the VMT ratio is correlated with the segment length, it would also make sense to correlate the crash-severity risk with the segment length in a similar fashion. 
-This would preserve the property of normalising the score against the length of the segment, which avoids misrepresenting crash-severity risk. 
-For example, two road segments of different lengths may have the same number of recorded crashes, which would lead to a higher ratio for the shorter segment and a lower ratio for the longer segment. 
-This reflects that the shorter segment has more crashes per unit-distance. 
-In the same manner, two road segments of different lengths may have the same crash-severity risk based on the model's predictions. 
-However, the model does not use segment distance in its calculation as it is based on point measurements. 
-As a result, the segment length is not reflected in the calculated crash-severity risk as it would be in the crash rate. 
-Since the segment crash rate is calculated as the normalised crash-ratio divided by the segment length, and the crash-severity risk was previously defined as the replacement for the normalised crash-ratio, the segment crash-severity risk can be calculated as the crash-severity risk divided by the segment length. 
+Intersection Crash-Severity Risk:  
 
 $$
-\\ \text{Segment Crash Rate} = \frac{ 1 \cdot \mathrm{E}\,6 \cdot C }{ 365 \cdot N \cdot V} \times \frac 1L
+\\ \text{Intersection Crash Rate} 
+\mapsto
+\text{Intersection Crash-Severity} 
 $$
 $$
-\\ \text{Segment Crash-Severity} = \frac{ \text{Crash Severity Risk} }{ 1 } \times \frac 1L
+1 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V}
+\mapsto
+\\ \text{Predicted Crash Severity}
+$$
+
+Segment Crash-Severity Risk:  
+
+$$
+\\ \text{Segment Crash Rate} 
+\mapsto
+\text{Segment Crash-Severity} 
+$$
+$$
+\\ 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V} \times \frac 1L
+\mapsto
+\\ \text{Predicted Crash Severity} \times \frac 1L
 $$
 
 
