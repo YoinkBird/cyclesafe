@@ -1472,20 +1472,19 @@ code_snippet_featdef_grid_example
 
 ## Predicting using Route Data
 <pre>
-* [-] route features map to model features
-* [-] inters 
-* [-] model features also posterior, unavailable by default from route data
-  * [-] manner of collision
-  * [-] intersection related
-* [-] can't simply predict route, need to have a score => adapt NHTSA rates
-  * [-] CANNOT USE: road-segment rate calc: ratio of #crashes to count * length i.e.  1M * #crashes / (days x numyears) * #trafficCount * length 
+* [X] route features map to model features
+  * [-] model features also posterior, unavailable by default from route data
+    * [-] manner of collision
+    * [-] intersection related
+* [X][Roadway Safety Analysis] can't simply predict route, need to have a score => adapt NHTSA rates
+  * [X] CANNOT USE: road-segment rate calc: ratio of #crashes to count * length i.e.  1M * #crashes / (days x numyears) * #trafficCount * length 
     since no trafficcount, and going for prob not count: ratio of seg-prob to count, i.e.  : (1 day) * length (no trafficcount in routing data) 
-  * [-] CANNOT USE: intersection: same as road-segment, without length
-  * [-] crash rate mileage
-  * [-] conclusion:
-    * [-] segment: crash-prob per mile
-    * [-] intersection: crash-prob per million entering vehicles
-    * [-] add all together?
+  * [X] CANNOT USE: intersection: same as road-segment, without length
+  * [?] crash rate mileage
+  * [X] conclusion:
+    * [X] segment: crash-prob per mile
+    * [X] intersection: crash-prob per million entering vehicles
+    * [X] add all together? => two scores, each is product of inverse risks
   * [-] intersection related : only applies to intersections, not the portion between. I.e. can't assign "not intersection" to each GPS point between intersections
   * [-] needs something to reflect number of intersections, perhaps count intersections and 
 
