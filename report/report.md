@@ -615,14 +615,26 @@ $$
 
 
 **Applying Safety Score to a Route**  
-The section crash rate is used to compare road sections and determine which ones need to be improved. While this ratio is used probabilistically where possible @citationNeeded:[3.2.4 Using Crash Rates], its application is for road section improvement, not route planning.  
+The descriptive crash rate formulas are used to compare road sections and determine which ones need to be improved. While this ratio can be used predictively, @citationNeeded:[3.2.4 Using Crash Rates], it is mainly used for road section improvement and not applied to multiple consecutive sections as it would need to be for analysing an entire route.  
 
-The risk-based scores can be adapted for risk-aware route planning.  
-Route planning generates paths consisting of segments, therefore the risk score for each segment can be combined to a total risk score for each path which then allows them to be scored.  
+<!-- just use the product of segments, product of intersections.
+Each of these scores is the cumulative sum of their respective section types for the route. 
+-->
+
+<!--
+The previously derived risk-based scores can be adapted for risk-aware route planning.  
+-->
+
+This is addressed by adapting the previously derived risk-based section scores for risk-aware route planning.
+Route planning generates paths consisting of sections, therefore the risk score for each section type can be combined to a total risk score for each path which then allows them to be scored.  
+The crash-severity risk score for the entire route comprises two numbers; the route intersections score and the route segments score. 
+This distinction between the section types preserves the distinction made in the official FHWA crash rate formulas for intersection and segment. 
 
 Measuring the risk of a route is calculated as:
+
 <pre>
-risk(Route) = 1 - PRODUCT[segment element Route] ( 1 - risk(segment) )
+intersections risk(Route Intersections) = 1 - PRODUCT[intersection element Route] ( 1 - risk(intersection) )
+segments  risk(Route Segments) = 1 - PRODUCT[segment element Route] ( 1 - risk(segment) )
 </pre>
 
 **Route Planning**  
