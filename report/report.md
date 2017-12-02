@@ -1058,13 +1058,36 @@ For the purpose of this project, it is more efficient to focus the available res
 
 Following reports will focus on the TXDOT CRIS Crash Data.  
 
+Routing Data: The deployed model will be predicting on routing data obtained from a third party.  
+Google Maps Routing API will be used for this as it is well supported and free of charge. 
+OpenStreetMaps is another widely used mapping API, but requires a separate service to be used for routing. This additional complexity makes OpenStretMaps a non-optimal choice for this project.  
+
+
 ### Data Description Report
-Data is in CSV format with a header describing the query parameters used to obtain the data  
+Crash Data: Data is in CSV format with a header describing the query parameters used to obtain the data  
 2233 records  
 25 fields  
+
+<!-- too much info, would have to look this up for each feature!
+The manner of collision can take on 46 values [@txdotHSIManualMannerCollision], but the crash data for pedalcyclists is limited to 10 distinct values:  
+  'one motor vehicle going straight',  
+  'angle both going straight',  
+  'one motor vehicle other',  
+  'same direction one straight one stopped'  
+  'same direction both going straight rear end',  
+  'one motor vehicle backing',  
+  'opposite direction both going straight',  
+  'opposite direction one straight one left turn', # just "one" straight, not sure if motorist or cyclist  
+  'one motor vehicle turning left',  
+  'one motor vehicle turning right',  
+-->
+
 <!--
 @TODO: fill in from featdef.py in [data description report appendix](#appendix-data-description-report), add excerpt with relevant data here  
 -->
+
+Routing Data: The Google Maps routing data is in json format and contains several fields meant for consumption by the Google Maps display API. A subset of the routing data corresponds to a subset of the crash data.
+
 
 <!--
 3.5 Advanced Data Exploration
@@ -1474,7 +1497,7 @@ code_snippet_featdef_grid_example
 <pre>
 * [X] route features map to model features
   * [-] model features also posterior, unavailable by default from route data
-    * [-] manner of collision
+    * [X] manner of collision
     * [-] intersection related
 * [X][Roadway Safety Analysis] can't simply predict route, need to have a score => adapt NHTSA rates
   * [X] CANNOT USE: road-segment rate calc: ratio of #crashes to count * length i.e.  1M * #crashes / (days x numyears) * #trafficCount * length 
@@ -1502,7 +1525,55 @@ traditionally with crash rates would be a problem because, let 'a','b' crashes, 
 [-] The data provided by the routing service contains only a subset of the features available from the crash data. 
 </pre>
 
+**Mapping Routing Features to Crash Report Features**  
+The model was developed using features from crash data, but will be used to predict on data collected from other sources. 
+Most of the crash data features are environmental measurements, such as time of day, weather condition, etc, but some of the features are for data which can only be measured a posteriori, e.g. the manner of collision is a measurement of the collision and as such requires the collision to have already happened.  
+The model could be generated without these features, but this would reduce the model accuracy. 
+Instead, where possible, these a posteriori measurements can be causally mapped to their influencing factors. 
+The manner of collision measures the direction of movement for each participant in a collision. 
+This direction of movement during the collision results from the direction each participant was travelling immediately prior to the collision. 
+Therefore, the direction each participant is travelling immediately prior to a crash has a causal correlation with the posterior manner of collision. 
 
+For the route analysis, this travel direction can be obtained directly from the routing data being analysed by the model. 
+The travel direction does not have a direct mapping to the manner of collision, as the manner of collision dos not make a distinction between the units. 
+Therefore, domain specific knowledge must be applied in order to create a mapping between the routing-data travel direction and the crash-data manner of collision. 
+To create this mapping, all possible permutations of travel direction were created for each recorded manner of collision. 
+This results in a one-to-many mapping between travel direction and manner of collision. 
+
+The routing travel direction reflects the type of turn needed to be made, and can take on 'left', 'right', and 'straight'. 
+The subset of possible 'manner of collision' values present in the model is mapped to routing travel direction as follows:  
+<!-- in order of decreasing granularity, or increasing ambiguity -->
+|S|L|R| Manner of Collision |
+|-|-|-|-|
+|x| | |'one motor vehicle going straight',|
+|x| | |'angle both going straight',|
+|x| | |'one motor vehicle other',|
+|x| | |'same direction one straight one stopped'|
+|x| | |'same direction both going straight rear end',|
+|x| | |'one motor vehicle backing',|
+|x| | |'opposite direction both going straight',|
+|x|x| |'opposite direction one straight one left turn', # just "one" straight, not sure if motorist or cyclist|
+|x|x| |'one motor vehicle turning left',|
+|x| |x|'one motor vehicle turning right',|
+
+Base assumptions: 
+During travel, both units move predictably and according to the traffic laws. For example, cyclists are expected to turn only at intersections and otherwise stay in their lane.  
+Manner of Collision is recorded accurately and correctly, e.g. the 'opposite direction both going straight' precludes the possibility of either unit making an unpredictable turn, which would be recorded as 'opposite direction on straight one left turn'. 
+
+**Predicting using Mapped Routing Features**  
+The manner of collision feature is one-hot encoded as several distinct features, i.e. the model considers each type of "manner of collision" as a separate feature. 
+This facilitates the one-to-many mapping of the travel direction to the manner of collision. 
+The travel direction from the incoming routing data is converted to the corresponding manner of collision and added to the remaining transmitted a priori environmental measurements. 
+These measurements are then passed to the model, which will in effect be predicting the crash severity using the all possible values for manner of collision obtained from the travel direction. 
+
+<!-- TODO: mention correlation between "manner of collision" and "crash severity"; intuitively the manner in which a car collides with a cyclist should have a large impact on the severity of injury -->
+
+<!--
+## Comparing Multiple Route Scores
+When comparing routes, several environmental factors remain the same for each route, e.g. weather condition and time of day. 
+These values do not change between the routes, and therefore the model assigns each of them the same score. 
+There are a few approaches to address this issue. 
+-->
 
 ## User Application
 The user-facing interface is a browser-based application using html and javascript to interface with a server written in python to generate safety predictions for routes generated by a third-party routing service. 
@@ -2046,6 +2117,7 @@ http://www.sfedit.net/abstract.pdf
 [@fhwa3DataAnalysisCrashRateIntersection]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s322  
 [@fhwa3DataAnalysisCrashRateSegment]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s321  
 [@trafficForecastingCrowdFlows]: https://dl.acm.org/citation.cfm?doid=2996913.2996934
+[@txdotHSIManualMannerCollision]: http://onlinemanuals.txdot.gov/txdotmanuals/hsi/hsi.pdf <!-- page 1-18 -->
 
 # Appendix
 <!--!@breadcrumb-->
