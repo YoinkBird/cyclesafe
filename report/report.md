@@ -1470,6 +1470,39 @@ This framework is further explained in the [Appendix on Featdef Values](#appendi
 code_snippet_featdef_grid_example
 </pre>
 
+## Predicting using Route Data
+<pre>
+* [-] route features map to model features
+* [-] inters 
+* [-] model features also posterior, unavailable by default from route data
+  * [-] manner of collision
+  * [-] intersection related
+* [-] can't simply predict route, need to have a score => adapt NHTSA rates
+  * [-] CANNOT USE: road-segment rate calc: ratio of #crashes to count * length i.e.  1M * #crashes / (days x numyears) * #trafficCount * length 
+    since no trafficcount, and going for prob not count: ratio of seg-prob to count, i.e.  : (1 day) * length (no trafficcount in routing data) 
+  * [-] CANNOT USE: intersection: same as road-segment, without length
+  * [-] crash rate mileage
+  * [-] conclusion:
+    * [-] segment: crash-prob per mile
+    * [-] intersection: crash-prob per million entering vehicles
+    * [-] add all together?
+  * [-] intersection related : only applies to intersections, not the portion between. I.e. can't assign "not intersection" to each GPS point between intersections
+  * [-] needs something to reflect number of intersections, perhaps count intersections and 
+
+Score: inter+seg
+intersection: model prob
+segment: model prob/ length
+
+[-] segment detail:
+routing hides intersections, "collapses" straight route into one, trade-off required because of no data
+traditionally with crash rates would be a problem because, let 'a','b' crashes, 'x','y' lengths : (a+b)/(x+y) != (a/x) + (b/y)
+[-] however, using probs is not a rate, therefore let 'k','l' be probs INDEPENDENT length, model doesn't consider segment length for prob because crash data doesn't contain, therefore model would predict same 'k' for 'x','y','x+y' and therefore 'k' == 'l' for identical input features and therefore (k+l)/(x+y) = (2k) / (x+y) => still a problem, just different form
+
+
+[-] The routing data is used by the machine learning model to predict the crash severity ...
+[-] The data provided by the routing service contains only a subset of the features available from the crash data. 
+</pre>
+
 
 
 ## User Application
