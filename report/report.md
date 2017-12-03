@@ -137,6 +137,10 @@ Recommendation is to increase data collection in areas with most crashes to bett
   * Deployment
 * Technical Implementation
   * Framework for CRISP-DM
+  * Predicting using Route Data
+    * Mapping Routing Features to Crash Report Features
+    * Predicting using Mapped Routing Features
+    * Impact on the Route Score
   * User Application
     * Architecture
     * Project Execution Gantt Chart
