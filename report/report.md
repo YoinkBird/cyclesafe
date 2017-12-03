@@ -1528,7 +1528,7 @@ traditionally with crash rates would be a problem because, let 'a','b' crashes, 
 </pre>
 -->
 
-### **Mapping Routing Features to Crash Report Features**  
+### Mapping Routing Features to Crash Report Features  
 The crash severity prediction model was developed using features from crash data, but will not predict on crash data during deployment. 
 The features used for model prediction are defined by the features present in the crash data used to build the model. 
 For deployment, the model predictions will be used to evaluate crash severity for routes instead of analysing crash data. 
@@ -1601,7 +1601,7 @@ However, this guideline is not meant for all intersections and further research 
 Therefore, the interpolation of segments between intersections was not implemented for this project. 
 
 
-### **Predicting using Mapped Routing Features**  
+### Predicting using Mapped Routing Features  
 The "manner of collision" feature is one-hot encoded as several distinct features, i.e. the model considers each type of "manner of collision" as a separate feature. 
 This facilitates the one-to-many mapping of the travel direction to the manner of collision. 
 The travel direction from the incoming routing data is converted to the corresponding manner of collision and added to the remaining transmitted a priori environmental measurements. 
@@ -1611,7 +1611,7 @@ The "intersection related" feature is one-hot encoded as several distinct featur
 Each intersection from the routing data is mapped as 'intersection', but no other mapping is made as this data is unavailable. 
 The model will therefore only predict on routing directions which indicate a required change in direction, and will not consider any straight intersections. 
 
-### **Impact on the Route Score**  
+### Impact on the Route Score  
 The lack of routing data for segments, driveways, and straight-turns impacts both the "manner of collision" and "intersection related" features. 
 Without these road section types, each feature can only be used to predict on intersections which require a change in travel direction. 
 Ultimately, this means the safety score will not be evaluated for "straight sections, i.e. road sections for which the routing data travel direction is straight. 
