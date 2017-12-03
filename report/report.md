@@ -1525,11 +1525,19 @@ traditionally with crash rates would be a problem because, let 'a','b' crashes, 
 [-] The data provided by the routing service contains only a subset of the features available from the crash data. 
 </pre>
 
-**Mapping Routing Features to Crash Report Features**  
-The model was developed using features from crash data, but will be used to predict on data collected from other sources. 
-Most of the crash data features are environmental measurements, such as time of day, weather condition, etc, but some of the features are for data which can only be measured a posteriori, e.g. the manner of collision is a measurement of the collision and as such requires the collision to have already happened.  
+### **Mapping Routing Features to Crash Report Features**  
+The crash severity prediction model was developed using features from crash data, but will not predict on crash data during deployment. 
+The features used for model prediction are defined by the features present in the crash data used to build the model. 
+For deployment, the model predictions will be used to evaluate crash severity for routes instead of analysing crash data. 
+Therefore the crash-related input features for the model need to be mapped to features available from routing data and other sources. 
+Most of the crash-related features are a priori environmental measurements, such as time of day and weather condition, but some of the features are for data which can only be measured after a crash. 
+The features "manner of collision" and "intersection related" both measure attributes of the collision, and therefore require the crash to have already occurred. 
 The model could be generated without these features, but this would reduce the model accuracy. 
-Instead, where possible, these a posteriori measurements can be causally mapped to their influencing factors. 
+Instead, these a posteriori measurements can be causally mapped to influencing factors which can be obtained from environmental or routing data. 
+
+<!-- TODO: mention remaining factors, e.g. time of day, weather, etc -->
+
+#### Manner of Collision
 The manner of collision measures the direction of movement for each participant in a collision. 
 This direction of movement during the collision results from the direction each participant was travelling immediately prior to the collision. 
 Therefore, the direction each participant is travelling immediately prior to a crash has a causal correlation with the posterior manner of collision. 
@@ -1599,6 +1607,18 @@ These measurements are then passed to the model, which will in effect be predict
 The "intersection related" feature is one-hot encoded as several distinct features, i.e. the model considers each value of "intersection related" as a separate feature. 
 Each intersection from the routing data is mapped as 'intersection', but no other mapping is made as this data is unavailable. 
 The model will therefore only predict on routing directions which indicate a required change in direction, and will not consider any straight intersections. 
+
+### **Impact on the Route Score**  
+The lack of routing data for segments, driveways, and straight-turns impacts both the "manner of collision" and "intersection related" features. 
+Without these road section types, each feature can only be used to predict on intersections which require a change in travel direction. 
+Ultimately, this means the safety score will not be evaluated for "straight sections, i.e. road sections for which the routing data travel direction is straight. 
+This hides variation between routes with different numbers of intersections, as a route with several "straight intersections" will receive the same score as a route with few straight intersections, where "straight intersection" is understood to be a straight section which is an intersection. 
+The data-mapping for the feature "manner of collision" does not change based on road section type; as long as the travel direction is straight, all "manner of collision" are considered possible. 
+Therefore, the lack of straight sections only leads to a lack of accuracy for the feature "manner of collision". 
+The data-mapping for the feature "intersection related" changes based on road section type, as it takes on different values for intersections and road segments. 
+Therefore, the lack of straight sections leads to a lack of precision for the feature "intersection related". 
+
+These limitations cannot be resolved using only routing data, but for scoring purposes still allow for a distinction between routes to be made with the caveat that straight sections are not evaluated. 
 
 <!-- TODO: mention correlation between "manner of collision" and "crash severity"; intuitively the manner in which a car collides with a cyclist should have a large impact on the severity of injury -->
 
