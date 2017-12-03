@@ -1560,11 +1560,45 @@ Base assumptions:
 During travel, both units move predictably and according to the traffic laws. For example, cyclists are expected to turn only at intersections and otherwise stay in their lane.  
 Manner of Collision is recorded accurately and correctly, e.g. the 'opposite direction both going straight' precludes the possibility of either unit making an unpredictable turn, which would be recorded as 'opposite direction on straight one left turn'. 
 
-**Predicting using Mapped Routing Features**  
-The manner of collision feature is one-hot encoded as several distinct features, i.e. the model considers each type of "manner of collision" as a separate feature. 
+#### Intersection Related  
+The crash report feature "intersection related" measures what type of road section the crash occurred on. 
+Crashes occurring in or around an intersection are recorded as "intersection" or "intersection related", crashes on a segment as "non intersection", and crashes on a segment with a driveway or parking lot access as "driveway access". 
+Mapping routing data to the values 'intersection' or 'intersection related' is possible if the routing information mentions every intersection. 
+
+However, routing data is typically meant as an instruction to a human end-user, and as such usually only explicitly mentions intersections for which the end-user needs to change their travel direction. 
+This is because routing software typically requires the end-user to assume a default straight travel direction along segments or through intersections, and therefore omits straight travel directions. 
+<!--
+If you're thinking about "continue straight", this is to resolve ambiguity when road sections converge or a road section name changes. 
+-->
+
+This is because routing software typically omits directions for a straight travel direction along segments or through intersections as it requires the end-user to assume a default straight travel direction. 
+The google directions routing information only mentions intersections when the travel direction needs to be changed, and therefore does not make explicit mention of intersections or segments. 
+This is because it requires the user to assume a straight travel direction by default. 
+Therefore, only routing intersections which alter the travel direction can be mapped to the crash data. 
+
+Mapping routing data to the values 'non intersection', i.e. road segment, and 'driveway access' presents a different challenge. 
+The routing data does not contain references to driveways, which precludes any mapping to the 'driveway access' category. 
+The routing data does not contain explicit references to segments, however segments can be partially inferred from the intersections. 
+For simplicity, segments can be assumed to be between intersections, and as such a segment can be inserted between each intersection in the routing data. 
+However, this assumption fails for routing data containing two consecutive intersections. 
+In order to process two consecutive intersections, a definition is required to determine the minimum length required for a road section to be considered as a segment. 
+The distance between two intersections could then be evaluated to determine whether to interpolate a segment between the two or whether to consider them as consecutive intersections. 
+However, TxDOT does not explicitly define the minimum length required to define a road section as a segment [@txdotClassificationCR102]. 
+Instead, for certain consecutive intersection types, TxDOT defines a minimum distance required to consider them as separate intersections [@txdotClassificationCR102]. 
+Using this approximate guideline of 30 feet, segments could be inserted between any intersection for which the GPS coordinates are at least 30 feet apart. 
+However, this guideline is not meant for all intersections and further research would be required to verify its applicability. 
+Therefore, the interpolation of segments between intersections was not implemented for this project. 
+
+
+### **Predicting using Mapped Routing Features**  
+The "manner of collision" feature is one-hot encoded as several distinct features, i.e. the model considers each type of "manner of collision" as a separate feature. 
 This facilitates the one-to-many mapping of the travel direction to the manner of collision. 
 The travel direction from the incoming routing data is converted to the corresponding manner of collision and added to the remaining transmitted a priori environmental measurements. 
 These measurements are then passed to the model, which will in effect be predicting the crash severity using the all possible values for manner of collision obtained from the travel direction. 
+
+The "intersection related" feature is one-hot encoded as several distinct features, i.e. the model considers each value of "intersection related" as a separate feature. 
+Each intersection from the routing data is mapped as 'intersection', but no other mapping is made as this data is unavailable. 
+The model will therefore only predict on routing directions which indicate a required change in direction, and will not consider any straight intersections. 
 
 <!-- TODO: mention correlation between "manner of collision" and "crash severity"; intuitively the manner in which a car collides with a cyclist should have a large impact on the severity of injury -->
 
@@ -2118,6 +2152,7 @@ http://www.sfedit.net/abstract.pdf
 [@fhwa3DataAnalysisCrashRateSegment]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s321  
 [@trafficForecastingCrowdFlows]: https://dl.acm.org/citation.cfm?doid=2996913.2996934
 [@txdotHSIManualMannerCollision]: http://onlinemanuals.txdot.gov/txdotmanuals/hsi/hsi.pdf <!-- page 1-18 -->
+[@txdotClassificationCR102]: ftp://ftp.dot.state.tx.us/pub/txdot-info/library/forms/cit/crash102_final_10_08.pdf <!-- page 14 -->
 
 # Appendix
 <!--!@breadcrumb-->
