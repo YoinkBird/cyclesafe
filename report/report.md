@@ -215,7 +215,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
   * Appendix: Data Description Report
     * TXDOT data
   * Appendix: Featdef Values
-  * Appendix: Modeling - Feature Selection for interpretable_model
+  * Appendix: Modeling - Feature Selection for Feature Reduction Model
 <!--</toc_mini>-->
 
 
@@ -1046,20 +1046,28 @@ project plan:
 | **prep** | | stub_model |
 | **analysis** | | | interpretable_model |
 | **analysis** | | | interpretable_model2 |
+
+Names:
+clean_project -> Migrate Previous Project
+stub_model -> enablement_model
+interpretable_model -> Feature Reduction Model
+interpretable_model2 -> Routing Data Model
+
+-->
 <!-- | **modeling** | | | | optimised_model1 | -->
 
 #### WP: clean project
 The previous project's codebase which initially explored the TXDOT dataset focused on model optimisation and feature selection, and therefore needs to be rewritten as a model generator for this project.  
 
-#### WP: stub_model
+#### Work-Package: Enablement Model  <!-- WP: stub_model -->
 Simple model with basic optimisation and limited feature set
 Purpose: Gathering requirements and enabling all dependent work-packages  
 Creating an intermediate simple model allows for the external interfaces to be defined and enables the rest of the technology stack.  
 This strategy was found to be very useful for quickly iterating through the CRISP-DM process to discover unknown requirements and dependencies.  
-The stub model allows the deployment stage to start in parallel with model optimisation. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
+The enablement model allows the deployment stage to start in parallel with model optimisation. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
 Dependency: Data Preparation
 
-#### WP: interpretable_model  
+#### Work-Package: Feature Reduction Model <!-- interpretable_model  -->
 Simple model with advanced optimisation and as many features as possible to predict the crash severity.  
 Purpose: data analysis, implementation and definition of interface between application and model
 Data Analysis: This model helps with processing the dataset through a process called feature selection, which can also help increase the amount of usable data.  
@@ -1346,9 +1354,9 @@ Therefore, each model is based on a decision tree algorithm, which are well suit
 
 #### Overview of Modeling Stage:  
 
-The stub_model was quickly implemented in order to develop the framework for modeling and deployment as well as for data exploration.  
-It was then replaced by the interpretable_model, which was quickly found to rely on features which were not available in deployment.  
-The interpretable_model2 is the re-implemented interpretable_model containing only features which could be obtained once deployed.  
+The Enablement Model was quickly implemented in order to develop the framework for modeling and deployment as well as for data exploration.  
+It was then replaced by the Feature Reduction Model, which was quickly found to rely on features which were not available in deployment.  
+The Routing Model is the re-implemented Feature Reduction Model containing only features which could be obtained once deployed.  
 Further models were not implemented at this time.  
 <!--
 @FUTUREWORK: Improve precision and accuracy  
@@ -1360,13 +1368,15 @@ Data Segmentation - improve precision - use models created from subsets of the d
 Improved accuracy - The next step to improve accuracy would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
 Such a model was created for this project's predecessor, and could be re-implemented for this project without the unavailable features.  
 
-As such, only interpretable_model2 will be evaluated in this section as it includes stub_model and interpretable_model.  
-stub_model and interpretable_model will be mentioned in context of their role in the overall lifecycle.  
+As such, only Routing Model will be evaluated in this section as it includes Enablement Model and Feature Reduction Model.  
+The Enablement Model and Feature Reduction Model will be mentioned in context of their role in the overall lifecycle.  
 
 
 
 <!-- @TODO: what is the different between interpretable_model and interpretable_model2 ? -->
 #### interpretable_model2:  
+#### Routing Model  
+<!-- interpretable_model2: rename to: Routing Model  -->
 Technique:  Decision Tree  
 Assumptions: ignores location, ignores intersection, only focuses on ... TODO: featdef    
 Test Design: xval, roc score, see model.py  
@@ -1383,7 +1393,8 @@ Location unaware : @TODO: refactor this sentence, is it a stream-of-thought:  In
 @TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
 -->
 
-#### stub_model:  
+#### Enablement Model  
+<!-- stub_model: rename to Enablement Model -->
 Technique: DecisionTree  
 Evaluation: Adequate enough for enabling deployment  
 Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately  
@@ -1406,14 +1417,14 @@ The model parameters were not optimised from their defaults as this model is mea
 
 
 <!-- @FUTUREWORK:  -->
-#### segmentation_models: 
+#### segmentation_models 
 Technique: Multiple models operating on Segmented Dataset  
 Assumption: #@TODO:notsure# output of different models with more/less features is statistically significant @citationNeeded  
 Test Design: xval, roc score, etc; need to test the combined score.  
 Build Model: determine avail feats, choose model according to avail feats, resulting in more/less accurate score.  
 Caveat: This is not stacking, it is dataset segmentation, i.e. choosing the most appropriate model for the dataset prediction.  
 
-Purpose: real-world sometimes has missing data. naive approach is to create model with "lowest common denominator" of missing data, as in the interpretable_model\*, but the resulting model lacks features unique to each route. Better approach is to create multiple models based on anticipated data availability, i.e. one model based on a "common denominator" dataset, one model based on "common dataset" + "feature set A", one model based on "common dataset" + "feature set B", etc. This allows the most optimal model to be used based on the data available, providing a more accurate score based on increased availability of data. In general, training models on different slices of the dataset is referred to as segmentation. @citationNeeded  
+Purpose: real-world sometimes has missing data. naive approach is to create model with "lowest common denominator" of missing data, as in the Feature Reduction Model\*, but the resulting model lacks features unique to each route. Better approach is to create multiple models based on anticipated data availability, i.e. one model based on a "common denominator" dataset, one model based on "common dataset" + "feature set A", one model based on "common dataset" + "feature set B", etc. This allows the most optimal model to be used based on the data available, providing a more accurate score based on increased availability of data. In general, training models on different slices of the dataset is referred to as segmentation. @citationNeeded  
 (e.g. lighting condition, weather is always available, but can be assumed to be identical or indistinguishable for any route. E.g. user can only input conditions at start, would require advanced knowledge to know whether lighting conditions will change further along in the route )  
 
 #### Analysis Evaluation
@@ -2354,7 +2365,7 @@ featdef is used to track the origin of newly implemented features, so if a model
 featdef tracks the type of feature as well to identify which features are meant to be used in the model and which aren't, such as the case-id.   
 -->
 
-## Appendix: Modeling - Feature Selection for interpretable_model
+## Appendix: Modeling - Feature Selection for Feature Reduction Model
 
 RFECV on the full set of features with 233 data points lead to high variance between RFECV scores.  
 This indicated that the dataset for this number of features could not lead to a reliable model.  
