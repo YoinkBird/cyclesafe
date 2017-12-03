@@ -20,15 +20,17 @@ REV1 [2017xxxx] roadmap: first pass
 
 <!-- old title: Data Driven Approach towards Improving Road Safety for Cyclists -->
 
-# Probabilistic Routing-Based Injury Avoidance Framework for Pedalcyclists
+# Probabilistic Routing-Based Injury Avoidance Navigation Framework for Pedalcyclists
+
 
 <!--
 Probabilistic  : machine-learning model
 Routing-Based  : input is route data
 Bicycle-Injury : prediction is for crash severity given a crash
 Avoidance      : multiple scored route choices 
-Planning       : user-defined routes
+Navigation     : user-selected routes
 Framework      : the tech stack implementation (not just one app) 
+Pedalcyclists  : official term for cyclist
 -->
 
 
@@ -60,29 +62,85 @@ results
 conclusion
 -->
 
+<!-- introduction of problem -->
+<!--
+allowing pedalcyclists to choose routes based on the results of the traffic studies 
+
+reactively and therefore only in areas for which the 
+
+conventional safety improvements are reactive, can take a while, difficult to measure @citationNeeded:politifactManorBikelane
+
+municipalities freely make data available, invite community to help solve problems @citationNeeded:openAustin
+
+citizen contribution to problem affecting everyone
+
+problem affecting everyone: traffic congestion, can be alleviated with more alternative transportation, cycling one of them
+increase cycling by increasing safety of cycling
+increased cycling as a factor in increasing safety, i.e. small start can accumulate (tell cyclists where to ride safely, motorvehicles see more cyclists -> more aware -> drive more carefully, overall safety now improved) 
+
+how to make this change?
+-->
+<!-- introduction of paper and goals -->
+<!-- injury severity used as metric of route safety, only metric which uses measurable data -->
+<!-- develop risk model using crash data to estimate severity of injury given a crash -->
+<!-- routing data gathered and collated with environmental data to describe various routes -->
+<!-- framework uses model to assign score to each possible route -->
+<!-- goal is to provide end-user with both recommendation and information, can see routes and choose best one  -->
+<!-- GO: -->
+Easing traffic congestion in urban areas is a continuous effort of optimising many factors. 
+Encouraging commuters to use alternative transportation such as bicycles is a simple way to reduce traffic congestion by reducing the number of motor vehicles in traffic. 
+However, commuters involved in bicycle crashes sustain much more severe injuries than commuters involved in similar motor vehicle crashes. 
+This risk of injury presents a hurdle towards convincing commuters to use bicycles and can be reduced by improving roadway safety. 
+Conventional roadway safety improvements are made at a municipality level based on recommendations from studies analysing crash and traffic data. 
+While changes made using this approach can increase safety in the long term, the cost-benefit analysis of implementing these changes leads to these improvements being made in limited areas for maximum impact. 
+This reactive approach has several drawbacks as it only improves certain roadways, takes a long time to implement, and doesn't focus on safety benefits for bicycle commuters. 
+As an alternative, the concerns with the conventional reactive approach can be addressed by adapting it for proactive use. 
+The traffic and crash data used to create the studies is freely available to the public in many municipalities, and advancements in data mining have greatly reduced the effort required to analyse data for a traffic study. 
+In this paper, a navigation framework is developed which analyses crash data to recommend safe routes for bicycle commuters. 
+The injury severity present in the crash data is used as as the metric for route safety. 
+Machine learning techniques are applied to the crash data to develop a risk model for estimating route safety. 
+A framework is created to obtain multiple routes and generate their safety scores by applying the risk model. 
+An end-user navigation application was implemented to present multiple routes along with their safety scores. 
+This proactive approach enables commuters to switch to bicycling
+by providing personalised safety recommendations 
+without the limitations of the conventional approach. 
+
+<!--
+other approaches: 
+this addresses flaws with other approaches ...
+pedalcyclist traffic volume data too sparse to make meaningful prediction 
+-->
+
+<!-- OLD: -->
 <!-- TODO - state potential compromises in abstract -->
 <!-- TODO - state hypothesis in first sentence - in this case, the goal? -->
+<!--
 PURPOSE  
-This project aims to help bicycle commuters improve their safety in mixed traffic.  
-The resulting increase in safety while cycling will hopefully convince more commuters to use a bicycle.  
-If successful, this will reduce the number of severe injuries while also easing traffic congestion.  
+This project aims to help bicycle commuters improve their safety in mixed traffic. 
+The resulting increase in safety while cycling will hopefully convince more commuters to use a bicycle. 
+If successful, this will reduce the number of severe injuries while also easing traffic congestion. 
 @citationNeeded - article: increased cycling increases safety  
+-->
 
-METHODOLOGY  
-A web-based map interface will help cyclists plan safer routes,  
-&nbsp;&nbsp; and an analysis of the data used to plan the route will help cyclists ride more defensively.  
-This is accomplished using multiple approaches:  
-  The first approach seeks to analyse the potential for severe injury along a generic route.  
-A machine learning model will determine the probability of injury for a given route based on cumulative data from all known crashes.  
-This is a closed form solution, as it relies entirely on available data.  
-  The second approach uses historical crash data to recommend safer routes   
-Recommend a route without dangerous intersections, where the danger of an intersection is approximated from crash location data.  
-This is an approximation of a closed form solution, as there is insufficient data to determine precisely what leads to a crash.   
+<!--
+This project introduces a web-based map interface to help cyclists plan safer routes. 
+and an analysis of the data used to plan the route will help cyclists ride more defensively.  
+-->
+<!--
+This project will help cyclists plan safer routes through a web-based map interface which uses multiple approaches to analyse route safety.  
+  The first approach seeks to analyse the potential for severe injury along a generic route. 
+A machine learning model will determine the probability of injury for a given route based on cumulative data from all known crashes. 
+This approach relies entirely on available data and therefore is a closed-form, or complete, solution.  
+  The second approach uses historical crash data to recommend safer routes. 
+Routes with fewer dangerous intersections are considered safer, where the danger of an intersection is approximated from crash location data. 
+This is an incomplete solution as there is insufficient data to determine precisely what leads to a crash, and therefore only an approximation of a closed form solution. 
+-->
 <!-- Assign a score to intersections based on crash data (frequency of crashes in intersection, injury severity, etc).  -->
+<!--
 Previous Work:  
 This project is based off of a previous project to identify the factors associated with severe injury.  
 Caveat:  
-This project does not directly focus on factors which cause a crash, as there is not enough data to allow for a closed solution.  <!-- @terminology -->
+This project does not directly focus on factors which cause a crash, as there is not enough data to allow for a closed solution.
 
 RESULTS:  
 These are the results the project hopes to accomplish:  
@@ -96,6 +154,7 @@ CONCLUSION:
 The created application will help cyclists ride more defensively, but more effort needs to be made on a municipal level.  
 Cycling safely will continue to be inconvenient as long as safe routes are a big detour.  
 Recommendation is to increase data collection in areas with most crashes to better analyse the factors leading into it.  
+-->
 
 
 # Table of content
