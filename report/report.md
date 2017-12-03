@@ -1494,36 +1494,39 @@ code_snippet_featdef_grid_example
 </pre>
 
 ## Predicting using Route Data
+<!--
 <pre>
 * [X] route features map to model features
   * [-] model features also posterior, unavailable by default from route data
     * [X] manner of collision
-    * [-] intersection related
+    * [X] intersection related
 * [X][Roadway Safety Analysis] can't simply predict route, need to have a score => adapt NHTSA rates
   * [X] CANNOT USE: road-segment rate calc: ratio of #crashes to count * length i.e.  1M * #crashes / (days x numyears) * #trafficCount * length 
     since no trafficcount, and going for prob not count: ratio of seg-prob to count, i.e.  : (1 day) * length (no trafficcount in routing data) 
   * [X] CANNOT USE: intersection: same as road-segment, without length
-  * [?] crash rate mileage
+  * [X] crash rate mileage - i.e. dividing by 'L' to distribute crash rate blah blah blah
   * [X] conclusion:
     * [X] segment: crash-prob per mile
     * [X] intersection: crash-prob per million entering vehicles
     * [X] add all together? => two scores, each is product of inverse risks
-  * [-] intersection related : only applies to intersections, not the portion between. I.e. can't assign "not intersection" to each GPS point between intersections
-  * [-] needs something to reflect number of intersections, perhaps count intersections and 
+  * [X] intersection related : only applies to intersections, not the portion between. I.e. can't assign "not intersection" to each GPS point between intersections
+  * [X] -> score separation - needs something to reflect number of intersections, perhaps count intersections and 
 
-Score: inter+seg
-intersection: model prob
-segment: model prob/ length
+[x] Score: inter+seg
+[x] intersection: model prob
+[x] segment: model prob/ length
 
+OMITTING FOR NOW IN INTEREST OF TIME
 [-] segment detail:
 routing hides intersections, "collapses" straight route into one, trade-off required because of no data
 traditionally with crash rates would be a problem because, let 'a','b' crashes, 'x','y' lengths : (a+b)/(x+y) != (a/x) + (b/y)
 [-] however, using probs is not a rate, therefore let 'k','l' be probs INDEPENDENT length, model doesn't consider segment length for prob because crash data doesn't contain, therefore model would predict same 'k' for 'x','y','x+y' and therefore 'k' == 'l' for identical input features and therefore (k+l)/(x+y) = (2k) / (x+y) => still a problem, just different form
 
 
-[-] The routing data is used by the machine learning model to predict the crash severity ...
-[-] The data provided by the routing service contains only a subset of the features available from the crash data. 
+[X] The routing data is used by the machine learning model to predict the crash severity ...
+[X] The data provided by the routing service contains only a subset of the features available from the crash data. 
 </pre>
+-->
 
 ### **Mapping Routing Features to Crash Report Features**  
 The crash severity prediction model was developed using features from crash data, but will not predict on crash data during deployment. 
