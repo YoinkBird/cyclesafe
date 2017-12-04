@@ -2272,6 +2272,7 @@ http://www.sfedit.net/abstract.pdf
 <!--</@breadcrumb>-->
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
 
+<!--
 **CRISP-DM**  
 
 DRAFT - expanded description of CRISP-DM process
@@ -2318,6 +2319,7 @@ https://www.google.com/search?q=machine+learning+understandability+of+model&oq=m
 
 **Misc**  
 @FUTUREWORK: change parameters such as 'lighting condition' according to local time, i.e. if route time estimate starts during daylight, ends in twilight, change the values according to the time estimates per segment.  
+-->
 
 ## Appendix: Data Description Report  
 ### TXDOT data  
@@ -2511,6 +2513,7 @@ story,task : WP
 
 
 ### Work-Packages:
+<!--
 **DRAFT**  
 **Staging for explanations down below**  
 [x] WP-Deliverables - merge into 'Work-Packages' (not into Roadmap)  
@@ -2518,16 +2521,10 @@ story,task : WP
 [x] Work-Packages - outline each WP as a header, use the mini-toc to list them all  
 [ ] reference WP names from 'Roadmap', move explanations up into WP description  
 **/DRAFT**
-
-Note: Work packages (WP) need not necessarily be executed in the order of the gantt chart  
-The current gantt chart reflects the desired order of implementation vs actual dependency.  
-This needs to be re-worked to properly indicate both the actual inter-dependency and the desired execution timeline  
+-->
 
 <!-- TODO: auto-list these, like a TOC. reason: have work-packages be a summary, then 'wp deliverables' the explanation, which re-uses the eact same titles. -->
 <!--!toc_mini-->
-Simple ASCII diagrams for simplicity, see Roadmap for more detail  
-
-WP Impact on Functionality of Project  
 
 Notation: the WP-names should reflect the scope of the functionality  
 E.g. "safety_score" implies any WP with the name "safety_score-\*" such as safety_score-total and safety_score-partial  
@@ -2549,28 +2546,36 @@ Dependency: GPS-fuzzy-match
 
 **Description:**   
 Impute speed limits (mph limit) for segment data [@term:segment-data] which does not correspond to an intersection.  
-@originalProject already imputes speed limits for intersections. <!-- @TODO: this is definitely explained somewhere, just copy-paste it -->
+<!--
+@originalProject already imputes speed limits for intersections.
+-->
 
 #### WP: route: manual selection of pre-defined GPS coordinates [GPS-manual-predef]  
 WP: [route: GPS-manual-predef]  
 Dependency: None
 [route: GPS-manual-predef]     -> [model: safety_score] -> [display score]  
 **Description:**   
+<!--
 TODO: fill in from roadmap, critical path  
+-->
 
 #### WP: route: manual selection of generic GPS coordinates [GPS-manual-generic]  
 WP: [route: GPS-manual-generic]  
 Dependency: GPS-manual-predef
 [route: GPS-manual-generic]    -> [model: safety_score] -> [display score]  
+<!--
 **Description:**   
 TODO: fill in from roadmap, critical path  
+-->
 
 #### WP: route: automatic selection of generic GPS coordinates [GPS-automatic-generic]  
 WP: [route: GPS-automatic-generic]  
 Dependency: GPS-manual-predef
 [route: GPS-automatic-generic] -> [model: safety_score] -> [display score]  
+<!--
 **Description:**   
 TODO: fill in from roadmap, critical path  
+-->
 
 #### WP: route: implement map as output interface [UI-nointer-GPS-generic]  
 WP: [route: UI-nointer-GPS-generic]  
@@ -2590,14 +2595,14 @@ html+js let user plan route using map in addition to displaying route
 
 #### WP: route: overlay score on map [UI-map-safety_score-partial]  
 WP: [route: UI-map-safety_score-partial]  
-Dependency: [UI-nointer-GPS-generic] + TODO  
+Dependency: [UI-nointer-GPS-generic]
 [route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-partial]  
 **Description:**   
 Show the safety score for partial route on the map.
 
 #### WP: route: overlay score on map [UI-map-safety_score-total]  
 WP: [route: UI-map-safety_score-total]  
-Dependency: [UI-nointer-GPS-generic] + TODO  
+Dependency: [UI-nointer-GPS-generic]
 [route: GPS\*] -> [gui: UI-\*-GPS-generic] -> [gui: UI-map-safety_score-total]  
 **Description:**   
 Show the safety score for entire route on the map.  
@@ -2717,7 +2722,6 @@ WP: [GPS-automatic-generic]
 | route: automatically generated arbitrary GPS coords | fuzzy-match against existing data | score |
 
 About GPS-coordinates for intersections vs non-intersections:
-TBD - TODO: combine with WP descriptions
 
 
 <!--
