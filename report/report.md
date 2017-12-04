@@ -1004,13 +1004,12 @@ Feasibility Conclusion:
 The available crash data on the TXDOT website contains information about incidents involving bicyclists and contains enough data to create a predictive model.  
 
 Risks and Contingencies:  
-The TXDOT crash dataset is based on reported crashes, of which only crashes which lead to injury are required to be reported.  
+The TXDOT crash dataset is based on reported crashes, of which only crashes which lead to injury are required to be reported. 
 As a result, the dataset does not encapsulate unreported crashes, and may exclude reported crashes which did not lead to injury.  
-Therefore, the project is at risk of being biased towards crashes which lead to injury while being unaware of less severe crashes.  
-The resulting predictions will be biased towards outcomes with injury.  
-This bias is mitigated by a few factors. The end-usage of the model is for comparing different routes and as such the relative accuracy between routes is most important. Since the prediction bias results from the entire dataset, each route's prediction will be equally biased. I.e. the predictions will not be absolutely accurate, but would still be relatively accurate.  
-For the end goal of reducing severe injury, the tendency towards over-predicting injury is more desirable than under-predicting injury. The predictions are meant for use by individual cyclists, who may want to exercise as much caution as possible and therefore would benefit from an overly cautious recommendation. The risk with this assumption is that overly cautious safety recommendations could also lead to cyclists choosing other modes of transportation if they feel that cycling would not be safe.  
-These risks are acceptable within the constraints of this project, as they can be addressed in future iterations as more data becomes available.  
+Therefore, the resulting model will be biased towards crashes which lead to injury while being unaware of less severe crashes. 
+This bias is mitigated by a few factors. The end-usage of the model is for comparing different routes and as such the relative accuracy between routes is most important. Since the prediction bias results from the entire dataset, each route's prediction will be equally biased. The predictions will be relatively accurate instead of absolutely accurate. 
+For the end goal of reducing severe injury, the tendency towards over-predicting injury is more desirable than under-predicting injury. The predictions are meant for use by individual cyclists, who may want to exercise as much caution as possible and therefore would benefit from an overly cautious recommendation. The risk with this assumption is that overly cautious safety recommendations could also lead to commuters perceiving cycling as unsafe and favouring other modes of transportation.  
+These risks are acceptable within the constraints of this project, as they will not prevent the project from being completed and can be addressed in future iterations using additional data sources. 
 
 This project is based on data for reported crashes, and as such does not include data for crashes which went unreported or did not lead to injury.  
 
