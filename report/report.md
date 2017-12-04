@@ -837,8 +837,8 @@ segments  risk(Route Segments) = 1 - PRODUCT[segment element Route] ( 1 - risk(s
 
 <!-- "in set" : \n : src https://proofwiki.org/wiki/Symbols:Set_Operations_and_Relations#Is_an_Element_Of -->
 <!-- 
-1 - \prod_{intersection \ \in \ route}  (1 - risk(intersection) )
-1 - \prod_{segment \ \in \ route}  (1 - risk(segment) )
+intersection \ risk = 1 \ - \prod_{intersection \ \in \ route}  (1 - risk(intersection) )
+segment \ risk = 1 \ - \prod_{segment \ \in \ route}  (1 - risk(segment) )
 -->
 
 ![formulaRouteRiskScoreInter]
