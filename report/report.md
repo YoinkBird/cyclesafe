@@ -1976,11 +1976,11 @@ The route scoring information is retrieved from scoring server as geo-json, and 
 ### Architecture
 
 <!-- github doesn't know about 'pre' tags, I guess. either do '< -' or '&lt;-' -->
-#### Legend:
 
-#### User-client Interaction: 
+#### User-Client Interaction: 
 
 <!--
+#### Legend:
 <pre>
 [user] ----{Map-UI: route start,end}--&gt; [ client ]  
 [    ] &lt;---{Map-UI: route + scores }--- [        ]  
@@ -1996,6 +1996,7 @@ This simple interface makes the application as easy to use as conventional routi
 
 The routing and map display are implemented using the javascript Google Maps API. The scoring display is implemented using google maps markers with the intersection scores retrieved from the scoring server. 
 
+![arch_client_server]
 
 #### Client-Model Interaction:
 
@@ -2013,11 +2014,10 @@ The routing and map display are implemented using the javascript Google Maps API
 </pre>
 -->
 
-![arch_client_server](
+[arch_client_server]: 
 http://gravizo.com/svg?@startuml;/%27;%20%20%20%20package;%20%20%20%20node;%20%20%20%20folder;%20%20%20%20frame;%20%20%20%20cloud;%20%20%20%20database;%27/;actor%20User;package%20"Client"%20{;%20%20[GUI]%20<->%20[httpClient];};/%27;node%20"Other%20Groups"%20{;%20%20FTP%20-%20[Second%20Component];%20%20[First%20Component]%20-->%20FTP;}%20;%27/;%27skinparam%20linetype%20ortho;%27skinparam%20linetype%20polyline;cloud%20"Third-Party%20Map%20API"%20{;%20%20[AutoCompleteService];/%27;};cloud%20{;%27/;%20%20[Routing%20Service];};package%20"Scoring%20Server"%20{;%20%20%27%20database%20"FileSystem";%20%20[Scoring%20Application];%20%20[Json%20Server];};[User]%20-->%20[GUI]%20:%20route%20origin,%20destination;[User]%20<--%20[GUI]%20:%20display%20route%28s%29%20+%20scores;[httpClient]%20-->%20[AutoCompleteService]%20:%20partial\nroute\norig,%20dest;[httpClient]%20<--%20[AutoCompleteService]%20:%20resolved\nroute\norig,%20dest;[httpClient]%20-->%20[Routing%20Service]%20:%20route\norig,%20dest;[httpClient]%20<--%20[Routing%20Service]%20:%20route\ngeo-json;[httpClient]%20-->%20[Json%20Server]%20:%20rest:\nroute%20geo-json;[httpClient]%20<--%20[Json%20Server]%20:%20rest:\ncore%20geo-json;%27%20scoring%20server;/%27;[Json%20Server]%20-->%20[FileSystem]%20:%20route%20geo-json;[Json%20Server]%20<--%20[FileSystem]%20:%20score%20geo-json;FileSystem%20-->%20[Scoring%20Application]%20:%20route%20geo-json;FileSystem%20<--%20[Scoring%20Application]%20:%20score%20geo-json;%27/;[Json%20Server]%20-->%20[Scoring%20Application]%20:%20route%20geo-json;[Json%20Server]%20<--%20[Scoring%20Application]%20:%20score%20geo-json;@enduml;
-)
 
-![arch_scoring_app]( http://gravizo.com/svg?@startuml;skinparam%20componentStyle%20uml2;/%27;PURPOSE:%20architecture%20of%20the%20scoring%20application,%20which%20uses%20scoring%20model%20on%20gps+env%20data;%27/;/%27;%20%20%20%20package;%20%20%20%20node;%20%20%20%20folder;%20%20%20%20frame;%20%20%20%20cloud;%20%20%20%20database;%27/;%27%20"feature%20data";%27%20route%20data;%27cloud%20{;%20%20package%20extInterface{;%20%20%20%20interface%20routeInfo;%20%20%20%20interface%20scoreInfo;%20%20};%27};package%20ScoringServer%20{;%20%20frame%20dataSources;%20%20dataSources%20-->%20preprocessor;%20%20package%20ScoringApplication{;%20%20%20%20node%20preprocessor%20{;%20%20%20%20%20%20node%20featdef;%20%20%20%20%20%20%27database%20dataframe%20as%20dataset;%20%20%20%20};%20%20%20%20%28%29%20"featureSelection\n%28query%20featdef%29"%20as%20featureSelection;%20%20%20%20node%20procRouteInfo%20{;%20%20%20%20%20%20node%20extractEnvData;%20%20%20%20%20%20node%20extractGPSData;%20%20%20%20};%20%20%20%20routeInfo%20-->%20procRouteInfo;%20%20%20%20node%20modelUse%20as%20modelBuild%20{;%20%20%20%20%20%20node%20model;%20%20%20%20%20%20%27%20"fit"%20is%20sklearn-specific;%20%20%20%20%20%20%27no%20fit%20during%20deploy%27%20%28%29%20"train"%20as%20fit;%20%20%20%20%20%20%27%20during%20model%20creation,%20predict%20is%20for%20the%20x-val%20%27test%27;%20%20%20%20%20%20%27%20during%20model%20usage,%20%20%20%20predict%20is%20to%20get%20the%20prediction%20scores;%20%20%20%20%20%20%28%29%20"predict"%20%20as%20predict;%20%20%20%20};%20%20%20%20frame%20scores;%20%20%20%20predict%20-->%20scores;%20%20%20%20predict%20<-left-%20model;%20%20%20%20node%20generateScoreInfo%20{;%20%20%20%20%20%20node%20combineScoreAndLocation;%20%20%20%20%20%20scores%20-->%20combineScoreAndLocation;%20%20%20%20%20%20extractGPSData%20-->%20combineScoreAndLocation;%20%20%20%20%20%20combineScoreAndLocation%20-->%20scoreInfo;%20%20%20%20};%20%20%20%20database%20localStorage%20{;%20%20%20%20%20%20node%20scoringModel;%20%20%20%20};%20%20%20%20model%20<-%20scoringModel%20:%20retrieve%20from%20disk;%20%20};%20%20extractEnvData%20-->%20predict;};@enduml;)
+[arch_scoring_app]: http://gravizo.com/svg?@startuml;skinparam%20componentStyle%20uml2;/%27;PURPOSE:%20architecture%20of%20the%20scoring%20application,%20which%20uses%20scoring%20model%20on%20gps+env%20data;%27/;/%27;%20%20%20%20package;%20%20%20%20node;%20%20%20%20folder;%20%20%20%20frame;%20%20%20%20cloud;%20%20%20%20database;%27/;%27%20"feature%20data";%27%20route%20data;%27cloud%20{;%20%20package%20extInterface{;%20%20%20%20interface%20routeInfo;%20%20%20%20interface%20scoreInfo;%20%20};%27};package%20ScoringServer%20{;%20%20frame%20dataSources;%20%20dataSources%20-->%20preprocessor;%20%20package%20ScoringApplication{;%20%20%20%20node%20preprocessor%20{;%20%20%20%20%20%20node%20featdef;%20%20%20%20%20%20%27database%20dataframe%20as%20dataset;%20%20%20%20};%20%20%20%20%28%29%20"featureSelection\n%28query%20featdef%29"%20as%20featureSelection;%20%20%20%20node%20procRouteInfo%20{;%20%20%20%20%20%20node%20extractEnvData;%20%20%20%20%20%20node%20extractGPSData;%20%20%20%20};%20%20%20%20routeInfo%20-->%20procRouteInfo;%20%20%20%20node%20modelUse%20as%20modelBuild%20{;%20%20%20%20%20%20node%20model;%20%20%20%20%20%20%27%20"fit"%20is%20sklearn-specific;%20%20%20%20%20%20%27no%20fit%20during%20deploy%27%20%28%29%20"train"%20as%20fit;%20%20%20%20%20%20%27%20during%20model%20creation,%20predict%20is%20for%20the%20x-val%20%27test%27;%20%20%20%20%20%20%27%20during%20model%20usage,%20%20%20%20predict%20is%20to%20get%20the%20prediction%20scores;%20%20%20%20%20%20%28%29%20"predict"%20%20as%20predict;%20%20%20%20};%20%20%20%20frame%20scores;%20%20%20%20predict%20-->%20scores;%20%20%20%20predict%20<-left-%20model;%20%20%20%20node%20generateScoreInfo%20{;%20%20%20%20%20%20node%20combineScoreAndLocation;%20%20%20%20%20%20scores%20-->%20combineScoreAndLocation;%20%20%20%20%20%20extractGPSData%20-->%20combineScoreAndLocation;%20%20%20%20%20%20combineScoreAndLocation%20-->%20scoreInfo;%20%20%20%20};%20%20%20%20database%20localStorage%20{;%20%20%20%20%20%20node%20scoringModel;%20%20%20%20};%20%20%20%20model%20<-%20scoringModel%20:%20retrieve%20from%20disk;%20%20};%20%20extractEnvData%20-->%20predict;};@enduml;
 
 
 The client application sends the user-input route start and end to the external routing service.  
@@ -2036,6 +2036,7 @@ The client then displays the unmodified third-party routing information along wi
 
 For this implementation, the Google Maps Directions Service was used as the third-party routing provider, and the Google Places API was used to enable autocompletion for the starting and end location names. 
 
+![arch_scoring_app]
 
 #### Data Formats
 **google maps geo-json**
