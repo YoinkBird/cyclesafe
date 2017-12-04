@@ -1258,36 +1258,40 @@ Dimension <4k, so boosted tree likely best solution (src: [@caruana_et_al_2008])
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+<!--
 **Overview**  
 * Data Collection Report
 * Data Description Report
 * Data Exploration Report
 * Data Quality Report  
 * ABT
-
-### Data Collection Report
-<!-- ### Data Acquisition  -->
-<!-- list data sources,locations,methods, problems encountered, solutions -->
-Practical Assessment: Several sources available for crash data, will use TXDOT csv obtained via interactive web-based query. This requires a one-time effort to manually formulate the query each time the dataset is to be updated.    
-NHTSA and TXDOT both offer a complete dataset which is not in a simple csv format and requires significant processing in order to be queried.  
-APD offers a limited dataset for certain years, which excludes it from consideration as a source of data.  
-For the purpose of this project, it is more efficient to focus the available resources on the easily obtained yet complete dataset offered by the interactive web-query. However, for ongoing maintenance, the full-featured dataset will be used as it can be obtained automatically.  
-
-<!--
-@TODO: see google-doc for procedure to obtain data  
 -->
 
-Following reports will focus on the TXDOT CRIS Crash Data.  
+<!-- ### Data Acquisition  -->
+<!-- list data sources,locations,methods, problems encountered, solutions -->
+**Data Collection Report**:  
+**Crash Data**: 
+TXDOT crash data will be used in csv format obtained via an interactive web-based query. 
+This requires a one-time effort to manually formulate the query each time the dataset is to be updated.    
+Several other sources were considered as well. 
+NHTSA and TXDOT both offer a complete dataset which is not in a simple csv format and requires significant processing in order to be queried.  
+APD (Austin Police Department) offers a limited dataset for certain years, which excludes it from consideration as a source of data.  
+For the purpose of this project, it is more efficient to focus the available resources on the easily obtained yet complete dataset offered by the interactive web-query. 
+However, for ongoing maintenance, the full-featured dataset should be used as it can be obtained automatically.  
 
-Routing Data: The deployed model will be predicting on routing data obtained from a third party.  
+**Routing Data**: The deployed model will be predicting on routing data obtained from a third party.  
 Google Maps Routing API will be used for this as it is well supported and free of charge. 
 OpenStreetMaps is another widely used mapping API, but requires a separate service to be used for routing. This additional complexity makes OpenStretMaps a non-optimal choice for this project.  
 
-
-### Data Description Report
-Crash Data: Data is in CSV format with a header describing the query parameters used to obtain the data  
-2233 records  
-25 fields  
+**Data Description Report**:  
+**Crash Data**: The TxDOT crash data is in CSV format with a header describing the query parameters used to obtain the data  
+The data contains 2233 records with 25 fields, some of which contain mostly null values. 
+The features corresponding to these fields will be processed by the models using recursive feature elimination. 
+The meaning of each feature is described in the TxDOT Highway Safety Improvement Manual @txdotHSIManualMannerCollision . 
+The "crash severity" correlates best with "injury severity", and takes on a range of 5 values indicating the severity of injury sustained in a crash. 
+This range includes "Not Injured", "Possible Injury", "Non Incapacitating Injury", "Incapacitating Injury", and "Killed". 
+"Incapacitating" is understood to mean that medical treatment was required. 
+This feature should be explored for use as the injury severity target predictor. 
 
 <!-- too much info, would have to look this up for each feature!
 The manner of collision can take on 46 values [@txdotHSIManualMannerCollision], but the crash data for pedalcyclists is limited to 10 distinct values:  
@@ -1307,7 +1311,7 @@ The manner of collision can take on 46 values [@txdotHSIManualMannerCollision], 
 @TODO: fill in from featdef.py in [data description report appendix](#appendix-data-description-report), add excerpt with relevant data here  
 -->
 
-Routing Data: The Google Maps routing data is in json format and contains several fields meant for consumption by the Google Maps display API. A subset of the routing data corresponds to a subset of the crash data.
+**Routing Data**: The Google Maps routing data is in json format and contains several fields meant for consumption by the Google Maps display API. A subset of the routing data corresponds to a subset of the crash data.
 
 
 <!--
@@ -1315,24 +1319,22 @@ Routing Data: The Google Maps routing data is in json format and contains severa
 3.5.1 Visualizing Relationships Between Features
 3.5.2 Measuring Covariance and Correlation
 -->
-### Data Exploration Report  
-<!--
-@TODO: build on [@originalProject]  
--->
-
+<!-- not enough time.
+**Data Exploration Report**:
 Most of the features in the dataset are categorical, and most of the continuous features have discrete values and can be converted to categorical features.  
 
 * ABT  
 * Data Quality Report
   * mph incomplete, encoded either as -1 or 0
   * "average daily traffic amount" and "average daily traffic year" only present for major roads   
+-->
 
 <!-- 3 Data Exploration -->
 <!-- 3.1 The Data Quality Report -->
-### Data Quality Report
-ABOUT: i.e. quality of selected features
+**Data Quality Report**: See Appendix for the TxDOT Data Quality Report and TxDOT Data Undefined Values Report
 <!-- 3.2 Getting to Know the Data -->
 <!-- 3.2.1 The Normal Distribution -->
+
 
 <!--
 2.3 Analytics Base Table
@@ -1340,12 +1342,14 @@ This work sits primarily in the Data Understanding phase
 2.4 Designing and Implementing Features
 2.4.5 Implementing Features
 -->
-### Analytics Base Table
+**Analytics Base Table**: 
+The analytics base table is implemented as a pandas dataframe and meant to be modified as needed by each model. 
+The final ABT comprises 61 features and 2232 entries, and as such will not be reprinted. 
+
+<!--
 Choose prediction subject, one-row-per-subject  
 determine domain concepts for features  
 first findings, hypothesis  
-<!--
-@TODO: create in pandas  
 -->
 
 ## Data Preparation
@@ -2364,6 +2368,31 @@ Speed Limit
 Street Name
 Surface Condition
 Weather Condition
+
+## Appendix: TxDOT Data Undefined Values Report
+| feature                      |no.*data |unknown |not.*reported |not.*applicable |
+|------------------------------|---------|--------|--------------|----------------|
+| average_daily_traffic_amount |  1904.0 |    0.0 |          0.0 |            0.0 |
+| average_daily_traffic_year   |  1936.0 |    0.0 |          0.0 |            0.0 |
+| crash_severity               |     0.0 |    4.0 |          0.0 |            0.0 |
+| day_of_week                  |     0.0 |    0.0 |          0.0 |            0.0 |
+| intersecting_street_name     |     0.0 |  194.0 |          8.0 |            0.0 |
+| intersection_related         |     0.0 |    0.0 |          1.0 |            0.0 |
+| latitude                     |   235.0 |    0.0 |          0.0 |            0.0 |
+| light_condition              |     0.0 |   37.0 |          0.0 |            0.0 |
+| longitude                    |   235.0 |    0.0 |          0.0 |            0.0 |
+| manner_of_collision          |     0.0 |    0.0 |          0.0 |            0.0 |
+| medical_advisory_flag        |     0.0 |    0.0 |          0.0 |            0.0 |
+| object_struck                |     0.0 |    0.0 |          0.0 |         2221.0 |
+| road_base_type               |  1904.0 |    0.0 |          0.0 |            0.0 |
+| street_name                  |     0.0 |    0.0 |          0.0 |            0.0 |
+| surface_condition            |     0.0 |   10.0 |          0.0 |            0.0 |
+| weather_condition            |     0.0 |   17.0 |          0.0 |            0.0 |
+
+
+## Appendix: TxDOT Data Quality Report
+
+Report in res/rpt/data_quality_report_txdot.html
 
 ## Appendix: Featdef Values  
 
