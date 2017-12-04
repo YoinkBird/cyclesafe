@@ -514,7 +514,7 @@ $$
 
 ![formulaCrashFrequency]
 
-[formulaCrashFrequency]: 
+[formulaCrashFrequency]: res/formulae/formulaCrashFrequency.png 
 
 The intersection crash rate scales the frequency by a constant of 10^6 [@fhwa3DataAnalysisCrashRateIntersection] : 
 <!--
@@ -528,7 +528,7 @@ $$
 
 ![formulaIntersectionCrashRate]
 
-[formulaIntersectionCrashRate]: 
+[formulaIntersectionCrashRate]: res/formulae/formulaIntersectionCrashRate.png 
 
 i.e.:
 <!--
@@ -539,7 +539,7 @@ $$
 
 ![formulaIntersectionCrashRateVerbose]
 
-[formulaIntersectionCrashRateVerbose]: 
+[formulaIntersectionCrashRateVerbose]: res/formulae/formulaIntersectionCrashRateVerbose.png 
 
 The road segment crash rate scales the frequency by a constant of 100 * 10^6 and divides the result by the segment length [@fhwa3DataAnalysisCrashRateSegment]: 
 <!--
@@ -553,7 +553,7 @@ $$
 
 ![formulaSegmentCrashRate]
 
-[formulaSegmentCrashRate]: 
+[formulaSegmentCrashRate]: res/formulae/formulaSegmentCrashRate.png 
 
 <!-- with units:
 $$
@@ -569,7 +569,7 @@ $$
 
 ![formulaSegmentCrashRateVerbose]
 
-[formulaSegmentCrashRateVerbose]: 
+[formulaSegmentCrashRateVerbose]: res/formulae/formulaSegmentCrashRateVerbose.png 
 
 
 <!-- explanation -->
@@ -617,7 +617,7 @@ $$
 
 ![formulaRelInterCrashIntersectionCR]  
 
-[formulaRelInterCrashIntersectionCR]: 
+[formulaRelInterCrashIntersectionCR]: res/formulae/formulaRelInterCrashIntersectionCR.png 
 <!--
 $$
 \\ \text{Segment Rate} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }  \times \frac 1L  
@@ -626,7 +626,7 @@ $$
 
 ![formulaRelInterCrashSegmentCR]  
 
-[formulaRelInterCrashSegmentCR]: 
+[formulaRelInterCrashSegmentCR]: res/formulae/formulaRelInterCrashSegmentCR.png 
 <!--
 $$
 \\ \text{let L = 1: } 
@@ -635,7 +635,7 @@ $$
 
 ![formulaRelInterCrashL1]  
 
-[formulaRelInterCrashL1]: 
+[formulaRelInterCrashL1]: res/formulae/formulaRelInterCrashL1.png 
 <!--
 $$
 \\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V } \times \frac 11
@@ -644,7 +644,7 @@ $$
 
 ![formulaRelInterCrashSegmentCRL1Expand]  
 
-[formulaRelInterCrashSegmentCRL1Expand]: 
+[formulaRelInterCrashSegmentCRL1Expand]: res/formulae/formulaRelInterCrashSegmentCRL1Expand.png 
 <!--
 $$
 \\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }
@@ -653,7 +653,7 @@ $$
 
 ![formulaRelInterCrashSegmentCRL1Reduce]  
 
-[formulaRelInterCrashSegmentCRL1Reduce]: 
+[formulaRelInterCrashSegmentCRL1Reduce]: res/formulae/formulaRelInterCrashSegmentCRL1Reduce.png 
 <!--
 $$
 \\ \text{Segment Rate(L=1)} == 100 \cdot Intersection Rate
@@ -662,7 +662,7 @@ $$
 
 ![formulaRelInterCrashSegmentCRL1equInterCr]  
 
-[formulaRelInterCrashSegmentCRL1equInterCr]: 
+[formulaRelInterCrashSegmentCRL1equInterCr]: res/formulae/formulaRelInterCrashSegmentCRL1equInterCr.png 
 
 This demonstrates that the intersection crash rate formula can be expressed using the segment rate formula for a distance of 1 unit and a fixed constant of 1/100 . 
 
@@ -674,7 +674,7 @@ $$
 
 ![formulaRelInterCrashInterCRrelSegCR]  
 
-[formulaRelInterCrashInterCRrelSegCR]: 
+[formulaRelInterCrashInterCRrelSegCR]: res/formulae/formulaRelInterCrashInterCRrelSegCR.png 
 This demonstrates that the intersection crash rate formula can be expressed in terms of the segment crash rate. 
 
 This supports the initial claim that these formulae correlate risk with the crash frequency and length of the road section. 
@@ -739,7 +739,7 @@ $$
 
 ![formulaMapFreqToSeverText]  
 
-[formulaMapFreqToSeverText]: 
+[formulaMapFreqToSeverText]: res/formulae/formulaMapFreqToSeverText.png 
 <!--
 $$
 \\ \frac{ C }{ 365 \cdot N \cdot V}
@@ -750,7 +750,7 @@ $$
 
 ![formulaMapFreqToSeverEquation]  
 
-[formulaMapFreqToSeverEquation]: 
+[formulaMapFreqToSeverEquation]: res/formulae/formulaMapFreqToSeverEquation.png 
 
 **Mapping Crash Rate to Predictive Crash Severity**  
 The relative safety of a road section can be calculated using the crash-severity risk by applying the principles underlying the crash rate formulas. 
@@ -771,7 +771,7 @@ $$
 
 ![formulaMapCRtoCSevInterText]  
 
-[formulaMapCRtoCSevInterText]: 
+[formulaMapCRtoCSevInterText]: res/formulae/formulaMapCRtoCSevInterText.png 
 <!--
 $$
 1 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V}
@@ -782,7 +782,7 @@ $$
 
 ![formulaMapCRtoCSevInterEquation]  
 
-[formulaMapCRtoCSevInterEquation]: 
+[formulaMapCRtoCSevInterEquation]: res/formulae/formulaMapCRtoCSevInterEquation.png 
 
 Segment Crash-Severity Risk:  
 
@@ -796,7 +796,7 @@ $$
 
 ![formulaMapCRtoCSevSegText]  
 
-[formulaMapCRtoCSevSegText]: 
+[formulaMapCRtoCSevSegText]: res/formulae/formulaMapCRtoCSevSegText.png 
 <!--
 $$
 \\ 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V} \times \frac 1L
@@ -807,7 +807,7 @@ $$
 
 ![formulaMapCRtoCSevSegEquation]  
 
-[formulaMapCRtoCSevSegEquation]: 
+[formulaMapCRtoCSevSegEquation]: res/formulae/formulaMapCRtoCSevSegEquation.png 
 
 
 **Applying Safety Score to a Route**  
@@ -843,11 +843,11 @@ segments  risk(Route Segments) = 1 - PRODUCT[segment element Route] ( 1 - risk(s
 
 ![formulaRouteRiskScoreInter]
 
-[formulaRouteRiskScoreInter]: 
+[formulaRouteRiskScoreInter]: res/formulae/formulaRouteRiskScoreInter.png 
 
 ![formulaRouteRiskScoreSeg]
 
-[formulaRouteRiskScoreSeg]: 
+[formulaRouteRiskScoreSeg]: res/formulae/formulaRouteRiskScoreSeg.png 
 
 **Route Planning**  
 Route planning will be done by third party route planning services for several reasons.  
