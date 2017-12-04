@@ -1616,10 +1616,12 @@ This framework is used during data understanding to plot the data, and is update
 The modeling phase queries the framework to retrieve the prepared features and divide them between predictive and target features for model generation and cross-validation. 
 This reduces much of the boilerplate typically involved when generating several models by eliminating the need to maintain lists of features throughout the code. 
 
+<!--
 <pre>
 code_snippet_featdef_and_model_gen
 code_snippet_no_featdef_and_model_gen
 </pre>
+-->
 
 
 The strategy of querying the required features by category also facilitates the addition of new features and data sources throughout the CRISP-DM lifecycle. Once a feature is added to the framework with the correct categories it automatically gets included in all queries for that category. 
@@ -1638,9 +1640,11 @@ This abstraction for managing features centralises the feature management and el
 
 This framework is further explained in the [Appendix on Featdef Values](#appendix-featdef-values).  
 
+<!--
 <pre>
 code_snippet_featdef_grid_example
 </pre>
+-->
 
 ## Predicting using Route Data
 <!--
@@ -1794,10 +1798,13 @@ The user visits a webpage and types in a source address and a destination addres
 The user can then choose the route with the lowest score, which corresponds to the lowest injury risk.  
 For routing, the user can either type in the exact address or use autocomplete by typing a partial match and selecting the correct result from a list of possible matches. This autocompletion is implemented using the Google Places API.
 
+![img_of_routing_ui_autocomplete]
 
-<pre>
-img_of_routing_ui
-</pre>
+[img_of_routing_ui_autocomplete]: res/img/img_of_routing_ui_autocomplete.png
+
+![img_of_routing_ui_evaluated]
+
+[img_of_routing_ui_evaluated]: res/img/img_of_routing_ui_evaluated.png
 
 **Route Scoring Server**  
 The route scoring server is designed to process third-party routing geo-json by extracting the intersections and processing them using the scoring model. 
@@ -1813,18 +1820,14 @@ The route scoring information is retrieved from scoring server as geo-json, and 
 <!-- github doesn't know about 'pre' tags, I guess. either do '< -' or '&lt;-' -->
 #### Legend:
 
-<pre>
-[ end-point ]
-{ data transfer }
-
-</pre>
-
 #### User-client Interaction: 
 
+<!--
 <pre>
 [user] ----{Map-UI: route start,end}--&gt; [ client ]  
 [    ] &lt;---{Map-UI: route + scores }--- [        ]  
 </pre>
+-->
 
 The end-user uses the client application as a conventional routing tool.  
 Client application displays available routes and their score.  
@@ -1838,6 +1841,7 @@ The routing and map display are implemented using the javascript Google Maps API
 
 #### Client-Model Interaction:
 
+<!--
 <pre>
 [ client ] ----{Map-API: start,end         }--&gt; [External Routing Service]
 [        ] &lt;---{Map-API: multi route coords}--- [External Routing Service]
@@ -1849,6 +1853,8 @@ The routing and map display are implemented using the javascript Google Maps API
 [ server ] ----{json-file: route coords}--&gt; [ Modeling Application ]
 [        ] &lt;---{json-file: route scores}--- [                      ]
 </pre>
+-->
+
 ![arch_client_server](
 http://gravizo.com/svg?@startuml;/%27;%20%20%20%20package;%20%20%20%20node;%20%20%20%20folder;%20%20%20%20frame;%20%20%20%20cloud;%20%20%20%20database;%27/;actor%20User;package%20"Client"%20{;%20%20[GUI]%20<->%20[httpClient];};/%27;node%20"Other%20Groups"%20{;%20%20FTP%20-%20[Second%20Component];%20%20[First%20Component]%20-->%20FTP;}%20;%27/;%27skinparam%20linetype%20ortho;%27skinparam%20linetype%20polyline;cloud%20"Third-Party%20Map%20API"%20{;%20%20[AutoCompleteService];/%27;};cloud%20{;%27/;%20%20[Routing%20Service];};package%20"Scoring%20Server"%20{;%20%20%27%20database%20"FileSystem";%20%20[Scoring%20Application];%20%20[Json%20Server];};[User]%20-->%20[GUI]%20:%20route%20origin,%20destination;[User]%20<--%20[GUI]%20:%20display%20route%28s%29%20+%20scores;[httpClient]%20-->%20[AutoCompleteService]%20:%20partial\nroute\norig,%20dest;[httpClient]%20<--%20[AutoCompleteService]%20:%20resolved\nroute\norig,%20dest;[httpClient]%20-->%20[Routing%20Service]%20:%20route\norig,%20dest;[httpClient]%20<--%20[Routing%20Service]%20:%20route\ngeo-json;[httpClient]%20-->%20[Json%20Server]%20:%20rest:\nroute%20geo-json;[httpClient]%20<--%20[Json%20Server]%20:%20rest:\ncore%20geo-json;%27%20scoring%20server;/%27;[Json%20Server]%20-->%20[FileSystem]%20:%20route%20geo-json;[Json%20Server]%20<--%20[FileSystem]%20:%20score%20geo-json;FileSystem%20-->%20[Scoring%20Application]%20:%20route%20geo-json;FileSystem%20<--%20[Scoring%20Application]%20:%20score%20geo-json;%27/;[Json%20Server]%20-->%20[Scoring%20Application]%20:%20route%20geo-json;[Json%20Server]%20<--%20[Scoring%20Application]%20:%20score%20geo-json;@enduml;
 )
@@ -1876,20 +1882,71 @@ For this implementation, the Google Maps Directions Service was used as the thir
 #### Data Formats
 **google maps geo-json**
 
+The google maps geo-json compises a list of scores for each calculated route. 
+Each route contains at least one leg, defined as the distance between two markers along a route. 
+For this project, custom markers were not implemented and therefore each route comprises exactly one leg. 
+Each leg of a route contains several steps, each of which contain a set of instructions intended for consumption by the end user. 
+This project maps the "maneuver", or instruction for alteration of travel direction, to the "manner of collision". 
 <!-- TODO -->
-<pre>
-code: google maps geo-json
-</pre>
+
+    'legs': [{'distance': {'text': '0.5 mi', 'value': 736},  
+            'duration': {'text': '10 mins', 'value': 584},  
+            'start_address': '2501 speedway, austin, tx 78712, usa',  
+            'start_location': {'lat': 30.2882269, 'lng': -97.73692160000002},  
+            'end_address': '2606 guadalupe st, austin, tx 78705, usa',  
+            'end_location': {'lat': 30.2912016, 'lng': -97.7412483},  
+            'steps': [{'distance': {'text': '453 ft', 'value': 138},  
+                       'duration': {'text': '2 mins', 'value': 101},  
+                       'encoded_lat_lngs': 'mtzwdvfpsqwagqagmai',  
+                       'end_location': {'lat': 30.2894657,  
+                                        'lng': -97.73679190000001},  
+                       'end_point': {'lat': 30.2894657,  
+                                     'lng': -97.73679190000001},  
+                       'instructions': 'head <b>north</b> on <b>speedway</b> '  
+                                       'toward <b>e dean keeton st</b>',  
+                       'lat_lngs': [{'lat': 30.288230000000002,  
+                                     'lng': -97.73692000000001},  
+                                    {'lat': 30.288670000000003,  
+                                     'lng': -97.73688000000001},  
+                                    {'lat': 30.289080000000002,  
+                                     'lng': -97.73684000000002},  
+                                    {'lat': 30.28947,  
+                                     'lng': -97.73679000000001}],  
+                       'maneuver': '',  
+                       'path': [{'lat': 30.288230000000002,  
+                                 'lng': -97.73692000000001},  
+                                {'lat': 30.288670000000003,  
+                                 'lng': -97.73688000000001},  
+                                {'lat': 30.289080000000002,  
+                                 'lng': -97.73684000000002},  
+                                {'lat': 30.28947, 'lng': -97.73679000000001}],  
+                       'polyline': {'points': 'mtzwdvfpsqwagqagmai'},  
+                       'start_location': {'lat': 30.2882269,  
+                                          'lng': -97.73692160000002},  
+                       'start_point': {'lat': 30.2882269,  
+                                       'lng': -97.73692160000002},  
+                       'travel_mode': 'bicycling'},  
 
 **route score geo-json**
 
-<!-- TODO -->
-<pre>
-code: scoring server geo-json
-</pre>
+The route score geo json comprises a list of scores for each route. 
+Each route comprises a list of scores for each road section. 
+
+{'routes': [[{'lat': 30.2894657,  
+              'lng': -97.73679190000001,  
+              'score': 0.9385474860335196},  
+             {'lat': 30.28981659999999,  
+              'lng': -97.7413871,  
+              'score': 0.9088541666666666},  
+             {'lat': 30.2912016,  
+              'lng': -97.7412483,  
+              'score': 0.9088541666666666}]],  
+ 'totalScores': [0.918751939788951]}  
+
 
 #### Modeling Application:
 
+<!--
 <pre>
 Data Preparation and Feature Implementation:  
 /data sources/ ---&gt; [Preprocessor per source, feature] ---&gt; [df: dataset | df: feature definitions ]
@@ -1898,6 +1955,7 @@ Model Creation:
 [dataset,featdef] ---{query: desired features}---&gt;---{slice: dataset}---&gt;[model]
 
 </pre>
+-->
 
 The Modeling application uses the feature definition framework to create the different models required for scoring the route.  
 The application is written in python, and uses python machine learning libraries to create the models. 
