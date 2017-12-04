@@ -514,7 +514,7 @@ $$
 
 ![formulaCrashFrequency]
 
-[formulaCrashFrequency]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Bcrash%20frequency%7D%20%3D%20%5Cfrac%7B%20%20C%20%2A%20%5Ctext%7B%3Csection-constant%3E%7D%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaCrashFrequency]: 
 
 The intersection crash rate scales the frequency by a constant of 10^6 [@fhwa3DataAnalysisCrashRateIntersection] : 
 <!--
@@ -528,7 +528,7 @@ $$
 
 ![formulaIntersectionCrashRate]
 
-[formulaIntersectionCrashRate]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Bintersection%20crash%20rate%7D%20%3D%201%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%5C%20MEV%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaIntersectionCrashRate]: 
 
 i.e.:
 <!--
@@ -539,7 +539,7 @@ $$
 
 ![formulaIntersectionCrashRateVerbose]
 
-[formulaIntersectionCrashRateVerbose]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20rate%20%3D%20%5Cfrac%7B%201%20%5Ccdot%2010%5E6%20%5Ccdot%20%22C%3A%20Crashes%22%20%7D%7B%20365%20%5Cfrac%20da%20%5Ccdot%20%22N%3A%20Years%20Of%20Data%22%20a%20%5Ccdot%20%22V%3A%20Traffic%20Volume%22%20%5Cfrac%201d%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaIntersectionCrashRateVerbose]: 
 
 The road segment crash rate scales the frequency by a constant of 100 * 10^6 and divides the result by the segment length [@fhwa3DataAnalysisCrashRateSegment]: 
 <!--
@@ -553,7 +553,7 @@ $$
 
 ![formulaSegmentCrashRate]
 
-[formulaSegmentCrashRate]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Broad%20segment%20crash%20rate%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%5Ctimes%20%5Cfrac%201L%20%20%5C%20VMT%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaSegmentCrashRate]: 
 
 <!-- with units:
 $$
@@ -569,7 +569,7 @@ $$
 
 ![formulaSegmentCrashRateVerbose]
 
-[formulaSegmentCrashRateVerbose]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20rate%20%3D%20%5Cfrac%7B%20100%20%5Ccdot%2010%5E6%20%5Ccdot%20%22C%3A%20Crashes%22%20%7D%7B%20365%20%5Cfrac%20da%20%5Ccdot%20%22N%3A%20Years%20Of%20Data%22%20a%20%5Ccdot%20%22V%3A%20Traffic%20Volume%22%20%5Cfrac%201d%20%5Ccdot%20%22L%3A%20Segment%20Length%22%20%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaSegmentCrashRateVerbose]: 
 
 
 <!-- explanation -->
@@ -617,7 +617,7 @@ $$
 
 ![formulaRelInterCrashIntersectionCR]  
 
-[formulaRelInterCrashIntersectionCR]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BIntersection%20Rate%7D%20%3D%201%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashIntersectionCR]: 
 <!--
 $$
 \\ \text{Segment Rate} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }  \times \frac 1L  
@@ -626,7 +626,7 @@ $$
 
 ![formulaRelInterCrashSegmentCR]  
 
-[formulaRelInterCrashSegmentCR]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%20%5Ctimes%20%5Cfrac%201L%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashSegmentCR]: 
 <!--
 $$
 \\ \text{let L = 1: } 
@@ -635,7 +635,7 @@ $$
 
 ![formulaRelInterCrashL1]  
 
-[formulaRelInterCrashL1]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Blet%20L%20%3D%201%3A%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashL1]: 
 <!--
 $$
 \\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V } \times \frac 11
@@ -644,7 +644,7 @@ $$
 
 ![formulaRelInterCrashSegmentCRL1Expand]  
 
-[formulaRelInterCrashSegmentCRL1Expand]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%28L%3D1%29%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%5Ctimes%20%5Cfrac%2011%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashSegmentCRL1Expand]: 
 <!--
 $$
 \\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }
@@ -653,7 +653,7 @@ $$
 
 ![formulaRelInterCrashSegmentCRL1Reduce]  
 
-[formulaRelInterCrashSegmentCRL1Reduce]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%28L%3D1%29%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashSegmentCRL1Reduce]: 
 <!--
 $$
 \\ \text{Segment Rate(L=1)} == 100 \cdot Intersection Rate
@@ -662,7 +662,7 @@ $$
 
 ![formulaRelInterCrashSegmentCRL1equInterCr]  
 
-[formulaRelInterCrashSegmentCRL1equInterCr]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%28L%3D1%29%7D%20%3D%3D%20100%20%5Ccdot%20Intersection%20Rate%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashSegmentCRL1equInterCr]: 
 
 This demonstrates that the intersection crash rate formula can be expressed using the segment rate formula for a distance of 1 unit and a fixed constant of 1/100 . 
 
@@ -674,7 +674,7 @@ $$
 
 ![formulaRelInterCrashInterCRrelSegCR]  
 
-[formulaRelInterCrashInterCRrelSegCR]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BIntersection%20Rate%7D%20%3D%20%5Cfrac%7B1%7D%7B100%7D%20%5Ctimes%20%5Ctext%7BSegment%20Rate%28L%20%3D%201%29%20%7D%20%3D%20%5Cfrac%7B1%7D%7B100%7D%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRelInterCrashInterCRrelSegCR]: 
 This demonstrates that the intersection crash rate formula can be expressed in terms of the segment crash rate. 
 
 This supports the initial claim that these formulae correlate risk with the crash frequency and length of the road section. 
@@ -739,7 +739,7 @@ $$
 
 ![formulaMapFreqToSeverText]  
 
-[formulaMapFreqToSeverText]: http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BCrash%20Freqency%7D%0A%5Cmapsto%0A%5Ctext%7BCrash-Severity%20Risk%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaMapFreqToSeverText]: 
 <!--
 $$
 \\ \frac{ C }{ 365 \cdot N \cdot V}
@@ -750,7 +750,7 @@ $$
 
 ![formulaMapFreqToSeverEquation]  
 
-[formulaMapFreqToSeverEquation]: http://www.sciweavers.org/tex2img.php?eq=%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%7D%0A%5Cmapsto%0A%5Ctext%7BPredicted%20Crash%20Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaMapFreqToSeverEquation]: 
 
 **Mapping Crash Rate to Predictive Crash Severity**  
 The relative safety of a road section can be calculated using the crash-severity risk by applying the principles underlying the crash rate formulas. 
@@ -771,7 +771,7 @@ $$
 
 ![formulaMapCRtoCSevInterText]  
 
-[formulaMapCRtoCSevInterText]: http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BIntersection%20Crash%20Rate%7D%0A%5Cmapsto%0A%5Ctext%7BIntersection%20Crash-Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaMapCRtoCSevInterText]: 
 <!--
 $$
 1 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V}
@@ -782,7 +782,7 @@ $$
 
 ![formulaMapCRtoCSevInterEquation]  
 
-[formulaMapCRtoCSevInterEquation]: http://www.sciweavers.org/tex2img.php?eq=1%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%7D%0A%5Cmapsto%0A%5Ctext%7BPredicted%20Crash%20Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaMapCRtoCSevInterEquation]: 
 
 Segment Crash-Severity Risk:  
 
@@ -796,7 +796,7 @@ $$
 
 ![formulaMapCRtoCSevSegText]  
 
-[formulaMapCRtoCSevSegText]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Crash%20Rate%7D%0A%5Cmapsto%0A%5Ctext%7BSegment%20Crash-Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaMapCRtoCSevSegText]: 
 <!--
 $$
 \\ 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V} \times \frac 1L
@@ -807,7 +807,7 @@ $$
 
 ![formulaMapCRtoCSevSegEquation]  
 
-[formulaMapCRtoCSevSegEquation]: http://www.sciweavers.org/tex2img.php?eq=100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%7D%20%5Ctimes%20%5Cfrac%201L%0A%5Cmapsto%0A%5Ctext%7BPredicted%20Crash%20Severity%7D%20%5Ctimes%20%5Cfrac%201L&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaMapCRtoCSevSegEquation]: 
 
 
 **Applying Safety Score to a Route**  
@@ -843,11 +843,11 @@ segments  risk(Route Segments) = 1 - PRODUCT[segment element Route] ( 1 - risk(s
 
 ![formulaRouteRiskScoreInter]
 
-[formulaRouteRiskScoreInter]: http://www.sciweavers.org/tex2img.php?eq=1%20-%20%5Cprod_%7Bintersection%20%5C%20%5Cin%20%5C%20route%7D%20%20%281%20-%20risk%28intersection%29%20%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRouteRiskScoreInter]: 
 
 ![formulaRouteRiskScoreSeg]
 
-[formulaRouteRiskScoreSeg]: http://www.sciweavers.org/tex2img.php?eq=1%20-%20%5Cprod_%7Bsegment%20%5C%20%5Cin%20%5C%20route%7D%20%20%281%20-%20risk%28segment%29%20%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+[formulaRouteRiskScoreSeg]: 
 
 **Route Planning**  
 Route planning will be done by third party route planning services for several reasons.  
