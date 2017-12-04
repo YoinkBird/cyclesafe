@@ -963,8 +963,7 @@ Overview:
 | [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
-The report will summarise the cycles of the CRISP-DM as one pass, i.e. without revising sections.    
-Where applicable, the first passes will be described.  
+This section will present the results of each CRISP-DM stage, and will outline each revision where applicable. 
 
 | CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
 [business-understanding](#business-understanding) |                <!--business_understanding-->
@@ -1001,17 +1000,16 @@ The "business" can be understood as any entity concerned with public transportat
 * determine the desired outputs of the project.  
 -->
 
-Desired Outputs:  
-Objective: The objective of this project is to help cyclists avoid severe injury when involved in a crash.  
-Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a route-planning tool.  
-Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash.  
-In simpler terms, a successful project will provide a product which cyclists use to make informed decisions about which routes to choose.  
+Objective: The objective of this project is to help cyclists avoid severe injury when involved in a crash. 
+Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a route-planning tool. 
+Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash. 
+A successful project will provide a product which cyclists use to make informed decisions about which routes to choose. 
 
-Constraints on the Objective:  
-The objective of this project is not to help cyclist avoid crashes altogether, as the main data source is post-crash data.  
+Constraints on the Objective: 
+The objective of this project is not to help cyclist avoid crashes altogether, as the main data source is post-crash data. 
 
 Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient. 
-In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes instead of a cross-sample of all crashes.  
+In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes instead of a cross-sample of all crashes. 
 
 
 ### Feasibility Assessment
@@ -1022,7 +1020,7 @@ In particular, there is no data on the number of cyclists for a given road segme
 
 Inventory of resources:  
 Data on Crashes can be obtained from Texas Department of Transportation (TXDOT), National Highway Traffic Safety Administration (NHTSA), and the City of Austin Police Department (APD).  
-Data on actual ridership is very sparse in comparison to data on crashes, which prevents significant correlation and therefore will not be considered.  
+Data on cyclist ridership is very sparse in comparison to data on crashes, which prevents significant correlation and therefore will not be considered.  
 Data on traffic-counts is available for certain road segments and is the total count for a 24 hour period.  
 The software necessary for data processing and modelling is available as free python libraries (pandas, sklearn, scikit learn, other ML libraries as needed).  
 The scale of this project is appropriate for any modern hardware as it does not require intense computing resources.  
@@ -1030,8 +1028,8 @@ The scale of this project is appropriate for any modern hardware as it does not 
 Requirements, assumptions, and constraints:  
 Requirements: all data and tools are free for use  
 Assumptions: The crash data is assumed to be accurately reported as it is sourced directly from law enforcement officers [@txdot_crash_report_source].  
-Constraints: The crash data only represents reported crashes, which may be biased towards severe injury. Therefore, it is possible that the model will be biased towards predicting more severe injuries than would happen in reality.  
-This overestimation cannot be assumed to be evenly distributed across the dataset without understanding the factors which lead to a police report being filed, which  is beyond the scope of this project.  
+Constraints: The crash data only represents reported crashes, which are biased towards crashes involving injury. 
+Therefore, the model will be biased towards predicting a higher injury severity. 
 
 Feasibility Conclusion:  
 The available crash data on the TXDOT website contains information about incidents involving bicyclists and contains enough data to create a predictive model.  
@@ -1044,17 +1042,16 @@ This bias is mitigated by a few factors. The end-usage of the model is for compa
 For the end goal of reducing severe injury, the tendency towards over-predicting injury is more desirable than under-predicting injury. The predictions are meant for use by individual cyclists, who may want to exercise as much caution as possible and therefore would benefit from an overly cautious recommendation. The risk with this assumption is that overly cautious safety recommendations could also lead to commuters perceiving cycling as unsafe and favouring other modes of transportation.  
 These risks are acceptable within the constraints of this project, as they will not prevent the project from being completed and can be addressed in future iterations using additional data sources. 
 
-This project is based on data for reported crashes, and as such does not include data for crashes which went unreported or did not lead to injury.  
-
+<!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, otherwise this requires user to be self-aware and add the when they use the term. 
 Terminology:  
 
-<!-- TODO: 1. auto-create glossary 2. grep for terminology tags, make sure explained before used. could potentially examine "git log -p" in reverse to find terminology introductions, otherwise this requires user to be self-aware and add the when they use the term. -->
 
 [@terminology]: segment - a section of a road  
 
 [@terminology]: segment data - crash-data entry for a segment. can be anywhere on a road, including at an intersection  
 
 [@terminology]: crash report
+-->
 
 <!-- N/A, but could be "project will benefit society by reducing cycling crashes and improving the transit situation overall at a relatively low cost of maintaining computing resources and expertise to update the resulting tool.
 Ideally would base benefit on some numbers on cost of cycling crashes or potential reduction in traffic if cycling increased; base cost in having an agency maintain the tool and having experts keep model updated
@@ -1065,6 +1062,7 @@ Costs and Benefits:
 #### Data Mining Goals
 The project success criteria are defined as a tool which can display any route and its associated risk of severe injury in a crash.   
 The data mining success criteria are defined as model which can create injury severity predictions using environmental and navigation data. 
+The model accuracy is of secondary importance, as the primary requirement is to correlate navigation and environmental data with a model created from crash data. 
 
 <!--
 ### Project Preparation Gantt Chart
@@ -1089,26 +1087,29 @@ interpretable_model2 -> Routing Model
 ### Project Plan
 The plan for creating the final route scoring model involves several intermediate stages in order to simultaneously enable the model deployment. 
 
-#### Work-Package: Migrate Previous Project  
+**Migrate Previous Project**: 
 The codebase inherited from the previous project focused on model optimisation and feature selection, and therefore needs to be rewritten as a generic model generator for this project.   
 
-#### Work-Package: Enablement Model  <!-- WP: stub_model -->
-Simple model with basic optimisation and limited feature set
+<!-- WP: stub_model -->
+**Create Enablement Model**: 
+Create a simple model with basic optimisation and a limited feature set.   
 Purpose: Gathering requirements and enabling all dependent work-packages  
-Creating an intermediate simple model allows for the external interfaces to be defined and enables the rest of the technology stack.  
-This strategy was found to be very useful for quickly iterating through the CRISP-DM process to discover unknown requirements and dependencies.  
-The enablement model allows the deployment stage to start in parallel with model optimisation. This approach works if the business requirements include deploying the project. Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
+Creating an intermediate simple model allows for the external interfaces to be defined and enables the rest of the technology stack. 
+The enablement model allows the deployment stage to start in parallel with model optimisation. 
+This approach works if the business requirements include deploying the project. 
+Otherwise, this strategy bypasses the evaluation stage, as deployment is contingent upon meeting the business and data-mining success criteria.  
 Dependency: Data Preparation
 
-#### Work-Package: Feature Reduction Model <!-- interpretable_model  -->
-Simple model with advanced optimisation and as many features as possible to predict the crash severity.  
-Purpose: data analysis, implementation and definition of interface between application and model
+<!-- interpretable_model  -->
+**Create Feature Reduction Model**: 
+Create a simple model with advanced optimisation and as many features as possible to predict the crash severity.  
+Purpose: Data analysis, implementation and definition of interface between application and model
 Data Analysis: This model helps with processing the dataset through a process called feature selection, which can also help increase the amount of usable data.  
 Implementation and Definition of interface between application and model: The process of creating a machine learning model is separate from the process for using the model with new data, as is needed for the final application.  This model helps explore and define a process for allowing the final application and the model to send data back and forth.  Once this process is defined, the model also allows the application to work with the model's predictions and discover any potential flaws in the communication process. Until then, the application would be using static predictions.  
 Dependency: Data Preparation , Routing Application
 
 
-Tools and Techniques:
+**Tools and Techniques**:
 For this project, the tools and techniques are created from readily available python machine learning libraries and will be described in further sections.  No third-party services or machine learning software packages will be used to process the data, as may be expected in other contexts.  Note that using python machine learning libraries is not considered as using a machine learning software package, the usage of which requires no software programming.  
 <!--
 @TODO: create overview of terminology for model creation; may have overlap with the work-packages for deployment
@@ -1241,6 +1242,7 @@ first findings, hypothesis
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+<!--
 **Overview**  
 * Select
 * Clean
@@ -1249,13 +1251,14 @@ first findings, hypothesis
 
 
 **Select**  
+-->
 
 <!--
 @TODO: mention the results of the framework, then mention in one line that a framework was used to achieve these outputs.
 E.g. for "data removed" mention which list is used for what, such as: average-traffic-count is not used for models due to low number of samples
 -->
 
-**Clean**  
+**Clean Data**  
 <!-- 3.3 Identifying Data Quality Issues -->
 <!-- 3.3.1 Missing Values -->
 <!-- 3.3.2 Irregular Cardinality -->
@@ -1269,24 +1272,29 @@ E.g. for "data removed" mention which list is used for what, such as: average-tr
 3.6.2 Binning
 3.6.3 Sampling
 -->
-List:  
-* replace punctuation with underscores
-* lowercase feature names 
-* encode strings containing numbers as a numeric   datatype
-* encode strings containing dates   as a date-time datatype
-* encode strings representing missing data as a null datatype
-  * convert human-readable descriptions for missing data to machine-readable datatype
-    * This includes converting '0' for "missing" to 'np.nan' to prevent the modelling algorithms from evaluating it as a real value. This also improves runtime performance, as a proper null value is evaluated quicker than an integer representation (numpy knows not to evaluate np.nan, but can't know in advance whether an 'int' is '0' and therefore spends extra time to evaluate it)
+The data was processed using the following rules:    
+Replace punctuation with underscores.  
+Lowercase feature names.    
+Encode strings containing numbers as a numeric   datatype.  
+Encode strings containing dates   as a date-time datatype.  
+Encode strings representing missing data as a null datatype.  
+Convert human-readable descriptions for missing data to machine-readable datatype. 
+This includes converting '0' for "missing" to 'np.nan' to prevent the modelling algorithms from evaluating it as a real value. This also improves runtime performance, as a proper null value is evaluated quicker than an integer representation (numpy knows not to evaluate np.nan, but can't know in advance whether an 'int' is '0' and therefore spends extra time to evaluate it)
     Caveat: This does not apply to data which is actually '0', only to cases when '0' represents a missing value.
 
-Note: Missing values were not removed, as different models and visualisations require different sets of features. As such, the missing data is handled at the time of usage.  
+Note: Missing values were not removed, as different models and visualisations require different sets of features. 
+As such, the missing data is handled at the time of usage.  
 
 Certain features have very few data-points and therefore only used for specific visualisations.  
-"average daily traffic amount" and "average daily traffic year" are features to describe the overall traffic on a given road and only have data for large roads.  
+"average daily traffic amount" and "average daily traffic year" are features to describe the traffic volume on a road and only have data for large roads.  
 
 
-GPS coordinates will be omitted. Geographic location is not correlated with traffic safety. Furthermore, GPS coordinates in the dataset are directly correlated with the crash report and crash id, and therefore would bias the model towards "remembering" locations of crashes. This is counter to the goal of determining generic crash-factors which can be used to analyse any road segment.  
-If GPS coordinates were used to create a location-aware model, the resulting predictions would be contingent upon number of reported crashes and would need to be combined with total ridership data or traffic volume data for a specific road segment. This requires additional data and is beyond the scope of this project.  
+GPS coordinates will be omitted from the model creation, as geographic location alone cannot be used to predict traffic safety. 
+Furthermore, GPS coordinates in the dataset are directly correlated with the crash report and crash id, and therefore would bias the model towards "remembering" locations of crashes. 
+This is counter to the goal of determining generic crash-factors which can be used to analyse any road segment.  
+If GPS coordinates were used to create a location-aware model, the resulting predictions would be contingent upon number of reported crashes.
+This would need to be combined with total ridership data or traffic volume data for a specific road segment. 
+This requires additional data and is beyond the scope of this project.  
 
 ### Feature Implementation
 <!--
@@ -1298,16 +1306,12 @@ impute speed limits - of the set of intersections with multiple entries, for any
 Note that this will bias the overall model towards a higher speed limit associated with injury severity. This has a few consequences, but can be considered as a relatively safe assumption as the correlation between crash-severity and speed-of-impact is well understood. Furthermore, the speed limit itself is not the same as the impact speed.  
 
 **Derived Features**
-* decimal crash time - encoded 24h time to decimal as model does not understand 24h time and processes it as an integer value  
+decimal crash time: encoded 24h time to decimal as model does not understand 24h time and processes it as an integer value  
+30min-rounded crash time round date-time to within 30minute intervals to clarify visualisations  
 
-* 30min-rounded crash time - round date-time to within 30minute intervals to clarify visualisations
-
-binary categories: 
-This was done for a few reasons:  
+Binary categories were created for certain features. 
 Some of the data provided was more granular than required, as it encapsulated a degree of information unobtainable in production.
-
-Visualisation: when visualising the data, more categories can become difficult to interpret. 
-
+When visualising the data, categories with several values can become difficult to interpret. 
 Some values were encoded as categorical data, but some algorithms only operate on numeric data or yes/no outcomes.  
 
 surface condition:  
@@ -1316,28 +1320,26 @@ Factorize 'Wet' 'Dry' to '1' '0'
 crash severity:  
 convert 'non_incapacitating_injury','possible_injury','not_injured' to 1  
 convert 'incapacitating_injury','killed' to 0  
-This is how TXDOT groups crash severity in their visualisations [@txdotCrashSeverityGrouping].  
-<!--
-Other splits were tried in an attempt to create a model to simply predict injury, but most reported crashes result in injury. @citationNeeded:[refer to visualisations and data report]  
--->
+This is in accordance with the crash severity groupring used in TXDOT visualisations [@txdotCrashSeverityGrouping].  
 
 intersection related:  
-
 encoded as 1    :  'intersection_related', 'intersection'  
 encoded as 0    :  'non_intersection', 'driveway_access'  
 encoded as null :  'not_reported'  
 
-@ASSUMPTION  
-Two assumptions: 
-Routing data will not distinguish at this level of granularity, especially for driveway_access, but does provide information as to when to turn.  
-intersection-related crashes assumed to be avoidable by cyclist (not always true) and non-intersection crashes assumed to be unavoidable by cyclist (not always true).
+This feature is not intended for use in the safey score model, and is only for models used for visualisation. 
+Two assumptions were made for the "intersection related" category: 
+Routing data will not distinguish at this level of granularity, especially for driveway_access. 
+However, it does provide information as to when to turn.  
 
 light condition:  
-Simple breakdown between "good visibility" and "bad visibility".  
-
 encoded as 0 : 'dark_lighted', 'dark_not_lighted', 'dusk', 'dark_unknown_lighting', 'dawn'
 encoded as 1 : daylight
 
+This feature is not intended for use in the safey score model, and is only for models used for visualisation. 
+Assumption: This is a simple conversion to "good visibility" and "bad visibility".  
+
+<!--
 manner of collision: 
 This feature is complicated for binarisation as it requires several assumptions.  
 In the end, it was not used.  
@@ -1356,10 +1358,12 @@ encoded as 0:
 * 'opposite_direction_both_going_straight',
 * 'one_motor_vehicle_turning_left',
 * 'one_motor_vehicle_turning_right',
+-->
 
-
+<!--
 #### Integrate (merge/collate together different sources, aggregate multiple records into one)
 none.  
+-->
 
 ## Modeling
 <!--modeling-->
@@ -1606,7 +1610,7 @@ However, the model will need to be re-implemented using more robust techniques a
 
 <!-- * deployment plan - how will this be used for the business?  -->
 #### Deployment Plan  
-The models created for the dataset will be used with a web-based routing tool to create prediction scores for routes.  
+The models created for the dataset will be used within a navigation framework to create prediction scores for routes.  
 
 <!-- * monitoring + maintenance plan - how will model be updated and supervised?  -->
 #### Monitoring and Maintenance Plan  
