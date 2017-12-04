@@ -445,15 +445,14 @@ make one of them correspond to 'generic route anlysis'. "explanation of factors"
 make the other correspond to the 'historical crash data'
 -->
 
-Create application for scoring routes in real time.  
+Create navigation application for scoring routes in real time. 
 This will provide a familiar interface to allow end-users to make use of safety scores while also taking advantage of the highly optimised services offered by third-party route planners.  
 This is developed as an interface to the route scoring model which allows the end-user to conveniently factor in safety scores while planning their route.  
-
-Develop framework for managing crash data.  
-This includes facilitating the use of data from different sources and the management of features throughout the various stages of the modelling process.
-
-Produce machine learning model.  
-Follow the CRISP-DM process to produce a thorough machine learning product developed according to widespread industry standards. This will be implemented as a machine learning model which finds a relationship between environmental factors and safety of a route.  
+Develop framework for managing crash data. 
+This includes facilitating the use of data from different sources and the management of features throughout the various stages of the modelling process.  
+Produce machine learning model. 
+Follow the CRISP-DM process to produce a thorough machine learning product developed according to widespread industry standards. 
+This will be implemented as a machine learning model which finds a relationship between environmental factors and safety of a route.  
 
 <!--
 (May want to redefine according to less severe injuries, e.g. "safe" as "able to ride away")  
