@@ -747,9 +747,8 @@ Modern route planning tools consider several factors when optimising routes, whe
 **Section Overview:**
 <!--!toc_mini-->
 <!--<toc_mini>-->
-* Introduction to Data Mining
-* Navigation Framwork Overview
-* CRISP-DM
+This section introduces the data mining process, followed by an overview of the framework implementation, and concludes with the CRISP-DM process used to create the predictive models. 
+
 <!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
