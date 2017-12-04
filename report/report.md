@@ -2262,7 +2262,7 @@ NaN handling: Samples: NaN data 1999 / 2232 fullset => 233 newset
 NaN handling: no  feature reduction after dropna(): pre 54 , post 54
 </pre>
 
----
+
 For the second run the dataset was increased to reduce the variance in RFECV scores.  
 The 'average_daily_traffic_amount' and 'average_daily_traffic_year' were removed from the feature list as they were strong features with the least amount of data-points.
 This lead to a dataset with 1644 data-points instead of only 233, but there was still high variance between the RFECV scores although it had settled.  
@@ -2274,7 +2274,7 @@ NaN handling: Samples: NaN data 588 / 2232 fullset => 1644 newset
 NaN handling: no  feature reduction after dropna(): pre 52 , post 52
 </pre>
 
----
+
 crash_year was removed for the next run, as it is a posterior feature, i.e. it can be assumed that the current year will not be predictive of a crash.  
 The other strong feature, 'speed_limit', was not removed.  
 This lead to a local maximum stabilisation of the RFECV scores starting at 16 features.  
@@ -2286,7 +2286,7 @@ NaN handling: Samples: NaN data 588 / 2232 fullset => 1644 newset
 NaN handling: no  feature reduction after dropna(): pre 51 , post 51
 </pre>
 
----
+
 The next run was performed without any of the previous strongest features.
 This lead to a RFECV scores with a sharp peak at 5 features which then gradually descended.  
 The most important features were 5 days of the week.
