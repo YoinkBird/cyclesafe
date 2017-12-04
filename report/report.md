@@ -1340,10 +1340,12 @@ none.
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+<!-- steps:
 * choose technique, list assumptions
 * create test train-test-eval plan
 * create model (set parameters, build model, report about process involved)
 * assess model - interpret according to domain knowledge and test/train. revise parameters and start over as needed.  
+-->
 
 The modeling phase was revisited several times as part of the rapid-implementation strategy.  
 The first iteration started with a simple placeholder model and the final iteration consisted of an application-specific model suited for real-world implementation.  
