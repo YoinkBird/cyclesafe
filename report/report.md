@@ -46,7 +46,7 @@ Pedalcyclists  : official term for cyclist
 
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
 <!-- tag for automatically updating the abstract. future work! idea: write abstract, copy-paste to another section. as that other section evolves, the original line from abstract may change. with this tag, the change could be auto-synced to abstract  -->
@@ -161,7 +161,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
 <!-- The table of content lists all chapters (headings/subheadings) including page number. -->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
 <!--!toc_mini-->
@@ -201,10 +201,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
     * Impact on the Route Score
   * User Application
     * Architecture
-* Discussion / Conclusion
-* Future Work
-  * Crash Data
-  * Data Sources
+* Conclusion
 * Acknowledgements
 * Reference & Literature (Bibliography)
 * Appendix
@@ -221,7 +218,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
 # Introduction
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!-- Explain why this work is important giving a general introduction to the subject, list the basic knowledge needed and outline the purpose of the report. -->
 
@@ -323,7 +320,7 @@ The following descriptions explain the purpose of sections which seemingly overl
 # Background and Results to Date
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
@@ -428,7 +425,7 @@ This approach would not work for injury-avoidance navigation, as each road secti
 # Goals
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!-- List the main research question(s) you want to answer. Explain whether your research will provide a definitive answer or simply contribute towards an answer. -->
 <!-- note: each goal should also be present in the abstract --> 
@@ -472,7 +469,7 @@ Todo: should research whether accident severity correlates with responsibility. 
 # Roadway Safety Analysis
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
 This paper introduces a novel method for analysing a route and assigning a safety score. 
@@ -738,7 +735,7 @@ Modern route planning tools consider several factors when optimising routes, whe
 # Methodology
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
 This section introduces the data mining process, followed by an overview of the framework implementation, and concludes with the CRISP-DM process used to create the predictive models. 
@@ -953,7 +950,7 @@ Overview:
 # CRISP-DM Report
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
 This section will present the results of each CRISP-DM stage, and will outline each revision where applicable. 
@@ -974,7 +971,7 @@ This section will present the results of each CRISP-DM stage, and will outline e
 <!--business_understanding-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 | CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
 [business-understanding](#business-understanding) |                <!--business_understanding-->
@@ -1125,7 +1122,7 @@ Dimension <4k, so boosted tree likely best solution (src: [@caruana_et_al_2008])
 <!--data_understanding-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 | CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
 [business-understanding](#business-understanding) |                <!--business_understanding-->
@@ -1362,7 +1359,7 @@ none.
 <!--modeling-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 | CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
 [business-understanding](#business-understanding) |                <!--business_understanding-->
@@ -1522,7 +1519,7 @@ Feature-Elimination: RFECV with cvFold(2), scoring =  roc_auc
 <!--evaluation-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 | CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
 [business-understanding](#business-understanding) |                <!--business_understanding-->
@@ -1591,7 +1588,7 @@ However, the model will need to be re-implemented using more robust techniques a
 <!--crispdm_deployment-->
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 | CRISP-DM: |                                                      <!-- "tag anchors" for navigation in text-editor -->
 [business-understanding](#business-understanding) |                <!--business_understanding-->
@@ -1628,7 +1625,7 @@ Otherwise, the model needs to be re-recreated with different parameters to impro
 # Technical Implementation
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
 ## Framework for CRISP-DM
@@ -2014,10 +2011,10 @@ The feature definition framework implemented as a pandas dataframe, which provid
 ![arch_model_gen]( http://gravizo.com/svg?@startuml;skinparam%20componentStyle%20uml2;/%27;PURPOSE:%20architecture%20of%20generating%20scoring%20model;%27/;/%27;%20%20%20%20package;%20%20%20%20node;%20%20%20%20folder;%20%20%20%20frame;%20%20%20%20cloud;%20%20%20%20database;%27/;%27%20"feature%20data";cloud%20{;%20%20database%20txdot;%20%20%27database%20trafficFlow;};package%20ScoringServer%20{;%20%20frame%20dataSources;%20%20package%20ScoringApplication{;%20%20%20%20node%20preprocessor%20{;%20%20%20%20%20%20node%20featdef;%20%20%20%20%20%20database%20dataframe%20as%20dataset;%20%20%20%20};%20%20%20%20%28%29%20"featureSelection\n%28query%20featdef%29"%20as%20featureSelection;%20%20%20%20node%20crossValidation%20{;%20%20%20%20%20%20frame%20testData;%20%20%20%20%20%20frame%20trainData;%20%20%20%20};%20%20%20%20node%20modelBuild%20as%20modelBuild%20{;%20%20%20%20%20%20node%20model;%20%20%20%20%20%20%27%20"fit"%20is%20sklearn-specific;%20%20%20%20%20%20%28%29%20"train"%20as%20fit;%20%20%20%20%20%20%27%20during%20model%20creation,%20predict%20is%20for%20the%20x-val%20%27test%27;%20%20%20%20%20%20%27%20during%20model%20usage,%20%20%20%20predict%20is%20to%20get%20the%20prediction%20scores;%20%20%20%20%20%20%28%29%20"test"%20%20as%20predict;%20%20%20%20};%20%20%20%20frame%20scores;%20%20%20%20database%20localStorage%20{;%20%20%20%20%20%20node%20scoringModel;%20%20%20%20};%20%20%20%20model%20->%20scoringModel%20:%20save%20to%20disk;%20%20};};txdot%20-->%20dataSources;%27trafficFlow%20-->%20dataSources;dataSources%20-->%20preprocessor;preprocessor%20-->%20dataset;preprocessor%20-->%20featdef;crossValidation%20-->%20testData;crossValidation%20-->%20trainData;crossValidation%20-->%20modelBuild%20:%20adjust\nparams;crossValidation%20<--%20scores%20:%20feedback;dataset%20-->%20featureSelection;featdef%20-->%20featureSelection;%27modelBuild%20<-L-%20featureSelection;crossValidation%20<-L-%20featureSelection;%27%20train%20model;%27%20trainData%20-->%20modelBuild%20:%20train;trainData%20-->%20fit;fit%20-->%20model;%27%20predict;predict%20<--%20model;testData%20-->%20predict;predict%20-->%20scores;@enduml;)
 
 
-# Discussion / Conclusion
+# Conclusion
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!--
 * Explain what is striking/noteworthy about the results.
@@ -2060,23 +2057,15 @@ The end result would be an increase in traffic safety for cyclists, and more cyc
 
 
 
+<!--
 # Future Work
-<!--!@breadcrumb-->
-<!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
-<!--</@breadcrumb>-->
-<!-- very flexible, most of plan will be here -->
+< !--!@breadcrumb-- >
 ## Crash Data
 
 Add data on bike-lane presence
 
----
-
 Examine before/after lane reduction: car+car |vv|^^| => |cv|<>|vc| bike+car '|cv|' + turn lane '|<>|'
 support with studies
-
-
----
 
 Interpret How Cyclists Can Ride Defensively
 additional requirement: data source update, new model, but reuse application layer, re-analysis of data (i.e. start a new CRISP-DM lifecycle)
@@ -2085,27 +2074,22 @@ focus on "personal" data features, e.g. wearing helmet, avoiding busy roads
 classification into "avoidable" and "avoidable" crashes
 e.g. left-turn crash seen as "avoidable" because cyclist can look for vehicles, but crash from rear seen as "unavoidable"  because cyclist has no visibility of vehicles
 
----
-
 interpret limited data more creatively  
 e.g. analyse frequency of crashes to determine which locations tend to have more reported crashes.  
 This could be loosely correlated with the probability of a crash, although it could also just mean that certain locations tend to be over-reported vs others. However, since there's not much data, this is also not a bad idea in a pragmatic sense. Can't avoid an unknown, but can avoid a known - work with the data which is available.
 
----
-
 traffic: use general traffic data (instead of cyclist data) and find 'reported crashes'/'street segment traffic'  
 src: traffic count : https://data.austintexas.gov/Transportation-and-Mobility/Traffic-Count-Study-Area/cqdh-farx
-
----
 
 ## Data Sources
 
 Use data from strava,mapmyride,etc to find the most common routes (among the users of these apps) and correlate with crash data
+-->
 
 # Acknowledgements
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!-- Thank the people who have helped to successfully complete your project, like project partners, tutors, etc. -->
 Source For Outline: 
@@ -2118,7 +2102,7 @@ http://www.sfedit.net/abstract.pdf
 # Reference & Literature (Bibliography)
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!-- List papers and publication you have already cited in your proposal or which you have collected for further reading. The style of each reference follows that of international scientific journals. -->
 
@@ -2156,7 +2140,7 @@ http://www.sfedit.net/abstract.pdf
 # Appendix
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
-| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
+| [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [conclusion](#conclusion) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 <!-- Add pictures, tables or other elements which are relevant, but that might distract from the main flow of the proposal. -->
 
