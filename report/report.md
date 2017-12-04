@@ -1400,8 +1400,6 @@ Purpose: Used only during enablement of navigation framework, not for actual pre
 Technique: Decision Tree Classifier  
 Feature Selection: This model was run with a minimum set of features in order to optimise its performance as a dummy interface. 
 Evaluation: Optimisation and Evaluation was not performed for this stub model  
-<!-- todo: move to evaluation -->
-Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately  
 
 <!-- compare interpretable_model performance with interpretable_model2 performance -->
 #### Feature Reduction Model
@@ -1500,25 +1498,49 @@ Feature-Elimination: RFECV with cvFold(2), scoring =  roc_auc
 [evaluation](#evaluation) |                                        <!--evaluation-->
 [deployment](#deployment) |                                        <!--deployment-->
 
+<!--
 * evaluate results
   * assess results in terms of project/business success criteria
   * list approved models, i.e. which models to be used for the project
 * review process: summarise process until this point, determine what needs to be repeated or still be done
 * determine next steps: decide whether to proceed to next stage or loop back to a previous stage based on the current results.
   * list out possible actions, reasons, pro/con ; then describe decision
+-->
 
+<!--
 Pending: evaluation comparison between interpretable_model2, interpretable_model, stub_model , using the previous project's XGB model as a benchmark.   This is low-priority as the focus for this project is on interpretability and deployment.  
+-->
+
+Enablement Model: 
+The enablement model worked as desired for finalising the architecture and enabling the technologies involved.  
 
 Feature Reduction Model: 
-The feature reduction model optimised the predictors used from the crash dataset. However, many of these features are not available from the routing data the model will use for predictions during deployment. Obtaining data for these features would require additional data-sources or imputation techniques, which would require re-assessing the feasibility of the project in the business-understanding stage. This was deemed unnecessary since the main objective is to implement a general framework, and instead the modeling stage was revised and a model created without this missing data. 
+The feature reduction model optimised the available data from the crash dataset. 
+The model will not be used in deployment, as it relies on features beyond the scope of the navigation framework used for model deployment. 
+The poor model accuracy is to be expected from a simple decision tree classifier. 
+Model performance could be improved by using a boosted tree model, which would be more appropriate for a dataset of this size [@caruana_et_al_2008].  
+
 <!-- @FUTUREWORK : 
 For a future instance of this project, one potential solution could be to build a database of GPS-coordinates and intersections based on the existing crash data. However, this would require having to maintain two separate models, one with the extra information and one without, since not every route will be represented. 
 -->
 <!-- @FUTUREWORK: segmentation  -->
 
-Routing Data Model: 
+Routing Model: 
+The routing model was created only with the subset of the crash data features obtainable from the navigation framework. 
+This meant removing the most important feature "speed limit", which had a relative importance of 27% in the feature reduction model, followed by the second most important feature "intersection related: non-intersection" with only 9% relative importance. 
+While the ROC-AUC score did improve, removal of the speed limit means this model will be much less accurate at predicting crash severity than the Feature Reduction Model. 
+However, the model does preserve the order of several important features from the Feature Reduction Model. 
+"intersection related: non intersection" is now the most important feature at 17%, as would be expected after removing the previously most important feature. 
+"intersection related: intersection" is the third most important feature at 12%, and "manner of collision: one motor vehicle turnin right" is 9% important. 
+The importance of these particular features is desired, as the navigation framework relies on both "intersection related" and "manner of collision" to map the routing data to the crash data. 
+Furthermore, the various features for the categories "intersection related" and "manner of collision" have a wide range of importance within the model, implying that predictions for different values of these features will lead to much different scores. 
+The distributed importance of these features within the routing model leads to the expectation that the deployed model will provide meaningful distinction between roadway section types. 
+Therefore, this model satisfies the data mining success criteria as it creates injury severity predictions from navigation data, 
+and should be able to satisfy the project success criteria as it will differentiate between different types of routes. 
 
+The routing data model will be used to continue on to the deployment stage.  
 
+<!--
 * review process: summarise process until this point, determine what needs to be repeated or still be done
 At this point in the process, the original dataset has been successfully converted for use with a machine learning model and an initial "enablement model" has been created.  
 The most important features have been determined via a combination of recursive feature elimination, cross validation, and manual feature reduction.  
@@ -1529,6 +1551,7 @@ The resulting decision tree model has been optimised using cross validation, the
 
 The interpretable_model/interpretable_model2 is functional and therefore satisfies the requirements for enabling the rest of the required technology.  
 However, the model will need to be re-implemented using more robust techniques as part of ongoing deployment.  
+-->
 
 ## Deployment
 <!--crispdm_deployment-->
