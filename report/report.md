@@ -1029,16 +1029,13 @@ Costs and Benefits:
 -->
 
 
-#### determine the data mining goals.  
-Business Success Criteria: tool which can display any route and its associated risk of severe injury in a crash  
-Data Mining Success Criteria: model which predicts on "accident severity", i.e. the crash severity
+#### Data Mining Goals
+The project success criteria are defined as a tool which can display any route and its associated risk of severe injury in a crash.   
+The data mining success criteria are defined as model which can create injury severity predictions using environmental and navigation data. 
 
-
+<!--
 ### Project Preparation Gantt Chart
 project plan:
-<!--
-@TODO: create overview of model creation plan; this is not the same as the work-packages for deployment
--->
 
 | status | | | | | | | | | |
 |-|-|-|-|-|-|-|-|-|-|
@@ -1051,13 +1048,16 @@ Names:
 clean_project -> Migrate Previous Project
 stub_model -> enablement_model
 interpretable_model -> Feature Reduction Model
-interpretable_model2 -> Routing Data Model
+interpretable_model2 -> Routing Model
 
 -->
 <!-- | **modeling** | | | | optimised_model1 | -->
 
-#### WP: clean project
-The previous project's codebase which initially explored the TXDOT dataset focused on model optimisation and feature selection, and therefore needs to be rewritten as a model generator for this project.  
+### Project Plan
+The plan for creating the final route scoring model involves several intermediate stages in order to simultaneously enable the model deployment. 
+
+#### Work-Package: Migrate Previous Project  
+The codebase inherited from the previous project focused on model optimisation and feature selection, and therefore needs to be rewritten as a generic model generator for this project.   
 
 #### Work-Package: Enablement Model  <!-- WP: stub_model -->
 Simple model with basic optimisation and limited feature set
