@@ -736,6 +736,7 @@ Training:   This is accomplished by taking a dataset with known outcomes and spl
 Predicting: Once the model been trained on this dataset of inputs and known outputs, it is exposed to a new set of inputs and used to predict their outputs.  
 In python sklearn terms, training is referred to as "fit" and prediction is referred to as "predict".  
 
+Dimensionality refers to the number of available data points for a given feature or the entire dataset.  
 <!--
 @TODO: feature vs descriptive feature vs predictor
 -->
@@ -1354,40 +1355,41 @@ Therefore, each model is based on a decision tree algorithm, which are well suit
 
 #### Overview of Modeling Stage:  
 
-The Enablement Model was quickly implemented in order to develop the framework for modeling and deployment as well as for data exploration.  
-It was then replaced by the Feature Reduction Model, which was quickly found to rely on features which were not available in deployment.  
-The Routing Model is the re-implemented Feature Reduction Model containing only features which could be obtained once deployed.  
-Further models were not implemented at this time.  
+The Enablement Model was used for data exploration as well as for developing the framework for modeling and deployment. 
+The Feature Reduction Model selects the optimal number of features to maximise the prediction accuracy using the crash information dataset. 
+The Routing Model re-implements the Feature Reduction Model without features unavailable during deployment. 
+
 <!--
 @FUTUREWORK: Improve precision and accuracy  
 @STUB: accuracy not the focus, usability is -and- accuracy doesn't matter as much when comparing -and- available data makes all routes look the same anyway
 
 The created application will help cyclists ride more defensively, but more effort needs to be made on a municipal level.  
 -->
+
+<!--
 Data Segmentation - improve precision - use models created from subsets of the data according to which features can be expected.  
 Improved accuracy - The next step to improve accuracy would be to create a boosted tree model (optimised_model1). Boosted trees are an improved implementation of a decision tree and are well suited for smaller datasets [@caruana_et_al_2008].   
 Such a model was created for this project's predecessor, and could be re-implemented for this project without the unavailable features.  
 
 As such, only Routing Model will be evaluated in this section as it includes Enablement Model and Feature Reduction Model.  
 The Enablement Model and Feature Reduction Model will be mentioned in context of their role in the overall lifecycle.  
+-->
 
 
+### Dataset Feature Selection
+The processed dataset contains features with a dimensionality (number of available data points) an order of magnitude lower than most of the other features. 
+RFECV was used to determine the importance of these features during the model creation process. 
+The importance of features with low dimensionality was evaluated by running RFECV before and after temporarily removing the feature from the dataset. Features with low importance were permanently removed. 
+Additionally, an average ROC-AUC score was calculated by running k-fold cross-validation on the dataset before and after feature removal. 
+This ROC-AUC score was used to measure the impact of feature removal prior to running RFECV. 
+If the ROC-AUC score increased, the feature was assumed to cause underfitting. 
+If the ROC-AUC score decreased, the feature was assumed to be important for the model. 
+None of the ROC-AUC scores were high enough to assume a given feature was causing overfitting. 
 
-<!-- @TODO: what is the different between interpretable_model and interpretable_model2 ? -->
-#### interpretable_model2:  
-#### Routing Model  
-<!-- interpretable_model2: rename to: Routing Model  -->
-Technique:  Decision Tree  
-Assumptions: ignores location, ignores intersection, only focuses on ... TODO: featdef    
-Test Design: xval, roc score, see model.py  
-Build Model: parameters - see model.py  
-Assessment:  
-
+<!--
 Explanation of Assumptions:  
 Location unaware - model does not use GPS coordinates for prediction as it needs to analyse road segment types regardless of location. This was explained during the data preparation phase.  
-
-
-
+-->
 <!--
 Location unaware : @TODO: refactor this sentence, is it a stream-of-thought:  In essence, the model is deliberately location unaware, with the caveat and assumption that end-users can't simply avoid parts of town. If location 'b' has more crashes, and the route is 'A'->'B'->'C', it isn't helpful to tell end-user that they have to avoid 'B' by routing through a potential 'D','E','F'. HOWEVER - it could be useful to inform users of this factor, but would require a different model. For now, the goal is to make safe transit more convenient; it is already known that one can ride on the sidewalk for the whole commute at 15mph to increase relative-safety , so adding in "avoid these entire areas" won't increase the convenience.  
 @TODO: find the term for intentionally biasing a model to ignore a feature; it's not the same as avoiding overfitting, but it's in the same conceptual category  
@@ -1395,28 +1397,77 @@ Location unaware : @TODO: refactor this sentence, is it a stream-of-thought:  In
 
 #### Enablement Model  
 <!-- stub_model: rename to Enablement Model -->
-Technique: DecisionTree  
-Evaluation: Adequate enough for enabling deployment  
+Purpose: Used only during enablement of navigation framework, not for actual predictions.  
+Technique: Decision Tree Classifier  
+Feature Selection: This model was run with a minimum set of features in order to optimise its performance as a dummy interface. 
+Evaluation: Optimisation and Evaluation was not performed for this stub model  
+<!-- todo: move to evaluation -->
 Deployment: very useful for finalising architecture and enabling the technologies involved, e.g. able to quickly see how route data needed to be converted for use with model, e.g. confronted with architecture challenges immediately  
 
 <!-- compare interpretable_model performance with interpretable_model2 performance -->
 #### Feature Reduction Model
 <!-- interpretable_model: rename to: Feature Reduction Model  -->
+Purpose: Enable application architecture, choose optimal predictors from features in crash dataset  
 Technique: Decision Tree Classifier  
-Purpose: Enable application architecture, choose optimal predictors from features in crash dataset
+Assumptions: Uses feature selection to maximise the dimensionality of usable data, which reduces model accuracy in favour of precision. The resulting model will not be able to use as much data as possible for predicting, but is able to use more data overall to make a better informed prediction.  
+Test Design: cross validation using ROC score
 Feature Selection:  
-Low-dimensionality features were removed after confirming their low-importance by running RFECV before and after their removal. Additionally, an average ROC-AUC score was calculated by running k-fold cross-validation on the dataset before and after feature removal. 
-The removal of the following features increased the available data and optimised the resulting dataset's average ROC-AUC score: 
+The removal of the following features increased the available data and optimised the average ROC-AUC score of the resulting dataset: 
 'average_daily_traffic_amount', 'average_daily_traffic_year', 'crash_year' 
 .  
-The usable data was increased to 1644 usable samples and 47 features with a mean ROC of (AUC= 0.59 +/- 0.06) 
-from 233 usable samples and 50 features with a mean ROC of (AUC= 0.55 +/- 0.07).  
+The usable data was increased to 1644 usable samples and 47 features with a mean ROC of (AUC= 0.58 +/- 0.05) 
+from an initial dataset of 233 usable samples and 50 features with a mean ROC of (AUC= 0.55 +/- 0.07).  
 Evaluation: Model evaluation was performed in combination with feature selection. 
-The model parameters were not optimised from their defaults as this model is meant to enable the overall application infrastructure and will not be the final deployed model. 
+The model parameters were not optimised from their defaults as this model is meant to enable the overall application infrastructure. 
 
+Create Model: 
+The following features were omitted from the feature reduction model:  
+'average_daily_traffic_amount'  
+'average_daily_traffic_year'  
+'crash_year'  
+
+![imageFeatRedModROCcurve]
+
+[imageFeatRedModROCcurve]: modeling_evaluation_files/qt_img78102309535481860.png
+
+![imageFeatRedModImpFeats]  
+
+[imageFeatRedModImpFeats]: modeling_evaluation_files/qt_img78142583443816452.png
+
+#### Routing Model  
+<!-- interpretable_model2: rename to: Routing Model  -->
+Technique: Decision Tree Classifier  
+Purpose: Predict using data obtained from routing information and environmental data  
+Assumptions: Only uses data obtainable from routing information, which results in loss of important features.    
+Test Design: cross validation using ROC score
+Feature Selection:  
+The removed features were chosen based on their unavailability during deployment, and therefore were not chosen based on average ROC-AUC score. 
+The usable data was increased to 2213 usable samples and 41 features with a mean ROC of (AUC= 0.63 +/- 0.10)
+from the feature-selection dataset of 1655 usable samples and 47 features with a mean roc of (AUC= 0.58 +/- 0.05)  
+Evaluation: Model evaluation was performed in combination with feature selection. 
+The model parameters were not optimised from their defaults as this model is meant to enable the overall application infrastructure. 
+
+Create Model:
+The following features were omitted from the routing model:
+'speed_limit'  
+'surface_condition'  
+'intersection_related: 'driveway_access'  
+'road_base_type: concrete, flex_base_granular_', 'stabilized_earth_or_flex_granular_'  
+'average_daily_traffic_amount'  
+'average_daily_traffic_year'  
+'crash_year'  
+
+![imageRouteModelROCcurve]  
+
+[imageRouteModelROCcurve]: modeling_evaluation_files/qt_img78410443374198788.png
+
+![imageRouteModelImpFeats]  
+
+[imageRouteModelImpFeats]: modeling_evaluation_files/qt_img78449476036984836.png
 
 
 <!-- @FUTUREWORK:  -->
+<!--
 #### segmentation_models 
 Technique: Multiple models operating on Segmented Dataset  
 Assumption: #@TODO:notsure# output of different models with more/less features is statistically significant @citationNeeded  
@@ -1426,14 +1477,14 @@ Caveat: This is not stacking, it is dataset segmentation, i.e. choosing the most
 
 Purpose: real-world sometimes has missing data. naive approach is to create model with "lowest common denominator" of missing data, as in the Feature Reduction Model\*, but the resulting model lacks features unique to each route. Better approach is to create multiple models based on anticipated data availability, i.e. one model based on a "common denominator" dataset, one model based on "common dataset" + "feature set A", one model based on "common dataset" + "feature set B", etc. This allows the most optimal model to be used based on the data available, providing a more accurate score based on increased availability of data. In general, training models on different slices of the dataset is referred to as segmentation. @citationNeeded  
 (e.g. lighting condition, weather is always available, but can be assumed to be identical or indistinguishable for any route. E.g. user can only input conditions at start, would require advanced knowledge to know whether lighting conditions will change further along in the route )  
+-->
 
+<!-- integrated into each model description
 #### Analysis Evaluation
 
 Cross-Validation Strategy: StratifiedKFold, score: roc_auc_score  
 Feature-Elimination: RFECV with cvFold(2), scoring =  roc_auc  
-
-
-[@sklearn_feat_sel_rfe]: http://scikit-learn.org/stable/modules/feature_selection.html#recursive-feature-elimination
+-->
 
 
 ## Evaluation
@@ -2250,6 +2301,8 @@ http://www.sfedit.net/abstract.pdf
 [@trafficForecastingCrowdFlows]: https://dl.acm.org/citation.cfm?doid=2996913.2996934
 [@txdotHSIManualMannerCollision]: http://onlinemanuals.txdot.gov/txdotmanuals/hsi/hsi.pdf <!-- page 1-18 -->
 [@txdotClassificationCR102]: ftp://ftp.dot.state.tx.us/pub/txdot-info/library/forms/cit/crash102_final_10_08.pdf <!-- page 14 -->
+[@sklearn_feat_sel_rfe]: http://scikit-learn.org/stable/modules/feature_selection.html#recursive-feature-elimination
+
 
 # Appendix
 <!--!@breadcrumb-->
