@@ -202,9 +202,6 @@ Recommendation is to increase data collection in areas with most crashes to bett
     * Impact on the Route Score
   * User Application
     * Architecture
-    * Project Execution Gantt Chart
-    * Work-Packages:
-    * Roadmap
 * Discussion / Conclusion
 * Future Work
   * Crash Data
@@ -216,6 +213,9 @@ Recommendation is to increase data collection in areas with most crashes to bett
     * TXDOT data
   * Appendix: Featdef Values
   * Appendix: Modeling - Feature Selection for Feature Reduction Model
+  * Appendix: Application Implementation Gantt Chart
+    * Work-Packages:
+    * Roadmap
 <!--</toc_mini>-->
 
 
