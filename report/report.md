@@ -735,21 +735,14 @@ Modern route planning tools consider several factors when optimising routes, whe
 * no problem if not enough data to distinguish segments, simply compare two routes and choose safest => no problem - the "segment score" encapsulates this concept. "risk score" calculated based on whatever data the model consumes, serves as abstraction for "route score" . if "segment score" gets more accurate, "route score" automatically reflects this.  
 -->
 
-
-<hr />
-
 # Methodology
 <!--!@breadcrumb-->
 <!--<@breadcrumb>-->
 | [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
-**Section Overview:**
-<!--!toc_mini-->
-<!--<toc_mini>-->
 This section introduces the data mining process, followed by an overview of the framework implementation, and concludes with the CRISP-DM process used to create the predictive models. 
 
-<!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
