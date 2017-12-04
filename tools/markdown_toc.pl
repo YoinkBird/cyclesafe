@@ -11,9 +11,15 @@ my $fileName = $ARGV[0];
 
 # mode?
 my $mode = "mini_toc";
-if($ARGV[1] && $ARGV[1] eq "bc_toc"){
-  # breadcrumb toc
-  $mode = "bc_toc";
+if($ARGV[1]){
+  if($ARGV[1] eq "bc_toc"){
+    # breadcrumb toc
+    $mode = "bc_toc";
+  }
+  elsif($ARGV[1]){
+    # breadcrumb toc
+    $mode = $ARGV[1];
+  }
 }
 
 #### Process incoming text: ###########################
@@ -249,11 +255,86 @@ sub update_bc_toc{
     }
   }
 }
+
+sub rm_bc_toc{
+  my $target = '@breadcrumb';
+  # only include h1 in the breadcrumb
+  my $fargs = { 'fn' => \&get_toc_breadcrumb, 'args' => ['1'] };
+  # add new or update existing
+  my $found_flag=0;
+  for(my $lineNo=0; $lineNo < scalar(@text); $lineNo++){
+    my $line = $text[$lineNo];
+    my $toc_ins   = '<!--'   . $target . '-->';
+    my $toc_noins = '<!--!'  . $target . '-->';
+    my $toc_start = '<!--<'  . $target . '>-->';
+    my $toc_end   = '<!--</' . $target . '>-->';
+    my $re_insert = qr($toc_ins);
+    my $re_noinsert = qr($toc_noins);
+    # add new
+    if($line =~ m/$re_insert/){
+      # equ to: my $bc_toc = $fp->($h_lev_lim);
+      # src: https://stackoverflow.com/a/1235133
+      my $bc_toc = $fargs->{fn}->(@{$fargs{'args'}});
+      if(0){
+        print($toc_noins . "\n");
+        print($toc_start . "\n");
+        print($bc_toc . "\n");
+        print($toc_end   . "\n");
+      }
+      next;
+    }
+    # remove
+    if($line =~ m/$re_noinsert/){
+      if($line =~ m/$re_start/){
+        $found_flag=1;
+      }
+      # equ to: my $bc_toc = $fp->($h_lev_lim);
+      # src: https://stackoverflow.com/a/1235133
+      my $bc_toc = $fargs->{fn}->(@{$fargs{'args'}});
+      print($toc_ins . "\n");
+      if(0){
+        print($toc_noins . "\n");
+        print($toc_start . "\n");
+        print($bc_toc . "\n");
+        print($toc_end   . "\n");
+      }
+      next;
+    }
+    my $re_start = qr($toc_start);
+    my $re_end = qr($toc_end);
+    # clear existing
+    # raise
+    if($line =~ m/$re_start/){
+      $found_flag = 1;
+      # lower
+    } elsif($line =~ m/$re_end/){
+      #my $bc_toc = &get_toc_breadcrumb(1);
+      my $bc_toc = $fargs->{fn}->(@{$fargs{'args'}});
+      if(0){
+        print($toc_start . "\n");
+        print($bc_toc . "\n");
+        print($toc_end   . "\n");
+      }
+      $found_flag = 0;
+      next;
+    }
+    if($found_flag == 0){
+      print($line . "\n");
+    }
+  }
+}
 # disable by default; can't do both toc breadcrumb and toc_mini because script relies on modifying stdout
 #+ would have to run once for toc_mini, then again for toc_breadcrumb on the prevous output
 if( $mode eq "bc_toc" ){
   # print(&get_toc_breadcrumb);
   print(&update_bc_toc);
+  exit;
+}
+# disable by default; can't do several modes at once because script relies on modifying stdout
+#+ would have to run once for each mode
+if( $mode eq "rm_bc_toc" ){
+  # print(&get_toc_breadcrumb);
+  print(&rm_bc_toc);
   exit;
 }
 if(0){
