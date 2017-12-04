@@ -755,32 +755,37 @@ Modern route planning tools consider several factors when optimising routes, whe
 field work, laboratory work, modeling technique, interdisciplinary collaboration, data type, data acquisition, infrastructure, software, etc. -->
 
 ## Introduction to Data Mining
-First, a brief overview of the data-mining process.  
-A model tries to find a trend in data in order to make accurate predictions on future unknown data.  
-Training:   This is accomplished by taking a dataset with known outcomes and splitting it into a training set of inputs and a set of outputs called the 'target'.  
-Predicting: Once the model been trained on this dataset of inputs and known outputs, it is exposed to a new set of inputs and used to predict their outputs.  
-In python sklearn terms, training is referred to as "fit" and prediction is referred to as "predict".  
+This section provides an overview of the supervised machine learning process. 
+A model tries to find a trend in data in order to make accurate predictions on future unknown data. 
+This is done by analysing existing an dataset consisting of inputs with known outputs in order to find a correlation. 
+Training refers to the process of providing the existing dataset inputs and outputs to the model. 
+Predicting refers to the process of providing new inputs to the model for it to estimate the outputs. 
+The data inputs are often referred to as features or predictors, the output is referred to as the "target". 
+Dimensionality refers to the number of available data points, and refers either to for a specific feature or the entire dataset.
+The python sklearn models refer to 'training' as 'fit' and prediction as "predict". 
 
-Dimensionality refers to the number of available data points for a given feature or the entire dataset.  
-<!--
-@TODO: feature vs descriptive feature vs predictor
--->
+Improving model accuracy is done using various techniques. 
+Train-Test Split converts a training dataset with known outputs into two separate datasets, where "Train" is the one used for training and "Test" the one used for predicting. 
+This simulates the usage of the model on unknown data, with the difference that the correct outcomes are known for the test dataset. 
+The model is trained using the training data and then predicts using the test data. 
+The predicted outputs for the test-data are then compared to their actual outputs to measure the model accuracy. 
+Cross Validation refers to the process of comparing predictions against known outcomes. 
+Cross Validation is often run multiple times while adjusting model parameters in order to find the maximum score against the test dataset. 
 
-Cross Validation  
-Cross Validation is a technique to improve model accuracy by adjusting model parameters until the model achieves a maximum score against a separate testing dataset.  
+There are several algorithms for measuring model accuracy and depend on the type of model and data. 
+The Cross Validation Score refers to the model accuracy determined from the test-dataset prediction. 
 
-Cross Validation Score  
-Model performance is calculated by evaluating the model's predictions against known values. 
-This evaluation provides a measure of how accurate the model is.
+ROC-AUC (Receiver Operating Characteristic) 
+is often used to measure model performance for a categorical dataset. 
+It measures the true-positive and against the false-positive rate of the predictions, thereby forming a curve. 
+AUC (Receiver Operating Characteristic Area Under Curve) 
+measures the area under the curve formed by ROC and used as as the ROC score. 
+The goal is to maximise the area, with an AUC of 1 meaning a perfect model. 
 
-ROC-AUC - Receiver Operating Characteristic 
-ROC is often used to measure model performance for a categorical dataset. It measures the true-positive and against the false-positive rate of the predictions, thereby forming a curve. 
-AUC - Receiver Operating Characteristic Area Under Curve 
-The area under the curve formed by ROC is calculated and used as as the ROC score. The goal is to maximise the area, with an AUC of 1 meaning a perfect model. 
+As a side note, the receiver operating characteristic (ROC) owes its name to its invention for use by radio receiver operators during World War 2. 
+The metric was originally used to evaluate the prediction accuracy of radar systems when detecting aircraft and later found use in machine learning. [@wikiROChistory]
 
-As a side note, the receiver operating characteristic owes its name to its invention for use by radio receiver operators during World War 2. The metric was originally used to evaluate the prediction accuracy of radar systems when detecting aircraft and later found use in machine learning. [@wikiROChistory]
-
-Feature Selection - Theory  
+**Feature Selection and Elimination**  
 Feature selection generally refers to the process of choosing which features to include in a model.  
 By default, a model can be trained on all features and left to decide which features are most important.  
 However, there are several reasons that this approach may not be appropriate for finding the optimal solution.  
@@ -2111,6 +2116,9 @@ http://www.sfedit.net/abstract.pdf
 [@originalProject]: https://nbviewer.jupyter.org/github/YoinkBird/dataMiningFinal/blob/master/Final.ipynb#Maps-of-Crashes 
 
 [@coagovTrafficCount]: https://data.austintexas.gov/Transportation-and-Mobility/Traffic-Count-Study-Area/cqdh-farx
+
+<!-- data mining -->
+[@wikiROChistory]: https://en.wikipedia.org/wiki/Receiver_operating_characteristic#History
 
 <!-- "The goal is simple: to prevent the severe types of crashes that can change lives forever." -->
 [@fhwaReduceCrashSeverity]: https://safety.fhwa.dot.gov/intersection/ 
