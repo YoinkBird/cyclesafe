@@ -68,7 +68,7 @@ allowing pedalcyclists to choose routes based on the results of the traffic stud
 
 reactively and therefore only in areas for which the 
 
-conventional safety improvements are reactive, can take a while, difficult to measure @citationNeeded:politifactManorBikelane
+conventional safety improvements are reactive, can take a while, difficult to measure [@safetyImpactBikelanePolitiFact] 
 
 municipalities freely make data available, invite community to help solve problems @citationNeeded:openAustin
 
@@ -119,7 +119,7 @@ PURPOSE
 This project aims to help bicycle commuters improve their safety in mixed traffic. 
 The resulting increase in safety while cycling will hopefully convince more commuters to use a bicycle. 
 If successful, this will reduce the number of severe injuries while also easing traffic congestion. 
-@citationNeeded - article: increased cycling increases safety  
+@moreCyclingMoreSafetyNacto - article: increased cycling increases safety  
 -->
 
 <!--
@@ -1241,7 +1241,6 @@ keep in sync with 'modeling':
 Likely RandomForest (bagged) or XGB (boosted), depends on data available
 Dimension <4k, so boosted tree likely best solution (src: [@caruana_et_al_2008]) 
 
-[@caruana_et_al_2008]: src: http://icml2008.cs.helsinki.fi/papers/632.pdf
 -->
 
 
@@ -2234,6 +2233,18 @@ http://www.sfedit.net/abstract.pdf
 <!--</@breadcrumb>-->
 <!-- List papers and publication you have already cited in your proposal or which you have collected for further reading. The style of each reference follows that of international scientific journals. -->
 
+<!-- background on crashes -->
+<!--
+[@safetyImpactBikelanePolitiFact]: http://www.politifact.com/texas/statements/2016/jul/29/bike-austin/bike-austin-says-bike-lanes-sidewalks-reduce-austi/
+@citationNeeded:openAustin
+@citationNeeded - article: increased cycling increases safety  
+[@moreCyclingMoreSafetyNacto]: https://nacto.org/2016/07/20/high-quality-bike-facilities-increase-ridership-make-biking-safer/
+[@moreBikeLaneMoreRiders]: https://www.citylab.com/transportation/2014/06/protected-bike-lanes-arent-just-safer-they-can-also-increase-cycling/371958/
+[@moreBikeLaneMoreSafety]: https://www.citylab.com/transportation/2012/10/dedicated-bike-lanes-can-cut-cycling-injuries-half/3654/
+
+@citationNeeded: segmentation - training models on different slices of the dataset is referred to as segmentation.
+-->
+
 [@originalProject]: https://nbviewer.jupyter.org/github/YoinkBird/dataMiningFinal/blob/master/Final.ipynb#Maps-of-Crashes 
 
 [@coagovTrafficCount]: https://data.austintexas.gov/Transportation-and-Mobility/Traffic-Count-Study-Area/cqdh-farx
@@ -2244,6 +2255,10 @@ http://www.sfedit.net/abstract.pdf
 <!-- crisp dm -->
 [@wikiCrispDM]: https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining
 
+<!-- general data mining topic -->
+[@caruana_et_al_2008]: http://icml2008.cs.helsinki.fi/papers/632.pdf
+
+[@fhwaBeforeAfterAnalysis]: https://www.fhwa.dot.gov/publications/research/safety/02089/05.cfm#b
 <!-- "The goal is simple: to prevent the severe types of crashes that can change lives forever." -->
 [@fhwaReduceCrashSeverity]: https://safety.fhwa.dot.gov/intersection/ 
 [@txdot_crash_report_source]: http://www.txdot.gov/driver/laws/crash-reports.html
