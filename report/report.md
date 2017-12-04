@@ -480,6 +480,8 @@ $$
 \\ \text{crash frequency} = \frac{  C * \text{<section-constant>} }{ 365 \cdot N \cdot V }
 $$
 
+![formulaCrashFrequency](http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Bcrash%20frequency%7D%20%3D%20%5Cfrac%7B%20%20C%20%2A%20%5Ctext%7B%3Csection-constant%3E%7D%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+
 The intersection crash rate scales the frequency by a constant of 10^6 [@fhwa3DataAnalysisCrashRateIntersection] : 
 <!--
 rate = 1 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" )
@@ -487,6 +489,8 @@ rate = 1 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic v
 $$
 \\ \text{intersection crash rate} = 1 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \ MEV
 $$
+
+![formulaIntersectionCrashRate](http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Bintersection%20crash%20rate%7D%20%3D%201%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%5C%20MEV%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 i.e.:
 $$
 \\ rate = \frac{ 1 \cdot 10^6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d }
