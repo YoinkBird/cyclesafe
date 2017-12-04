@@ -175,7 +175,7 @@ Recommendation is to increase data collection in areas with most crashes to bett
 * Roadway Safety Analysis
 * Methodology
   * Introduction to Data Mining
-  * Implementation Overview
+  * Navigation Framwork Overview
   * CRISP-DM
 * CRISP-DM Report
   * Business Understanding
@@ -748,7 +748,7 @@ Modern route planning tools consider several factors when optimising routes, whe
 <!--!toc_mini-->
 <!--<toc_mini>-->
 * Introduction to Data Mining
-* Implementation Overview
+* Navigation Framwork Overview
 * CRISP-DM
 <!--</toc_mini>-->
 <!-- Explain the methods and techniques which will be used for your project depending on the subject:
@@ -823,40 +823,30 @@ This trade-off can be evaluated by iteratively removing features with a low numb
 The results of this iterative process can be compared to determine which low-data features to remove.  
 
 
-## Implementation Overview
+## Navigation Framwork Overview
 
-The final product consists of two parts, the user-facing application, or front-end, and the non-public data processing model, or back-end.  
-The core mission of this project is to improve safety for cyclists.  
-To this end, a balance between the front-end and back-end needs to struck such that the information is both readily available to the end user while also being accurate.  
-This balance is best exemplified by two scenarios: one in which the model is accurate but without a user-facing application, and one in which the application is easy to use but the model is inaccurate.  
-<example>
-<!-- analogy:
-#included: map-based route planning tools are easy to use, but doesn't have any safety prediction at all
-#included: the current model can predict the safety of a route, but the end-user would have fit the model to a collection of GPS coordinates representing their route.
-#pending, out of place here: The solution is to have a route planning tool which automatically generates a list of GPS coordinates for a route and uses these coordinates to predict the safety factor. The end-user need only plan their route as usual, and the tool does the rest.
--->
-The first scenario would be a model which can accurately predict the safety of a route, but requires the end-user to fit the model to an independently generated collection of GPS coordinates representing their route.  
-The second scenario is exemplified by existing map-based route planning tools, which are easy to use but have no safety prediction whatsoever.  Although most of these tools offer alternative routes based on various factors, they do not include safety in their calculations.
+The safety navigation application consists of two components, the injury severity prediction model and the safety navigation framework which uses the model.  
+The core mission of this project is to improve safety for cyclists, which means that a balance must be made between accurate predictions and the ability to use them for safe navigation. 
+This balance is best exemplified by two scenarios: one in which the model is accurate but without a navigation application, and one in which the navigation application is easy to use but the model is inaccurate. 
+The first scenario is exemplified as a model which can accurately predict the safety of a route, but requires the end-user to manually create their own route from GPS coordinates. 
+The second scenario is exemplified by existing navigation tools, which are easy to use but do not include safety predictions. 
 
+In scenario one, the high-accuracy model can predict the danger of a given route, 
+but would require the end-user to have a detailed understanding of data mining, 
+and how to convert their route such that the model can use it for making a prediction. 
+In the second scenario, the navigation application makes it easy for the end-user to plan their route, 
+but an inaccurate model will mislead the end-user about the actual safety of the route.  
 
-In scenario one, a model with high accuracy can easily predict the danger of a given route, but would require the end-user to have a detailed understanding of data mining, the language used to create the model, and how to translate their desired route into a format which the model can use to make a prediction.  
-In the second scenario, the application with a good UI makes it easy for the end-user to plan their route, but the inaccurate model will mislead the end-user about the actual safety of the route.  
+Both scenarios are unfavourable, but the nature of data mining and the process of application design informs which scenario to address first. 
+Data mining is an open-ended problem as the model requires constant improvement to remain accurate as new data is made available. 
+On the other hand, designing an application to consume the model is a finite problem as the interface between application and model is static. 
+Focussing on the interface first also accomplishes the goal of making the model easier to use, as it provides an interface for the end-user. 
 
-Both scenarios are unfavourable, but fortunately the nature of application design and creating an accurate model help prioritise which component to focus on first.  
-Data Mining is an open-ended problem: the model is trying to use existing data to make an accurate prediction about the future. The accuracy of a model is constantly changes as new data is made available, which in turn requires the model to constantly change. E.g. new data sources may provide better input, which in turn requires the model to use different parameters or even a different algorithm.  
-On the other hand, the application layer represents a finite problem: the application consumes and presents data in a pre-defined format. The goal of abstracting the model for easier use is accomplished once the interface between the end-user and the and data is created. Of course, the application will change over time to accommodate user feedback, but this is secondary to the primary purpose of allowing users to interact with the data.  
-In summary, while the accuracy of the data model can improve over time, the application has no impact on the accuracy of the model.  
+In summary, while the accuracy of the prediction model can improve over time, the application has no impact on the accuracy of the model. 
+Therefore, the primary focus of this project is on creating a UI for interacting with the output from the model. 
+As the model itself is expected to change over time, its optimisation is a secondary focus.  
 
-Therefore, the primary focus of this project is on creating a UI for interacting with the output from the model. As the model itself is expected to change over time, its optimisation is a secondary focus.  
-
-<!-- map to CRISP-DM, i.e. 'three' is the continued deployment -->
-To this end, the project is done in three phases:  
-one: create simple model for the application to consume  
-two: create application with minimal functionality  
-three: improve model accuracy  
-
-This phased incremental approach is an application of CRISP-DM, a process commonly used in industry.
-
+This approach correlates with the industry standard CRISP-DM process, which foresees the need for ongoing maintenance of the model. 
 
 ## CRISP-DM
 
