@@ -506,9 +506,11 @@ V = Number of vehicles per day
 L = Length of the roadway segment in miles [only for road segment crash rate].  
 
 The crash frequency is defined as the traffic count normalised by the traffic volume data, then normalised by a section-specific constant:  
+<!--
 $$
 \\ \text{crash frequency} = \frac{  C * \text{<section-constant>} }{ 365 \cdot N \cdot V }
 $$  
+-->
 
 ![formulaCrashFrequency]
 
@@ -518,18 +520,22 @@ The intersection crash rate scales the frequency by a constant of 10^6 [@fhwa3Da
 <!--
 rate = 1 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" )
 -->
+<!--
 $$
 \\ \text{intersection crash rate} = 1 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \ MEV
 $$
+-->
 
 ![formulaIntersectionCrashRate]
 
 [formulaIntersectionCrashRate]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Bintersection%20crash%20rate%7D%20%3D%201%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%5C%20MEV%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
 
 i.e.:
+<!--
 $$
 \\ rate = \frac{ 1 \cdot 10^6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d }
 $$
+-->
 
 ![formulaIntersectionCrashRateVerbose]
 
@@ -539,9 +545,11 @@ The road segment crash rate scales the frequency by a constant of 100 * 10^6 and
 <!--
 rate = 100 * E^6 * "Recorded Crashes" / ( 365 * "years of data" * "daily traffic volume" * "length of segment" )
 -->
+<!--
 $$
 \\ \text{road segment crash rate} = 100 \cdot 10^6 \times \frac{  C }{ 365 \cdot N \cdot V } \times \frac 1L  \ VMT
 $$
+-->
 
 ![formulaSegmentCrashRate]
 
@@ -553,9 +561,11 @@ $$
 $$
 -->
 i.e.:
+<!--
 $$
 \\ rate = \frac{ 100 \cdot 10^6 \cdot "C: Crashes" }{ 365 \frac da \cdot "N: Years Of Data" a \cdot "V: Traffic Volume" \frac 1d \cdot "L: Segment Length"  }
 $$
+-->
 
 ![formulaSegmentCrashRateVerbose]
 
@@ -598,47 +608,70 @@ The formula for segment crash rate is proportional to the intersection crash rat
 Conversely, the formula for the intersection crash rate is proportional to the segment crash rate if the segment length is set to a fixed value of '1'. 
 This implies that there could be a linear relationship between the segment rate VMT calculation and the intersection rate MEV calculation. 
 This relationship is explored in the following formulas: 
+
+<!--
 $$
 \\ \text{Intersection Rate} = 1 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }
 $$
+-->
+
 ![formulaRelInterCrashIntersectionCR]  
 
 [formulaRelInterCrashIntersectionCR]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BIntersection%20Rate%7D%20%3D%201%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ \text{Segment Rate} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }  \times \frac 1L  
 $$
+-->
+
 ![formulaRelInterCrashSegmentCR]  
 
 [formulaRelInterCrashSegmentCR]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%20%5Ctimes%20%5Cfrac%201L%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ \text{let L = 1: } 
 $$
+-->
+
 ![formulaRelInterCrashL1]  
 
 [formulaRelInterCrashL1]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7Blet%20L%20%3D%201%3A%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V } \times \frac 11
 $$
+-->
+
 ![formulaRelInterCrashSegmentCRL1Expand]  
 
 [formulaRelInterCrashSegmentCRL1Expand]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%28L%3D1%29%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%20%5Ctimes%20%5Cfrac%2011%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ \text{Segment Rate(L=1)} = 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V }
 $$
+-->
+
 ![formulaRelInterCrashSegmentCRL1Reduce]  
 
 [formulaRelInterCrashSegmentCRL1Reduce]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%28L%3D1%29%7D%20%3D%20100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ \text{Segment Rate(L=1)} == 100 \cdot Intersection Rate
 $$
+-->
+
 ![formulaRelInterCrashSegmentCRL1equInterCr]  
 
 [formulaRelInterCrashSegmentCRL1equInterCr]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Rate%28L%3D1%29%7D%20%3D%3D%20100%20%5Ccdot%20Intersection%20Rate%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
 
 This demonstrates that the intersection crash rate formula can be expressed using the segment rate formula for a distance of 1 unit and a fixed constant of 1/100 . 
+
+<!--
 $$
 \\ \text{Intersection Rate} = \frac{1}{100} \times \text{Segment Rate(L = 1) } = \frac{1}{100} \times \frac{ C }{ 365 \cdot N \cdot V }
 $$
+-->
+
 ![formulaRelInterCrashInterCRrelSegCR]  
 
 [formulaRelInterCrashInterCRrelSegCR]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BIntersection%20Rate%7D%20%3D%20%5Cfrac%7B1%7D%7B100%7D%20%5Ctimes%20%5Ctext%7BSegment%20Rate%28L%20%3D%201%29%20%7D%20%3D%20%5Cfrac%7B1%7D%7B100%7D%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%20%7D%0A&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
@@ -696,19 +729,25 @@ This preserves the probability property of risk as a number between 0 and 1.
 
 The relationship between crash-frequency and crash severity:
 
+<!--
 $$
 \\ \text{Crash Freqency} 
 \mapsto
 \\ \text{Crash-Severity Risk}
 $$
+-->
+
 ![formulaMapFreqToSeverText]  
 
 [formulaMapFreqToSeverText]: http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BCrash%20Freqency%7D%0A%5Cmapsto%0A%5Ctext%7BCrash-Severity%20Risk%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ \frac{ C }{ 365 \cdot N \cdot V}
 \mapsto
 \\ \text{Predicted Crash Severity}
 $$
+-->
+
 ![formulaMapFreqToSeverEquation]  
 
 [formulaMapFreqToSeverEquation]: http://www.sciweavers.org/tex2img.php?eq=%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%7D%0A%5Cmapsto%0A%5Ctext%7BPredicted%20Crash%20Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
@@ -722,38 +761,50 @@ The crash-severity risk is independent of traffic volume and therefore does not 
 
 Intersection Crash-Severity Risk:  
 
+<!--
 $$
 \\ \text{Intersection Crash Rate} 
 \mapsto
 \text{Intersection Crash-Severity} 
 $$
+-->
+
 ![formulaMapCRtoCSevInterText]  
 
 [formulaMapCRtoCSevInterText]: http://www.sciweavers.org/tex2img.php?eq=%5Ctext%7BIntersection%20Crash%20Rate%7D%0A%5Cmapsto%0A%5Ctext%7BIntersection%20Crash-Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 1 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V}
 \mapsto
 \\ \text{Predicted Crash Severity}
 $$
+-->
+
 ![formulaMapCRtoCSevInterEquation]  
 
 [formulaMapCRtoCSevInterEquation]: http://www.sciweavers.org/tex2img.php?eq=1%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%7D%0A%5Cmapsto%0A%5Ctext%7BPredicted%20Crash%20Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
 
 Segment Crash-Severity Risk:  
 
+<!--
 $$
 \\ \text{Segment Crash Rate} 
 \mapsto
 \text{Segment Crash-Severity} 
 $$
+-->
+
 ![formulaMapCRtoCSevSegText]  
 
 [formulaMapCRtoCSevSegText]: http://www.sciweavers.org/tex2img.php?eq=%5C%5C%20%5Ctext%7BSegment%20Crash%20Rate%7D%0A%5Cmapsto%0A%5Ctext%7BSegment%20Crash-Severity%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
+<!--
 $$
 \\ 100 \cdot 10^6 \times \frac{ C }{ 365 \cdot N \cdot V} \times \frac 1L
 \mapsto
 \\ \text{Predicted Crash Severity} \times \frac 1L
 $$
+-->
+
 ![formulaMapCRtoCSevSegEquation]  
 
 [formulaMapCRtoCSevSegEquation]: http://www.sciweavers.org/tex2img.php?eq=100%20%5Ccdot%2010%5E6%20%5Ctimes%20%5Cfrac%7B%20C%20%7D%7B%20365%20%5Ccdot%20N%20%5Ccdot%20V%7D%20%5Ctimes%20%5Cfrac%201L%0A%5Cmapsto%0A%5Ctext%7BPredicted%20Crash%20Severity%7D%20%5Ctimes%20%5Cfrac%201L&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0
