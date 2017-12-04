@@ -329,22 +329,22 @@ The following descriptions explain the purpose of sections which seemingly overl
 <!-- List relevant work by others, or preliminary results you have achieved with a detailed and accurate explanation and interpretation. Include relevant photographs, figures or tables to illustrate the text.  This section should frame the research questions that your subsequent research will address. -->
 
 <!-- TODO: brief overview of this section. -->
-While improving traffic safety is not a new topic, addressing it with machine learning techniques on an existing dataset seems to be a novel approach.  
-This project builds on a previous project which explored this approach as a proof-of-concept.  
-Conventional applications of using machine learning to improve traffic safety tend to involve traffic studies or long running trials of novel traffic-controls to determine safety factors.  However, this method tends to require a higher budget and active involvement by a public or private organisation with an interest in traffic safety.  
-The advantage of using machine learning techniques on existing data is to provide a low-budget analysis of traffic safety factors with a quick turnaround time, independent of existing policies.  
-<hr />
-
-<!-- TODO: include the prior art research -->
-## Relevant Work
-
-relevant work - misc traffic studies, links are currently stored in google docs
+While improving traffic safety is not a new topic, addressing it with machine learning techniques soley based on an existing dataset seems to be a novel approach. 
+Conventional applications of using machine learning to improve traffic safety tend to involve traffic studies or long running trials of novel traffic-controls to determine safety factors. 
+However, this method tends to require a higher budget and active involvement by an organisation with an interest in traffic safety. 
+The advantage of using machine learning techniques on existing data is to provide a low-budget analysis of traffic safety factors with a quick turnaround time, independent of existing policies. 
 
 ## Previous Work
 
 <!-- abstract: previous work -->
-This project is based off of a previous project to identify the factors associated with severe injury [@originalProject]. 
-This research produced two tree-based machine learning models, one a complex model for identifying the risk factors, and the other a simplified decision tree to conceptualise safety factors in a human readable format. 
+This project is a successor of a previous research project to identify the factors associated with severe injury for crashes involving cyclists [@originalProject]. 
+This research project produced two machine learning models, a complex model using a boosted trees classifier and a simplified model using a decision tree classifier. 
+The complex model was optimised for identifying the most important features leading to severe injury. 
+The simplified model reduced the features identified by the complex model into a simplified decision tree to conceptualise safety factors in a human readable format. 
+However, neither of these models can be used for safety-based navigation. 
+The complex model relies on features only available in the crash dataset, and the simplified decision tree would have to be manually interpretted for each section of each possible route. 
+
+<!--
 The second model was generated for interpretability, which is considered a fundamental issue with applied machine learning: as the model gets more precise, it gets more complex and therefore difficult to understand or apply to real-world problems. 
 The risk factors identified by the complex model could be used when analysing the safety of an intersection. 
 However, the underlying decision tree makes too many decisions for a human to interpret on their own, and therefore would require an extra layer to be human-readable. 
@@ -354,6 +354,7 @@ Essentially, it rephrases the problem as "what are the safety factors, given the
 This trade-off was considered as acceptable, as manual interpretation of complex models is likely to result in error anyway. 
 In summary, when creating an interpretable model, the error introduced by simplifying the model needs to be balanced with the error a human would make while reading a complex model. 
 Furthermore, a complex model is inconvenient to read and would likely not find much usage.  
+-->
 <!-- todo - did the human-readable model use the XGB feats? I thought so -->
 <!--
 maybe an abstract on 'why we can't interpret complex models? 
@@ -389,13 +390,19 @@ For example, this visualisation does not portray whether the safety of an inters
 -->
 
 <!-- segue into current project -->
-<!-- please, please, please reword this whole section. so much cringe -->
-**Past Project's Future, Presently**  
+<!--
+**Impact on Current Project**  
 The previous project layed a good foundation, and in doing so opened up many possibilities for new projects.  
 
 This project continues the work of the previous project and will combine the accurate but non-interpretable model with the inaccurate but interpretable model into one tool which will both be accurate and interpretable.
+-->
 
-<hr />
+<!-- TODO: include the prior art research -->
+## Relevant Work
+
+relevant work - misc traffic studies, links are currently stored in google docs
+
+
 
 # Goals
 <!--!@breadcrumb-->
