@@ -475,7 +475,11 @@ Todo: should research whether accident severity correlates with responsibility. 
 | [table-of-content](#table-of-content) | [probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists](#probabilistic-routing-based-injury-avoidance-navigation-framework-for-pedalcyclists) | [abstract](#abstract) | [introduction](#introduction) | [background-and-results-to-date](#background-and-results-to-date) | [goals](#goals) | [roadway-safety-analysis](#roadway-safety-analysis) | [methodology](#methodology) | [crisp-dm-report](#crisp-dm-report) | [technical-implementation](#technical-implementation) | [discussion--conclusion](#discussion--conclusion) | [future-work](#future-work) | [acknowledgements](#acknowledgements) | [reference--literature-bibliography](#reference--literature-bibliography) | [appendix](#appendix) | 
 <!--</@breadcrumb>-->
 
-Adapt current descriptive analytics for predictive analysis and create a method for situations involving limited data.  
+This paper introduces a novel method for analysing a route and assigning a safety score. 
+State of the art descriptive analytics are adapted for use with predictive analysis. 
+This section introduces and analyses the commonly used crash rate formulas, 
+introduces the challenges faced with applying these formulas predictively, 
+and concludes with a description of the predictive crash severity formula used for this project. 
 
 **Road Safety Analysis based on Traffic Data**  
 The Federal Highway Administration (FHWA) preforms a descriptive analysis of existing data for a given road section to measure the crash rate for that portion of road [@fhwa3DataAnalysis]. 
@@ -604,52 +608,49 @@ This demonstrates that the intersection crash rate formula can be expressed in t
 This supports the initial claim that these formulae correlate risk with the crash frequency and length of the road section. 
 
 **Predictive Road Safety Analysis**  
-The formulas currently used to evaluate road segment safety rely on the presence of data for the specific segment being analysed.  
-As a result, any crashes which are not reported will not be factored in the analysis. For example, a segment which leads to minor collisions which require no police involvement would not be fixed if no report is filed.  
-The NHTSA does have some techniques for predictive modelling [@fhwaHSIPproblemIdentificaton] but these involve complex formulas which in turn rely on a plethora of measurements.    
+The formulas currently used to evaluate road segment safety rely on the presence of data for the specific segment being analysed. 
+As a result, any crashes which are not reported will not be factored in the analysis. 
+For example, a segment which leads to minor collisions which require no police involvement would not be fixed if no report is filed. 
+The NHTSA does have some techniques for predictive modelling [@fhwaHSIPproblemIdentificaton] but these involve complex formulas which in turn rely on a plethora of measurements. 
 
-These formulas are meant for posterior analysis in order to determine which roadways to improve.  
-This is a good approach for continuously improving safety, but requires crashes to happen before action can be taken.  
+These formulas are meant for posterior analysis in order to determine which roadways to improve. 
+This is a good approach for continuously improving safety, but requires crashes to happen before action can be taken. 
+This is a particularly problematic approach for cyclists as they tend to sustain more severe injury than they would in a motor-vehicle collistions. 
 
-For cyclists, this is a particularly perilous approach as crashes tend to lead to more severe injury for cyclists.  
+This problem could be addressed by applying a predictive approach towards road segment safety analysis. 
+The existing formulas and body of knowledge based on crash rates can be adapted for crash probability with a few changes.  
+The formulas need to predict future crashes instead of analysing existing crashes, 
+and the crash rate formula needs to be altered to use predicted crashes instead of measured crashes. 
 
-This problem could be addressed by applying a predictive approach towards road segment safety analysis.  
+The concept of crash prediction involves identifying trends in the road segments for reported crashes and using these trends to analyse a road segment to make an educated guess about the number of crashes it should have. 
+This estimated number of crashes for a segment can then be used in the existing formulas to calculate that segment's safety score. 
+In essence, this changes the formula from measuring the number of reported crashes normalised with traffic volume to 
+measuring the number of predicted crashes normalised with traffic volume. 
 
-The existing formulas and body of knowledge based on crash rates can be adapted for crash probability with the following changes:  
-
-1. predict crashes instead of measuring crashes
-2. change crash rate formula to use predicted crashes instead of measured crashes  
-
-The concept of crash prediction lies in identifying trends in the road segments for reported crashes and using these trends to analyse a road segment to make an educated guess about the number of crashes it should have.  
-
-This estimated number of crashes for a segment can then be used in the existing formulas to calculate that segment's safety score.  
-
-In essence, this changes the formula from "#reported_crashes/traffic_volume" to #predicted_crashes/#traffic_volume". 
-
-This approach is still limited by the availability of traffic volume data for a given road segment.  
-However, as it is a predictive model, its accuracy can be improved by ensuring that traffic volume data is continuously updated.  
-The exact reasons for re-measuring traffic volume on a segment can vary, but may be combination of age of the data, predicted crashes for the segment, and actually measured crashes for the segment.  
-This maintenance is to be expected, as predictive models are meant to be used with the descriptive techniques to ensure maximum coverage for the best overall solution.  
+This approach is still limited by the availability of traffic volume data for a given road segment. 
+However, as it is a predictive model, its accuracy can be improved by ensuring that traffic volume data is continuously updated. 
+The exact reasons for re-measuring traffic volume on a segment can vary, but may be combination of age of the data, predicted crashes for the segment, and actually measured crashes for the segment. 
+This maintenance is to be expected, as predictive models are meant to be used with the descriptive techniques to ensure maximum coverage for the best overall solution. 
 
 
 **Predictive Road Safety Analysis using Crash Severity**  
 The predictive approach relies on traffic volume for a given segment, and is therefore limited by age and availability of the data. Older data will not reflect current trends, and segments with unavailable data cannot be evaluated.  
 
-Traffic flow cannot be measured for every segment using current techniques.  
+Traffic flow cannot be measured for every segment using current techniques. 
 The methods for measuring traffic flow are only applied on demand [@coagovTrafficCount] and are therefore not available for every road segment. 
-Furthermore, the methods for measuring traffic flow do not measure cyclists as they cannot distinguish between types of vehicle [@trafficCountBicycleVsCar] .  
+Furthermore, the methods for measuring traffic flow do not measure cyclists as they cannot distinguish between types of vehicle [@trafficCountBicycleVsCar]. 
 
-One solution could be to create a separate predictive model for traffic volume, which would represent an entirely different problem than predicting crashes.  
-Traffic volume itself depends on several factors not measured in crash data, for example, connectivity of the road segment (thoroughfare, neighbourhood road, dead end), lane width, population density along the segment, and several other factors.  
+One solution could be to create a separate predictive model for traffic volume, which would represent an entirely different problem than predicting crashes. 
+Traffic volume itself depends on several factors not measured in crash data, for example, connectivity of the road segment (thoroughfare, neighbourhood road, dead end), lane width, population density along the segment, and several other factors. 
 While there is some research into predicting traffic volume [@trafficForecastingCrowdFlows], this falls beyond the scope of this project.  
 
 Therefore, in order to create a safety measurement applicable to any generic road section, a different measurement must be used which does not rely on the availability of traffic flow data. 
-Crash severity measures the severity of injury sustained in a crash, and is a self-contained measurement in that it is measured per individual reported crash instead of per total reported crashes for a segment.  
-This imposes the limitation that it can not be used to avoid a crash, but instead to avoid severe injury given a crash.  
-Therefore, any prediction based on crash severity will be constrained by the assumption that a crash occurred.  
-This removes the reliance on unavailable traffic volume data, but imposes the bias that any prediction assumes that a crash has already occurred.  
+Crash severity measures the severity of injury sustained in a crash, and is a self-contained measurement in that it is measured per individual reported crash instead of per total reported crashes for a segment. 
+This imposes the limitation that it can not be used to avoid a crash, but instead to avoid severe injury given a crash. 
+Therefore, any prediction based on crash severity will be constrained by the assumption that a crash occurred. 
+This removes the reliance on unavailable traffic volume data, but imposes the bias that any prediction assumes that a crash has already occurred. 
 
-The formula introduced for assessing crash-risk for road sections cannot be adapted for crash-severity.  
+The formula introduced for assessing crash-risk for road sections cannot be adapted for crash-severity. 
 The crash-risk measures the frequency of crashes (measured or predicted) per section of road, whereas crash-severity measures the impact of a single crash. It is therefore not a measure of the frequency of an event, and cannot be measured as a simple ratio. 
 The crash-severity risk will be taken directly from the confidence of the predictive model.  
 This preserves the probability property of risk as a number between 0 and 1.
@@ -669,15 +670,10 @@ $$
 
 **Mapping Crash Rate to Predictive Crash Severity**  
 The relative safety of a road section can be calculated using the crash-severity risk by applying the principles underlying the crash rate formulas. 
-
 The crash rate formulas correlate crash frequency with road section length, which can be mapped to crash-severity by correlating crash-severity risk with road section length. 
-
 The relative safety of a road section can be calculated by applying the mapping between crash frequency and crash-severity risk to the descriptive crash rate formulas. 
-
 The descriptive formulas scale the crash frequency by a constant based on the section type, then divide that number by the road section length, which is '1' for intersections. 
-
 The crash-severity risk is independent of traffic volume and therefore does not need to implement the constant used to scale the crash frequency to a certain number of vehicles. 
-
 
 Intersection Crash-Severity Risk:  
 
