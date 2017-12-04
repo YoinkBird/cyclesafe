@@ -169,9 +169,8 @@ Recommendation is to increase data collection in areas with most crashes to bett
 * Introduction
   * Structure of this Paper
 * Background and Results to Date
-  * Relevant Work
   * Previous Work
-  * Results to Date
+  * Related Work
 * Goals
 * Roadway Safety Analysis
 * Methodology
@@ -397,10 +396,32 @@ The previous project layed a good foundation, and in doing so opened up many pos
 This project continues the work of the previous project and will combine the accurate but non-interpretable model with the inaccurate but interpretable model into one tool which will both be accurate and interpretable.
 -->
 
-<!-- TODO: include the prior art research -->
-## Relevant Work
+## Related Work
 
-relevant work - misc traffic studies, links are currently stored in google docs
+Injury-avoidance based navigation using a predictive model primarily relates to research on safety-based navigation and event prediction models. 
+
+**Safety-Based Navigation**:
+Navigation based on avoiding unsafe areas is an active research topic. 
+Work has been done on avoiding high-crime areas for pedestrian navigation [@relatedWorkSafeNavUrbanEnv], 
+in which routes are calculated in order to minimise exposure to high crime areas. 
+This project estimates foot-traffic volume from the locations of reported crimes in order to normalise the predictions. 
+This approach would not work for this injury-avoidance navigation project as it would mean assuming a correlation between reported crashes and cyclist traffic volume. 
+This correlation cannot be proven, especially since crash data only records crashes which lead to injury and therefore is not a heterogeneous description of all crashes. 
+
+**Event Prediction Models**: 
+Using data to predict events has many applications, most relevant to this paper is research into using crime and crash data for predictions. 
+In relation to this paper, work has been done on predicting crashes by analysing various data sources [@relatedWorkPredCrashUrbanData]. 
+This project combined data for motor vehicle crashes, weather, demographics, and road networks to create a model predicting the probility of a crash for a given road section. 
+However, this project does not provide a navigation interface and makes several assumptions which would not work for injury avoidance navigation. 
+In particular, this project seeks to predict occurence of a crash and uses negative sampling to generate data to simulate crashes which did not occur. 
+This is because crash data is only recorded for a crash and does not measure avoided crashes. 
+The resulting model is heavily dependent on the quality of the negative sampling algorithm. 
+The injury-avoidance navigation avoids this issue by predicting the injury severity given a crash, which relies entirely on existing data. 
+
+Research has also been done on using crime data to predict future crimes [@relatedWorkCriminalityPred]. 
+This project analysed reported crimes to predict which types of areas may have an increase in criminality. 
+The approach uses spatial information to identify urban areas with a high propensity for crime. 
+This approach would not work for injury-avoidance navigation, as each road section has very different properties which lead to an entirely different injury severity. 
 
 
 
@@ -2111,6 +2132,10 @@ http://www.sfedit.net/abstract.pdf
 [@txdotClassificationCR102]: ftp://ftp.dot.state.tx.us/pub/txdot-info/library/forms/cit/crash102_final_10_08.pdf <!-- page 14 -->
 [@sklearn_feat_sel_rfe]: http://scikit-learn.org/stable/modules/feature_selection.html#recursive-feature-elimination
 [@trafficCountBicycleVsCar]: http://waycount.com/classic/faq
+<!-- related work -->
+[@relatedWorkSafeNavUrbanEnv]: http://www2.cs.uic.edu/~urbcomp2013/urbcomp2014/papers/Galbrun_Safe%20Navigation.pdf
+[@relatedWorkPredCrashUrbanData]: http://urbcomp.ist.psu.edu/2017/papers/Predicting.pdf
+[@relatedWorkCriminalityPred]: https://dspace.cvut.cz/handle/10467/69704  
 
 
 # Appendix
