@@ -2399,15 +2399,15 @@ Report in res/rpt/data_quality_report_txdot.html
 ## Appendix: Featdef Values  
 
 | attribute | description | values | 
-|---|---|---|
-|'target'| indicate whether feature is a predictor or target | [False, True] |
+|----------|--------------------------------|---------------|
+|'target'  | indicate whether feature is a predictor or target | [False, True] |
 |'regtype' | type of values w.r.t. modelling | string - continuous, categorical, bin_cat (binary) , onehot (dummy-encoded) |
-|'input'| importance of feature to make a prediction | integer - ascending from 0 |
-|'dummies'| whether feature can be dummy-encoded | [False, True] |
-|'type' | datatype, used to filter features, e.g. models need to ignore data encoded as 24h  | string - ['int', 'str', '24h', 'street', 'gps', 'datetime', 'float'] |
+|'input'   | importance of feature to make a prediction | integer - ascending from 0 |
+|'dummies' | whether feature can be dummy-encoded | [False, True] |
+|'type'    | datatype, used to filter features, e.g. models need to ignore data encoded as 24h  | string - ['int', 'str', '24h', 'street', 'gps', 'datetime', 'float'] |
 |'pairplot'| whether data can be plotted in a pairplot | [False, True] | 
-|'jsmap'| whether data can be plotted on a map | [False, True] |
-|'origin'| name of contributing feature for derived features | string - ['crash_datetime', 'crash_severity', 'intersection_related', 'light_condition', 'manner_of_collision', 'day_of_week', 'road_base_type'] |
+|'jsmap'   | whether data can be plotted on a map | [False, True] |
+|'origin'  | name of contributing feature for derived features | string - ['crash_datetime', 'crash_severity', 'intersection_related', 'light_condition', 'manner_of_collision', 'day_of_week', 'road_base_type'] |
 
 <!--
 |---|---|
@@ -2501,7 +2501,7 @@ Legend:
 This table describes the phases of the project, as well as abbreviations used within the table
 
 | phrase | description |
-|-|-|
+|-----------------|---------------------------------------------|
 | critPath , crit | critical path i.e. core requirements for project or subproject (i.e. component of a project) |
 | poc | proof of concept, implementation of a critPath . e.g. code implemented such that its state conforms with a critical path. |
 
@@ -2543,7 +2543,7 @@ story,task : WP
 <!-- TODO: convert this into a deliverables chart, and have a separate one for WPs? or just put the critpaths at top and have the WPs below?-->
 <!-- leaving one extra col to be sure not cutting any off by mistake!-->
 | status | | | | | |
-|--------|-|-|-|-|-|
+|----------|-|-|-|-|-|
 | **poc1** | [GPS-manual-predef]<br/>route: manual selection of pre-defined GPS coordinates |
 | **crit** | | [GPS-manual-generic]<br/>route: manual selection of generic GPS coordinates |
 |          | | | [GPS-fuzzy-match]<br/>data: fuzzy-match GPS coordinates |
