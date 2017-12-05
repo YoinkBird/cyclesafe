@@ -1117,16 +1117,17 @@ The "business" can be understood as any entity concerned with public transportat
 * determine the desired outputs of the project.  
 -->
 
-Objective: The objective of this project is to help cyclists avoid severe injury when involved in a crash. 
+The objective of this project is to help cyclists avoid severe injury when involved in a crash. 
 Project Plan: This will be achieved by creating a data mining model to analyse crash data, and then integrating the model into a route-planning tool. 
 Success Criteria: The project will be considered a success if the resulting product can be used by cyclists to evaluate any arbitrary route for the possibility of severe injury given a crash. 
-A successful project will provide a product which cyclists use to make informed decisions about which routes to choose. 
-
+A successful project will provide a product which cyclists use to make informed decisions about which routes to choose.  
 Constraints on the Objective: 
 The objective of this project is not to help cyclist avoid crashes altogether, as the main data source is post-crash data. 
 
+<!--
 Original Objective: The objective was originally to help cyclists avoid crashes in general. However, during the feasibility assessment supporting data was found to be insufficient. 
 In particular, there is no data on the number of cyclists for a given road segment, and the crash data lists only reported crashes instead of a cross-sample of all crashes. 
+-->
 
 
 ### Feasibility Assessment
@@ -1287,7 +1288,7 @@ OpenStreetMaps is another widely used mapping API, but requires a separate servi
 **Crash Data**: The TxDOT crash data is in CSV format with a header describing the query parameters used to obtain the data  
 The data contains 2233 records with 25 fields, some of which contain mostly null values. 
 The features corresponding to these fields will be processed by the models using recursive feature elimination. 
-The meaning of each feature is described in the TxDOT Highway Safety Improvement Manual @txdotHSIManualMannerCollision . 
+The meaning of each feature is described in the TxDOT Highway Safety Improvement Manual [@txdotHSIManualMannerCollision] . 
 The "crash severity" correlates best with "injury severity", and takes on a range of 5 values indicating the severity of injury sustained in a crash. 
 This range includes "Not Injured", "Possible Injury", "Non Incapacitating Injury", "Incapacitating Injury", and "Killed". 
 "Incapacitating" is understood to mean that medical treatment was required. 
@@ -2274,7 +2275,8 @@ http://www.sfedit.net/abstract.pdf
 [@fhwa3DataAnalysisCrashRateSegment]: https://safety.fhwa.dot.gov/local_rural/training/fhwasaxx1210/s3.cfm#s321  
 [@fhwaHSIPproblemIdentificaton]: https://safety.fhwa.dot.gov/hsip/resources/fhwasa09029/sec2.cfm#24
 [@trafficForecastingCrowdFlows]: https://dl.acm.org/citation.cfm?doid=2996913.2996934
-[@txdotHSIManualMannerCollision]: http://onlinemanuals.txdot.gov/txdotmanuals/hsi/hsi.pdf <!-- page 1-18 -->
+<!-- txdotHSIManualMannerCollision : page 1-18 -->
+[@txdotHSIManualMannerCollision]: http://onlinemanuals.txdot.gov/txdotmanuals/hsi/hsi.pdf
 [@txdotClassificationCR102]: ftp://ftp.dot.state.tx.us/pub/txdot-info/library/forms/cit/crash102_final_10_08.pdf <!-- page 14 -->
 [@sklearn_feat_sel_rfe]: http://scikit-learn.org/stable/modules/feature_selection.html#recursive-feature-elimination
 [@trafficCountBicycleVsCar]: http://waycount.com/classic/faq
