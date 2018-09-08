@@ -17,9 +17,14 @@ import re
 #import xgboost as xgb
 
 import os,sys
+# get file path src: https://stackoverflow.com/a/3430395
+filedir = os.path.dirname(os.path.abspath(__file__))
+repodir = "%s/../" % filedir
 
 # hard-coded globals
-resource_dir = "output"
+resource_dir = "%s/output" % repodir
+
+runmodels = {}
 
 if __name__ == '__main__':
     # global options
@@ -43,6 +48,7 @@ if __name__ == '__main__':
     if(1):
         runmodels['score_manual_generic_route'] = 1
         runmodels['map_generate_human_readable_dectree'] = 1
+        runmodels['map_manual_analyse_strongest_predictors'] = 0
 
     # src: https://docs.python.org/3/howto/argparse.html#id1
     import argparse
@@ -589,14 +595,14 @@ def mock_return_response_json(route, **options):
     verbose = options['verbose']
     print("# save to file")
     # tmp:
-    filepath="output/gps_scored_route.json"
     filepath="gps_scored_route.json"
     print("mock-response sending to : " + filepath)
     save_json_file(route, filepath, **options)
 
     # verify
     loadedjson = str()
-    filepath="output/gps_scored_route.json"
+    # note: updating 'filepath' because 'retrieve_json_file' doesn't force files to be in resource_dir
+    filepath="%s/gps_scored_route.json" % resource_dir
     loadedjson =  retrieve_json_file(filepath, **options)
 
     loadedroute = json.loads(loadedjson)
@@ -1463,10 +1469,10 @@ def retrieve_model(*args, **options):
     path_saved_model = str()
     model_gen_fn = 0
     if( runmodels['map_generate_human_readable_dectree'] ):
-        path_saved_model = "output/human_read_dectree.pkl"
+        path_saved_model = "%s/human_read_dectree.pkl" % resource_dir
         model_gen_fn = generate_human_readable_dectree
     elif( runmodels['map_manual_analyse_strongest_predictors'] ):
-        path_saved_model = "output/human_read_dectree.pkl"
+        path_saved_model = "%s/human_read_dectree.pkl" % resource_dir
         model_gen_fn = manual_analyse_strongest_predictors
     import os.path
     # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
