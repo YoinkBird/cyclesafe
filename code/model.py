@@ -1226,7 +1226,7 @@ def score_manual_predef_route(data, data_dummies, featdef, **options):
 ################################################################################
 # TODO?: is manual-generic actualy auto-generic?
 # <def_score_manual_generic_route>
-def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **options):
+def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, geodata, **options):
     print("################################################################################")
     print("-I-: " + "WORK_IN_PROGRESS - <score_manual_generic_route> ")
     print("################################################################################")
@@ -1323,7 +1323,6 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
     #
     ########################################
 
-    geodata = mock_receive_request_json(options['local_json_input'], **options)
     if(0): # not using using overview_path, too many datapoints
         print("route data - overview_path")
         pp.pprint( geodata['routes'][0]['overview_path'])
@@ -1457,7 +1456,8 @@ def __score_manual_generic_route_and_save_to_file(data, data_dummies, df_int_non
     print("################################################################################")
     # get scored data - pass-through the args
     #+ this is how server and other should call it
-    response_json = score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **options)
+    geodata = mock_receive_request_json(options['local_json_input'], **options)
+    response_json = score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, geodata, **options)
     # reply
     print("save json to file. is mock equivalent of submitting json as a response")
     if( mock_return_response_json(options['local_json_gen'] , response_json, **options ) ):
@@ -1784,4 +1784,8 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 losttrack
 21:22 - convert json response to return json directly
 21:40 - verified in modelgen.code.model.py (local) and server.server_api_model.py (local) and server.server.py (web)
+21:?? - abstract json request (input) out of scoring fucntion
+21:?? - verified in modelgen.code.model.py (local)
+break
+22:28 - verified in server.server_api_model.py (local) 
 '''
