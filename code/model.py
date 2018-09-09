@@ -562,47 +562,40 @@ def retrieve_json_file(filename, **options):
 #+ in practice, not such a great idea, but for now it is what it is
 #+ ultimately, the server needs to call the model anyway.
 #+ will have to fix the encoding issues of converting to 2to3; not impossible, but super annoying
-def save_json_file(response_json, filename, **options): # ="gps_output_route.json"):
+def save_json_file(response_json, filepath, **options):
     import json
     verbose = options['verbose']
     if( verbose >= 1):
         print("# save to file")
-    # tmp:
-    filepath=("%s/%s" % (resource_dir, filename))
     # if ( quiet != 1):
     #     print("mock-response sending to : " + filepath)
     with open(filepath, 'w') as outfile:
        json.dump(response_json, outfile)
 
-    return filename
+    return filepath
 
 # mock json request
-def mock_receive_request_json(**options):
+def mock_receive_request_json(filename,  **options):
     # NOTE: files may have to be symlinked first:
     # ln -s ../server/res/gps_input_route.json output/
     # tmp: - probably needs to be in a config
-    filename = "gps_input_route.json"
+ 
     filepath=("%s/%s" % (resource_dir, filename))
-    # testing:
-    # filepath="t/route_json/gps_generic.json"
     return retrieve_json_file(filepath, **options)
 
 
 # dump json to file for consumption by whatever else needs it
 # save, load, validate json
-def mock_return_response_json(route, **options):
+def mock_return_response_json(filepath, route, **options):
     import json
     verbose = options['verbose']
     print("# save to file")
-    # tmp:
-    filepath="gps_scored_route.json"
+    
     print("mock-response sending to : " + filepath)
     save_json_file(route, filepath, **options)
 
     # verify
     loadedjson = str()
-    # note: updating 'filepath' because 'retrieve_json_file' doesn't force files to be in resource_dir
-    filepath="%s/gps_scored_route.json" % resource_dir
     loadedjson =  retrieve_json_file(filepath, **options)
 
     loadedroute = json.loads(loadedjson)
@@ -1322,8 +1315,10 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
     #
     ########################################
 
-    # TODO : pass in the filename
-    geodata = mock_receive_request_json(**options)
+    # testing:
+    # filepath="t/route_json/gps_generic.json"
+    local_json_input = "gps_input_route.json"
+    geodata = mock_receive_request_json(local_json_input, **options)
     if(0): # not using using overview_path, too many datapoints
         print("route data - overview_path")
         pp.pprint( geodata['routes'][0]['overview_path'])
@@ -1426,7 +1421,8 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
 
     # reply
     print("save json to file. is mock equivalent of submitting json as a response")
-    if( mock_return_response_json( response_json, **options ) ):
+    local_json_gen = "%s/%s" % (resource_dir, "gps_scored_route.json")
+    if( mock_return_response_json( local_json_gen, response_json, **options ) ):
         print("json mock-response sent")
     print("internal data structure") #, with only response variables")
     # refactor_multi_route_score_r3 - score all routes , return limited json
@@ -1756,3 +1752,8 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 #         next: enable expanded model
 # 18:48 - /break
 # 19:12 - in the map! 
+
+'''
+# 20180808
+20:07 - abstract-out all filepaths
+'''
