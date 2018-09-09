@@ -31,6 +31,8 @@ def get_global_configs():
     options = {
             'graphics' : 0, # 0 - disable, 1 - enable
             'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
+            'local_json_gen' : "%s/%s" % (resource_dir, "gps_scored_route.json"),
+            'local_json_input' : "gps_input_route.json", # for testing: # filepath="t/route_json/gps_generic.json"
             }
 
     # choose which model to run
@@ -1320,10 +1322,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
     #
     ########################################
 
-    # testing:
-    # filepath="t/route_json/gps_generic.json"
-    local_json_input = "gps_input_route.json"
-    geodata = mock_receive_request_json(local_json_input, **options)
+    geodata = mock_receive_request_json(options['local_json_input'], **options)
     if(0): # not using using overview_path, too many datapoints
         print("route data - overview_path")
         pp.pprint( geodata['routes'][0]['overview_path'])
@@ -1426,8 +1425,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
 
     # reply
     print("save json to file. is mock equivalent of submitting json as a response")
-    local_json_gen = "%s/%s" % (resource_dir, "gps_scored_route.json")
-    if( mock_return_response_json( local_json_gen, response_json, **options ) ):
+    if( mock_return_response_json(options['local_json_gen'] , response_json, **options ) ):
         print("json mock-response sent")
     print("internal data structure") #, with only response variables")
     # refactor_multi_route_score_r3 - score all routes , return limited json
