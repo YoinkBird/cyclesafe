@@ -1422,11 +1422,6 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
     pp.pprint( json.loads(
         response_json
     ))
-
-    # reply
-    print("save json to file. is mock equivalent of submitting json as a response")
-    if( mock_return_response_json(options['local_json_gen'] , response_json, **options ) ):
-        print("json mock-response sent")
     print("internal data structure") #, with only response variables")
     # refactor_multi_route_score_r3 - score all routes , return limited json
     # refactor_multi_route_score_r4 - score all routes , return full json
@@ -1444,10 +1439,35 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **opti
                 )
 
 
+    return response_json
     print("################################################################################")
     print("-I-: " + "END - WORK_IN_PROGRESS - </score_manual_generic_route> ")
     print("################################################################################")
 # </def_score_manual_generic_route>
+################################################################################
+
+################################################################################
+# convenience wrapper to dump data to a file during testing
+# TODO?: is manual-generic actualy auto-generic?
+# <def___score_manual_generic_route_and_save_to_file>
+def __score_manual_generic_route_and_save_to_file(data, data_dummies, df_int_nonan, featdef, **options):
+    print("################################################################################")
+    print("-I-: " + "BEGIN <__score_manual_generic_route_and_save_to_file> ")
+    print("################################################################################")
+    # get scored data - pass-through the args
+    #+ this is how server and other should call it
+    response_json = score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **options)
+    # reply
+    print("save json to file. is mock equivalent of submitting json as a response")
+    if( mock_return_response_json(options['local_json_gen'] , response_json, **options ) ):
+        print("json mock-response sent")
+
+    print("################################################################################")
+    print("-I-: " + "END </__score_manual_generic_route_and_save_to_file> ")
+    print("################################################################################")
+# </def___score_manual_generic_route_and_save_to_file>
+################################################################################
+
 ################################################################################
 # /MODEL+EVALUATION - score manual-generic user route
 ################################################################################
@@ -1586,7 +1606,7 @@ if(__name__ == '__main__'):
     if( runmodels['score_manual_generic_route'] ):
         if( options_local['verbose'] >= 0):
             print("-I-: " + "running ...")
-        score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, **options_local)
+        __score_manual_generic_route_and_save_to_file(data, data_dummies, df_int_nonan, featdef, **options_local)
     else:
         if( options_local['verbose'] >= 0):
             print("-I-: " + "skipping ...")
@@ -1760,4 +1780,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 20:07 - abstract-out all filepaths
 20:33 - done, also fixed branches
 20:34 - quickly abstract-out the options. just a subroutine to return whatever globals are needed
+losttrack
+21:22 - convert json response to return json directly
+21:40 - verified in modelgen.code.model.py (local) and server.server_api_model.py (local) and server.server.py (web)
 '''
