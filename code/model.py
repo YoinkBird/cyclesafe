@@ -27,12 +27,22 @@ resource_dir = "%s/output" % repodir
 runmodels = {}
 
 def get_global_configs():
+    # filepaths
+    # TODO: not sure if this is best method
+    curdir=os.path.split(__file__)[0]
+    datadir=os.path.split(curdir)[0] + "/data"
+    datafile = "my_map_grid.csv"
+    datafile = os.path.join(datadir, datafile)
+
     # global options
     options = {
             'graphics' : 0, # 0 - disable, 1 - enable
             'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
+            # TODO: move to config file
             'local_json_gen' : "%s/%s" % (resource_dir, "gps_scored_route.json"),
+            # TODO: move to config file
             'local_json_input' : "gps_input_route.json", # for testing: # filepath="t/route_json/gps_generic.json"
+            'datafile' : datafile,
             }
 
     # choose which model to run
@@ -74,6 +84,7 @@ def model_prepare(**options):
     #+ several steps are for manual verification, it must be printed in the normal "silent" case,
     #+ but should have option to completely silence, e.g. by setting options['verbose'] = -1
     verbose = options['verbose']
+    datafile = options['datafile']
 
     if( options['verbose'] >= 1):
         print("################################################################################")
@@ -83,16 +94,6 @@ def model_prepare(**options):
     # DATA : IMPORT , PROCESSING, FEATURE DEFINITION
     ################################################################################
     # IMPORT the crash data
-    # TODO: abstract out! a) this forces model to be called from './' b) this shouldn't be hard-coded
-    curdir=os.path.split(__file__)[0]
-    datadir=os.path.split(curdir)[0] + "/data"
-    datafile = "my_map_grid.csv"
-    datafile = os.path.join(datadir, datafile)
-    if(0):
-      print(__file__)
-      pp.pprint(sys.path)
-
-
     # PROCESSING: get clean data
     (data,featdef) = preprocess_data(datafile)
 
