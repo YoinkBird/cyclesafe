@@ -26,7 +26,7 @@ resource_dir = "%s/output" % repodir
 
 runmodels = {}
 
-if __name__ == '__main__':
+def get_global_configs():
     # global options
     options = {
             'graphics' : 0, # 0 - disable, 1 - enable
@@ -56,10 +56,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--graphics', type=int, default=0) # action="store_true", default=False)
     parser.add_argument('--verbose', type=int, default=0)
-    args = parser.parse_args()
+    # HACK: for now, enable the args to be parsed from this function, even when called from other files. TODO: move the argparsing into its own subroutine
+    # allow unkown args. src: https://stackoverflow.com/a/12818237
+    args,unknown = parser.parse_known_args()
     # "args" defined with 'default=<>', no need for a conditional
     options['graphics'] = args.graphics
     options['verbose'] = args.verbose
+
+    return(options, runmodels)
 
 #<def_model_prepare>
 def model_prepare(**options):
@@ -77,6 +81,7 @@ def model_prepare(**options):
     # DATA : IMPORT , PROCESSING, FEATURE DEFINITION
     ################################################################################
     # IMPORT the crash data
+    # TODO: abstract out! a) this forces model to be called from './' b) this shouldn't be hard-coded
     curdir=os.path.split(__file__)[0]
     datadir=os.path.split(curdir)[0] + "/data"
     datafile = "my_map_grid.csv"
@@ -1507,9 +1512,8 @@ def retrieve_model(*args, **options):
 
 # self-run
 if(__name__ == '__main__'):
-    # localise options, avoid accidental dependencies in other functions
-    options_local = options
-    del(options)
+    # get data-structures which contain configs to control execution
+    options_local, runmodels = get_global_configs()
     ################################################################################
     # PREPROCESS
     ################################################################################
@@ -1756,4 +1760,6 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 '''
 # 20180808
 20:07 - abstract-out all filepaths
+20:33 - done, also fixed branches
+20:34 - quickly abstract-out the options. just a subroutine to return whatever globals are needed
 '''
