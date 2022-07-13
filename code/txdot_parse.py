@@ -177,7 +177,7 @@ def preprocess_data(datafile, source='txdot', verbose=0):
     # todo: plot by year, then by time.
     data['crash_time_dec'] = data.crash_datetime.apply(time_base10)
     featdef = add_feature(featdef, 'crash_time_dec', {'type':'float','regtype':'continuous'})
-    featdef.set_value('crash_time_dec', 'origin', 'crash_datetime')
+    featdef.at['crash_time_dec','origin'] = 'crash_datetime'
     # todo: figure out how to hist() with grouping by year, then group by time within each year
     # data.crash_time_dec.hist(bins=48)
     # if(showplt): 
