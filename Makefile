@@ -5,3 +5,8 @@ TAG=${DOCKER_USER}/${NAME}
 dev_dep:
 	docker build --tag ${TAG} . && \
 		docker run --rm -it -v ${PWD}:/src:rw ${TAG} bash
+build:
+	docker build --tag ${TAG} .
+
+run:
+	docker run ${TAG}
