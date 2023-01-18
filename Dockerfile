@@ -5,7 +5,6 @@ FROM python:3.7-bullseye
 WORKDIR /src
 COPY . .
 
-# TODO after interactive cmds
-# RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 CMD python3 ./code/model.py
