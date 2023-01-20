@@ -9,7 +9,7 @@ This code (mostly automatically) manages model generation and validation/evaluat
 
 ## Usage
 
-Start with the [cyclesafe server](https://github.com/YoinkBird/cyclesafe) project, which will manage all dependencies.
+Start with the [cyclesafe server](https://github.com/YoinkBird/cyclesafe_server) project, which will manage all dependencies.
 
 # Architecture
 
