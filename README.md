@@ -14,3 +14,7 @@ Start with the [cyclesafe server](https://github.com/YoinkBird/cyclesafe) projec
 # Architecture
 
 This repo corresponds to the `Scoring Application` and `Modeling Application` in the [Architecture overview documentation](https://github.com/YoinkBird/cyclesafe/blob/report/report/report.md#architecture).
+
+# Contributing
+
+See the [Contribution Guidlines](./CONTRIBUTING.md) .
