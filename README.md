@@ -23,4 +23,5 @@ See the [Contribution Guidlines](./CONTRIBUTING.md) .
 
 The [docs directory](./docs/) contains:
 
+* [articles](./docs/articles/): Developer writeups on interesting decisions and operations.
 * [system documentation](./docs/report/report.md) : Overall systems documentation, technically originated as a masters report, hence the name.
