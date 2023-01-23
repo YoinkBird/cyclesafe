@@ -15,9 +15,9 @@ Nevertheless, as a bare-bones no-frills framework, it touches on most of the thi
 The main code is under the [./code/](./code) directory:
 
 * [model.py](https://github.com/YoinkBird/cyclesafe/blob/3890efa32538505fcadbbba2c4ad238599944856/code/model.py#L1506) can be run standalone or imported as a module.
-* The remaining modules are explained in the section ["Modeling Application" in the system documentation](https://github.com/YoinkBird/cyclesafe/blob/master/doc/report/report.md#modeling-application).
+* The remaining modules are explained in the section ["Modeling Application" in the system documentation](https://github.com/YoinkBird/cyclesafe/blob/master/docs/report/report.md#modeling-application).
 
-Data formats are defined in the section ["Data Formats" of the system documentation](https://github.com/YoinkBird/cyclesafe/blob/master/doc/report/report.md#data-formats); for now, this unfortunately also serves as the API documenation.
+Data formats are defined in the section ["Data Formats" of the system documentation](https://github.com/YoinkBird/cyclesafe/blob/master/docs/report/report.md#data-formats); for now, this unfortunately also serves as the API documenation.
 
 ## Testing
 

@@ -1,6 +1,6 @@
 # Cycle Safe Model Generation Prototype
 
-Model generation, system documentation (i.e. the report), and assorted helper utilities for the [Probabilistic Routing-Based Injury Avoidance Navigation Framework for Pedalcyclists](https://github.com/YoinkBird/cyclesafe/blob/master/doc/report/report.md) Project.
+Model generation, system documentation (i.e. the report), and assorted helper utilities for the [Probabilistic Routing-Based Injury Avoidance Navigation Framework for Pedalcyclists](https://github.com/YoinkBird/cyclesafe/blob/master/docs/report/report.md) Project.
 
 This is a rudimentary custom machine learning framework using scikit-learn and pandas.
 
@@ -13,7 +13,7 @@ Start with the [cyclesafe server](https://github.com/YoinkBird/cyclesafe_server)
 
 # Architecture
 
-This repo corresponds to the `Scoring Application` and `Modeling Application` in the [Architecture overview documentation](https://github.com/YoinkBird/cyclesafe/blob/master/doc/report/report.md#architecture).
+This repo corresponds to the `Scoring Application` and `Modeling Application` in the [Architecture overview documentation](https://github.com/YoinkBird/cyclesafe/blob/master/docs/report/report.md#architecture).
 
 # Contributing
 
