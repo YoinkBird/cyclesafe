@@ -18,3 +18,10 @@ This repo corresponds to the `Scoring Application` and `Modeling Application` in
 # Contributing
 
 See the [Contribution Guidlines](./CONTRIBUTING.md) .
+
+# Further Documentation
+
+The [docs directory](./docs/) contains:
+
+* [articles](./docs/articles/): Developer writeups on interesting decisions and operations.
+* [system documentation](./docs/report/report.md) : Overall systems documentation, technically originated as a masters report, hence the name.
