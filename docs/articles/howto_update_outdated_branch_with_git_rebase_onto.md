@@ -24,7 +24,7 @@ To keep the [git history linear](https://docs.github.com/en/repositories/configu
 * `report` - `feature` branch for systems documenation
 * `c0acfecc7f7cd43fd2bc8117ae7cf78d07514fa3` - original parent commit for `report` feature branch
 * (`convert_ipynb`) - deleted parent feature branch, contained original parent for `report`: `c0acfecc7f7cd43fd2bc8117ae7cf78d07514fa3`
-* `master` - `trunk` branch
+* `main` - `trunk` branch
 
 Since the original common ancestor was deleted, a `git rebase` is expected to fail with a merge conflict:
 
@@ -35,7 +35,7 @@ $ git checkout report
 # expect 0:
 $ git diff origin/report; echo $?
 # rebase:
-$ git rebase origin/master
+$ git rebase origin/main
 warning: skipped previously applied commit 2c7f9fa
 ...
 warning: skipped previously applied commit ...
@@ -63,24 +63,24 @@ Now we can proceed to investigate how to resolve this merge conflict.
 
 ### Investigation:
 
-This error occurs because the original parent-commit for `report` is not on `master`, so git finds an older common ancestor (i.e. the original parent-commit for the deleted branch `convert_ipynb`).
+This error occurs because the original parent-commit for `report` is not on `main`, so git finds an older common ancestor (i.e. the original parent-commit for the deleted branch `convert_ipynb`).
 
 The following steps help understand the commits processed by the `git rebase` command by examining the history of these branches.
 
-We can locate the current common ancestor between `master` and `report` along with historical context by calling `git show` on the commit returned by the [`git merge-base`](https://git-scm.com/docs/git-merge-base) command:
+We can locate the current common ancestor between `main` and `report` along with historical context by calling `git show` on the commit returned by the [`git merge-base`](https://git-scm.com/docs/git-merge-base) command:
 
 ```bash
-$ git merge-base origin/master report
+$ git merge-base origin/main report
 b43e68c905329963aad72883658efa0a33f2c0cc
 
-$ git show -s $(git merge-base origin/master report)
+$ git show -s $(git merge-base origin/main report)
 commit b43e68c905329963aad72883658efa0a33f2c0cc
 Author: yoinkbird <YoinkBird2010@gmail.com>
 Date:   Tue May 2 21:44:56 2017 -0500
 ```
 
 Next, we examine the history of `report` between
-the current common-ancestor with `master` `b43e68c905329963aad72883658efa0a33f2c0cc` and
+the current common-ancestor with `main` `b43e68c905329963aad72883658efa0a33f2c0cc` and
 the original parent-commit (`c0acfecc7f7cd43fd2bc8117ae7cf78d07514fa3`) :
 
 ```bash
@@ -137,7 +137,7 @@ $ git diff origin/report; echo $?
 0
 ```
 
-At this point, we have a good understanding of the commits shown output of the `git rebase origin/master` command.
+At this point, we have a good understanding of the commits shown output of the `git rebase origin/main` command.
 
 
 ## Revised Process: git rebase --onto
@@ -148,7 +148,7 @@ The `git rebase --help` manpage provides several examples,
 and is expanded upon with a lovely graphical explanation by the article
 https://womanonrails.com/git-rebase-onto .
 
-We want to rebase _onto_ the `origin/master` branch (`origin` to ensure we are getting the most up-to-date code), while _ignoring_ all commits from before the commit from which the branch was forked (i.e. ignore the now-squashed-and-deletd commits from the `convert_ipynb` branch).
+We want to rebase _onto_ the `origin/main` branch (`origin` to ensure we are getting the most up-to-date code), while _ignoring_ all commits from before the commit from which the branch was forked (i.e. ignore the now-squashed-and-deletd commits from the `convert_ipynb` branch).
 
 This operation is necessary to "remove" the original squashed-and-deleted commits of the `convert_ipynb` (parent-feature branch) from this `report` feature branch so it can successfully rebase against the trunk branch.
 
@@ -162,15 +162,15 @@ remote: Compressing objects: 100% (3/3), done.
 remote: Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
 Unpacking objects: 100% (3/3), 300 bytes | 300.00 KiB/s, done.
 From github.com:YoinkBird/cyclesafe
-   12a8807..ed9a240  master     -> origin/master
+   12a8807..ed9a240  main     -> origin/main
 
 ```
 
-Now update the feature branch `report` from the remote trunk branch (i.e. `origin/master`) while discarding the initial common-ancestor from the trunk branch (i.e. commit for `convert_ipynb`):
+Now update the feature branch `report` from the remote trunk branch (i.e. `origin/main`) while discarding the initial common-ancestor from the trunk branch (i.e. commit for `convert_ipynb`):
 
 
 ```bash
-$ git rebase --onto origin/master c0acfecc7f7cd43fd2bc8117ae7cf78d07514fa3
+$ git rebase --onto origin/main c0acfecc7f7cd43fd2bc8117ae7cf78d07514fa3
 Successfully rebased and updated refs/heads/report.
 
 ```
@@ -227,5 +227,5 @@ tools/
 
 Result: None of the files and directories from the original `report` feature-branch were changed by the rebase; this implies that the branch can be merged to the `trunk` branch without making unintended modifications.
 
-The branch `report` can now be force pushed to `origin/report` and subsequently be fast-forward merged to `master`;
+The branch `report` can now be force pushed to `origin/report` and subsequently be fast-forward merged to `main`;
 this is a unique situation in which a force-push is appropriate because we have to update the shared history in order to enable a `fast-forward` merge on the remote server.
