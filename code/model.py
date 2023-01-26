@@ -82,6 +82,9 @@ def get_global_configs():
     options['resource_dir'] = args.workspace
     options['routefile'] = args.routefile
     options['local_json_input'] = args.routefile
+    if (not os.path.isfile(options['local_json_input'])):
+        raise FileNotFoundError(f"Options: Could not read file {options['local_json_input']}")
+
 
     options['local_json_gen'] = "%s/%s" % (options['resource_dir'], "gps_scored_route.json")
 

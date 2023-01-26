@@ -24,6 +24,6 @@ FROM base as test
 # override workspace, override path to input route file
 #CMD python3 ./code/model.py --workspace=/data --routefile=t/route_json/gps_generic.json
 # pass plan: override workspace, override path to input route file from workspace
-CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data --routefile=/data/gps_input_route.json
+#CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data --routefile=/data/gps_input_route.json
 # FAIL plan: override workspace, rely on default path to input route file
-#CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data
+CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data
