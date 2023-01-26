@@ -32,16 +32,14 @@ def get_global_configs():
     filedir = os.path.dirname(os.path.abspath(__file__))
 
     # hard-coded globals
-    resource_dir = filedir
+    workspace_dir = filedir
 
     # global options
     options = {
             'graphics' : 0, # 0 - disable, 1 - enable
             'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
             # TODO: move to config file
-            'resource_dir' : resource_dir,
-            # TODO: move to config file
-            'local_json_gen' : "%s/%s" % (resource_dir, "gps_scored_route.json"),
+            'local_json_gen' : "gps_scored_route.json",
             # TODO: move to config file
             'local_json_input' : "gps_input_route.json", # for testing: # filepath="t/route_json/gps_generic.json"
             'datafile' : datafile,
@@ -71,15 +69,14 @@ def get_global_configs():
     parser.add_argument('--graphics', type=int, default=0) # action="store_true", default=False)
     parser.add_argument('--verbose', type=int, default=0)
     # HACK: for now, enable the args to be parsed from this function, even when called from other files. TODO: move the argparsing into its own subroutine
-    parser.add_argument('--workspace', type=str, default=resource_dir)
+    parser.add_argument('--workspace', type=str, default=workspace_dir)
     parser.add_argument('--routefile', type=str, default=options['local_json_input'])
     # allow unkown args. src: https://stackoverflow.com/a/12818237
     args,unknown = parser.parse_known_args()
-    #args = parser.parse_args()
     # "args" defined with 'default=<>', no need for a conditional
     options['graphics'] = args.graphics
     options['verbose'] = args.verbose
-    options['resource_dir'] = args.workspace
+    options['workspace_dir'] = args.workspace
     options['routefile'] = args.routefile
     options['local_json_input'] = args.routefile
 
@@ -87,7 +84,7 @@ def get_global_configs():
     if not os.path.isfile(options['local_json_input']) or not os.access(options['local_json_input'], os.R_OK):
         raise FileNotFoundError(f"Options: Could not read file for: --routefile {options['local_json_input']}")
 
-    options['local_json_gen'] = "%s/%s" % (options['resource_dir'], "gps_scored_route.json")
+    options['local_json_gen'] = "%s/%s" % (options['workspace_dir'], options['local_json_gen'])
 
     pp.pprint("OPTIONS:")
     pp.pprint(options)
@@ -565,8 +562,6 @@ def retrieve_json_file(filename, **options):
     #if ( verbose >= 1):
     #    print("# save to file")
 
-    # TODO: convert his, want to force everything in one dir. tmp:
-    # filepath=("%s/%s" % (resource_dir, filename))
     filepath = filename
     if( verbose >= 1):
         print("mock-response sending to : " + filepath)
@@ -599,14 +594,9 @@ def save_json_file(response_json, filepath, **options):
 
     return filepath
 
+# TODO: rename with underscores for internal use
 # mock json request
-def mock_receive_request_json(filename,  **options):
-    # NOTE: files may have to be symlinked first:
-    # ln -s ../server/res/gps_input_route.json output/
-    # tmp: - probably needs to be in a config
- 
-    filepath=("%s/%s" % (options['resource_dir'], filename))
-    filepath=filename
+def mock_receive_request_json(filepath,  **options):
     return retrieve_json_file(filepath, **options)
 
 
@@ -1507,10 +1497,10 @@ def retrieve_model(*args, **options):
     path_saved_model = str()
     model_gen_fn = 0
     if( runmodels['map_generate_human_readable_dectree'] ):
-        path_saved_model = "%s/human_read_dectree.pkl" % options['resource_dir']
+        path_saved_model = "%s/human_read_dectree.pkl" % options['workspace_dir']
         model_gen_fn = generate_human_readable_dectree
     elif( runmodels['map_manual_analyse_strongest_predictors'] ):
-        path_saved_model = "%s/human_read_dectree.pkl" % options['resource_dir']
+        path_saved_model = "%s/human_read_dectree.pkl" % options['workspace_dir']
         model_gen_fn = manual_analyse_strongest_predictors
     import os.path
     # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
