@@ -10,7 +10,7 @@ COPY . .
 # configure pseudo-IPC data-passing directories via symlinks
 # ./output/ : model  reads/writes here
 # hack - for now just make whatever changes necessary to dockerfile
-RUN mv /app/output /data && ln -vs /data /app/output
+RUN rm -rf /app/output
 WORKDIR /data
 
 WORKDIR /app
