@@ -6,10 +6,9 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-# data storage
-# configure pseudo-IPC data-passing directories via symlinks
+# data storage for pseudo-IPC data passing
+# Hack: Verification: deliberately delete legacy dirs:
 # ./output/ : model  reads/writes here
-# hack - for now just make whatever changes necessary to dockerfile
 RUN rm -rf /app/output
 WORKDIR /data
 
