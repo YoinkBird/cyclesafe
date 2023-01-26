@@ -26,4 +26,4 @@ FROM base as test
 # FAIL plan: override workspace, rely on default path to input route file
 #CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data
 # pass: plan: override workspace, override path to input route file from workspace
-CMD cp /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data --routefile=/data/gps_input_route.json
+CMD cp /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data --routefile=/data/gps_input_route.json ; set -ex;  ls -ltr /data | grep "gps_input_route.json"; ls -ltr /data | grep  "gps_scored_route.json"; ls -ltr /data | grep  "human_read_dectree.pkl"; echo "PASS"
