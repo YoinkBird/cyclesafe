@@ -5,6 +5,9 @@ kiwisolver==1.4.4
 matplotlib==3.5.3
 numpy==1.17.4
 packaging==23.0
+#pandas==1.4.3
+# old version as per https://pandas.pydata.org/pandas-docs/version/1.0.0/whatsnew/v1.0.0.html#removal-of-prior-version-deprecations-changes via https://stackoverflow.com/a/59991564; found at https://pypi.org/project/pandas/0.25.3/
+#pandas==0.25.3
 pandas==0.23.2
 Pillow==9.4.0
 pyparsing==3.0.9
