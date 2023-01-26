@@ -2,7 +2,6 @@ NAME=cs_modelgen
 DOCKER_USER=yoinkbird
 TAG=${DOCKER_USER}/${NAME}
 _target=release
-# dev note: referring to https://earthly.dev/blog/docker-and-makefiles/
 help: ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
@@ -33,8 +32,6 @@ run_test:
 
 #TODO-FUTURE: # serve: build run ## build+run image
 test: build_test run_test ## build+run test image
-# notes:
-# target specific vars: https://www.gnu.org/software/make/manual/make.html#Target_002dspecific
 
 
 # hard-code container and image kill,rm
@@ -49,3 +46,7 @@ reset: ## remove generated containers,images and show overview of such
 	echo "MANUAL REVIEW:"
 	docker container ls -a
 	docker image ls -a
+
+# dev notes:
+# idea adapted from to https://earthly.dev/blog/docker-and-makefiles/
+# target specific vars: https://www.gnu.org/software/make/manual/make.html#Target_002dspecific
