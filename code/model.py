@@ -74,9 +74,20 @@ def get_global_configs():
     # HACK: for now, enable the args to be parsed from this function, even when called from other files. TODO: move the argparsing into its own subroutine
     # allow unkown args. src: https://stackoverflow.com/a/12818237
     args,unknown = parser.parse_known_args()
+    parser.add_argument('--resource_dir', type=str, default=resource_dir)
+    parser.add_argument('--routefile', type=str, default=options['local_json_input'])
+    args = parser.parse_args()
     # "args" defined with 'default=<>', no need for a conditional
     options['graphics'] = args.graphics
     options['verbose'] = args.verbose
+    options['resource_dir'] = args.resource_dir
+    options['routefile'] = args.routefile
+    options['local_json_input'] = args.routefile
+
+    options['local_json_gen'] = "%s/%s" % (options['resource_dir'], "gps_scored_route.json")
+
+    pp.pprint("OPTIONS:")
+    pp.pprint(options)
 
     return(options, runmodels)
 
@@ -592,6 +603,7 @@ def mock_receive_request_json(filename,  **options):
     # tmp: - probably needs to be in a config
  
     filepath=("%s/%s" % (options['resource_dir'], filename))
+    filepath=filename
     return retrieve_json_file(filepath, **options)
 
 
