@@ -11,8 +11,8 @@ dev_dep: ## develop, persist files back to repo. docker build+run with $PWD moun
 
 dev: ## develop, live-update files from repo. docker build+run with $PWD mounted rw
 	docker build --tag ${TAG} . && \
-		docker run --rm -it ${TAG} bash
-#		docker run --rm -it -v ${PWD}:/app:rw ${TAG} bash
+		docker run --rm -it -v ${PWD}/code:/app/code:ro ${TAG} bash
+
 _build:
 	docker build --tag ${TAG}_${_target} --target ${_target} .
 build: ## docker build

@@ -17,12 +17,6 @@ import re
 #import xgboost as xgb
 
 import os,sys
-# get file path src: https://stackoverflow.com/a/3430395
-filedir = os.path.dirname(os.path.abspath(__file__))
-repodir = "%s/../" % filedir
-
-# hard-coded globals
-resource_dir = "%s/output" % repodir
 
 runmodels = {}
 
@@ -34,10 +28,19 @@ def get_global_configs():
     datafile = "my_map_grid.csv"
     datafile = os.path.join(datadir, datafile)
 
+    # get file path src: https://stackoverflow.com/a/3430395
+    filedir = os.path.dirname(os.path.abspath(__file__))
+    repodir = "%s/../" % filedir
+
+    # hard-coded globals
+    resource_dir = "%s/output" % repodir
+
     # global options
     options = {
             'graphics' : 0, # 0 - disable, 1 - enable
             'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
+            # TODO: move to config file
+            'resource_dir' : resource_dir,
             # TODO: move to config file
             'local_json_gen' : "%s/%s" % (resource_dir, "gps_scored_route.json"),
             # TODO: move to config file
@@ -588,7 +591,7 @@ def mock_receive_request_json(filename,  **options):
     # ln -s ../server/res/gps_input_route.json output/
     # tmp: - probably needs to be in a config
  
-    filepath=("%s/%s" % (resource_dir, filename))
+    filepath=("%s/%s" % (options['resource_dir'], filename))
     return retrieve_json_file(filepath, **options)
 
 
@@ -1489,10 +1492,10 @@ def retrieve_model(*args, **options):
     path_saved_model = str()
     model_gen_fn = 0
     if( runmodels['map_generate_human_readable_dectree'] ):
-        path_saved_model = "%s/human_read_dectree.pkl" % resource_dir
+        path_saved_model = "%s/human_read_dectree.pkl" % options['resource_dir']
         model_gen_fn = generate_human_readable_dectree
     elif( runmodels['map_manual_analyse_strongest_predictors'] ):
-        path_saved_model = "%s/human_read_dectree.pkl" % resource_dir
+        path_saved_model = "%s/human_read_dectree.pkl" % options['resource_dir']
         model_gen_fn = manual_analyse_strongest_predictors
     import os.path
     # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
