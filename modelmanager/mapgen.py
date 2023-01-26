@@ -77,7 +77,7 @@ def get_html_map_from_df(data, featdef, timerange=(0,0)):
   htmlpage = generate_map_html_page(js2darr + "\n" + jsFuncGps)
   fname = "crashes.html"
   if(timerange != (0,0)):
-    fname = "output/crashes_%d_%d.html" % timerange
+    fname = "resources/gen/heatmaps/crashes_%d_%d.html" % timerange
   write_html_files(htmlpage, filename=fname)
   print("url = '%s'" % fname)
   return htmlpage
@@ -325,7 +325,7 @@ if(__name__ == '__main__'):
   # import the "crash" data
   curdir=os.path.split(__file__)[0]
   datadir=os.path.split(curdir)[0] + "/data"
-  datafile = "my_map_grid.csv"
+  datafile = "TODO: pass in as arg!"
   datafile = os.path.join(datadir, datafile)
 
   (data,featdef) = preprocess_data(datafile)

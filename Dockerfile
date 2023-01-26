@@ -6,11 +6,12 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
+# workspace for model
+WORKDIR /data
 
 WORKDIR /app
 FROM base as release
 CMD python3 ./modelmanager/model.py
 
 FROM base as test
-# TESTING - TEMP SOLUTION
-CMD ln -sv ../tests/route_json/gps_generic.json output/gps_input_route.json && python3 ./modelmanager/model.py && bash ./tests/check_file_presence.sh output/
+CMD ./tests/run_model_and_check_file_exisistence.sh /data

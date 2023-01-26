@@ -19,7 +19,7 @@ if(__name__ == '__main__'):
     # import the "crash" data
     curdir=os.path.split(__file__)[0]
     datadir=os.path.split(curdir)[0] + "/data"
-    datafile = "my_map_grid.csv"
+    datafile = "TODO: pass in as arg!"
     datafile = os.path.join(datadir, datafile)
 
 def print_total(df, value):
