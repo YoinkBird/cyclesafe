@@ -18,38 +18,18 @@ import re
 #import xgboost as xgb
 
 import os,sys
-# get file path src: https://stackoverflow.com/a/3430395
-filedir = os.path.dirname(os.path.abspath(__file__))
-repodir = "%s/../" % filedir
-
-# hard-coded globals
-resource_dir = "%s/output" % repodir
-
-runmodels = {}
 
 def get_global_configs():
-    # filepaths
-    # TODO: not sure if this is best method
-    curdir=os.path.split(__file__)[0]
-    datadir=os.path.split(curdir)[0] + "/data"
-    datafile = "my_map_grid.csv"
-    datafile = os.path.join(datadir, datafile)
-
     # global options
     options = {
             'graphics' : 0, # 0 - disable, 1 - enable
             'verbose' : 0, # -1 - absolutely silent 0 - minimal info, 1+ - increasing levels
-            # TODO: move to config file
-            'local_json_gen' : "%s/%s" % (resource_dir, "gps_scored_route.json"),
-            # TODO: move to config file
-            'local_json_input' : "gps_input_route.json", # for testing: # filepath="t/route_json/gps_generic.json"
-            'datafile' : datafile,
             }
 
     # choose which model to run
     runmodels = {
-            'dectree_evaluate_cv_strat' : 0, # loop through decision strategies - depends on manual_analyse_strongest_predictors
             'manual_analyse_strongest_predictors' : 0, # manual successive determination of strongest features
+            'dectree_evaluate_cv_strat' : 0, # use in run_cross_val: loop through decision strategies - values depend on having run manual_analyse_strongest_predictors
             'generate_human_readable_dectree' : 0, # human-readable binary decision-tree
             'score_manual_predef_route' : 0, # hard-coded route generated from input data, used for enabling scoring of new data
             'score_manual_generic_route' : 1, # generic route passed in from routing service, used for scoring the route
@@ -63,18 +43,40 @@ def get_global_configs():
         runmodels['map_generate_human_readable_dectree'] = 1
         runmodels['map_manual_analyse_strongest_predictors'] = 0
 
+    # pass around
+    options['runmodels'] = runmodels
+
     # src: https://docs.python.org/3/howto/argparse.html#id1
     import argparse
     # if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--graphics', type=int, default=0) # action="store_true", default=False)
-    parser.add_argument('--verbose', type=int, default=0)
+    parser.add_argument('--graphics', type=int, default=0, help="generate diagrams, where applicable") # action="store_true", default=False)
+    parser.add_argument('--verbose', type=int, default=0, help="[alpha] increase verbosity, increments of 1" )
     # HACK: for now, enable the args to be parsed from this function, even when called from other files. TODO: move the argparsing into its own subroutine
+    # src: https://stackoverflow.com/a/24181138
+    requiredArgs = parser.add_argument_group('required args (instead of passing in as envvar, for now)')
+    requiredArgs.add_argument('--workspace', type=str, required=True, help="workdir for model to store files, e.g. the pickled model" )
+    requiredArgs.add_argument('--routefile', type=str, required=True, help="gmaps geojson route to be scored" )
+    requiredArgs.add_argument('--datafile', type=str, required=True, help="txdot cris crashfile used for generating the model" )
+    requiredArgs.add_argument('--dumpresponse', type=str, help="file to save scored response to, e.g. for troubleshooting" )
     # allow unkown args. src: https://stackoverflow.com/a/12818237
     args,unknown = parser.parse_known_args()
     # "args" defined with 'default=<>', no need for a conditional
     options['graphics'] = args.graphics
     options['verbose'] = args.verbose
+    options['workspace_dir'] = args.workspace
+    options['local_json_input'] = args.routefile
+    options['datafile'] = args.datafile
+
+    # verify is file and readable; not a security risk as per docs because not opening here. See https://docs.python.org/3.7/library/os.html#os.access
+    if not os.path.isfile(options['local_json_input']) or not os.access(options['local_json_input'], os.R_OK):
+        raise FileNotFoundError(f"Options: Could not read file for: --routefile {options['local_json_input']}")
+
+    if args.dumpresponse:
+        options['local_json_gen'] = "%s/%s" % (options['workspace_dir'], args.dumpresponse)
+
+    pp.pprint("OPTIONS:")
+    pp.pprint(options)
 
     return(options, runmodels)
 
@@ -416,7 +418,7 @@ def run_cross_val(data_dummies,featdef,dropfeatures=[], **options):
     y_full = df_int_nonan[responsecls]
 
     print("-I-: DecisionTree - evaluating CV strategy")
-    if(runmodels['dectree_evaluate_cv_strat'] == 1):
+    if(options['runmodels']['dectree_evaluate_cv_strat'] == 1):
       dectree_evaluate_cv_strategy(X_full, y_full)
     else:
       print("-I-: ... skipping")
@@ -549,8 +551,6 @@ def retrieve_json_file(filename, **options):
     #if ( verbose >= 1):
     #    print("# save to file")
 
-    # TODO: convert his, want to force everything in one dir. tmp:
-    # filepath=("%s/%s" % (resource_dir, filename))
     filepath = filename
     if( verbose >= 1):
         print("mock-response sending to : " + filepath)
@@ -583,13 +583,9 @@ def save_json_file(response_json, filepath, **options):
 
     return filepath
 
+# TODO: rename with underscores for internal use
 # mock json request
-def mock_receive_request_json(filename,  **options):
-    # NOTE: files may have to be symlinked first:
-    # ln -s ../server/res/gps_input_route.json output/
-    # tmp: - probably needs to be in a config
- 
-    filepath=("%s/%s" % (resource_dir, filename))
+def mock_receive_request_json(filepath,  **options):
     return retrieve_json_file(filepath, **options)
 
 
@@ -1293,7 +1289,7 @@ def score_manual_generic_route(data, data_dummies, df_int_nonan, featdef, geodat
 
     # step1:
     # if using model from map_manual_analyse_strongest_predictors
-    if( runmodels['map_manual_analyse_strongest_predictors'] ):
+    if( options['runmodels']['map_manual_analyse_strongest_predictors'] ):
         print("-E-: user_environment not configured for map_manual_analyse_strongest_predictors")
         quit()
     user_environment = {
@@ -1489,11 +1485,11 @@ def retrieve_model(*args, **options):
     import pickle
     path_saved_model = str()
     model_gen_fn = 0
-    if( runmodels['map_generate_human_readable_dectree'] ):
-        path_saved_model = "%s/human_read_dectree.pkl" % resource_dir
+    if( options['runmodels']['map_generate_human_readable_dectree'] ):
+        path_saved_model = "%s/human_read_dectree.pkl" % options['workspace_dir']
         model_gen_fn = generate_human_readable_dectree
-    elif( runmodels['map_manual_analyse_strongest_predictors'] ):
-        path_saved_model = "%s/human_read_dectree.pkl" % resource_dir
+    elif( options['runmodels']['map_manual_analyse_strongest_predictors'] ):
+        path_saved_model = "%s/human_read_dectree.pkl" % options['workspace_dir']
         model_gen_fn = manual_analyse_strongest_predictors
     import os.path
     # model_clf_score_route, clf_score_predictors, clf_score_responsecls = (tree.DecisionTreeClassifier(), [], pd.DataFrame)
@@ -1509,9 +1505,9 @@ def retrieve_model(*args, **options):
     else:
         print("-I-: creating model")
         model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, df_int_nonan, featdef, **options)
-#        if( runmodels['map_generate_human_readable_dectree'] ):
+#        if( options['runmodels']['map_generate_human_readable_dectree'] ):
 #            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
-#        if( runmodels['map_manual_analyse_strongest_predictors'] ):
+#        if( options['runmodels']['map_manual_analyse_strongest_predictors'] ):
 #            model_clf_score_route, clf_score_predictors, clf_score_responsecls = model_gen_fn(data, data_dummies, featdef)
     # dump
     print("-I-: storing model to path %s" % path_saved_model)

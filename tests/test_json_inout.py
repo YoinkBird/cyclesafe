@@ -1,9 +1,11 @@
 import json
+import sys
+sys.exit("STUB FILE")
 
 '''
-diff t/route_json/gps_scored_eerc_to_klane.json output/gps_scored_route.json 
+diff tests/route_json/gps_scored_eerc_to_klane.json output/gps_scored_route.json 
 '''
-filepath1 = "t/route_json/gps_scored_eerc_to_klane.json"
+filepath1 = "tests/route_json/gps_scored_eerc_to_klane.json"
 filepath2 = "output/gps_scored_route.json"
 
 loaded1a = {}

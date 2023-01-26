@@ -32,8 +32,8 @@ Further Reading:
 
 * modelmanager/ : predictive model lifecycle management
 * data/ : input data for modelmanager, e.g. CSVs for crash data
-* output/ : dedicated location for generated data to facilitate integration testing
-* tests/ : tests for modelmanager
+* resources/ : misc resources
+* tests/ : system tests for modelmanager
 * docs/ : systems documentation
 * tools/ : misc helper utils, primarily for docgen
 
