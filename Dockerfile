@@ -19,11 +19,7 @@ CMD python3 ./code/model.py
 
 FROM base as test
 # TESTING - TEMP SOLUTION
-#CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py
-#CMD python3 ./code/model.py --routefile=t/route_json/gps_generic.json
-# override workspace, override path to input route file
-#CMD python3 ./code/model.py --workspace=/data --routefile=t/route_json/gps_generic.json
-# FAIL plan: override workspace, rely on default path to input route file
-#CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data
-# pass: plan: override workspace, override path to input route file from workspace
+# pass: plan: override workspace, override path to input route file from non-workspace path (e.g. for testing purposes)
+#CMD python3 ./code/model.py --workspace=/data --routefile=t/route_json/gps_generic.json ; set -ex; ls -ltr /data | grep  "gps_scored_route.json"; ls -ltr /data | grep  "human_read_dectree.pkl"; echo "PASS"
+# pass: plan: override workspace, override path to input route file from workspace (e.g. beign called from server)
 CMD cp /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py --workspace=/data --routefile=/data/gps_input_route.json ; set -ex;  ls -ltr /data | grep "gps_input_route.json"; ls -ltr /data | grep  "gps_scored_route.json"; ls -ltr /data | grep  "human_read_dectree.pkl"; echo "PASS"
