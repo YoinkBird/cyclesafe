@@ -73,13 +73,13 @@ def get_global_configs():
     # HACK: for now, enable the args to be parsed from this function, even when called from other files. TODO: move the argparsing into its own subroutine
     # allow unkown args. src: https://stackoverflow.com/a/12818237
     args,unknown = parser.parse_known_args()
-    parser.add_argument('--resource_dir', type=str, default=resource_dir)
+    parser.add_argument('--workspace', type=str, default=resource_dir)
     parser.add_argument('--routefile', type=str, default=options['local_json_input'])
     args = parser.parse_args()
     # "args" defined with 'default=<>', no need for a conditional
     options['graphics'] = args.graphics
     options['verbose'] = args.verbose
-    options['resource_dir'] = args.resource_dir
+    options['resource_dir'] = args.workspace
     options['routefile'] = args.routefile
     options['local_json_input'] = args.routefile
 

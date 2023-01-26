@@ -20,4 +20,5 @@ CMD python3 ./code/model.py
 FROM base as test
 # TESTING - TEMP SOLUTION
 #CMD ln -sv /app/t/route_json/gps_generic.json /data/gps_input_route.json && python3 ./code/model.py
-CMD python3 ./code/model.py --resource_dir=/data --routefile=t/route_json/gps_generic.json
+#CMD python3 ./code/model.py --routefile=t/route_json/gps_generic.json
+CMD python3 ./code/model.py --workspace=/data --routefile=t/route_json/gps_generic.json
