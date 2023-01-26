@@ -30,10 +30,9 @@ def get_global_configs():
 
     # get file path src: https://stackoverflow.com/a/3430395
     filedir = os.path.dirname(os.path.abspath(__file__))
-    repodir = "%s/../" % filedir
 
     # hard-coded globals
-    resource_dir = "%s/output" % repodir
+    resource_dir = filedir
 
     # global options
     options = {
