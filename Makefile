@@ -22,6 +22,7 @@ build_test: ## docker build test image
 	$(MAKE) -e _target=test _build
 
 _run:
+	docker container rm ${NAME} || true
 	docker run --name ${NAME} ${TAG}
 run: ## docker run
 	$(MAKE) _run
