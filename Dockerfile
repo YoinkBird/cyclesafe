@@ -13,4 +13,4 @@ CMD python3 ./code/model.py
 
 FROM base as test
 # TESTING - TEMP SOLUTION
-CMD ln -sv ../t/route_json/gps_generic.json output/gps_input_route.json && python3 ./code/model.py
+CMD ln -sv ../t/route_json/gps_generic.json output/gps_input_route.json && python3 ./code/model.py && bash ./t/check_file_presence.sh output/
