@@ -77,7 +77,6 @@ def get_global_configs():
     options['graphics'] = args.graphics
     options['verbose'] = args.verbose
     options['workspace_dir'] = args.workspace
-    options['routefile'] = args.routefile
     options['local_json_input'] = args.routefile
 
     # verify is file and readable; not a security risk as per docs because not opening here. See https://docs.python.org/3.7/library/os.html#os.access
