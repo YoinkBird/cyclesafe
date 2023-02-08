@@ -6,7 +6,7 @@ This is a rudimentary custom machine learning framework using scikit-learn and p
 
 This code (mostly automatically) manages model generation and validation/evaluation (train+test on TxDoT Crash Data), as well as scoring navigation routes (based on Geo-JSON).
 
-![container test](https://github.com/YoinkBird/cyclesafe/actions/workflows/github-actions.yml/badge.svg)
+[![container test](https://github.com/YoinkBird/cyclesafe/actions/workflows/github-actions.yml/badge.svg?branch=main)](https://github.com/YoinkBird/cyclesafe/actions?query=branch%3Amain)
 
 ## Usage
 
