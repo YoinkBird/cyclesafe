@@ -1,4 +1,5 @@
 
+import copyright
 from helpers import *
 from feature_definitions import *
 from txdot_parse import *
@@ -1531,6 +1532,7 @@ def retrieve_model(*args, **options):
 
 # self-run
 if(__name__ == '__main__'):
+    print(copyright.copyright)
     # get data-structures which contain configs to control execution
     options_local, runmodels = get_global_configs()
     ################################################################################
