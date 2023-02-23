@@ -23,7 +23,7 @@ The code is located under the [./code/](./code) directory:
 | [feature_defs.py](./code/feature_defs.py) | Track features and their purpose. The feature definition framework implemented as a pandas dataframe, which provides an abstraction for feature management throughout the application. Further reading: [Appendix: Featdef Values](https://github.com/YoinkBird/cyclesafe/blob/main/docs/report/report.md#appendix-featdef-values) |
 | [helpers.py](./code/helpers.py)      | Useful functions |
 
-**Data formats** are defined in the section ["Data Formats" of the system documentation](./docs/report/report.md#data-formats); for now, this also serves as the API documenation.
+**API Documentation and Data formats** are defined in the section ["Data Formats" of the system documentation](./docs/report/report.md#data-formats); for now, this also serves as the API documenation.
 
 Further Reading:
 * Systems Documentation on ["Modeling Application" in the system documentation](./docs/report/report.md#modeling-application).
