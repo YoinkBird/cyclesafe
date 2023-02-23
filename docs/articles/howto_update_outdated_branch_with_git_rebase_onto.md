@@ -191,10 +191,10 @@ List the file changes introduced by the rebase:
 $ git diff --name-only origin/report
 .gitignore
 Final.ipynb
-code/feature_definitions.py
-code/helpers.py
-code/model.py
-code/txdot_parse.py
+modelmanager/feature_definitions.py
+modelmanager/helpers.py
+modelmanager/model.py
+modelmanager/txdot_parse.py
 output/crashes_300_330.html
 run_if_changed.sh
 t/route_json/gps_generic.json
@@ -211,7 +211,7 @@ $ git diff --name-only origin/report | perl -nle 'm/^([^\/]+[\/]*)/ && print $1'
 CONTRIBUTING.md
 Final.ipynb
 README.md
-code/
+modelmanager/
 output/
 run_if_changed.sh
 t/

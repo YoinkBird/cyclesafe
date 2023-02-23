@@ -14,23 +14,33 @@ Nevertheless, as a bare-bones no-frills framework, it touches on most of the thi
 
 The Modeling application uses the feature definition framework to create the different models required for scoring the route.  
 
-The code is located under the [./code/](./code) directory:
+The code is located under the [./modelmanager/](./modelmanager) directory:
 
 | Filename | Purpose |
 |---|---|
-| [model.py](./code/model.py)        | Model Build, Optimise, Predict Route-Score. [model.py](./code/model.py#L1533) can be run standalone or imported as a module.|
-| [txdot_parse.py](./code/txdot_parse.py)  | Prepare data from source. Convert input data format to pandas dataframe, handles the data preparation stage and updates the feature definition framework. |
-| [feature_defs.py](./code/feature_defs.py) | Track features and their purpose. The feature definition framework implemented as a pandas dataframe, which provides an abstraction for feature management throughout the application. Further reading: [Appendix: Featdef Values](https://github.com/YoinkBird/cyclesafe/blob/main/docs/report/report.md#appendix-featdef-values) |
-| [helpers.py](./code/helpers.py)      | Useful functions |
+| [model.py](./modelmanager/model.py)        | Model Build, Optimise, Predict Route-Score. [model.py](./modelmanager/model.py#L1533) can be run standalone or imported as a module.|
+| [txdot_parse.py](./modelmanager/txdot_parse.py)  | Prepare data from source. Convert input data format to pandas dataframe, handles the data preparation stage and updates the feature definition framework. |
+| [feature_defs.py](./modelmanager/feature_defs.py) | Track features and their purpose. The feature definition framework implemented as a pandas dataframe, which provides an abstraction for feature management throughout the application. Further reading: [Appendix: Featdef Values](https://github.com/YoinkBird/cyclesafe/blob/main/docs/report/report.md#appendix-featdef-values) |
+| [helpers.py](./modelmanager/helpers.py)      | Useful functions |
 
 **API Documentation and Data formats** are defined in the section ["Data Formats" of the system documentation](./docs/report/report.md#data-formats); for now, this also serves as the API documenation.
 
 Further Reading:
 * Systems Documentation on ["Modeling Application" in the system documentation](./docs/report/report.md#modeling-application).
 
+### Directory Structure
+
+* modelmanager/ : predictive model lifecycle management
+* data/ : input data for modelmanager, e.g. CSVs for crash data
+* output/ : dedicated location for generated data to facilitate integration testing
+* tests/ : tests for modelmanager
+* docs/ : systems documentation
+* tools/ : misc helper utils, primarily for docgen
+
+
 ## Testing
 
-During development, [model.py](https://github.com/YoinkBird/cyclesafe/blob/3890efa32538505fcadbbba2c4ad238599944856/code/model.py#L1506) can be run standalone to manually verify functionality of functions. Unit tests to follow; see rationale at end of this section.
+During development, [model.py](./modelmanager/model.py#L1506) can be run standalone to manually verify functionality of functions. Unit tests to follow; see rationale at end of this section.
 
 During verification, interface testing is run via the 
 [cyclesafe server orchestration script](https://github.com/YoinkBird/cyclesafe_server/blob/60c8ffaea646c9f680458f03c5ddef7f055a65df/setup.sh#L187); this is implemented using `curl` and json files defining requests and expected responses (similar to [expect testing](https://en.wikipedia.org/wiki/Expect); this is a quick and dirty way to verify system functionality at a high level; see rationale at the end of this section.

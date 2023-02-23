@@ -1661,7 +1661,7 @@ data[(data['intersection_related'] == 'Non Intersection') & data['intersecting_s
 
 ## Jupyter QTConsole
 '''
-%run code/model.py
+%run modelmanager/model.py
 shift+arr-up - as close to i-search-back as it gets
 esc - clear entire input area, equivalent to ctrl+u in bash,csh
 ctrl+l - issue on my machine, keeps causing cursor to get out of sync: 
@@ -1788,4 +1788,7 @@ losttrack
 21:?? - verified in modelgen.code.model.py (local)
 break
 22:28 - verified in server.server_api_model.py (local) 
+
+# 20230223
+rename 'code' to 'modelmanager'
 '''

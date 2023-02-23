@@ -20,7 +20,7 @@ if [[ ! -r $file ]]; then
 fi
 
 # doesn't work
-# runhook="python3 ./code/model.py"
+# runhook="python3 ./modelmanager/model.py"
 # ` ${runhook}
 
 get_abs_filename() {
@@ -44,8 +44,8 @@ while true; do
     fi
     echo "CHANGED - ${target}"
     mlast=${mcur}
-    # doesn't work # runhook="python3 ./code/model.py"
-    python3 ./code/model.py
+    # doesn't work # runhook="python3 ./modelmanager/model.py"
+    python3 ./modelmanager/model.py
 
     echo "WAITING - ${target}"
   else
