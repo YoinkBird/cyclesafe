@@ -1,11 +1,11 @@
-import os,sys
+# import os,sys
 
-# get file path src: https://stackoverflow.com/a/3430395
-moduledir = os.path.dirname(os.path.abspath(__file__))
+# # get file path src: https://stackoverflow.com/a/3430395
+# moduledir = os.path.dirname(os.path.abspath(__file__))
 
-sys.path.append("%s/modelmanager" % moduledir)
+# sys.path.append("%s/modelmanager" % moduledir)
 
-from modelmanager import *
+# from modelmanager import *
 
 #dbg# print("hi - modelgen")
 

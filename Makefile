@@ -7,11 +7,11 @@ help: ## Display this help
 
 dev_dep: ## develop, persist files back to repo. docker build+run with $PWD mounted rw. E.g. in order to edit code from within a running container.
 	docker build --tag ${TAG}_dev . && \
-		docker run --rm -it -v ${PWD}:/app:rw ${TAG}_dev bash
+		docker run --rm -it -v ${PWD}:/src:rw ${TAG}_dev bash
 
 dev: ## develop, live-update files from repo. docker build+run with $PWD mounted rw
 	docker build --tag ${TAG}_dev . && \
-		docker run --rm -it -v ${PWD}/modelmanager:/app/modelmanager:ro ${TAG}_dev bash
+		docker run --rm -it -v ${PWD}/modelmanager:/src/modelmanager:ro ${TAG}_dev bash
 
 _build:
 	docker build --tag ${TAG} --target ${_target} .
