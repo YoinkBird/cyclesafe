@@ -9,8 +9,8 @@ COPY . .
 
 WORKDIR /app
 FROM base as release
-CMD python3 ./code/model.py
+CMD python3 ./modelmanager/model.py
 
 FROM base as test
 # TESTING - TEMP SOLUTION
-CMD ln -sv ../t/route_json/gps_generic.json output/gps_input_route.json && python3 ./code/model.py && bash ./t/check_file_presence.sh output/
+CMD ln -sv ../tests/route_json/gps_generic.json output/gps_input_route.json && python3 ./modelmanager/model.py && bash ./tests/check_file_presence.sh output/

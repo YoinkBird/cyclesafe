@@ -32,7 +32,7 @@ lsof -i :${port} | tee -a server_pid_lsof_${procname}.txt
 #-------------------------------------------------------------------------------- 
 # mock client map-ui - upload json
 #+ src: https://stackoverflow.com/a/7173011
-## curl --header  http://localhost:${port} --data @../t/route_json/gps_generic.json
+## curl --header  http://localhost:${port} --data @../tests/route_json/gps_generic.json
 
 #-------------------------------------------------------------------------------- 
 # mock client map-ui - retrieve json
