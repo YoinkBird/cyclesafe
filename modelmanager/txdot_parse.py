@@ -49,8 +49,28 @@ def print_total(df, value):
     return ser
 
 
+# convert to 'nan'
 def replace_with_npnan(data, printout=False):
-    # convert to 'nan'
+    """ Encode missing input data as 'np.nan'
+    Args:
+        data: pandas dataframe containing data to be encoded
+        printout: boolean to print out undefined values report, default=False
+
+    Returns:
+        data: originally passed-in pandas dataframe with data now encoded
+        nan_report_df: pandas dataframe containing processed data
+
+    Raises:
+        No exceptions as of now
+
+    Functionality:
+        
+Encode strings representing missing data as a null datatype.  
+Convert human-readable descriptions for missing data to machine-readable datatype. 
+This includes converting '0' for "missing" to 'np.nan' to prevent the modelling algorithms from evaluating it as a real value. This also improves runtime performance, as a proper null value is evaluated quicker than an integer representation (numpy knows not to evaluate np.nan, but can't know in advance whether an 'int' is '0' and therefore spends extra time to evaluate it)
+    Caveat: This does not apply to data which is actually '0', only to cases when '0' represents a missing value.
+    """
+
     nan_report_df = pd.DataFrame()
 
     verbose = 0
@@ -117,8 +137,29 @@ def replace_with_npnan(data, printout=False):
     return (data, nan_report_df)
 
 
-# ensure all data is machine-readable
 def clean_data(datafile, source='txdot', verbose=0):
+    """ ensure all data is machine-readable, track model feature metadata
+    Args:
+        datafile: csv containing crash data
+        source: string representing source of data. default: 'txdot'
+        verbose: increase verbosity during processing. default: 0
+
+    Returns:
+        data: originally passed-in pandas dataframe with data now encoded
+        featdef: pandas dataframe containing list of model feature definitions and metadata used for selecting features throughout the ML lifecycle.
+
+    Raises:
+        No exceptions as of now
+
+    Functionality:
+        Data processing rules:
+            Replace punctuation with underscores.
+            Lowercase feature names.
+            Convert unknowns to 'np.nan' using txdot_parse.replace_with_npnan()
+            Encode strings containing numbers as a numeric   datatype.
+            Convert specific data definitions to more user-friendly format
+    """
+
     data = pd.read_csv(datafile, header=10)
     # feature definitions and properties
     featdef = get_feature_defs()
@@ -196,6 +237,23 @@ def clean_data(datafile, source='txdot', verbose=0):
 # catch-all pre-processing function
 # e.g. to only have to call one function once from within the model
 def preprocess_data(datafile, source='txdot', verbose=0):
+    """ One-step data pre-processing
+        E.g. The model generation can preprocess all data using one call to this function.
+    Args:
+        datafile: csv containing crash data
+        source: string representing source of data. default: 'txdot'
+        verbose: increase verbosity during processing. default: 0
+
+    Returns:
+        data: originally passed-in pandas dataframe with data now encoded
+        featdef: pandas dataframe containing list of model feature definitions and metadata used for selecting features throughout the ML lifecycle.
+
+    Functionality:
+        Data processing rules:
+            Clean data using txdot_parse.clean_data()
+            Encode strings containing dates   as a date-time datatype.
+            Add features for base10 time and 30min intervals, register with featdef metadata
+    """
     # first clean the data
     (data, featdef) = clean_data(datafile, source='txdot', verbose=0)
     # <crash_time>
@@ -228,6 +286,27 @@ def preprocess_data(datafile, source='txdot', verbose=0):
 
 # add categorical data
 def preproc_add_bin_categories(data, featdef, verbose=0):
+    """ Add categorical data
+    Args:
+        data: pandas dataframe containing data to be encoded
+        featdef: pandas dataframe containing list of model feature definitions and metadata used for selecting features throughout the ML lifecycle.
+        verbose: increase verbosity during processing. default: 0
+
+    Returns:
+        data: originally passed-in pandas dataframe with data now encoded
+        featdef: pandas dataframe containing list of model feature definitions and metadata used for selecting features throughout the ML lifecycle.
+
+    Raises:
+        No exceptions as of now
+
+    Functionality:
+        Data processing rules:
+            Encode human-readable categories numerically
+            Encode unavailable data as np.nan
+            Interpret data when input categories unclear, i.e. introduce bias into dataset
+            
+        
+    """
     if (1):
         # factorizable data
         # convert 'Wet' 'Dry' to '1' '0'
@@ -428,6 +507,28 @@ profiling:
 
 # assume already processed
 def impute_mph(data, verbose=0):
+    """ Impute Speed Limits by extrapolating from similar records
+    Args:
+        data: pandas dataframe with speed limits to be imputed. Prerequisite: Data is already cleaned.
+        verbose: increase verbosity during processing. default: 0
+
+    Returns:
+        data: originally passed-in pandas dataframe with imputed speed lim its
+
+    Raises:
+        No exceptions as of now
+
+    Description:
+        Speed limits are not always recorded for each crash entry.
+        This function will gather the set of intersections with multiple entries, and for any intersections missing the speed limit, impute the speed limit from identical rows. If speed limit changed throughout time, use first available value either from the future speed limit or the past speed limit. As most speed limits were observed to increase over time, this induces a bias towards associating crash severity with higher-than-actual speed limits. This is accepted as the difference in speed limit is typically only 5mph.
+        Note that this will bias the overall model towards a higher speed limit associated with injury severity. This has a few consequences, but can be considered as a relatively safe assumption as the correlation between crash-severity and speed-of-impact is well understood. Furthermore, the speed limit itself is not the same as the impact speed.  
+
+    Functionality:
+        Data processing rules:
+            Encode human-readable categories numerically
+            Encode unavailable data as np.nan
+            Interpret data when input categories unclear, i.e. introduce bias into dataset
+    """
     verbose3 = 0
     if (verbose > 2):
         verbose3 = 1
@@ -528,6 +629,22 @@ def impute_mph(data, verbose=0):
 # def get_abt(data):
 # data quality report
 def get_data_quality_report(data):
+    """ Generate Data Quality Reprot
+    Args:
+        data: pandas dataframe containing data to be inspected
+
+    Returns:
+        df_quality_rpt: pandas dataframe containing data quality report
+
+    Raises:
+        No exceptions as of now
+
+    Functionality:
+        Quality:
+            Percent of missing data
+            Cardinality of features, i.e. how many values
+            Feature Mean, StdDev, Min, Quartiles, Frequence, Top
+    """
     # TEMP
     # 3.1 data quality report
     # 'count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max' included in DataFrame.describe()
@@ -572,6 +689,19 @@ def get_data_quality_report(data):
 
 
 def print_get_data_quality_report(df_quality_rpt):
+    """ Print the Data Quality Report
+    Args:
+        df_quality_rpt: pandas dataframe generated by txdot_parse.get_data_quality_report()
+
+    Returns:
+        No return values
+
+    Raises:
+        No exceptions as of now
+
+    Functionality:
+        Print the report
+    """
     # df_quality_rpt = get_data_quality_report(data)
     orig_val_expand_frame_repr = pd.get_option('display.expand_frame_repr')
     pd.set_option('display.expand_frame_repr', False)
