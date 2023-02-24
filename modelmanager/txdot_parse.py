@@ -14,13 +14,19 @@ import re
 import os, sys
 
 if (__name__ == '__main__'):
+    # limit certain imports to __main__
+    import argparse
+    parser = argparse.ArgumentParser()
+    requiredArgs = parser.add_argument_group(
+        'required args (instead of passing in as envvar, for now)')
+    requiredArgs.add_argument(
+        '--datafile',
+        type=str,
+        required=True,
+        help="txdot cris crashfile used for generating the model")
+    args = parser.parse_args()
     # import the "crash" data
-    datafile = "../data/txdot_2010_2017.csv"
-    # import the "crash" data
-    curdir = os.path.split(__file__)[0]
-    datadir = os.path.split(curdir)[0] + "/data"
-    datafile = "TODO: pass in as arg!"
-    datafile = os.path.join(datadir, datafile)
+    datafile = args.datafile
 
 
 def print_total(df, value):
