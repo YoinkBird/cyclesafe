@@ -4,4 +4,4 @@ modelmanager/feature_definitions.py
 modelmanager/helpers.py
 modelmanager/mapgen.py
 modelmanager/model.py
-modelmanager/txdot_parse.py
+# modelmanager/txdot_parse.py
