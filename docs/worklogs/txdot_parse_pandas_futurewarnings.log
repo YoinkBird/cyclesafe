@@ -1,0 +1,5 @@
+root@3ee19c8a4060:/app# python3 ./modelmanager/txdot_parse.py --datafile ./data/txdot_cris_20170427.csv |& grep FutureWarning
+/usr/local/lib/python3.7/site-packages/pandas/core/frame.py:6211: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
+/app/modelmanager/helpers.py:41: FutureWarning: pandas.tslib is deprecated and will be removed in a future version.
+/usr/local/lib/python3.7/site-packages/pandas/core/frame.py:6211: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
+./modelmanager/txdot_parse.py:424: FutureWarning: set_value is deprecated and will be removed in a future release. Please use .at[] or .iat[] accessors instead
