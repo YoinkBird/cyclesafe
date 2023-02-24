@@ -649,7 +649,19 @@ if (__name__ == '__main__'):
         print(data.info())
         if (1):
             data.describe()
-            data.hist()
+            # data.hist()
+            """
+Traceback (most recent call last):
+  File "modelmanager/txdot_parse.py", line 545, in <module>
+    data.hist()
+  File "/usr/local/lib/python3.7/site-packages/pandas/plotting/_core.py", line 2408, in hist_frame
+    layout=layout)
+  File "/usr/local/lib/python3.7/site-packages/pandas/plotting/_tools.py", line 263, in _subplots
+    _handle_shared_axes(axarr, nplots, naxes, nrows, ncols, sharex, sharey)
+  File "/usr/local/lib/python3.7/site-packages/pandas/plotting/_tools.py", line 308, in _handle_shared_axes
+    layout[ax.rowNum, ax.colNum] = ax.get_visible()
+AttributeError: 'AxesSubplot' object has no attribute 'rowNum'
+          """
             data.corr().plot()  # TODO: seaborn
             plt.show()
         else:
