@@ -13,21 +13,6 @@ import re
 #import xgboost as xgb
 import os, sys
 
-if (__name__ == '__main__'):
-    # limit certain imports to __main__
-    import argparse
-    parser = argparse.ArgumentParser()
-    requiredArgs = parser.add_argument_group(
-        'required args (instead of passing in as envvar, for now)')
-    requiredArgs.add_argument(
-        '--datafile',
-        type=str,
-        required=True,
-        help="txdot cris crashfile used for generating the model")
-    args = parser.parse_args()
-    # import the "crash" data
-    datafile = args.datafile
-
 
 def print_total(df, value):
     #    print(value)
@@ -712,8 +697,21 @@ def print_get_data_quality_report(df_quality_rpt):
     pd.set_option('display.expand_frame_repr', orig_val_expand_frame_repr)
 
 
-# run for testing purposes
+# run standalone to verify data processing, generate reports, etc
 if (__name__ == '__main__'):
+    # limit certain imports to __main__
+    import argparse
+    parser = argparse.ArgumentParser()
+    requiredArgs = parser.add_argument_group(
+        'required args (instead of passing in as envvar, for now)')
+    requiredArgs.add_argument(
+        '--datafile',
+        type=str,
+        required=True,
+        help="txdot cris crashfile used for generating the model")
+    args = parser.parse_args()
+    # import the "crash" data
+    datafile = args.datafile
     print("-I-: Self-Test: txdot_parse.py")
     print("-I-: should not see this from an import!")
     test_impute_mph = 1
