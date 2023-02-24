@@ -1,4 +1,4 @@
-NAME=cs_modelgen
+NAME=cs_modelmanager
 DOCKER_USER=yoinkbird
 TAG=${DOCKER_USER}/${NAME}
 _target=release
