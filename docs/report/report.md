@@ -2127,12 +2127,11 @@ Modules:
 
 | Filename | Purpose |
 |---|---|
-| model.py        | Model Build, Optimise, Predict Route-Score |
-| txdot_parse.py  | Prepare data as outlined under Data Preparation  |
-| feature_defs.py | Track features and their purpose  |
-| mapgen.py       | Generate maps for static heatmap visualisation  |
-| helpers.py      | Useful functions |
-
+| [model.py](/modelmanager/model.py)                             | Model Build, Optimise, Predict Route-Score |
+| [txdot_parse.py](/modelmanager/txdot_parse.py)                 | Prepare data as outlined under Data Preparation  |
+| [feature_definitions.py](/modelmanager/feature_definitions.py) | Track features and their purpose  |
+| [mapgen.py](/modelmanager/mapgen.py)                           | Generate maps for static heatmap visualisation  |
+| [helpers.py](/modelmanager/helpers.py)                         | Useful functions |
 
 **Data Parser**  
 Convert input data format to pandas dataframe, handles the data preparation stage and updates the feature definition framework. 
